@@ -50,11 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IDbRepository.cs" />
+    <Compile Include="Managers\PersonManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Managers\" />
-    <Folder Include="Model\" />
+    <Folder Include="Model\Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
