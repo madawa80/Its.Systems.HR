@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\IDbRepository.cs" />
     <Compile Include="Managers\PersonManager.cs" />
+    <Compile Include="Model\DbModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
