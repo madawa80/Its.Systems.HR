@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Its.Systems.HR.Domain.Interfaces;
+using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Domain.Managers
 {
-    public class PersonManager
+    public class PersonManager : IPersonManager
     {
         public IDbRepository db;
         public PersonManager(IDbRepository repo)
@@ -21,5 +22,14 @@ namespace Its.Systems.HR.Domain.Managers
         //    db.Get<Person>().Include().Where()
         //} 
 
+        public IQueryable<Participant> GetAllParticipants()
+        {
+            return db.Get<Participant>();
+        }
+
+        public IQueryable<HrPerson> GetAllHrPersons()
+        {
+            return db.Get<HrPerson>();
+        }
     }
 }
