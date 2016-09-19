@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Its.Systems.HR.Infrastructure
+namespace Its.Systems.HR.Test
 {
-    public class DbContext
+    public class BaseTest
     {
     }
 }
