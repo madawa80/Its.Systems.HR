@@ -15,9 +15,14 @@ namespace Its.Systems.HR.Infrastructure
             Database.SetInitializer<HRContext>(null);
             this.Configuration.LazyLoadingEnabled = false;
         }
-        public HRContext(DbConnection connection) : base(connection, true) { }
+
+        public HRContext(DbConnection connection) : base(connection, true)
+        {
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
         }
+    }
 }
