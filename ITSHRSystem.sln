@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{E76CE5F9-7BF3-47D3-A9F1-9A474A2DB297}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "..\Infrastructure\Infrastructure.csproj", "{34543E69-9FBE-4BE3-A9FF-EB7CC442740E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{34543E69-9FBE-4BE3-A9FF-EB7CC442740E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Its.Systems.HR.Interface.Web", "..\Its.Systems.HR.Interface.Web\Its.Systems.HR.Interface.Web.csproj", "{0359E948-3A08-43A3-B353-ABC8F6808ADA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Its.Systems.HR.Interface.Web", "Its.Systems.HR.Interface.Web\Its.Systems.HR.Interface.Web.csproj", "{0359E948-3A08-43A3-B353-ABC8F6808ADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "..\Test\Test.csproj", "{5E054C4A-2D4E-4151-8F3F-3F62FD34DF48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{5E054C4A-2D4E-4151-8F3F-3F62FD34DF48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
