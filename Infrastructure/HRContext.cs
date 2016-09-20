@@ -13,13 +13,12 @@ namespace Its.Systems.HR.Infrastructure
     {
         public HRContext() : base("HRContext")
         {
-            Database.SetInitializer<HRContext>(null);
             this.Configuration.LazyLoadingEnabled = false;
+            Database.SetInitializer(new HRContextSeeder());
         }
 
         public HRContext(DbConnection connection) : base(connection, true)
         {
-            Database.SetInitializer<HRContext>(new HRContextSeeder());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
