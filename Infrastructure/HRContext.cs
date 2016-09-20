@@ -38,19 +38,33 @@ namespace Its.Systems.HR.Infrastructure
     {
         protected override void Seed(HRContext context)
         {
-            //Tags
-            var tags = new List<HrPerson>
+            //HR person
+            var HRS = new List<HrPerson>
             {
-                new HrPerson() {Name = "Samme"},
-                new HrPerson() {Name = "Madawa"},
-                new HrPerson() {Name = "xxxxx"},
+                new HrPerson() {FirstName = "Samme",LastName = "Petersson"},
+                new HrPerson() {FirstName = "Elina",LastName = "Eriksson"},
+                new HrPerson() {FirstName  = "Raad",LastName = "Larsson"},
+                new HrPerson() {FirstName  = "Jan",LastName = "Petersson"},
+                new HrPerson() {FirstName = "Kim",LastName = "Henriksson"},
             };
 
-            foreach (var tag in tags)
-                context.HrPersons.Add(tag);
+            foreach (var HR in HRS)
+                context.HrPersons.Add(HR);
+
+
+            var paticipants = new List<Participant>
+            {
+                new Participant() {FirstName  = "Madawa",LastName = "Abeywickrama"},
+                new Participant() {FirstName  = "Sam",LastName = "Thomsson"},
+                new Participant() {FirstName = "Paul",LastName = "Alverardo"},
+                new Participant() {FirstName  = "Jean",LastName = "Smith"},
+                new Participant() {FirstName  = "Joe",LastName = "Root"},
+            };
+
+            foreach (var participant in paticipants)
+                context.Participants.Add(participant);
 
             context.SaveChanges();
-
             base.Seed(context);
         }
     }

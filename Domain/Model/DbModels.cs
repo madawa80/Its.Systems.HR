@@ -42,9 +42,14 @@ namespace Its.Systems.HR.Domain.Model
     public class Participant
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        //TODO: More properties
+        public string FirstName { get; set; }
 
+        public string LastName { get; set; }
+        //TODO: More properties
+        public string GetParticipantFullName()
+        {
+            return FirstName + LastName;
+        }
         //public virtual List<Session> Sessions { get; set; }
     }
 
@@ -72,8 +77,15 @@ namespace Its.Systems.HR.Domain.Model
     public class HrPerson
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
         //TODO: More properties
+
+        public string GetHRFullName()
+        {
+            return FirstName + LastName;
+        }
 
         public virtual List<Session> Sessions { get; set; }
 
