@@ -18,8 +18,8 @@ namespace Its.Systems.HR.Domain.Managers
 
         //public IQueryable<Person> GetPersons()
         //{
-        //    db.Get<Person>().Include().Where()
-        //} 
+        //    db.Get<Person>().Include().Where().
+        //}
 
     }
 }
