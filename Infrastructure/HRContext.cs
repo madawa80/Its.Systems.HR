@@ -56,6 +56,8 @@ namespace Its.Systems.HR.Infrastructure
             foreach (var activity in activities)
                 context.Activities.Add(activity);
 
+            context.SaveChanges();
+            
             // Location
             var locations = new List<Location>
             {
@@ -69,6 +71,9 @@ namespace Its.Systems.HR.Infrastructure
             foreach (var location in locations)
                 context.Locations.Add(location);
 
+            context.SaveChanges();
+
+
             // Tags for Sessions
             var tags = new List<Tag>()
             {
@@ -81,31 +86,7 @@ namespace Its.Systems.HR.Infrastructure
             foreach (var tag in tags)
                 context.Tags.Add(tag);
 
-            // Sessions
-            var sessions = new List<Session>()
-            {
-                new Session()
-                {
-                    Name = "2015",
-                    StartDate = GenerateRandomStartDate(),
-                    EndDate = GenerateRandomEndDate(),
-                    HrPersonId = 1,
-                    Location = locations.SingleOrDefault(n => n.Name == "Stockholm"),
-                    Activity = activities.SingleOrDefault(n => n.Name == "JavaOne"),
-                },
-                new Session()
-                {
-                    Name = "2016",
-                    StartDate = GenerateRandomStartDate(),
-                    EndDate = GenerateRandomEndDate(),
-                    HrPersonId = 1,
-                    Location = locations.SingleOrDefault(n => n.Name == "Umeå"),
-                    Activity = activities.SingleOrDefault(n => n.Name == "JavaOne"),
-                },
-            };
-
-             foreach (var session in sessions)
-                context.Sessions.Add(session);
+            context.SaveChanges();
 
             //HR person
             var HRS = new List<HrPerson>
@@ -120,6 +101,37 @@ namespace Its.Systems.HR.Infrastructure
             foreach (var HR in HRS)
                 context.HrPersons.Add(HR);
 
+            context.SaveChanges();
+
+            // Sessions
+            var sessions = new List<Session>()
+            {
+                new Session()
+                {
+                    Name = "JavaOne 2015",
+                    StartDate = GenerateRandomStartDate(),
+                    EndDate = GenerateRandomEndDate(),
+                    HrPerson = context.HrPersons.SingleOrDefault(n => n.FirstName == "Samme"),
+                    Location = context.Locations.SingleOrDefault(n => n.Name == "Stockholm"),
+                    Activity = context.Activities.SingleOrDefault(n => n.Name == "JavaOne"),
+                },
+                new Session()
+                {
+                    Name = "JavaOne 2016",
+                    StartDate = GenerateRandomStartDate(),
+                    EndDate = GenerateRandomEndDate(),
+                    HrPerson = context.HrPersons.SingleOrDefault(n => n.FirstName == "Elina"),
+                    Location = context.Locations.SingleOrDefault(n => n.Name == "Umeå"),
+                    Activity = context.Activities.SingleOrDefault(n => n.Name == "JavaOne"),
+                },
+            };
+
+            foreach (var session in sessions)
+                context.Sessions.Add(session);
+
+            context.SaveChanges();
+
+
             //Participant
 
             var paticipants = new List<Participant>
@@ -130,11 +142,12 @@ namespace Its.Systems.HR.Infrastructure
                 new Participant() {FirstName  = "Jean",LastName = "Smith"},
                 new Participant() {FirstName  = "Joe",LastName = "Root"},
             };
-
-
-
+            
             foreach (var participant in paticipants)
                 context.Participants.Add(participant);
+
+            context.SaveChanges();
+
 
             // SessionParticipants
             var sessionParticipants = new List<SessionParticipant>
@@ -142,7 +155,7 @@ namespace Its.Systems.HR.Infrastructure
                 new SessionParticipant()
                 {
                     ParticipantId = 1,
-                    Session = sessions.SingleOrDefault(n => n.Name=="JavaOne"),
+                    Session = context.Sessions.SingleOrDefault(n => n.Name=="JavaOne 2016"),
                     Rating = 5,
                 }
             };
