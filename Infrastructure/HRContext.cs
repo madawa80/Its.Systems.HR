@@ -44,6 +44,7 @@ namespace Its.Systems.HR.Infrastructure
             {
                 new HrPerson() {Name = "Samme"},
                 new HrPerson() {Name = "Madawa"},
+                new HrPerson() {Name = "xxxxx"},
             };
 
             foreach (var tag in tags)
