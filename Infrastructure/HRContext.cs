@@ -78,6 +78,8 @@ namespace Its.Systems.HR.Infrastructure
                 new Tag() {Name = "java"},
                 new Tag() {Name = "databaser"},
             };
+            foreach (var tag in tags)
+                context.Tags.Add(tag);
 
             // Sessions
             var sessions = new List<Session>()
@@ -100,6 +102,11 @@ namespace Its.Systems.HR.Infrastructure
                     Location = locations.SingleOrDefault(n => n.Name == "Umeå"),
                     Activity = activities.SingleOrDefault(n => n.Name == "JavaOne"),
                 },
+            };
+
+             foreach (var session in sessions)
+                context.Sessions.Add(session);
+
             //HR person
             var HRS = new List<HrPerson>
             {
@@ -113,6 +120,7 @@ namespace Its.Systems.HR.Infrastructure
             foreach (var HR in HRS)
                 context.HrPersons.Add(HR);
 
+            //Participant
 
             var paticipants = new List<Participant>
             {
@@ -123,8 +131,10 @@ namespace Its.Systems.HR.Infrastructure
                 new Participant() {FirstName  = "Joe",LastName = "Root"},
             };
 
-            foreach (var tag in tags)
-                context.Tags.Add(tag);
+
+
+            foreach (var participant in paticipants)
+                context.Participants.Add(participant);
 
             // SessionParticipants
             var sessionParticipants = new List<SessionParticipant>
@@ -140,10 +150,6 @@ namespace Its.Systems.HR.Infrastructure
             foreach (var sessionParticipant in sessionParticipants)
                 context.SessionParticipants.Add(sessionParticipant);
 
-
-
-            foreach (var participant in paticipants)
-                context.Participants.Add(participant);
 
             context.SaveChanges();
             base.Seed(context);
