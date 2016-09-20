@@ -32,4 +32,33 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<HrPerson>();
         }
     }
+
+    public class ActivitiesManager : IActivityManager
+    {
+        public IDbRepository db;
+        public ActivitiesManager(IDbRepository repo)
+        {
+            db = repo;
+        }
+
+        public IQueryable<Activity> GetAllActivities()
+        {
+            return db.Get<Activity>();
+        }
+
+        public IQueryable<Activity> GetAllActivitiesWithSessions()
+        {
+            return db.Get<Activity>();
+        }
+
+        public IQueryable<Session> GetAllSessionsForActivity(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Participant> GetAllParticipantsForSession(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

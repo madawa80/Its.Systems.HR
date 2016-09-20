@@ -70,6 +70,14 @@ namespace Its.Systems.HR.Domain.Model
         //TODO: More properties
 
         public virtual List<Session> Sessions { get; set; }
+
+        public void AddActivity(string input)
+        {
+            var result = new Activity()
+            {
+                Name = input,
+            };
+        }
     }
 
     public class Tag
