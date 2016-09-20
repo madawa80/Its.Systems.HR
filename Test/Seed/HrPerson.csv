@@ -1,3 +1,3 @@
-﻿Id,Name
-1,"Samuel"
-2,"Tommy"
+﻿Id,FirstName,LastName
+1,"Samuel","Pettersson"
+2,"Tommy","Larsson"

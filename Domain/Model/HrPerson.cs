@@ -14,9 +14,17 @@ namespace Its.Systems.HR.Domain.Model
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         //TODO: More properties
 
-        //public virtual List<Session> Sessions { get; set; }
+        public string GetHrFullName()
+        {
+            return FirstName + " " + LastName;
+        }
+
+        public virtual List<Session> Sessions { get; set; }
 
         //public void AddActivity(string input)
         //{

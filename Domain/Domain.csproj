@@ -54,8 +54,13 @@
     <Compile Include="Interfaces\IPersonManager.cs" />
     <Compile Include="Managers\ActivitiesManager.cs" />
     <Compile Include="Managers\PersonManager.cs" />
-    <Compile Include="Model\DbModels.cs" />
+    <Compile Include="Model\Activity.cs" />
+    <Compile Include="Model\Tag.cs" />
     <Compile Include="Model\HrPerson.cs" />
+    <Compile Include="Model\Location.cs" />
+    <Compile Include="Model\Participant.cs" />
+    <Compile Include="Model\Session.cs" />
+    <Compile Include="Model\SessionParticipant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
