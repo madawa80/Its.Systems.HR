@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Effort;
 using Effort.DataLoaders;
 using Its.Systems.HR.Domain.Interfaces;
+using Its.Systems.HR.Domain.Managers;
 using Its.Systems.HR.Infrastructure;
 using Its.Systems.HR.Infrastructure.Repository;
 using Microsoft.Practices.ServiceLocation;
@@ -23,6 +24,9 @@ namespace Its.Systems.HR.Test
         public IDbRepository db;
         public BaseTest()
         {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("sv-SE");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("sv-SE");
+
             ClassInitialize();
         }
 
@@ -48,6 +52,8 @@ namespace Its.Systems.HR.Test
         private static void ConfigureApplication(IUnityContainer container)
         {
             _ambientContainer.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
+            _ambientContainer.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
+            //_ambientContainer.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
 
             if (Convert.ToBoolean(ConfigurationManager.AppSettings.Get("UseEffort")) == true)
             {
