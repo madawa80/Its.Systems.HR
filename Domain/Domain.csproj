@@ -55,6 +55,7 @@
     <Compile Include="Managers\ActivitiesManager.cs" />
     <Compile Include="Managers\PersonManager.cs" />
     <Compile Include="Model\DbModels.cs" />
+    <Compile Include="Model\HrPerson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

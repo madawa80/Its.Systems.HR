@@ -11,7 +11,7 @@ namespace Its.Systems.HR.Infrastructure
 {
     public class HRContext : DbContext
     {
-        public HRContext() : base("HRContext")
+        public HRContext() : base("name=HRContext")
         {
             this.Configuration.LazyLoadingEnabled = false;
             Database.SetInitializer(new HRContextSeeder());
@@ -19,6 +19,7 @@ namespace Its.Systems.HR.Infrastructure
 
         public HRContext(DbConnection connection) : base(connection, true)
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -26,12 +27,12 @@ namespace Its.Systems.HR.Infrastructure
 
         }
 
-        public DbSet<Activity> Activities { get; set; }
-        public DbSet<Session> Sessions { get; set; }
-        public DbSet<Participant> Participants { get; set; }
-        public DbSet<SessionParticipant> SessionParticipants { get; set; }
-        public DbSet<Location> Locations { get; set; }
-        public DbSet<HrPerson> HrPersons { get; set; }
+        //public virtual DbSet<Activity> Activities { get; set; }
+        //public virtual DbSet<Session> Sessions { get; set; }
+        //public virtual DbSet<Participant> Participants { get; set; }
+        //public virtual DbSet<SessionParticipant> SessionParticipants { get; set; }
+        public virtual DbSet<Location> Location { get; set; }
+        public virtual DbSet<HrPerson> HrPerson { get; set; }
     }
 
     public class HRContextSeeder : DropCreateDatabaseAlways<HRContext>
@@ -47,7 +48,7 @@ namespace Its.Systems.HR.Infrastructure
             };
 
             foreach (var tag in tags)
-                context.HrPersons.Add(tag);
+                context.HrPerson.Add(tag);
 
             context.SaveChanges();
 

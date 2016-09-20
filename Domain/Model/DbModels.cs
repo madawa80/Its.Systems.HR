@@ -59,9 +59,10 @@ namespace Its.Systems.HR.Domain.Model
         public virtual Session Session { get; set; }
         public virtual Participant Participant { get; set; }
     }
-
+    [Table("Location")]
     public class Location
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
@@ -69,22 +70,7 @@ namespace Its.Systems.HR.Domain.Model
         //public List<Session> Sessions { get; set; }
     }
 
-    public class HrPerson
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        //TODO: More properties
-
-        public virtual List<Session> Sessions { get; set; }
-
-        public void AddActivity(string input)
-        {
-            var result = new Activity()
-            {
-                Name = input,
-            };
-        }
-    }
+    
 
     public class Tag
     {
