@@ -14,7 +14,7 @@ namespace Its.Systems.HR.Infrastructure
         public HRContext() : base("name=HRContext")
         {
             this.Configuration.LazyLoadingEnabled = false;
-            //Database.SetInitializer(new HRContextSeeder());
+            Database.SetInitializer(new HRContextSeeder());
         }
 
         public HRContext(DbConnection connection) : base(connection, true)
@@ -54,13 +54,13 @@ namespace Its.Systems.HR.Infrastructure
                 .HasRequired<Participant>(s => s.Participant)
                 .WithMany(n => n.SessionParticipants);
         }
-
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
-        public virtual DbSet<Participant> Participants { get; set; }
-        public virtual DbSet<SessionParticipant> SessionParticipants { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<HrPerson> HrPersons { get; set; }
+        public virtual DbSet<Participant> Participants { get; set; }
+        public virtual DbSet<SessionParticipant> SessionParticipants { get; set; }
+
         public virtual DbSet<Tag> Tags { get; set; }
     }
 
@@ -68,7 +68,7 @@ namespace Its.Systems.HR.Infrastructure
     {
         private Random _random = new Random();
         private DateTime _lastDateGenerated;
-        
+
 
         protected override void Seed(HRContext context)
         {
@@ -86,7 +86,7 @@ namespace Its.Systems.HR.Infrastructure
                 context.Activities.Add(activity);
 
             context.SaveChanges();
-            
+
             // Location
             var locations = new List<Location>
             {
@@ -171,7 +171,7 @@ namespace Its.Systems.HR.Infrastructure
                 new Participant() {FirstName  = "Jean",LastName = "Smith"},
                 new Participant() {FirstName  = "Joe",LastName = "Root"},
             };
-            
+
             foreach (var participant in paticipants)
                 context.Participants.Add(participant);
 
@@ -200,7 +200,7 @@ namespace Its.Systems.HR.Infrastructure
 
         private DateTime GenerateRandomStartDate()
         {
-            var randomDate = DateTime.Now.AddMonths(_random.Next(1, 12)).AddDays(_random.Next(1,365));
+            var randomDate = DateTime.Now.AddMonths(_random.Next(1, 12)).AddDays(_random.Next(1, 365));
             _lastDateGenerated = randomDate;
 
             return randomDate;

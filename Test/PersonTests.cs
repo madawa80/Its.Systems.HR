@@ -22,7 +22,9 @@ namespace Its.Systems.HR.Test
         public void TestMethod1()
         {
             impl = Container().Resolve<IPersonManager>();
+            // Add person
             var p = impl.GetAllHrPersons().ToList();
+            //Assert.AreEqual();
             var x = "";
         }
 
