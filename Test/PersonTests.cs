@@ -10,7 +10,7 @@ namespace Its.Systems.HR.Test
     [TestClass]
     public class PersonTests : BaseTest
     {
-        private IDbRepository db;
+        private IPersonManager impl;
 
         public PersonTests() : base()
         {
@@ -21,8 +21,8 @@ namespace Its.Systems.HR.Test
         [TestMethod]
         public void TestMethod1()
         {
-            db = Container().Resolve<IDbRepository>();
-            var p = db.Get<HrPerson>().ToList();
+            impl = Container().Resolve<IPersonManager>();
+            var p = impl.GetAllHrPersons().ToList();
             var x = "";
         }
 

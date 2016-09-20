@@ -26,7 +26,7 @@ namespace Its.Systems.HR.Test
             db = Container().Resolve<IDbRepository>();
             var p = db.Get<HrPerson>().SingleOrDefault(n => n.Id == 1);
 
-            p.AddActivity("DataHack");
+            //p.AddActivity("DataHack");
             
 
             Assert.AreEqual(1, db.Get<Activity>().SingleOrDefault(n => n.Name == "DataHack").Id);

@@ -51,8 +51,7 @@ namespace Its.Systems.HR.Test
 
         private static void ConfigureApplication(IUnityContainer container)
         {
-            _ambientContainer.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
-            _ambientContainer.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
+            
             //_ambientContainer.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
 
             if (Convert.ToBoolean(ConfigurationManager.AppSettings.Get("UseEffort")) == true)
@@ -67,6 +66,8 @@ namespace Its.Systems.HR.Test
                 _ambientContainer.RegisterType<HRContext, HRContext>(new PerResolveLifetimeManager(),
                     new InjectionConstructor());
             }
+            _ambientContainer.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
+            _ambientContainer.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
         }
     }
 }
