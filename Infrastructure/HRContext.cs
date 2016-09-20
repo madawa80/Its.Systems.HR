@@ -32,26 +32,114 @@ namespace Its.Systems.HR.Infrastructure
         public DbSet<SessionParticipant> SessionParticipants { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<HrPerson> HrPersons { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 
     public class HRContextSeeder : DropCreateDatabaseAlways<HRContext>
     {
+        private Random _random = new Random();
+        private DateTime _lastDateGenerated;
+        
+
         protected override void Seed(HRContext context)
         {
-            //Tags
-            var tags = new List<HrPerson>
+            // Activity
+            var activities = new List<Activity>
             {
-                new HrPerson() {Name = "Samme"},
-                new HrPerson() {Name = "Madawa"},
-                new HrPerson() {Name = "xxxxx"},
+                new Activity() {Name = "AirHack"},
+                new Activity() {Name = "JavaOne"},
+                new Activity() {Name = "JFokus"},
+                new Activity() {Name = "Bokcirkel"},
+                new Activity() {Name = "Lunchföreläsning"},
+            };
+
+            foreach (var activity in activities)
+                context.Activities.Add(activity);
+
+            // Location
+            var locations = new List<Location>
+            {
+                new Location() {Name = "Umeå", Address = "Kungsgatan 123"},
+                new Location() {Name = "Stockholm", Address = "Kungens kurva 123"},
+                new Location() {Name = "San Fransisco", Address = "Silicon Valley 123"},
+                new Location() {Name = "Berlin", Address = "Alexanderplatz 123"},
+                new Location() {Name = "London", Address = "Kings Cross 123"},
+            };
+
+            foreach (var location in locations)
+                context.Locations.Add(location);
+
+            // Tags for Sessions
+            var tags = new List<Tag>()
+            {
+                new Tag() {Name = "distans"},
+                new Tag() {Name = "lunch"},
+                new Tag() {Name = "c#"},
+                new Tag() {Name = "java"},
+                new Tag() {Name = "databaser"},
+            };
+
+            // Sessions
+            var sessions = new List<Session>()
+            {
+                new Session()
+                {
+                    Name = "2015",
+                    StartDate = GenerateRandomStartDate(),
+                    EndDate = GenerateRandomEndDate(),
+                    HrPersonId = 1,
+                    Location = locations.SingleOrDefault(n => n.Name == "Stockholm"),
+                    Activity = activities.SingleOrDefault(n => n.Name == "JavaOne"),
+                },
+                new Session()
+                {
+                    Name = "2016",
+                    StartDate = GenerateRandomStartDate(),
+                    EndDate = GenerateRandomEndDate(),
+                    HrPersonId = 1,
+                    Location = locations.SingleOrDefault(n => n.Name == "Umeå"),
+                    Activity = activities.SingleOrDefault(n => n.Name == "JavaOne"),
+                },
             };
 
             foreach (var tag in tags)
-                context.HrPersons.Add(tag);
+                context.Tags.Add(tag);
+
+            // SessionParticipants
+            var sessionParticipants = new List<SessionParticipant>
+            {
+                new SessionParticipant()
+                {
+                    ParticipantId = 1,
+                    Session = sessions.SingleOrDefault(n => n.Name=="JavaOne"),
+                    Rating = 5,
+                }
+            };
+
+            foreach (var sessionParticipant in sessionParticipants)
+                context.SessionParticipants.Add(sessionParticipant);
+
+
+
 
             context.SaveChanges();
 
             base.Seed(context);
+        }
+
+
+        private DateTime GenerateRandomStartDate()
+        {
+            var randomDate = DateTime.Now.AddMonths(_random.Next(1, 12)).AddDays(_random.Next(1,365));
+            _lastDateGenerated = randomDate;
+
+            return randomDate;
+        }
+        private DateTime GenerateRandomEndDate()
+        {
+            var randomEndDate = _lastDateGenerated.AddDays(_random.Next(1, 10));
+
+            return randomEndDate;
         }
     }
 }
