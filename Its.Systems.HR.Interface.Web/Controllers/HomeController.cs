@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Its.Systems.HR.Infrastructure;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private HRContext db = new HRContext();
+
         public ActionResult Index()
         {
-            return View();
+            var result = db.HrPersons.ToList();
+
+            return View(result);
         }
 
         public ActionResult About()
