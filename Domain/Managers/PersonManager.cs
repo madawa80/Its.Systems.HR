@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,35 +28,6 @@ namespace Its.Systems.HR.Domain.Managers
         public IQueryable<HrPerson> GetAllHrPersons()
         {
             return db.Get<HrPerson>();
-        }
-    }
-
-    public class ActivitiesManager : IActivityManager
-    {
-        public IDbRepository db;
-        public ActivitiesManager(IDbRepository repo)
-        {
-            db = repo;
-        }
-
-        public IQueryable<Activity> GetAllActivities()
-        {
-            return db.Get<Activity>();
-        }
-
-        public IQueryable<Activity> GetAllActivitiesWithSessions()
-        {
-            return db.Get<Activity>();
-        }
-
-        public IQueryable<Session> GetAllSessionsForActivity(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Participant> GetAllParticipantsForSession(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
