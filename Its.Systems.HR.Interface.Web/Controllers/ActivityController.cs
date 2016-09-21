@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
+using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Infrastructure;
-using Its.Systems.HR.Interface.Web.Models;
+using Its.Systems.HR.Infrastructure.Repository;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
@@ -15,6 +17,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
 
         private IActivityManager _manager ;
+        private IDbRepository _repo;
 
         public ActivityController(IActivityManager manager)
         {
@@ -56,18 +59,73 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-             Activity  = _manager.GetAllActivities();
-            if (student == null)
+             var activity  = _manager.GetAllActivities().Where(s=>s.Id==id);
+            if (activity == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(activity);
         }
 
-        // GET: Activity
-        public ActionResult Index()
+        // GET: Create activity
+        public ActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateActivity([Bind(Include = "Name")]ViewModels.CreateActivityViewModel activity)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                   var result = new Activity()
+                   {
+                       Name = activity.Name,
+                   };
+                    _manager.SaveActivities(result);
+                    
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (RetryLimitExceededException /* dex */)
+            {
+               
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+            return View(activity);
+        }
+
+        //Edit an activity
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditActivity(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var activityToUpdate = _manager.GetAllActivities().Where(s => s.Id == id);
+            if (TryUpdateModel(activityToUpdate, "",
+               new string[] { "Name" }))
+            {
+                try
+                {
+                  
+                    _repo.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+                catch (RetryLimitExceededException /* dex */)
+                {
+             
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                }
+            }
+            return View(activityToUpdate);
         }
     }
 }

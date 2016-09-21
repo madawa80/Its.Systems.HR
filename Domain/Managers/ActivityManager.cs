@@ -5,10 +5,10 @@ using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Domain.Managers
 {
-    public class ActivitiesManager : IActivityManager
+    public class ActivityManager : IActivityManager
     {
         public IDbRepository db;
-        public ActivitiesManager(IDbRepository repo)
+        public ActivityManager(IDbRepository repo)
         {
             db = repo;
         }
@@ -32,5 +32,14 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
         }
+
+
+        public void SaveActivities(Activity activity)
+        {
+            db.Add(activity);
+            db.SaveChanges();
+
+        }
+        
     }
 }

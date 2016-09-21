@@ -52,7 +52,7 @@
     <Compile Include="Interfaces\IActivityManager.cs" />
     <Compile Include="Interfaces\IDbRepository.cs" />
     <Compile Include="Interfaces\IPersonManager.cs" />
-    <Compile Include="Managers\ActivitiesManager.cs" />
+    <Compile Include="Managers\ActivityManager.cs" />
     <Compile Include="Managers\PersonManager.cs" />
     <Compile Include="Model\Activity.cs" />
     <Compile Include="Model\Tag.cs" />
