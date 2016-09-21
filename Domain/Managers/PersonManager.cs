@@ -29,5 +29,17 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return db.Get<HrPerson>();
         }
+
+        public bool AddHrPerson(HrPerson hrPerson)
+        {
+            var allHrPersons = db.Get<HrPerson>().ToList();
+
+            if (allHrPersons.Any(n => n.GetHrFullName() == hrPerson.GetHrFullName()))
+                return false;
+
+            db.Add<HrPerson>(hrPerson);
+
+            return true;
+        }
     }
 }

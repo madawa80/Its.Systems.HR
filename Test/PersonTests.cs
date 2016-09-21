@@ -13,20 +13,60 @@ namespace Its.Systems.HR.Test
         private IPersonManager impl;
 
         public PersonTests() : base()
-        {
-            
-        }
-
+        { }
 
         [TestMethod]
-        public void TestMethod1()
+        public void GetAllParticipants_ShouldReturnCountOf6()
         {
             impl = Container().Resolve<IPersonManager>();
-            // Add person
-            var p = impl.GetAllHrPersons().ToList();
-            //Assert.AreEqual();
-            var x = "";
+
+            var p = impl.GetAllParticipants().ToList();
+
+            Assert.AreEqual(6, p.Count);
         }
+
+        [TestMethod]
+        public void GetAllHrPersons_ShouldReturnCountOf5()
+        {
+            impl = Container().Resolve<IPersonManager>();
+
+            var p = impl.GetAllHrPersons().ToList();
+
+            Assert.AreEqual(5, p.Count);
+        }
+
+        [TestMethod]
+        public void AddHrPersonWithUniqueFullName_ShouldReturnTrue()
+        {
+            var newHrPerson = new HrPerson()
+            {
+                FirstName = "UniqueFirstName123",
+                LastName = "UniqueLastName123",
+            };
+
+            impl = Container().Resolve<IPersonManager>();
+
+            var result = impl.AddHrPerson(newHrPerson);
+
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public void AddHrPersonWithFullNameAlreadyExisting_ShouldReturnFalse()
+        {
+            var newHrPerson = new HrPerson()
+            {
+                FirstName = "Samme",
+                LastName = "Petersson",
+            };
+
+            impl = Container().Resolve<IPersonManager>();
+
+            var result = impl.AddHrPerson(newHrPerson);
+
+            Assert.AreEqual(false, result);
+        }
+
 
     }
 }
