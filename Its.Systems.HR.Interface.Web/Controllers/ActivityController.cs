@@ -87,7 +87,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateActivity([Bind(Include = "Name")]ViewModels.CreateActivityViewModel activity)
+        public ActionResult Create([Bind(Include = "Name")]ViewModels.CreateActivityViewModel activity)
         {
             try
             {
@@ -112,9 +112,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         //Edit an activity
 
-        [HttpPost, ActionName("Edit")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditActivity(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
