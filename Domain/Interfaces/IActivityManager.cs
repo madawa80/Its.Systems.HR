@@ -27,5 +27,9 @@ namespace Its.Systems.HR.Domain.Interfaces
         Activity EditActivity(Activity activityToEdit);
 
         bool DeleteActivity(int id);
+
+        void AddSession(Session session);
+
+        Session GetSessionById(int id);
     }
 }

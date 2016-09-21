@@ -1,32 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Its.Systems.HR.Domain.Model;
 
-namespace Its.Systems.HR.Domain.Model
+namespace Its.Systems.HR.Interface.Web.ViewModels
 {
-    [Table("Session")]
-    public class Session
+    public class CreateSessionViewModel
     {
-        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        // nav props
-        public int LocationId { get; set; }
         public virtual Location Location { get; set; }
         [Required]
-        public int HrPersonId { get; set; }
         public virtual HrPerson HrPerson { get; set; }
         [Required]
-        public int ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
 
 
         public virtual List<SessionParticipant> SessionParticipants { get; set; }
-
-        //public List<Tag> Tags { get; set; }
     }
 }

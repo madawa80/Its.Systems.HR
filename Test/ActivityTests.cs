@@ -152,7 +152,29 @@ namespace Its.Systems.HR.Test
 
             Assert.AreEqual(3, result);
         }
-        
+
+        // ADD SESSIONS
+        [TestMethod]
+        public void AddANewSessionToJavaOne_ShouldBeAddedToDb()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var result = new Session()
+            {
+                Name = "JavaOne 2017",
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(4),
+                HrPersonId = 1,
+                LocationId = 5,
+                ActivityId = 2,
+                SessionParticipants = null
+            };
+
+            impl.AddSession(result);
+
+            Assert.AreEqual("JavaOne 2017", impl.GetSessionById(result.Id).Name);
+        }
+
         //[TestMethod]
         //public void AdminCanAddActivity()
         //{
@@ -160,7 +182,7 @@ namespace Its.Systems.HR.Test
         //    var p = db.Get<HrPerson>().SingleOrDefault(n => n.Id == 1);
 
         //    //p.AddActivity("DataHack");
-            
+
 
         //    Assert.AreEqual(1, db.Get<Activity>().SingleOrDefault(n => n.Name == "DataHack").Id);
         //}
