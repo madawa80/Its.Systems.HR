@@ -32,5 +32,13 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
         }
+
+
+        public void SaveActivities(Activity activity)
+        {
+            db.Add(activity);
+            db.SaveChanges();
+
+        }
     }
 }
