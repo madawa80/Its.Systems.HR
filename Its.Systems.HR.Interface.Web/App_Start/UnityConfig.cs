@@ -1,4 +1,8 @@
 using System;
+using Its.Systems.HR.Domain.Interfaces;
+using Its.Systems.HR.Domain.Managers;
+using Its.Systems.HR.Infrastructure;
+using Its.Systems.HR.Infrastructure.Repository;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 
@@ -36,7 +40,9 @@ namespace Its.Systems.HR.Interface.Web.App_Start
             // container.LoadConfiguration();
 
             // TODO: Register your types here
-            // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<HRContext, HRContext>(new PerResolveLifetimeManager(), new InjectionConstructor());
+            container.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
+            container.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
         }
     }
 }
