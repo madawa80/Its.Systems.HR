@@ -1,0 +1,30 @@
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.CreateActivityViewModel
+
+@{
+    ViewBag.Title = "Radera";
+}
+
+<h2>Radera</h2>
+<p class="error">@ViewBag.ErrorMessage</p>
+<h3>Vill du radera den här aktivitet?</h3>
+<div>
+    <h4>Aktivitet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Radera" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
+

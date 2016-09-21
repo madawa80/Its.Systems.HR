@@ -9,6 +9,7 @@ using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Infrastructure;
 using Its.Systems.HR.Infrastructure.Repository;
+using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
@@ -24,7 +25,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _manager = manager;
         }
 
-        // GET: Activity information from database
+        // find Activity 
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -46,13 +47,24 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 activities = _manager.GetAllActivities().Where(s => s.Name.Contains(searchString));
             }
+
+            var result = new List<ListActivitiesViewModel>();
+
+            foreach (var activity in activities)
+            {
+                result.Add(new ListActivitiesViewModel()
+                {
+                    Id = activity.Id,
+                    Name = activity.Name,
+                });
+            }
            
             //int pageSize = 3;
             //int pageNumber = (page ?? 1);
-            return View(activities.ToList());
+            return View(result);
         }
 
-        // GET: Student/Details/5
+        // detail activity
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -127,6 +139,29 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             return View(activityToUpdate);
         }
+
+
+        //Delete an activity
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                var activity = _manager.GetAllActivities().Where(s => s.Id == id);
+                _repo.Delete(activity);
+            }
+            catch (RetryLimitExceededException/* dex */)
+            {
+               
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+            }
+            return RedirectToAction("Index");
+        }
+
+       
+
     }
 }
 
