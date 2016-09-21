@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Infrastructure;
 using Its.Systems.HR.Interface.Web.Models;
 
@@ -13,7 +14,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
 
 
-        private HRContext db = new HRContext();
+        private IActivityManager _manager ;
+
+        public ActivityController(IActivityManager manager)
+        {
+            _manager = manager;
+        }
 
         // GET: Activity information from database
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -31,11 +37,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var activities = from s in db.Activities
-                           select s;
+            var activities = _manager.GetAllActivities();
+               
             if (!String.IsNullOrEmpty(searchString))
             {
-                activities = db.Activities.Where(s => s.Name.Contains(searchString));
+                activities = _manager.GetAllActivities().Where(s => s.Name.Contains(searchString));
             }
            
             //int pageSize = 3;
@@ -50,7 +56,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-             student = db.Students.Find(id);
+             Activity  = _manager.GetAllActivities();
             if (student == null)
             {
                 return HttpNotFound();
