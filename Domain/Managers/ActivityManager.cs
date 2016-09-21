@@ -48,9 +48,16 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<Activity>().SingleOrDefault(n => n.Id == id);
         }
 
-        public Activity AddActivity(Activity activityToAdd)
+        public bool AddActivity(Activity activityToAdd)
         {
-            return db.Add(activityToAdd);
+            var allActivities = db.Get<Activity>().ToList();
+
+            if (allActivities.Any(n => n.Name == activityToAdd.Name))
+                return false;
+
+            db.Add<Activity>(activityToAdd);
+
+            return true;
         }
 
         public Activity EditActivity(Activity activityToEdit)

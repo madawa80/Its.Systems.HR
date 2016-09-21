@@ -20,13 +20,23 @@ namespace Its.Systems.HR.Test
 
 
         [TestMethod]
-        public void GetActivityJavaOne_ShouldReturnThatActivity()
+        public void GetActivityById2_ShouldReturnJavaOne()
         {
             impl = Container().Resolve<IActivityManager>();
 
             var result = impl.GetActivityById(2);
 
             Assert.AreEqual("JavaOne", result.Name);
+        }
+
+        [TestMethod]
+        public void GetActivityById999_ShouldReturnNull()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var result = impl.GetActivityById(999);
+
+            Assert.AreEqual(null, result);
         }
 
         [TestMethod]
@@ -45,6 +55,21 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
+        public void AddNewActivityThatAlreadyExists_ShouldReturnFalse()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var newActivity = new Activity()
+            {
+                Name = "JavaOne",
+            };
+
+            var result = impl.AddActivity(newActivity);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [TestMethod]
         public void EditJavaOneNameToEditedName_ShouldGetJavaOneNameInDbUpdated()
         {
             impl = Container().Resolve<IActivityManager>();
@@ -57,6 +82,22 @@ namespace Its.Systems.HR.Test
 
             Assert.AreEqual("EDITEDNAME", impl.GetActivityById(2).Name);
         }
+
+
+        //TODO: FINISH SAD PATH FOR EDIT
+        //[TestMethod]
+        //public void EditJavaOneToCurruptData_ShouldNotUpdateInDb()
+        //{
+        //    impl = Container().Resolve<IActivityManager>();
+
+        //    var activityFromDb = impl.GetActivityById(2);
+
+        //    activityFromDb.Name = -1;
+
+        //    var result = impl.EditActivity(activityFromDb);
+
+        //    Assert.AreEqual("JavaOne", impl.GetActivityById(2).Name);
+        //}
 
         [TestMethod]
         public void DeleteJavaOne_ShouldReturnAllActivitiesCountOf4()

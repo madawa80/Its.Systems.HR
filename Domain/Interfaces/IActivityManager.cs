@@ -15,9 +15,14 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         void SaveActivities(Activity activity);
 
+        /// <summary>
+        /// Gets an activity by Id
+        /// </summary>
+        /// <param name="id">Id for event</param>
+        /// <returns>Activity if found, else null!</returns>
         Activity GetActivityById(int id);
 
-        Activity AddActivity(Activity activityToAdd);
+        bool AddActivity(Activity activityToAdd);
 
         Activity EditActivity(Activity activityToEdit);
 
