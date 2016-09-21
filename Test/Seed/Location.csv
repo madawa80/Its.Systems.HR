@@ -1,6 +1,6 @@
-﻿Id,Name
-1,"AirHack"
-2,"JavaOne""
-3,"JFokus"
-4,"Bokcirkel"
-5,"Lunchföreläsning"
+﻿Id,Name,Address
+1,"Umeå","Kungsgatan 123"
+2,"Stockholm","Kungens kurva 123"
+3,"San Fransisco","Silicon Valley 123"
+4,"Berlin","Alexanderplatz 123"
+5,"London","Kings Cross 123"

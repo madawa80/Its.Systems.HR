@@ -12,5 +12,8 @@ namespace Its.Systems.HR.Domain.Interfaces
         IQueryable<Participant> GetAllParticipants();
 
         IQueryable<HrPerson> GetAllHrPersons();
+
+        bool AddHrPerson(HrPerson hrPerson);
+
     }
 }

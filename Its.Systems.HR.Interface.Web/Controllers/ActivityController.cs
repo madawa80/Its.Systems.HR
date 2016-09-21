@@ -56,12 +56,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-             Activity  = _manager.GetAllActivities();
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-            return View(student);
+            //Activity  = _manager.GetAllActivities();
+            //if (student == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            return View();
         }
 
         // GET: Activity
