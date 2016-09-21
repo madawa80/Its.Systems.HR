@@ -88,5 +88,15 @@ namespace Its.Systems.HR.Domain.Managers
 
             return true;
         }
+
+        public void AddSession(Session session)
+        {
+            db.Add<Session>(session);
+        }
+
+        public Session GetSessionById(int id)
+        {
+            return db.Get<Session>().SingleOrDefault(n => n.Id == id);
+        }
     }
 }
