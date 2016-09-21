@@ -91,6 +91,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         {
                             Name = activity.Name,
                         };
+
                         _manager.SaveActivities(result);
                         
                         return RedirectToAction("Index");
