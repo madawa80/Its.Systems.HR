@@ -189,8 +189,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\CreateActivityViewModel.cs" />
-    <Compile Include="ViewModels\CreateSessionViewModel.cs" />
+    <Compile Include="ViewModels\ActivityViewModel.cs" />
     <Compile Include="ViewModels\ListActivitiesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -233,7 +232,6 @@
     <Content Include="Views\Activity\Create.cshtml" />
     <Content Include="Views\Activity\Delete.cshtml" />
     <Content Include="Views\Activity\Edit.cshtml" />
-    <Content Include="Views\Activity\Details.cshtml" />
     <Content Include="Views\Activity\Index.cshtml" />
     <Content Include="Views\Activity\CreateSession.cshtml" />
   </ItemGroup>

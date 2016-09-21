@@ -1,11 +1,11 @@
-﻿@model Its.Systems.HR.Interface.Web.ViewModels.CreateActivityViewModel
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.ActivityViewModel
 
 @{
     ViewBag.Title = "Skapa Aktivitet";
 }
 
 <h2>Skapa </h2>
-
+<h3>@ViewBag.Message</h3>
 
 @using (Html.BeginForm("Create", "Activity", FormMethod.Post))
 {
@@ -23,10 +23,11 @@
             </div>
         </div>
 
-        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Skapa" class="btn btn-default" />
+                
+
             </div>
         </div>
     </div>
