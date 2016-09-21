@@ -5,10 +5,10 @@ using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Domain.Managers
 {
-    public class ActivitiesManager : IActivityManager
+    public class ActivityManager : IActivityManager
     {
         public IDbRepository db;
-        public ActivitiesManager(IDbRepository repo)
+        public ActivityManager(IDbRepository repo)
         {
             db = repo;
         }

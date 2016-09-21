@@ -10,15 +10,23 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Its.Systems.HR.Test
 {
+    [TestClass]
     public class ActivityTests : BaseTest
     {
-        private IDbRepository db;
+        private IActivityManager impl;
 
         public ActivityTests() : base()
+        { }
+
+        [TestMethod]
+        public void ListSessionsForJavaOne_ShouldReturnCountOf2()
         {
+            impl = Container().Resolve<IActivityManager>();
 
+            var result = impl.GetAllSessionsForActivity(2).Count();
+
+            Assert.AreEqual(2, result);
         }
-
 
         [TestMethod]
         public void AdminCanAddActivity()
