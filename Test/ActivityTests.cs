@@ -18,6 +18,111 @@ namespace Its.Systems.HR.Test
         public ActivityTests() : base()
         { }
 
+
+        [TestMethod]
+        public void GetActivityById2_ShouldReturnJavaOne()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var result = impl.GetActivityById(2);
+
+            Assert.AreEqual("JavaOne", result.Name);
+        }
+
+        [TestMethod]
+        public void GetActivityById999_ShouldReturnNull()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var result = impl.GetActivityById(999);
+
+            Assert.AreEqual(null, result);
+        }
+
+        [TestMethod]
+        public void AddNewActivity_ShouldMakeAllActivitesCountTo6()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var newActivity = new Activity()
+            {
+                Name = "NewActivity",
+            };
+
+            var result = impl.AddActivity(newActivity);
+
+            Assert.AreEqual(6, impl.GetAllActivities().Count());
+        }
+
+        [TestMethod]
+        public void AddNewActivityThatAlreadyExists_ShouldReturnFalse()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var newActivity = new Activity()
+            {
+                Name = "JavaOne",
+            };
+
+            var result = impl.AddActivity(newActivity);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [TestMethod]
+        public void EditJavaOneNameToEditedName_ShouldGetJavaOneNameInDbUpdated()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var activityFromDb = impl.GetActivityById(2);
+
+            activityFromDb.Name = "EDITEDNAME";
+
+            var result = impl.EditActivity(activityFromDb);
+
+            Assert.AreEqual("EDITEDNAME", impl.GetActivityById(2).Name);
+        }
+
+
+        //TODO: FINISH SAD PATH FOR EDIT
+        //[TestMethod]
+        //public void EditJavaOneToCurruptData_ShouldNotUpdateInDb()
+        //{
+        //    impl = Container().Resolve<IActivityManager>();
+
+        //    var activityFromDb = impl.GetActivityById(2);
+
+        //    activityFromDb.Name = -1;
+
+        //    var result = impl.EditActivity(activityFromDb);
+
+        //    Assert.AreEqual("JavaOne", impl.GetActivityById(2).Name);
+        //}
+
+        [TestMethod]
+        public void DeleteJavaOne_ShouldReturnAllActivitiesCountOf4()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var result = impl.DeleteActivity(2);
+
+            Assert.AreEqual(4, impl.GetAllActivities().Count());
+        }
+
+        [TestMethod]
+        public void DeleteJavaOneTwice_ShouldReturnFalseAndAllActivitesCountOf4()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            impl.DeleteActivity(2);
+            var result = impl.DeleteActivity(2);
+
+            Assert.AreEqual(false, result);
+            Assert.AreEqual(4, impl.GetAllActivities().Count());
+        }
+
+
+
         [TestMethod]
         public void ListAllActivities_ShouldReturnCountOf5()
         {
