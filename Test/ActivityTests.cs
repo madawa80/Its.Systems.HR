@@ -19,6 +19,16 @@ namespace Its.Systems.HR.Test
         { }
 
         [TestMethod]
+        public void ListAllActivities_ShouldReturnCountOf5()
+        {
+            impl = Container().Resolve<IActivityManager>();
+
+            var result = impl.GetAllActivities().Count();
+
+            Assert.AreEqual(5, result);
+        }
+
+        [TestMethod]
         public void ListSessionsForJavaOne_ShouldReturnCountOf2()
         {
             impl = Container().Resolve<IActivityManager>();
@@ -29,15 +39,25 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
-        public void AdminCanAddActivity()
+        public void GetAllParticipantsForSessionJavaOne2015_ShouldReturnCountOf3()
         {
-            db = Container().Resolve<IDbRepository>();
-            var p = db.Get<HrPerson>().SingleOrDefault(n => n.Id == 1);
+            impl = Container().Resolve<IActivityManager>();
 
-            //p.AddActivity("DataHack");
+            var result = impl.GetAllParticipantsForSession(1).Count();
+
+            Assert.AreEqual(3, result);
+        }
+        
+        //[TestMethod]
+        //public void AdminCanAddActivity()
+        //{
+        //    db = Container().Resolve<IDbRepository>();
+        //    var p = db.Get<HrPerson>().SingleOrDefault(n => n.Id == 1);
+
+        //    //p.AddActivity("DataHack");
             
 
-            Assert.AreEqual(1, db.Get<Activity>().SingleOrDefault(n => n.Name == "DataHack").Id);
-        }
+        //    Assert.AreEqual(1, db.Get<Activity>().SingleOrDefault(n => n.Name == "DataHack").Id);
+        //}
     }
 }
