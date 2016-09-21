@@ -43,6 +43,7 @@ namespace Its.Systems.HR.Interface.Web.App_Start
             container.RegisterType<HRContext, HRContext>(new PerResolveLifetimeManager(), new InjectionConstructor());
             container.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
             container.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
+            container.RegisterType<IActivityManager, ActivitiesManager>(new PerResolveLifetimeManager());
         }
     }
 }
