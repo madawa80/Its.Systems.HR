@@ -19,6 +19,12 @@ namespace Its.Systems.HR.Domain.Model
         public string LastName { get; set; }
         //TODO: More properties
 
+
+        public string FullName
+        {
+            get { return FirstName + " " + LastName; }
+        }
+
         public string GetHrFullName()
         {
             return FirstName + " " + LastName;

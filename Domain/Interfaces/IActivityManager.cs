@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Domain.Interfaces
@@ -31,5 +32,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         void AddSession(Session session);
 
         Session GetSessionById(int id);
+
+        IQueryable<Location> GetAllLocations();
     }
 }

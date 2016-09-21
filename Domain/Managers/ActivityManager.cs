@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Its.Systems.HR.Domain.Interfaces;
@@ -98,5 +99,11 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return db.Get<Session>().SingleOrDefault(n => n.Id == id);
         }
+
+        public IQueryable<Location> GetAllLocations()
+        {
+            return db.Get<Location>();
+        }
+
     }
 }
