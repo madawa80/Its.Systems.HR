@@ -59,25 +59,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 });
             }
            
-            //int pageSize = 3;
-            //int pageNumber = (page ?? 1);
+          
             return View(result);
         }
 
-        // detail activity
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-             var activity  = _manager.GetAllActivities().Where(s=>s.Id==id);
-            if (activity == null)
-            {
-                return HttpNotFound();
-            }
-            return View(activity);
-        }
+  
 
         // GET: Create activity
         public ActionResult Create()
@@ -87,40 +73,71 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")]ViewModels.CreateActivityViewModel activity)
+        public ActionResult Create([Bind(Include = "Name")]ViewModels.ActivityViewModel activity)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                   var result = new Activity()
-                   {
-                       Name = activity.Name,
-                   };
-                    _manager.SaveActivities(result);
+                    foreach (var sameactivity in _manager.GetAllActivities())
+                    {
+                        
+                    }
+                    var activities = _manager.GetAllActivities().Where(s => s.Name.Contains(activity.Name)).Count();
+
+                    if (activities != _manager.GetAllActivities().Where(s => s.Name.Contains(activity.Name)))
+                    {
+                        var result = new Activity()
+                        {
+                            Name = activity.Name,
+                        };
+                        _manager.SaveActivities(result);
+                        
+                        return RedirectToAction("Index");
+                    }
+                    else 
+                    {
+                        ViewBag.Massage = "Denna aktivitet redan har skapats";
+                        return RedirectToAction("Index");
+                    }
+
                     
-                    return RedirectToAction("Index");
                 }
             }
             catch (RetryLimitExceededException /* dex */)
             {
                
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
             }
             return View(activity);
         }
 
         //Edit an activity
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var activityToUpdate = _manager.GetAllActivities().Where(s => s.Id == id);
+            var activity = _manager.GetActivityById(id.Value);
+            if (activity == null)
+            {
+                return HttpNotFound();
+            }
+            return View(activity);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var activityToUpdate = _manager.GetActivityById(id.Value);
             if (TryUpdateModel(activityToUpdate, "",
                new string[] { "Name" }))
             {
@@ -134,7 +151,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 catch (RetryLimitExceededException /* dex */)
                 {
              
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                    ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
                 }
             }
             return View(activityToUpdate);
@@ -142,14 +159,30 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
 
         //Delete an activity
-
+        public ActionResult Delete(int? id, bool? saveChangesError = false)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewBag.ErrorMessage = "Radera misslyckades. Försök igen, och om problemet kvarstår se systemadministratören .";
+            }
+            var activity = _manager.GetActivityById(id.Value);
+            if (activity == null)
+            {
+                return HttpNotFound();
+            }
+            return View(activity);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             try
             {
-                var activity = _manager.GetAllActivities().Where(s => s.Id == id);
+                var activity = _manager.GetActivityById(id);
                 _repo.Delete(activity);
             }
             catch (RetryLimitExceededException/* dex */)

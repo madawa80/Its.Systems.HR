@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
 {
-    public class CreateActivityViewModel
+    public class ActivityViewModel
     {
 
         public int Id { get; set; }
