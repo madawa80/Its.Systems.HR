@@ -87,7 +87,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     }
                     var activities = _manager.GetAllActivities().Where(s => s.Name.Contains(activity.Name)).Count();
 
-                    if (activities != _manager.GetAllActivities().Where(s => s.Name.Contains(activity.Name)))
+                    if (!_manager.GetAllActivities().Any(n => n.Name == activity.Name))
                     {
                         var result = new Activity()
                         {
