@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
@@ -11,17 +12,27 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
     public class CreateSessionViewModel
     {
         public int Id { get; set; }
+        [Display(Name = "Namn på kurstillfälle")]
         public string Name { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 
-        public virtual Location Location { get; set; }
+        public Location Location { get; set; }
         [Required]
-        public virtual HrPerson HrPerson { get; set; }
+        public HrPerson HrPerson { get; set; }
         [Required]
-        public virtual Activity Activity { get; set; }
+        public Activity Activity { get; set; }
 
 
-        public virtual List<SessionParticipant> SessionParticipants { get; set; }
+        public List<SessionParticipant> SessionParticipants { get; set; }
+
+        //public SelectList LocationList { get; set; }
     }
 }

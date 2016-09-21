@@ -18,11 +18,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
 
         private IActivityManager _manager ;
+        private IPersonManager _personManager;
         private IDbRepository _repo;
 
-        public ActivityController(IActivityManager manager)
+        public ActivityController(IActivityManager manager, IPersonManager personManager)
         {
             _manager = manager;
+            _personManager = personManager;
         }
 
         // find Activity 
@@ -85,7 +87,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     }
                     var activities = _manager.GetAllActivities().Where(s => s.Name.Contains(activity.Name)).Count();
 
-                    if (activities != _manager.GetAllActivities().Where(s => s.Name.Contains(activity.Name)))
+                    if (!_manager.GetAllActivities().Any(n => n.Name == activity.Name))
                     {
                         var result = new Activity()
                         {
@@ -194,8 +196,46 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return RedirectToAction("Index");
         }
 
-       
+        public ActionResult CreateSession()
+        {
+            //var viewModel = new CreateSessionViewModel()
+            //{
+            //    LocationList = new SelectList(_manager.GetAllLocations(), "Id", "Name", 1)
+            //};
+            ViewBag.LocationId = new SelectList(_manager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
+            ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", 1);
+            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", 1);
+            return View();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateSession(CreateSessionViewModel sessionVm)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = new Session()
+                    {
+                        Name = sessionVm.Name,
+                        ActivityId = sessionVm.Activity.Id,
+                        StartDate = sessionVm.StartDate,
+                        EndDate = sessionVm.EndDate,
+                        LocationId = sessionVm.Location.Id,
+                        HrPersonId = sessionVm.HrPerson.Id,
+                    };
+                    _manager.AddSession(result);
+
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (RetryLimitExceededException /* dex */)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+            return View(sessionVm);
+        }
     }
 }
 
