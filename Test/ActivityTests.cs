@@ -104,7 +104,7 @@ namespace Its.Systems.HR.Test
         {
             impl = Container().Resolve<IActivityManager>();
 
-            var result = impl.DeleteActivity(2);
+            var result = impl.DeleteActivityById(2);
 
             Assert.AreEqual(4, impl.GetAllActivities().Count());
         }
@@ -114,8 +114,8 @@ namespace Its.Systems.HR.Test
         {
             impl = Container().Resolve<IActivityManager>();
 
-            impl.DeleteActivity(2);
-            var result = impl.DeleteActivity(2);
+            impl.DeleteActivityById(2);
+            var result = impl.DeleteActivityById(2);
 
             Assert.AreEqual(false, result);
             Assert.AreEqual(4, impl.GetAllActivities().Count());

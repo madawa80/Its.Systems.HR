@@ -28,9 +28,9 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// </summary>
         /// <param name="activityToEdit"></param>
         /// <returns></returns>
-        Activity EditActivity(Activity activityToEdit);
+        bool EditActivity(Activity activityToEdit);
 
-        bool DeleteActivity(int id);
+        bool DeleteActivityById(int id);
 
         void AddSession(Session session);
 

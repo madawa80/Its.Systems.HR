@@ -17,7 +17,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
 
 
-        private IActivityManager _manager ;
+        private IActivityManager _manager;
         private IPersonManager _personManager;
         //private readonly IDbRepository _repository;
         //private IDbRepository _repo;
@@ -33,7 +33,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
-            
+
             if (searchString != null)
             {
                 page = 1;
@@ -46,7 +46,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             ViewBag.CurrentFilter = searchString;
 
             var activities = _manager.GetAllActivities();
-               
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 activities = _manager.GetAllActivities().Where(s => s.Name.Contains(searchString));
@@ -62,12 +62,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     Name = activity.Name,
                 });
             }
-           
-          
+
+
             return View(result);
         }
 
-  
+
 
         // GET: Create activity
         public ActionResult Create()
@@ -83,7 +83,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                 
+
                     if (!_manager.GetAllActivities().Any(n => n.Name == activity.Name))
                     {
                         var result = new Activity()
@@ -92,21 +92,21 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         };
 
                         _manager.AddActivity(result);
-                        
+
                         return RedirectToAction("Index");
                     }
-                    else 
+                    else
                     {
                         ModelState.AddModelError("", "aktivitet existerar redan ");
                         return View();
                     }
 
-                    
+
                 }
             }
             catch (RetryLimitExceededException /* dex */)
             {
-               
+
                 ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
             }
             return View(activity);
@@ -129,42 +129,45 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             return View(result);
 
-            
+
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
+        public ActionResult EditPost(ActivityViewModel activityFromInput)
         {
-            if (id == null)
+            if (activityFromInput == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var activityToUpdate = _manager.GetActivityById(id.Value);
-            if (TryUpdateModel(activityToUpdate, "",
-               new string[] { "Name" }))
+            var activityToUpdate = _manager.GetActivityById(activityFromInput.Id);
+
+            try
             {
-                try
+                if (!_manager.GetAllActivities().Any(n => n.Name == activityFromInput.Name))
                 {
-
-                    // _repository.SaveChanges();
-
+                    activityToUpdate.Name = activityFromInput.Name;
                     _manager.EditActivity(activityToUpdate);
 
                     return RedirectToAction("Index");
                 }
-                catch (RetryLimitExceededException /* dex */)
-                {
-             
-                    ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
-                }
-            }
-            return View(activityToUpdate);
-        }
-        
 
-        
+                ModelState.AddModelError("Name", "Aktiviteten existerar redan.");
+            }
+            catch (RetryLimitExceededException /* dex */)
+            {
+                ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
+            }
+
+            return View("Edit", new ActivityViewModel()
+            {
+                Name = activityToUpdate.Name
+            });
+        }
+
+
+
         public ActionResult Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
@@ -191,11 +194,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             try
             {
                 var activity = _manager.GetActivityById(id);
-                _manager.DeleteActivity(id);
+                _manager.DeleteActivityById(id);
             }
             catch (RetryLimitExceededException/* dex */)
             {
-               
+
                 return RedirectToAction("Delete", new { id = id, saveChangesError = true });
             }
             return RedirectToAction("Index");
@@ -237,7 +240,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             catch (RetryLimitExceededException /* dex */)
             {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", "Aktiviteten existerar redan.");
             }
             return View(sessionVm);
         }

@@ -56,16 +56,21 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public Activity EditActivity(Activity activityToEdit)
+        public bool EditActivity(Activity activityToEdit)
         {
+            //var allActivities = db.Get<Activity>().ToList();
+
+            //if (allActivities.Any(n => n.Name == activityToEdit.Name))
+            //    return false;
+
             //TODO: Add error handling!?
             db.Context().Entry(activityToEdit).State = EntityState.Modified;
             db.SaveChanges();
 
-            return activityToEdit;
+            return true;
         }
 
-        public bool DeleteActivity(int id)
+        public bool DeleteActivityById(int id)
         {
             var activityFromDb = db.Get<Activity>().SingleOrDefault(n => n.Id == id);
             if (activityFromDb == null)
