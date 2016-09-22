@@ -5,7 +5,7 @@
 }
 
 <h2>Skapa </h2>
-<h3>@ViewBag.Message</h3>
+
 
 @using (Html.BeginForm("Create", "Activity", FormMethod.Post))
 {
@@ -27,7 +27,7 @@
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Skapa" class="btn btn-default" />
                 
-
+                <h3>@ViewBag.Message</h3>
             </div>
         </div>
     </div>

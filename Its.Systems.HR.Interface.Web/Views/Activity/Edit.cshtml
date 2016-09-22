@@ -7,7 +7,8 @@
 <h2>Redigera</h2>
 
 
-@using (Html.BeginForm())
+
+@using (Html.BeginForm("EditPost", "Activity", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 

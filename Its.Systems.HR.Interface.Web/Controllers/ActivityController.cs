@@ -81,12 +81,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    foreach (var sameactivity in _manager.GetAllActivities())
-                    {
-                        
-                    }
-                    var activities = _manager.GetAllActivities().Where(s => s.Name.Contains(activity.Name)).Count();
-
+                 
                     if (!_manager.GetAllActivities().Any(n => n.Name == activity.Name))
                     {
                         var result = new Activity()
@@ -100,7 +95,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     }
                     else 
                     {
-                        ViewBag.Massage = "Denna aktivitet redan har skapats";
+                        ViewBag.Message = "Denna aktivitet redan har skapats";
                         return RedirectToAction("Index");
                     }
 
@@ -124,11 +119,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var activity = _manager.GetActivityById(id.Value);
+            var result = new ActivityViewModel();
+            result.Name = activity.Name;
             if (activity == null)
             {
                 return HttpNotFound();
             }
-            return View(activity);
+            return View(result);
+
+            
         }
 
 
