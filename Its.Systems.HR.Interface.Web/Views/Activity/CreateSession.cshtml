@@ -15,7 +15,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         
         <div class="form-group">
-            <label class="control-label col-md-2">Kurstillfälle för aktivitet</label>
+            <label for="Activity_Id" class="control-label col-md-2">Kurstillfälle för aktivitet</label>
             <div class="col-md-10">
                 @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>)ViewBag.ActivityId, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Activity.Id, "", new { @class = "text-danger" })
@@ -47,7 +47,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2">Plats</label>
+            <label for="Location_Id" class="control-label col-md-2">Plats</label>
             <div class="col-md-10">
                 @Html.DropDownListFor(n => n.Location.Id, (IEnumerable<SelectListItem>)ViewBag.LocationId, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
@@ -55,16 +55,33 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2">Ansvarig HR</label>
+            <label for="HrPerson_Id" class="control-label col-md-2">Ansvarig HR</label>
             <div class="col-md-10">
                 @Html.DropDownListFor(n => n.HrPerson.Id, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.HrPerson.Id, "", new { @class = "text-danger" })
             </div>
         </div>
+        
+        <div class="form-group">
+            <label for="Participant_Id" class="control-label col-md-2">Lägg till deltagare</label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(n => n.SessionParticipants.First().Participant.Id, (IEnumerable<SelectListItem>)ViewBag.SessionParticipantId, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SessionParticipants.First().Participant.Id, "", new { @class = "text-danger" })
+                <button class="btn btn-success" id="addParticipant">Lägg till deltagare</button>
+            </div>
+        </div>
+        
+        <div>
+            @*@Html.Action("GetBookingData", new { eventId = @Model.Event.Id })*@
+            
+            <select id="addedParticipantsSelectBox" size="10" name="addedParticipantsSelectBox" multiple="multiple">
+            </select>
+
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Skapa" class="btn btn-default" />
+                <input type="submit" value="Skapa aktivitet" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -76,4 +93,33 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+
+            $('#addParticipant').on('click', function (e) {
+                e.preventDefault();
+                var result = $('#Participant_Id :selected').text();
+                var resultId = $('#Participant_Id').val();
+                
+
+
+                $('<option value="' + resultId + '">' + result + '</option>').appendTo('#addedParticipantsSelectBox');
+                var test = $('#Participant_Id option[value="' + resultId + '"]').remove();
+            });
+            @*$("body").on("click", "#addParticipant", function() {
+                $.ajax({
+                    url: "/Activity/AddParticpant",
+                    type: "post",
+                    data: { participantId: @Model., activitySessionId:  }, //if you need to post Model data, use this
+                    success: function(result) {
+                        $("#addedParticipants").html(result);
+                    }
+                });
+            });*@
+        });
+    </script>
+
+
+
 }

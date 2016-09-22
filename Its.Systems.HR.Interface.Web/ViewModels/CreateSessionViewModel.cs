@@ -33,6 +33,8 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public List<SessionParticipant> SessionParticipants { get; set; }
 
+        public string[] addedParticipantsSelectBox { set; get; }
+
         //public SelectList LocationList { get; set; }
     }
 }
