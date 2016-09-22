@@ -11,7 +11,7 @@ namespace Its.Systems.HR.Infrastructure
         public HRContext() : base("name=HRContext")
         {
             this.Configuration.LazyLoadingEnabled = false;
-            Database.SetInitializer(new HRContextSeeder());
+            //Database.SetInitializer(new HRContextSeeder());
         }
 
         public HRContext(DbConnection connection) : base(connection, true)
