@@ -11,7 +11,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 {
     public class CreateSessionViewModel
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         [Display(Name = "Namn på kurstillfälle")]
         public string Name { get; set; }
 
@@ -32,9 +32,11 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
 
         public List<SessionParticipant> SessionParticipants { get; set; }
+        public string AddedParticipants { get; set; }
 
-        public string[] addedParticipantsSelectBox { set; get; }
 
-        //public SelectList LocationList { get; set; }
+        //public string[] addedParticipantsSelectBox { set; get; }
+
+        //public IEnumerable<SelectListItem> addedParticipantsSelectBox { get; set; }
     }
 }

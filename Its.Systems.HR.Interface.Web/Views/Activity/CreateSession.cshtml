@@ -71,11 +71,12 @@
             </div>
         </div>
         
-        <div>
+        <div id="selectedParticipants">
             @*@Html.Action("GetBookingData", new { eventId = @Model.Event.Id })*@
             
-            <select id="addedParticipantsSelectBox" size="10" name="addedParticipantsSelectBox" multiple="multiple">
-            </select>
+            
+            
+            @Html.HiddenFor(n => n.AddedParticipants)
 
         </div>
 
@@ -87,9 +88,6 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Tillbaka till listan", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -101,11 +99,16 @@
                 e.preventDefault();
                 var result = $('#Participant_Id :selected').text();
                 var resultId = $('#Participant_Id').val();
-                
 
 
-                $('<option value="' + resultId + '">' + result + '</option>').appendTo('#addedParticipantsSelectBox');
-                var test = $('#Participant_Id option[value="' + resultId + '"]').remove();
+                $("#selectedParticipants").append("<p>" + result + "</p>");
+                $('#Participant_Id option[value="' + resultId + '"]').remove();
+
+                var currentVal = $("#AddedParticipants").val();
+                if (currentVal === "")
+                    $("#AddedParticipants").val(resultId);
+                else
+                    $("#AddedParticipants").val(currentVal + "," + resultId);
             });
             @*$("body").on("click", "#addParticipant", function() {
                 $.ajax({
