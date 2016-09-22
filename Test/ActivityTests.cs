@@ -85,19 +85,19 @@ namespace Its.Systems.HR.Test
 
 
         //TODO: FINISH SAD PATH FOR EDIT
-        //[TestMethod]
-        //public void EditJavaOneToCurruptData_ShouldNotUpdateInDb()
-        //{
-        //    impl = Container().Resolve<IActivityManager>();
+        [TestMethod]
+        public void EditJavaOneToAirHack_ShouldNotUpdateInDb()
+        {
+            impl = Container().Resolve<IActivityManager>();
 
-        //    var activityFromDb = impl.GetActivityById(2);
+            var activityFromDb = impl.GetActivityById(2);
 
-        //    activityFromDb.Name = -1;
+            activityFromDb.Name = "AirHack";
 
-        //    var result = impl.EditActivity(activityFromDb);
+            var result = impl.EditActivity(activityFromDb);
 
-        //    Assert.AreEqual("JavaOne", impl.GetActivityById(2).Name);
-        //}
+            Assert.AreEqual("JavaOne", impl.GetActivityById(2).Name);
+        }
 
         [TestMethod]
         public void DeleteJavaOne_ShouldReturnAllActivitiesCountOf4()

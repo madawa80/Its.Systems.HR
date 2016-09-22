@@ -213,6 +213,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             ViewBag.LocationId = new SelectList(_manager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
             ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", 1);
             ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", 1);
+            ViewBag.SessionParticipantId = new SelectList(
+                _personManager.GetAllParticipants().OrderBy(n => n.FirstName), 
+                "Id", 
+                "FullName", 
+                _personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
             return View();
         }
 
@@ -220,6 +225,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSession(CreateSessionViewModel sessionVm)
         {
+            var test = Request.Form["addedParticipantsSelectBox"];
             try
             {
                 if (ModelState.IsValid)

@@ -30,15 +30,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Redigera" class="btn btn-default" />
+                <input type="submit" value="Ändra namn" class="btn btn-default" />
+                <a href="@Url.Action("Index")" class="btn btn-success">Avbryt</a>
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
