@@ -37,12 +37,7 @@ namespace Its.Systems.HR.Domain.Managers
         }
 
 
-        public void SaveActivities(Activity activity)
-        {
-            db.Add(activity);
-            db.SaveChanges();
-
-        }
+       
 
         public Activity GetActivityById(int id)
         {

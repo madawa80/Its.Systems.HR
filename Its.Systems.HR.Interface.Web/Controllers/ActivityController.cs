@@ -19,12 +19,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         private IActivityManager _manager ;
         private IPersonManager _personManager;
-        private IDbRepository _repo;
+        //private readonly IDbRepository _repository;
+        //private IDbRepository _repo;
 
         public ActivityController(IActivityManager manager, IPersonManager personManager)
         {
             _manager = manager;
             _personManager = personManager;
+            //_repository = repository;
         }
 
         // find Activity 
@@ -89,14 +91,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                             Name = activity.Name,
                         };
 
-                        _manager.SaveActivities(result);
+                        _manager.AddActivity(result);
                         
                         return RedirectToAction("Index");
                     }
                     else 
                     {
-                        ViewBag.Message = "Denna aktivitet redan har skapats";
-                        return RedirectToAction("Index");
+                        ModelState.AddModelError("", "aktivitet existerar redan ");
+                        return View();
                     }
 
                     
@@ -145,8 +147,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 try
                 {
-                  
-                    _repo.SaveChanges();
+
+                    // _repository.SaveChanges();
+
+                    _manager.EditActivity(activityToUpdate);
 
                     return RedirectToAction("Index");
                 }
@@ -158,9 +162,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             return View(activityToUpdate);
         }
+        
 
-
-        //Delete an activity
+        
         public ActionResult Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
@@ -172,11 +176,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ViewBag.ErrorMessage = "Radera misslyckades. Försök igen, och om problemet kvarstår se systemadministratören .";
             }
             var activity = _manager.GetActivityById(id.Value);
+            var result = new ActivityViewModel();
+            result.Name = activity.Name;
             if (activity == null)
             {
                 return HttpNotFound();
             }
-            return View(activity);
+            return View(result);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -185,7 +191,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             try
             {
                 var activity = _manager.GetActivityById(id);
-                _repo.Delete(activity);
+                _manager.DeleteActivity(id);
             }
             catch (RetryLimitExceededException/* dex */)
             {

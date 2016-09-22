@@ -14,8 +14,7 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         IQueryable<Participant> GetAllParticipantsForSession(int id);
 
-        void SaveActivities(Activity activity);
-
+        
         /// <summary>
         /// Gets an activity by Id
         /// </summary>
@@ -24,7 +23,11 @@ namespace Its.Systems.HR.Domain.Interfaces
         Activity GetActivityById(int id);
 
         bool AddActivity(Activity activityToAdd);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="activityToEdit"></param>
+        /// <returns></returns>
         Activity EditActivity(Activity activityToEdit);
 
         bool DeleteActivity(int id);
