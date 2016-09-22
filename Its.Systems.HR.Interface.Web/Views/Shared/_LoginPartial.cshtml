@@ -5,15 +5,15 @@
             <li class="navbar-text">
                 @if (User.Identity.Name != null)
                 {
-                    <text>Hello, @User.Identity.Name!</text>
+                    <text>Välkommen, @User.Identity.Name!</text>
                 }
                 else
                 {
-                    <text>Hello</text>
+                    <text>Välkommen</text>
                 }
             </li>
             <li>
-                @Html.ActionLink("Sign out", "SignOut", "Account")
+                @Html.ActionLink("Logga ut", "SignOut", "Account")
             </li>
         </ul>
     </text>
@@ -21,6 +21,6 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>@Html.ActionLink("Logga in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }
