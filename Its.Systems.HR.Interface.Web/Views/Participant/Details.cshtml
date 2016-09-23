@@ -24,31 +24,38 @@
             <div class="form-group">
                 <label for="Id" class="control-label col-md-2">Lägg till kurstillfälle</label>
                 <div class="col-md-10">
-                    @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })
+                    @using (Html.BeginForm("AddPersonToSession", "Participant", routeValues: new {personId = Model.PersonId}, method: FormMethod.Post))
+                    {
+                        @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new {@class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.Sessions, "", new {@class = "text-danger"})
+                        <input type="submit" value="Lägg till kurstillfälle" class="btn btn-success"/>
+                    }
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="Comments" class="control-label col-md-2">Kommentarer</label>
-                @Html.BeginForm("SaveComments", "Participant", new { id = Model.PersonId }, FormMethod.Post)
+                @using (Html.BeginForm("SaveComments", "Participant", routeValues: new { personId = Model.PersonId }, method: FormMethod.Post))
                 {
-                <div class="col-md-10">
-                    @Html.TextAreaFor(n => n.Comments, 10, 40, new {@class = "form-control"})
-                    @Html.ValidationMessageFor(model => model.Comments, "", new {@class = "text-danger"})
-                    <input type="submit" value="Spara kommentar" class="btn btn-success"/>
-                </div>
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(n => n.Comments, 10, 40, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                        <input type="submit" value="Spara kommentar" class="btn btn-success" />
+                    </div>
                 }
             </div>
 
             <div class="form-group">
                 <label for="Wishes" class="control-label col-md-2">Önskemål</label>
-                <div class="col-md-10">
-                    @Html.TextAreaFor(n => n.Wishes, 10, 40, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Wishes, "", new { @class = "text-danger" })
-                </div>
+                @using (Html.BeginForm("SaveWishes", "Participant", routeValues: new { personId = Model.PersonId }, method: FormMethod.Post))
+                {
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(n => n.Wishes, 10, 40, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Wishes, "", new { @class = "text-danger" })
+                        <input type="submit" value="Spara önskemål" class="btn btn-success" />
+                    </div>
+                }
             </div>
-
         </div>
     </div>
 </div>

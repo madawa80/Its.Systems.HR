@@ -15,10 +15,13 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         bool AddHrPerson(HrPerson hrPerson);
 
-        bool SaveCommentsForParticipant(int id, string comments);
         Participant GetParticipantById(int id);
 
         bool DeletePaticipantById(int id);
+
+        bool SaveCommentsForParticipant(int personId, string comments);
+
+        bool SaveWishesForParticipant(int personId, string wishes);
 
     }
 }

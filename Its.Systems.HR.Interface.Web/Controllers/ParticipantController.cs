@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
@@ -39,6 +42,22 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 return HttpNotFound();
             }
+
+            // TODO: Write better queries!
+            // TODO: DONT USE try/catch for logic.......!
+            IQueryable<Session> sessionsAvailable;
+            int sessionsAvailableId;
+            try
+            {
+                sessionsAvailable = _activityManager.GetAllSessions().Except(_activityManager.GetAllSessionsForParticipantById(participant.Id)).OrderBy(n => n.Name);
+                sessionsAvailableId = sessionsAvailable.First().Id;
+            }
+            catch (Exception)
+            {
+                sessionsAvailable = new List<Session>().AsQueryable();
+                sessionsAvailableId = 0;
+                //throw;
+            }
             var viewModel = new ParticipantSummaryViewModel()
             {
                 PersonId = participant.Id,
@@ -47,10 +66,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Wishes = participant.Wishes,
                 Sessions = _activityManager.GetAllSessionsForParticipantById(participant.Id).ToList(),
                 AllSessions = new SelectList(
-                                            _activityManager.GetAllSessions().OrderBy(n => n.Name),
+                                            sessionsAvailable,
                                             "Id",
                                             "Name",
-                                            _activityManager.GetAllSessions().OrderBy(n => n.Name).First().Id)
+                                            sessionsAvailableId)
             };
 
             return View(viewModel);
@@ -63,8 +82,24 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return RedirectToAction("Details", new { id = personId });
 
             // TODO: ErrorMessage
-            return RedirectToAction("Details", new {id = personId });
+            return RedirectToAction("Details", new { id = personId });
         }
 
+        public ActionResult SaveWishes(int personId)
+        {
+            // TODO: Possible security risk here!?
+            if (_personManager.SaveWishesForParticipant(personId, Request.Form["Wishes"]))
+                return RedirectToAction("Details", new { id = personId });
+
+            // TODO: ErrorMessage
+            return RedirectToAction("Details", new { id = personId });
+        }
+
+        public ActionResult AddPersonToSession(int personid)
+        {
+            var sessionId = Request.Form["Id"]; //session dropdown
+
+            throw new NotImplementedException();
+        }
     }
 }
