@@ -89,7 +89,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 ViewBag.ErrorMessage = "Radera misslyckades. Försök igen, och om problemet kvarstår se systemadministratören .";
             }
-            var paticipant = _manager.GetParticipantById(id.Value);
+            var paticipant = _personManager.GetParticipantById(id.Value);
             var result = new ActivitySummaryViewModel();
             var fullname = paticipant.GetParticipantFullName();
             fullname = result.PaticipantName;
@@ -105,8 +105,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             try
             {
-                var paticipant = _manager.GetParticipantById(id);
-                _manager.DeletePaticipantById(id);
+                var paticipant = _personManager.GetParticipantById(id);
+                _personManager.DeletePaticipantById(id);
             }
             catch (RetryLimitExceededException/* dex */)
             {
@@ -123,7 +123,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var paticipant = _manager.GetParticipantById(id);
+            var paticipant = _personManager.GetParticipantById(id);
             if (paticipant  == null)
             {
                 return HttpNotFound();

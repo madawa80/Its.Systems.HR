@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,31 @@ namespace Its.Systems.HR.Domain.Managers
             db.Add<HrPerson>(hrPerson);
 
             return true;
+        }
+
+        public bool DeletePaticipantById(int id)
+        {
+            var paticipantFromDb = db.Get<Participant>().SingleOrDefault(n => n.Id == id);
+            if (paticipantFromDb == null)
+                return false;
+
+            db.Delete(paticipantFromDb);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return true;
+        }
+
+        public Participant GetParticipantById(int id)
+        {
+            return db.Get<Participant>().SingleOrDefault(n => n.Id == id);
         }
     }
 }

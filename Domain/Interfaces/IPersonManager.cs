@@ -15,5 +15,9 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         bool AddHrPerson(HrPerson hrPerson);
 
+        Participant GetParticipantById(int id);
+
+        bool DeletePaticipantById(int id);
+
     }
 }

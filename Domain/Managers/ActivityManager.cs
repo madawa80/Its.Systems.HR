@@ -90,25 +90,7 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public bool DeletePaticipantById(int id)
-        {
-            var paticipantFromDb = db.Get<Participant>().SingleOrDefault(n => n.Id == id);
-            if (paticipantFromDb == null)
-                return false;
-
-            db.Delete(paticipantFromDb);
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return true;
-        }
+        
 
         public void AddSession(Session session)
         {
@@ -120,12 +102,7 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<Session>().SingleOrDefault(n => n.Id == id);
         }
 
-        public Participant GetParticipantById(int id)
-        {
-            return db.Get<Participant>().SingleOrDefault(n => n.Id == id);
-        }
-
-
+       
         public IQueryable<Location> GetAllLocations()
         {
             return db.Get<Location>();

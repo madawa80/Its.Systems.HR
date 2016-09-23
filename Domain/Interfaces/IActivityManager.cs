@@ -32,15 +32,13 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         bool DeleteActivityById(int id);
 
-        bool DeletePaticipantById(int id);
-
         void AddSession(Session session);
 
         Session GetSessionById(int id);
 
         IQueryable<Location> GetAllLocations();
-        object GetActivityById(object value);
+        
 
-        Participant GetParticipantById(int id);
+        
     }
 }
