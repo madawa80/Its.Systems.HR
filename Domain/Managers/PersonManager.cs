@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace Its.Systems.HR.Domain.Managers
     public class PersonManager : IPersonManager
     {
         public IDbRepository db;
+
         public PersonManager(IDbRepository repo)
         {
             db = repo;
@@ -38,6 +40,27 @@ namespace Its.Systems.HR.Domain.Managers
                 return false;
 
             db.Add<HrPerson>(hrPerson);
+
+            return true;
+        }
+
+        public bool SaveCommentsForParticipant(int id, string comments)
+        {
+            Participant participant = GetAllParticipants().SingleOrDefault(n => n.Id == id);
+            if (participant == null)
+                return false;
+
+            participant.Comments = comments;
+            try
+            {
+                db.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
 
             return true;
         }

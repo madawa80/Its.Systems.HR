@@ -14,7 +14,8 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         IQueryable<Participant> GetAllParticipantsForSession(int id);
 
-        
+        IQueryable<Session> GetAllSessionsForParticipantById(int id);
+
         /// <summary>
         /// Gets an activity by Id
         /// </summary>
@@ -37,5 +38,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         Session GetSessionById(int id);
 
         IQueryable<Location> GetAllLocations();
+
+        IQueryable<Session> GetAllSessions();
     }
 }

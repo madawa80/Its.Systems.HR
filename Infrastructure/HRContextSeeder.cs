@@ -106,16 +106,43 @@ namespace Its.Systems.HR.Infrastructure
 
             //Participant
 
-            var paticipants = new List<Participant>
+            var participants = new List<Participant>
             {
-                new Participant() {FirstName  = "Madawa",LastName = "Abeywickrama"},
-                new Participant() {FirstName  = "Sam",LastName = "Thomsson"},
-                new Participant() {FirstName = "Paul",LastName = "Alverardo"},
-                new Participant() {FirstName  = "Jean",LastName = "Smith"},
-                new Participant() {FirstName  = "Joe",LastName = "Root"},
+                new Participant() {
+                    FirstName  = "Madawa",
+                    LastName = "Abeywickrama",
+                    Comments = "Erbjuden Jfokus 2015, men var inte intresserad.",
+                    Wishes = "Enligt utvecklingssamtal 2016-03-19 vill Stina gärna delta i fler bokcirklar."
+                },
+                new Participant()
+                {
+                    FirstName  = "Sam",
+                    LastName = "Thomsson",
+                    Comments = "Erbjuden AirHack 2010, men var inte intresserad.",
+                    Wishes = "Enligt utvecklingssamtal 2010-03-19 vill Sam gärna delta i fler Hackathons."
+                },
+                new Participant()
+                {
+                    FirstName = "Paul",
+                    LastName = "Alverardo",
+                    Comments = "",
+                    Wishes = "Enligt Paul så har han inte tid med kompetensutveckling."
+                },
+                new Participant()
+                {
+                    FirstName  = "Jean",
+                    LastName = "Smith",
+                    Comments = "Jean har deltagit på alla kurstillfällen under 10 år",
+                    Wishes = ""
+                },
+                new Participant()
+                {
+                    FirstName  = "Joe",
+                    LastName = "Root"
+                },
             };
 
-            foreach (var participant in paticipants)
+            foreach (var participant in participants)
                 context.Participants.Add(participant);
 
             context.SaveChanges();
@@ -129,6 +156,18 @@ namespace Its.Systems.HR.Infrastructure
                     ParticipantId = 1,
                     Session = context.Sessions.SingleOrDefault(n => n.Name=="JavaOne 2016"),
                     Rating = 5,
+                },
+                new SessionParticipant()
+                {
+                    ParticipantId = 2,
+                    Session = context.Sessions.SingleOrDefault(n => n.Name=="JavaOne 2016"),
+                    Rating = 3,
+                },
+                new SessionParticipant()
+                {
+                    ParticipantId = 1,
+                    Session = context.Sessions.SingleOrDefault(n => n.Name=="JavaOne 2015"),
+                    Rating = 3,
                 }
             };
 

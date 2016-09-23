@@ -15,5 +15,6 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         bool AddHrPerson(HrPerson hrPerson);
 
+        bool SaveCommentsForParticipant(int id, string comments);
     }
 }

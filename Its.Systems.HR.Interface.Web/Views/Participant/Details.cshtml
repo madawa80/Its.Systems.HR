@@ -1,0 +1,54 @@
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.ParticipantSummaryViewModel
+
+@{
+    ViewBag.Title = "Översikt person";
+}
+
+<h2>@Model.FullName</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <h4>Deltagit på följande kurstillfällen</h4>
+        <ul>
+            @foreach (var session in Model.Sessions)
+            {
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@session.Name</a><span> (Startdatum: @session.StartDate.Year-@session.StartDate.Month-@session.StartDate.Day)</span>
+                </li>
+            }
+        </ul>
+        <em>Totalt @Model.Sessions.Count aktiviteter varav @Model.Sessions.Count(n => n.StartDate.Year == DateTime.Now.Year) i år.</em>
+    </div>
+    <div class="col-md-6">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="Id" class="control-label col-md-2">Lägg till kurstillfälle</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Comments" class="control-label col-md-2">Kommentarer</label>
+                @Html.BeginForm("SaveComments", "Participant", new { id = Model.PersonId }, FormMethod.Post)
+                {
+                <div class="col-md-10">
+                    @Html.TextAreaFor(n => n.Comments, 10, 40, new {@class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.Comments, "", new {@class = "text-danger"})
+                    <input type="submit" value="Spara kommentar" class="btn btn-success"/>
+                </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="Wishes" class="control-label col-md-2">Önskemål</label>
+                <div class="col-md-10">
+                    @Html.TextAreaFor(n => n.Wishes, 10, 40, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Wishes, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
