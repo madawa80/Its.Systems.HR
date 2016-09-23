@@ -56,14 +56,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
-        public ActionResult SaveComments(int id)
+        public ActionResult SaveComments(int personId)
         {
-            // TODO: Redirect to Details page for correct id instead!
-            if (_personManager.SaveCommentsForParticipant(id, Request.Form["Comments"]))
-                return View("Index");
+            // TODO: Possible security risk here!?
+            if (_personManager.SaveCommentsForParticipant(personId, Request.Form["Comments"]))
+                return RedirectToAction("Details", new { id = personId });
 
-            // TODO: FIX IF ERROR!
-            return View("Details");
+            // TODO: ErrorMessage
+            return RedirectToAction("Details", new {id = personId });
         }
 
     }
