@@ -117,19 +117,19 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
 
-        public ActionResult Details(int id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var paticipant = _personManager.GetParticipantById(id);
-            if (paticipant  == null)
-            {
-                return HttpNotFound();
-            }
-            return View(paticipant);
-        }
+        //////public ActionResult Details(int id)
+        //////{
+        //////    if (id == null)
+        //////    {
+        //////        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //////    }
+        //////    var paticipant = _personManager.GetParticipantById(id);
+        //////    if (paticipant  == null)
+        //////    {
+        //////        return HttpNotFound();
+        //////    }
+        //////    return View(paticipant);
+        //////}
 
     }
 }
