@@ -19,14 +19,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         private IActivityManager _manager;
         private IPersonManager _personManager;
-        //private readonly IDbRepository _repository;
-        //private IDbRepository _repo;
+       
 
         public ActivityController(IActivityManager manager, IPersonManager personManager)
         {
             _manager = manager;
             _personManager = personManager;
-            //_repository = repository;
+          
         }
 
         // find Activity 
@@ -131,7 +130,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
 
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
