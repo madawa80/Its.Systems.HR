@@ -240,6 +240,8 @@
     <Content Include="Views\Activity\Index.cshtml" />
     <Content Include="Views\Activity\CreateSession.cshtml" />
     <Content Include="Views\ActivitySummary\Index.cshtml" />
+    <Content Include="Views\ActivitySummary\Delete.cshtml" />
+    <Content Include="Views\ActivitySummary\Details.cshtml" />
     <Content Include="Views\Participant\Details.cshtml" />
     <Content Include="Views\Participant\Index.cshtml" />
   </ItemGroup>
