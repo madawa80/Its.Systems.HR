@@ -73,10 +73,10 @@
         
         <div>
             @*@Html.Action("GetBookingData", new { eventId = @Model.Event.Id })*@
-            
-            <select id="addedParticipantsSelectBox" size="10" name="addedParticipantsSelectBox" multiple="multiple">
-            </select>
-
+            <div class="col-md-2"></div>
+            <ul id="selectedParticipants" class="col-md-3">
+                @Html.HiddenFor(n => n.AddedParticipants)
+            </ul>
         </div>
 
         <div class="form-group">
@@ -87,9 +87,6 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Tillbaka till listan", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -97,16 +94,39 @@
     <script>
         $(function () {
 
+            var listOfParticiantsThatParticipated = [];
+
             $('#addParticipant').on('click', function (e) {
                 e.preventDefault();
                 var result = $('#Participant_Id :selected').text();
                 var resultId = $('#Participant_Id').val();
-                
 
+                listOfParticiantsThatParticipated.push(resultId);
 
-                $('<option value="' + resultId + '">' + result + '</option>').appendTo('#addedParticipantsSelectBox');
-                var test = $('#Participant_Id option[value="' + resultId + '"]').remove();
+                $('#selectedParticipants').append('<li><span id="listedParticipantLink">' + result + '</span><span id="listedParticipantRemove" class="label label-warning pull-right">Ta bort</span></li>');
+                $('#Participant_Id option[value="' + resultId + '"]').remove();
+
+                var currentVal = $('#AddedParticipants').val();
+                if (currentVal === "")
+                    $('#AddedParticipants').val(resultId);
+                else
+                    $('#AddedParticipants').val(currentVal + ',' + resultId);
             });
+
+            $('body').on('click', '#listedParticipantLink', function () {
+                
+                window.location.href = "http://stackoverflow.com";
+
+            });
+
+
+            $('body').on('click', '#listedParticipantRemove', function () {
+
+                window.location.href = "#";
+                listOfParticiantsThatParticipated
+
+            });
+
             @*$("body").on("click", "#addParticipant", function() {
                 $.ajax({
                     url: "/Activity/AddParticpant",

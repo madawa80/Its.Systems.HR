@@ -223,11 +223,25 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSession(CreateSessionViewModel sessionVm)
         {
-            var test = Request.Form["addedParticipantsSelectBox"];
+            //var test = Request.Form["addedParticipantsSelectBox"];
+
+
             try
             {
                 if (ModelState.IsValid)
                 {
+                    string[] participants = sessionVm.AddedParticipants.Split(',');
+                    List<int> participantsId = new List<int>();
+                    foreach (var participant in participants)
+                    {
+                        participantsId.Add(int.Parse(participant));
+                    }
+
+                    //TODO: Make a proper join, this is inefficient
+                    var participantsToAddFromDb =
+                        _personManager.GetAllParticipants().Where(n => participantsId.Contains(n.Id)).ToList();
+
+
                     var result = new Session()
                     {
                         Name = sessionVm.Name,
@@ -236,7 +250,23 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         EndDate = sessionVm.EndDate,
                         LocationId = sessionVm.Location.Id,
                         HrPersonId = sessionVm.HrPerson.Id,
+                        SessionParticipants = null,
                     };
+
+                    List<SessionParticipant> final = new List<SessionParticipant>();
+                    foreach (var participant in participantsToAddFromDb)
+                    {
+                        final.Add(new SessionParticipant()
+                        {
+                            ParticipantId = participant.Id,
+                            Session = result,
+                            Rating = 0,
+                        });
+                    }
+
+                    result.SessionParticipants = final;
+
+
                     _manager.AddSession(result);
 
                     return RedirectToAction("Index");
