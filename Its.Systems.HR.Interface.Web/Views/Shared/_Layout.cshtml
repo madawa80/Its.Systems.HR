@@ -24,6 +24,7 @@
                     <li>@Html.ActionLink("Lista aktiviteter", "Index", "Activity")</li>
                     <li>@Html.ActionLink("Skapa aktivitet", "Create", "Activity")</li>
                     <li>@Html.ActionLink("Skapa kurstillfälle", "CreateSession", "Activity")</li>
+                    <li>@Html.ActionLink("Översikt personer", "Index", "Participant")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -31,8 +32,8 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
         <footer>
+            <hr />
             <p>&copy; @DateTime.Now.Year - ITS UmU</p>
         </footer>
     </div>

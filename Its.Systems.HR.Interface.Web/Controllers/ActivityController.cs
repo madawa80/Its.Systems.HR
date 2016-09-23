@@ -244,7 +244,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                     var result = new Session()
                     {
-                        Name = sessionVm.Name,
+                        Name = sessionVm.Activity.Name + " " + sessionVm.Name,
                         ActivityId = sessionVm.Activity.Id,
                         StartDate = sessionVm.StartDate,
                         EndDate = sessionVm.EndDate,

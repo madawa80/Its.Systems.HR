@@ -12,6 +12,10 @@ namespace Its.Systems.HR.Domain.Model
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public string Comments { get; set; }
+        public string Wishes { get; set; }
+
         //TODO: More properties
 
         public string FullName

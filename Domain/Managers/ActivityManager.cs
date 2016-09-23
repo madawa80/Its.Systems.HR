@@ -36,8 +36,12 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
         }
 
+        public IQueryable<Session> GetAllSessionsForParticipantById(int id)
+        {
+            return db.Get<SessionParticipant>().Where(n => n.ParticipantId == id).Select(n => n.Session);
+        }
 
-       
+
 
         public Activity GetActivityById(int id)
         {
@@ -108,5 +112,9 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<Location>();
         }
 
+        public IQueryable<Session> GetAllSessions()
+        {
+            return db.Get<Session>();
+        }
     }
 }

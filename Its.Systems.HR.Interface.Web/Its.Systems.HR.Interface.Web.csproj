@@ -185,6 +185,7 @@
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\ActivitySummaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -194,6 +195,7 @@
     <Compile Include="ViewModels\ActivityViewModel.cs" />
     <Compile Include="ViewModels\CreateSessionViewModel.cs" />
     <Compile Include="ViewModels\ListActivitiesViewModel.cs" />
+    <Compile Include="ViewModels\ParticipantSummaryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -240,6 +242,8 @@
     <Content Include="Views\ActivitySummary\Index.cshtml" />
     <Content Include="Views\ActivitySummary\Delete.cshtml" />
     <Content Include="Views\ActivitySummary\Details.cshtml" />
+    <Content Include="Views\Participant\Details.cshtml" />
+    <Content Include="Views\Participant\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

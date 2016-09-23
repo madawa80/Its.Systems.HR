@@ -14,7 +14,8 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         IQueryable<Participant> GetAllParticipantsForSession(int id);
 
-        
+        IQueryable<Session> GetAllSessionsForParticipantById(int id);
+
         /// <summary>
         /// Gets an activity by Id
         /// </summary>
@@ -32,13 +33,14 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         bool DeleteActivityById(int id);
 
+        bool DeletePaticipantById(int id);
+
         void AddSession(Session session);
 
         Session GetSessionById(int id);
 
         IQueryable<Location> GetAllLocations();
-        
 
-        
+        IQueryable<Session> GetAllSessions();
     }
 }
