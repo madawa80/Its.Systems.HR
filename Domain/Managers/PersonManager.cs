@@ -67,5 +67,27 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return db.Get<Participant>().SingleOrDefault(n => n.Id == id);
         }
+
+
+        public bool SaveCommentsForParticipant(int id, string comments)
+        {
+            Participant participant = GetAllParticipants().SingleOrDefault(n => n.Id == id);
+            if (participant == null)
+                return false;
+
+            participant.Comments = comments;
+            try
+            {
+                db.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return true;
+        }
     }
 }

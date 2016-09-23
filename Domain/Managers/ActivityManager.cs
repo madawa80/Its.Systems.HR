@@ -116,5 +116,26 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return db.Get<Session>();
         }
+
+        public bool DeletePaticipantById(int id)
+        {
+            var paticipantFromDb = db.Get<Participant>().SingleOrDefault(n => n.Id == id);
+            if (paticipantFromDb == null)
+                return false;
+
+            db.Delete(paticipantFromDb);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return true;
+        }
+
     }
 }
