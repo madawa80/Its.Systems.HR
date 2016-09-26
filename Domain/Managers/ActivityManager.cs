@@ -94,7 +94,7 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        
+
 
         public void AddSession(Session session)
         {
@@ -137,5 +137,67 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
+        public bool AddParticipantToSession(int participantId, int sessionId)
+        {
+            // Test participantId for null
+            if (!CheckIfParticipantExists(participantId)) return false;
+            // Test sessionId for null
+            if (!CheckIfSessionExists(sessionId)) return false;
+            // Make sure no SessionParticipant exists
+            var sessionParticipantFromDb = db.Get<SessionParticipant>()
+                .SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
+
+            if (sessionParticipantFromDb != null)
+                return false;
+
+            // Create a new SessionParticipant
+            var result = new SessionParticipant()
+            {
+                ParticipantId = participantId,
+                SessionId = sessionId,
+                Rating = 0
+            };
+
+            db.Add<SessionParticipant>(result);
+            db.SaveChanges();
+
+            return true;
+        }
+
+        public bool RemoveParticipantFromSession(int participantId, int sessionId)
+        {
+            // Test participantId for null
+            if (!CheckIfParticipantExists(participantId)) return false;
+            // Test sessionId for null
+            if (!CheckIfSessionExists(sessionId)) return false;
+            // Make sure SessionParticipant exists!
+            var sessionParticipantFromDb = db.Get<SessionParticipant>()
+                .SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
+
+            if (sessionParticipantFromDb == null)
+                return false;
+
+
+            db.Delete<SessionParticipant>(sessionParticipantFromDb);
+            db.SaveChanges();
+
+            return true;
+        }
+
+        private bool CheckIfSessionExists(int sessionId)
+        {
+            var sessionFromDb = db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
+            if (sessionFromDb == null)
+                return false;
+            return true;
+        }
+
+        private bool CheckIfParticipantExists(int participantId)
+        {
+            var participantFromDb = db.Get<Participant>().SingleOrDefault(n => n.Id == participantId);
+            if (participantFromDb == null)
+                return false;
+            return true;
+        }
     }
 }

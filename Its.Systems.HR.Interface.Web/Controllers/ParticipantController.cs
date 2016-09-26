@@ -75,6 +75,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
+        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult SaveComments(int personId)
         {
             // TODO: Possible security risk here!?
@@ -85,6 +87,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return RedirectToAction("Details", new { id = personId });
         }
 
+        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult SaveWishes(int personId)
         {
             // TODO: Possible security risk here!?
@@ -95,11 +99,34 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return RedirectToAction("Details", new { id = personId });
         }
 
-        public ActionResult AddPersonToSession(int personid)
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult AddPersonToSession(int personId)
         {
-            var sessionId = Request.Form["Id"]; //session dropdown
+            var sessionIdstring = Request.Form["Id"]; //session dropdown
+            int sessionId = -1;
+            int.TryParse(sessionIdstring, out sessionId);
 
-            throw new NotImplementedException();
+            if (sessionId == -1)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            if (!_activityManager.AddParticipantToSession(personId, sessionId))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            return RedirectToAction("Details", new { id = personId });
+        }
+
+        public ActionResult RemovePersonFromSession(int sessionId, int personId)
+        {
+            var result = new { Success = "True" };
+
+            //if (_personManager.GetParticipantById(personId) == null || _activityManager.GetSessionById(sessionId) == null)
+            //    result = new { Success = "Fail" };
+
+            if (!_activityManager.RemoveParticipantFromSession(personId, sessionId))
+                result = new { Success = "Fail" };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -35,6 +35,9 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         bool DeletePaticipantById(int id);
 
+        bool AddParticipantToSession(int participantId, int sessionId);
+        bool RemoveParticipantFromSession(int participantId, int sessionId);
+
         void AddSession(Session session);
 
         Session GetSessionById(int id);

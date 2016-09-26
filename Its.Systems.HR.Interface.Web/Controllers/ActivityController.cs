@@ -19,13 +19,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         private IActivityManager _manager;
         private IPersonManager _personManager;
-       
+
 
         public ActivityController(IActivityManager manager, IPersonManager personManager)
         {
             _manager = manager;
             _personManager = personManager;
-          
+
         }
 
         // find Activity 
@@ -212,9 +212,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", 1);
             ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", 1);
             ViewBag.SessionParticipantId = new SelectList(
-                _personManager.GetAllParticipants().OrderBy(n => n.FirstName), 
-                "Id", 
-                "FullName", 
+                _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
+                "Id",
+                "FullName",
                 _personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
             return View();
         }
@@ -225,22 +225,23 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             //var test = Request.Form["addedParticipantsSelectBox"];
 
-
             try
             {
                 if (ModelState.IsValid)
                 {
-                    string[] participants = sessionVm.AddedParticipants.Split(',');
-                    List<int> participantsId = new List<int>();
-                    foreach (var participant in participants)
+                    List<Participant> participantsToAddFromDb = new List<Participant>();
+                    if (sessionVm.AddedParticipants != null)
                     {
-                        participantsId.Add(int.Parse(participant));
+                        string[] participants = sessionVm.AddedParticipants.Split(',');
+                        List<int> participantsId = new List<int>();
+                        foreach (var participant in participants)
+                        {
+                            participantsId.Add(int.Parse(participant));
+                        }
+
+                        //TODO: Make a proper join, this is inefficient
+                        participantsToAddFromDb = _personManager.GetAllParticipants().Where(n => participantsId.Contains(n.Id)).ToList();
                     }
-
-                    //TODO: Make a proper join, this is inefficient
-                    var participantsToAddFromDb =
-                        _personManager.GetAllParticipants().Where(n => participantsId.Contains(n.Id)).ToList();
-
 
                     var result = new Session()
                     {
@@ -253,19 +254,21 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         SessionParticipants = null,
                     };
 
-                    List<SessionParticipant> final = new List<SessionParticipant>();
-                    foreach (var participant in participantsToAddFromDb)
+                    if (sessionVm.AddedParticipants != null)
                     {
-                        final.Add(new SessionParticipant()
+                        List<SessionParticipant> final = new List<SessionParticipant>();
+                        foreach (var participant in participantsToAddFromDb)
                         {
-                            ParticipantId = participant.Id,
-                            Session = result,
-                            Rating = 0,
-                        });
+                            final.Add(new SessionParticipant()
+                            {
+                                ParticipantId = participant.Id,
+                                Session = result,
+                                Rating = 0,
+                            });
+                            result.SessionParticipants = final;
+                        }
+
                     }
-
-                    result.SessionParticipants = final;
-
 
                     _manager.AddSession(result);
 

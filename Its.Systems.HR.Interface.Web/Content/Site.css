@@ -32,6 +32,5 @@ span#listedParticipantLink {
 }
 
 span#listedParticipantRemove {
-    text-decoration: underline;
     cursor: pointer;
 }
