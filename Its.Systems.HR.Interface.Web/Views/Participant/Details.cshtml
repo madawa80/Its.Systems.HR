@@ -14,7 +14,7 @@
             {
                 <li>
                     <a href="@Url.Action("Index", "Home")">@session.Name</a>
-                    <span> (Startdatum: @session.StartDate.Year-@session.StartDate.Month-@session.StartDate.Day)</span>
+                    <span> (@session.StartDate.Year-@session.StartDate.Month-@session.StartDate.Day)</span>
                     <span class="label label-warning pull-right listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort</span>
                 </li>
             }
@@ -120,8 +120,8 @@
                     data: { sessionId: sessionId, personId: link.attr("data-personId") },
                     success: function (result) {
                         if (result.Success) {
-                            $("#allSessionsForParticipant")
-                                .append('<li><a href="/Index/Home">' + result.SessionName + '</a><span> (Startdatum: ' + result.Year + '-' + result.Month + '-' + result.Day + ')</span><span class="label label-warning pull-right listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></li>');
+                            var html = '<li><a href="/Index/Home">' + result.SessionName + '</a><span> (' + result.Year + '-' + result.Month + '-' + result.Day + ')</span><span class="label label-warning pull-right listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></li>';
+                            $(html).hide().appendTo("#allSessionsForParticipant").fadeIn();
 
                             $.ajax({
                                 url: "/Participant/ParticipantStatisticSummary",

@@ -243,9 +243,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         participantsToAddFromDb = _personManager.GetAllParticipants().Where(n => participantsId.Contains(n.Id)).ToList();
                     }
 
+                    var activityName = _manager.GetActivityById(sessionVm.Activity.Id).Name;
+
                     var result = new Session()
                     {
-                        Name = sessionVm.Activity.Name + " " + sessionVm.Name,
+                        Name = activityName + " " + sessionVm.Name,
                         ActivityId = sessionVm.Activity.Id,
                         StartDate = sessionVm.StartDate,
                         EndDate = sessionVm.EndDate,
