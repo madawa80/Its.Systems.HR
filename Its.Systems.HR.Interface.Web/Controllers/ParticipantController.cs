@@ -34,30 +34,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             Participant participant = _personManager.GetAllParticipants().SingleOrDefault(n => n.Id == id);
             if (participant == null)
-            {
                 return HttpNotFound();
-            }
 
-            // TODO: Write better queries!
-            // TODO: DONT USE try/catch for logic.......!
-            IQueryable<Session> sessionsAvailable;
-            int sessionsAvailableId;
-            try
-            {
-                sessionsAvailable = _activityManager.GetAllSessions().Except(_activityManager.GetAllSessionsForParticipantById(participant.Id)).OrderBy(n => n.Name);
-                sessionsAvailableId = sessionsAvailable.First().Id;
-            }
-            catch (Exception)
-            {
-                sessionsAvailable = new List<Session>().AsQueryable();
-                sessionsAvailableId = 0;
-                //throw;
-            }
+            var allSessions = _activityManager.GetAllSessions().OrderBy(n => n.Name);
+
             var viewModel = new ParticipantSummaryViewModel()
             {
                 PersonId = participant.Id,
@@ -66,54 +50,50 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Wishes = participant.Wishes,
                 Sessions = _activityManager.GetAllSessionsForParticipantById(participant.Id).ToList(),
                 AllSessions = new SelectList(
-                                            sessionsAvailable,
+                                            allSessions,
                                             "Id",
                                             "Name",
-                                            sessionsAvailableId)
+                                            allSessions.First().Id)
             };
 
             return View(viewModel);
         }
 
-        [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult SaveComments(int personId)
+        public ActionResult SaveComments(int personId, string comments)
         {
-            // TODO: Possible security risk here!?
-            if (_personManager.SaveCommentsForParticipant(personId, Request.Form["Comments"]))
-                return RedirectToAction("Details", new { id = personId });
+            var result = new { Success = "True" };
+
+            if (_personManager.SaveCommentsForParticipant(personId, comments))
+                return Json(result, JsonRequestBehavior.AllowGet);
 
             // TODO: ErrorMessage
-            return RedirectToAction("Details", new { id = personId });
+            result = new { Success = "False" };
+            return Json(result, JsonRequestBehavior.AllowGet);
+            //return RedirectToAction("Details", new { id = personId });
         }
 
-        [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult SaveWishes(int personId)
+        public ActionResult SaveWishes(int personId, string wishes)
         {
-            // TODO: Possible security risk here!?
-            if (_personManager.SaveWishesForParticipant(personId, Request.Form["Wishes"]))
-                return RedirectToAction("Details", new { id = personId });
+            var result = new { Success = "True" };
 
-            // TODO: ErrorMessage
-            return RedirectToAction("Details", new { id = personId });
+            if (_personManager.SaveWishesForParticipant(personId, wishes))
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            result = new { Success = "False" };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult AddPersonToSession(int personId)
+        public ActionResult AddPersonToSession(int sessionId, int personId)
         {
-            var sessionIdstring = Request.Form["Id"]; //session dropdown
-            int sessionId = -1;
-            int.TryParse(sessionIdstring, out sessionId);
-
-            if (sessionId == -1)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var result = new { Success = true, ErrorMessage = ""};
 
             if (!_activityManager.AddParticipantToSession(personId, sessionId))
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                result = new { Success = false, ErrorMessage = "Personen är redan registrerad på kurstillfället."};
 
-            return RedirectToAction("Details", new { id = personId });
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult RemovePersonFromSession(int sessionId, int personId)
@@ -124,7 +104,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //    result = new { Success = "Fail" };
 
             if (!_activityManager.RemoveParticipantFromSession(personId, sessionId))
-                result = new { Success = "Fail" };
+                result = new { Success = "False" };
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
