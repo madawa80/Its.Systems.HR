@@ -244,6 +244,7 @@
     <Content Include="Views\ActivitySummary\CreateActivitySummary.cshtml" />
     <Content Include="Views\Participant\Details.cshtml" />
     <Content Include="Views\Participant\Index.cshtml" />
+    <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

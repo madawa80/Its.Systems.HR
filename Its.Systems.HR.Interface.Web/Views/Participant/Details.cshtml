@@ -9,19 +9,21 @@
 <div class="row">
     <div class="col-md-4">
         <h4>Deltagit på följande kurstillfällen</h4>
-        <ul>
+        <ul id="allSessionsForParticipant">
             @foreach (var session in Model.Sessions)
             {
                 <li>
                     <a href="@Url.Action("Index", "Home")">@session.Name</a>
                     <span> (Startdatum: @session.StartDate.Year-@session.StartDate.Month-@session.StartDate.Day)</span>
-                    <span id="listedParticipantRemove" class="label label-warning pull-right js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort</span>
+                    <span class="label label-warning pull-right listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort</span>
                 </li>
             }
         </ul>
-        <em>Totalt @Model.Sessions.Count aktiviteter varav @Model.Sessions.Count(n => n.StartDate.Year == DateTime.Now.Year) i år.</em>
+        <div id="statisticsSummary">
+            @Html.Action("ParticipantStatisticSummary", new { personId = Model.PersonId })
+        </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 col-md-offset-1">
         <div class="form-horizontal">
             <div class="form-group">
                 <label for="Id" class="control-label col-md-2">Lägg till kurstillfälle</label>
@@ -67,9 +69,12 @@
 
 @section scripts {
     <script>
+
+        // TODO: Proper error handling
+
         $(document).ready(function () {
 
-            $(".js-delete-sessionParticipant").click(function (e) {
+            $("body").on("click", ".js-delete-sessionParticipant", function (e) {
                 var link = $(e.target);
 
                 if (confirm("Vill du verkligen ta bort detta kurstillfälle för personen?")) {
@@ -81,19 +86,33 @@
                             link.parents("li")
                                 .fadeOut(function () {
                                     $(this).remove();
+
+                                    $.ajax({
+                                        url: "/Participant/ParticipantStatisticSummary",
+                                        type: "GET",
+                                        data: { personId: link.attr("data-personId") },
+                                        success: function (result2) {
+                                            $("#statisticsSummary").html(result2);
+                                        },
+                                        error: function () {
+                                            alert("Anropet misslyckades, prova gärna igen.");
+                                        }
+                                    });
                                 });
-                            //$("#allSessionParticipations").html(result);
                         },
                         error: function () {
                             alert("Anropet misslyckades, prova gärna igen.");
                         }
                     });
+
                 }
             });
+
 
             $(".js-add-sessionParticipant").click(function (e) {
                 var link = $(e.target);
                 var sessionId = $("#Id").val();
+
 
                 $.ajax({
                     url: "/Participant/AddPersonToSession",
@@ -101,19 +120,28 @@
                     data: { sessionId: sessionId, personId: link.attr("data-personId") },
                     success: function (result) {
                         if (result.Success) {
-                            alert("OK!");
+                            $("#allSessionsForParticipant")
+                                .append('<li><a href="/Index/Home">' + result.SessionName + '</a><span> (Startdatum: ' + result.Year + '-' + result.Month + '-' + result.Day + ')</span><span class="label label-warning pull-right listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></li>');
+
+                            $.ajax({
+                                url: "/Participant/ParticipantStatisticSummary",
+                                type: "GET",
+                                data: { personId: link.attr("data-personId") },
+                                success: function (result2) {
+                                    $("#statisticsSummary").html(result2);
+                                },
+                                error: function () {
+                                    alert("Anropet misslyckades, prova gärna igen.");
+                                }
+                            });
+
                         } else {
-                            link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">' + result.ErrorMessage + '</span>');
+                            link.after(' <div class="alert alert-danger js-fadeOutThisMessage" role="alert">' + result.ErrorMessage + '</div>');
 
                             $(".js-fadeOutThisMessage").fadeOut(2000, function () {
                                 $(this).remove();
                             });
                         }
-                        //link.parents("li")
-                        //    .fadeIn(function () {
-                        //        $(this).remove();
-                        //    });
-                        //$("#allSessionParticipations").html(result);
                     }
                 });
             });
