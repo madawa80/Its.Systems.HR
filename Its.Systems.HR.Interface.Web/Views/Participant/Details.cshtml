@@ -77,35 +77,51 @@
             $("body").on("click", ".js-delete-sessionParticipant", function (e) {
                 var link = $(e.target);
 
-                if (confirm("Vill du verkligen ta bort detta kurstillfälle för personen?")) {
-                    $.ajax({
-                        url: "/Participant/RemovePersonFromSession",
-                        type: "POST",
-                        data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
-                        success: function (result) {
-                            link.parents("li")
-                                .fadeOut(function () {
-                                    $(this).remove();
 
-                                    $.ajax({
-                                        url: "/Participant/ParticipantStatisticSummary",
-                                        type: "GET",
-                                        data: { personId: link.attr("data-personId") },
-                                        success: function (result2) {
-                                            $("#statisticsSummary").html(result2);
-                                        },
-                                        error: function () {
-                                            alert("Anropet misslyckades, prova gärna igen.");
-                                        }
-                                    });
-                                });
+                bootbox.confirm({
+                    title: "Vänligen bekräfta",
+                    message: "Vill du verkligen ta bort detta kurstillfälle för personen?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
                         },
-                        error: function () {
-                            alert("Anropet misslyckades, prova gärna igen.");
+                        confirm: {
+                            label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
+                            className: 'btn-danger'
                         }
-                    });
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/Participant/RemovePersonFromSession",
+                                type: "POST",
+                                data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
+                                success: function () {
+                                    link.parents("li")
+                                        .fadeOut(function () {
+                                            $(this).remove();
 
-                }
+                                            $.ajax({
+                                                url: "/Participant/ParticipantStatisticSummary",
+                                                type: "GET",
+                                                data: { personId: link.attr("data-personId") },
+                                                success: function (result2) {
+                                                    $("#statisticsSummary").html(result2);
+                                                },
+                                                error: function () {
+                                                    alert("Anropet misslyckades, prova gärna igen.");
+                                                }
+                                            });
+                                        });
+                                },
+                                error: function () {
+                                    alert("Anropet misslyckades, prova gärna igen.");
+                                }
+                            });
+                        }
+                    }
+                });
+
             });
 
 
