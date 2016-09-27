@@ -23,15 +23,19 @@ textarea {
     max-width: 280px;
 }
 
+/* BOOTSTRAP OVERRIDES */
+
+/*body {
+    font-size: 17px;
+}*/
 
 /* CUSTOM ADDED */
 
-span#listedParticipantLink {
+span.listedParticipantLink {
     text-decoration: underline;
     cursor: pointer;
 }
 
-span#listedParticipantRemove {
-    text-decoration: underline;
+span.listedParticipantRemove {
     cursor: pointer;
 }

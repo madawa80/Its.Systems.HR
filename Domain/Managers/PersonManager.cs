@@ -69,13 +69,34 @@ namespace Its.Systems.HR.Domain.Managers
         }
 
 
-        public bool SaveCommentsForParticipant(int id, string comments)
+        public bool SaveCommentsForParticipant(int personId, string comments)
         {
-            Participant participant = GetAllParticipants().SingleOrDefault(n => n.Id == id);
+            Participant participant = GetAllParticipants().SingleOrDefault(n => n.Id == personId);
             if (participant == null)
                 return false;
 
             participant.Comments = comments;
+            try
+            {
+                db.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return true;
+        }
+
+        public bool SaveWishesForParticipant(int personId, string wishes)
+        {
+            Participant participant = GetAllParticipants().SingleOrDefault(n => n.Id == personId);
+            if (participant == null)
+                return false;
+
+            participant.Wishes = wishes;
             try
             {
                 db.SaveChanges();
