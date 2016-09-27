@@ -31,11 +31,11 @@ textarea {
 
 /* CUSTOM ADDED */
 
-span.listedParticipantLink {
+.listedParticipantLink {
     text-decoration: underline;
     cursor: pointer;
 }
 
-span.listedParticipantRemove {
+.listedParticipantRemove {
     cursor: pointer;
 }

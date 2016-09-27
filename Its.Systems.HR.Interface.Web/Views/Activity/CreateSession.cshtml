@@ -13,7 +13,7 @@
 
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        
+
         <div class="form-group">
             <label for="Activity_Id" class="control-label col-md-2">Kurstillfälle för aktivitet</label>
             <div class="col-md-10">
@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
@@ -61,16 +61,16 @@
                 @Html.ValidationMessageFor(model => model.HrPerson.Id, "", new { @class = "text-danger" })
             </div>
         </div>
-        
+
         <div class="form-group">
             <label for="Participant_Id" class="control-label col-md-2">Lägg till deltagare</label>
             <div class="col-md-10">
                 @Html.DropDownListFor(n => n.SessionParticipants.First().Participant.Id, (IEnumerable<SelectListItem>)ViewBag.SessionParticipantId, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.SessionParticipants.First().Participant.Id, "", new { @class = "text-danger" })
-                <button class="btn btn-success" id="addParticipant">Lägg till deltagare</button>
+                <button type="button" class="btn btn-success js-add-participantBeforeSessionExists">Lägg till deltagare</button>
             </div>
         </div>
-        
+
         <div>
             @*@Html.Action("GetBookingData", new { eventId = @Model.Event.Id })*@
             <div class="col-md-2"></div>
@@ -96,25 +96,60 @@
 
             var listOfParticiantsThatParticipated = [];
 
-            $('#addParticipant').on('click', function (e) {
-                e.preventDefault();
-                var result = $('#Participant_Id :selected').text();
+            $('.js-add-participantBeforeSessionExists').on('click', function () {
+                //e.preventDefault();
+                var resultName = $('#Participant_Id :selected').text();
                 var resultId = $('#Participant_Id').val();
 
+                if ($.inArray(resultId, listOfParticiantsThatParticipated) > -1) {
+                    // TODO: Show dialog (already exists)
+                    return;
+                }
+
                 listOfParticiantsThatParticipated.push(resultId);
+                $('#AddedParticipants').val(listOfParticiantsThatParticipated);
 
-                $('#selectedParticipants').append('<li><span id="listedParticipantLink">' + result + '</span><span id="listedParticipantRemove" class="label label-warning pull-right">Ta bort</span></li>');
-                $('#Participant_Id option[value="' + resultId + '"]').remove();
+                $('#selectedParticipants').append('<li data-personId="' + resultId + '"><span class="listedParticipantLink">' + resultName + '</span><span class="label label-warning pull-right js-remove-participantBeforeSessionExists listedParticipantRemove">Ta bort</span></li>');
+                //$('#Participant_Id option[value="' + resultId + '"]').remove();
 
-                var currentVal = $('#AddedParticipants').val();
-                if (currentVal === "")
-                    $('#AddedParticipants').val(resultId);
-                else
-                    $('#AddedParticipants').val(currentVal + ',' + resultId);
+                //var currentVal = $('#AddedParticipants').val();
+                //if (currentVal === "")
+                //    $('#AddedParticipants').val(resultId);
+                //else
+                //    $('#AddedParticipants').val(currentVal + ',' + resultId);
+
+                console.log(listOfParticiantsThatParticipated);
+            });
+
+            $('body').on('click', '.js-remove-participantBeforeSessionExists', function (e) {
+
+                var link = $(e.target);
+                // get parent li data-personId
+                var resultId = link.parents("li").attr("data-personId");
+
+                var index = listOfParticiantsThatParticipated.indexOf(resultId);
+                if (index > -1) {
+                    listOfParticiantsThatParticipated.splice(index, 1);
+                    $('#AddedParticipants').val(listOfParticiantsThatParticipated);
+
+                    link.parents("li")
+                                    .fadeOut(function () {
+                                        $(this).remove();
+                                    });
+                }
+                //$('#Participant_Id option[value="' + resultId + '"]').remove();
+
+                //var currentVal = $('#AddedParticipants').val();
+                //if (currentVal === "")
+                //    $('#AddedParticipants').val(resultId);
+                //else
+                //    $('#AddedParticipants').val(currentVal + ',' + resultId);
+
+                console.log(listOfParticiantsThatParticipated);
             });
 
             $('body').on('click', '#listedParticipantLink', function () {
-                
+
                 window.location.href = "http://stackoverflow.com";
 
             });
