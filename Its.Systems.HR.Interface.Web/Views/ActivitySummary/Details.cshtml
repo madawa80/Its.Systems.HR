@@ -37,12 +37,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.SessionParticipants, htmlAttributes: new { @class = "control-label col-md-2" })
-                @*@foreach (var paticipant in @Model.SessionParticipants)
-                {
-                    <p> @paticipant </p>
-
-                }*@
-                
+               
                 <ul>
                     @foreach (var paticipant in @Model.SessionParticipants)
                 {
@@ -50,7 +45,7 @@
                         @paticipant.FullName
                     </li>*@
 
-                    @Html.ActionLink("<td>" + @paticipant.FullName + "</td>", "myaction", "ActivitySummary")
+                    @Html.ActionLink("<td>" + @paticipant.FullName + "</td>", "Details", "Participant")
                     }
                 </ul>
 

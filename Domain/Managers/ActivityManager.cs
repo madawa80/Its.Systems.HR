@@ -87,7 +87,7 @@ namespace Its.Systems.HR.Domain.Managers
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
 
@@ -106,7 +106,7 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<Session>().SingleOrDefault(n => n.Id == id);
         }
 
-       
+
         public IQueryable<Location> GetAllLocations()
         {
             return db.Get<Location>();
@@ -199,7 +199,6 @@ namespace Its.Systems.HR.Domain.Managers
                 return false;
             return true;
         }
-    }
         public bool SaveCommentsForSession(int id, string comments)
         {
             Session session = GetAllSessions().SingleOrDefault(n => n.Id == id);
@@ -244,6 +243,4 @@ namespace Its.Systems.HR.Domain.Managers
         }
 
     }
-
-
 }

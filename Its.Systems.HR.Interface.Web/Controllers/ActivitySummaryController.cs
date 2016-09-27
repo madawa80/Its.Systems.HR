@@ -120,19 +120,19 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             // TODO: Possible security risk here!?
             if (_manager.SaveCommentsForSession(sessionId, Request.Form["Comments"]))
-                return RedirectToAction("CreateActivitySummary", new { id = sessionId });
+                return RedirectToAction("Details", new { id = sessionId });
 
             // TODO: ErrorMessage
-            return RedirectToAction("CreateActivitySummary", new { id = sessionId});
+            return RedirectToAction("Details", new { id = sessionId});
         }
         public ActionResult SaveEvaluation(int sessionId)
         {
             // TODO: Possible security risk here!?
             if (_manager.SaveEvaluationForSession(sessionId, Request.Form["Comments"]))
-                return RedirectToAction("CreateActivitySummary", new { id = sessionId });
+                return RedirectToAction("Details", new { id = sessionId });
 
             // TODO: ErrorMessage
-            return RedirectToAction("CreateActivitySummary", new { id = sessionId });
+            return RedirectToAction("Details", new { id = sessionId });
         }
     }
 }

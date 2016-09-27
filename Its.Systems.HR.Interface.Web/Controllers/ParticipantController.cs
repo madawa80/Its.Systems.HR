@@ -14,14 +14,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
         private IActivityManager _activityManager;
         private IPersonManager _personManager;
-        //private readonly IDbRepository _repository;
-        //private IDbRepository _repo;
-
+       
         public ParticipantController(IActivityManager activityManager, IPersonManager personManager)
         {
             _activityManager = activityManager;
             _personManager = personManager;
-            //_repository = repository;
+            
         }
 
         // GET: Participant
