@@ -67,7 +67,9 @@
             <div class="col-md-10">
                 @Html.DropDownListFor(n => n.SessionParticipants.First().Participant.Id, (IEnumerable<SelectListItem>)ViewBag.SessionParticipantId, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.SessionParticipants.First().Participant.Id, "", new { @class = "text-danger" })
-                <button type="button" class="btn btn-success js-add-participantBeforeSessionExists">Lägg till deltagare</button>
+                <button type="button" class="btn btn-default js-add-participantBeforeSessionExists">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare
+                </button>
             </div>
         </div>
 
@@ -81,7 +83,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Skapa kurstillfälle" class="btn btn-default" />
+                <br/>
+                <input type="submit" value="Skapa kurstillfälle" class="btn btn-success"/>
             </div>
         </div>
     </div>

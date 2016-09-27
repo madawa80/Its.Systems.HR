@@ -95,15 +95,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 PersonId = personId,
                 SessionId = sessionId,
                 SessionName = session.Name,
-                Year = session.StartDate.Year,
-                Month = session.StartDate.Month,
-                Day = session.StartDate.Day,
+                StartDate = session.StartDate.ToShortDateString(),
+                //Year = session.StartDate.Year,
+                //Month = session.StartDate.Month,
+                //Day = session.StartDate.Day,
             };
 
             if (!_activityManager.AddParticipantToSession(personId, sessionId))
                 result = new { Success = false, ErrorMessage = "Personen är redan registrerad på kurstillfället.",
-                    PersonId = 0, SessionId = 0, SessionName = "", Year = 0, Month = 0, Day = 0};
-
+                    PersonId = 0, SessionId = 0, SessionName = "", StartDate = ""};
+            //, Year = 0, Month = 0, Day = 0
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
