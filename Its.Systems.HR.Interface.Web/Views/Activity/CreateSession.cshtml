@@ -96,27 +96,29 @@
 
             var listOfParticiantsThatParticipated = [];
 
-            $('.js-add-participantBeforeSessionExists').on('click', function () {
-                //e.preventDefault();
+            $('.js-add-participantBeforeSessionExists').on('click', function (e) {
+                var link = $(e.target);
                 var resultName = $('#Participant_Id :selected').text();
                 var resultId = $('#Participant_Id').val();
 
                 if ($.inArray(resultId, listOfParticiantsThatParticipated) > -1) {
-                    // TODO: Show dialog (already exists)
+
+                    link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">Redan tillagd!</span>');
+                    $(".js-fadeOutThisMessage").fadeOut(2000, function () {
+                        $(this).remove();
+                    });
                     return;
                 }
 
                 listOfParticiantsThatParticipated.push(resultId);
                 $('#AddedParticipants').val(listOfParticiantsThatParticipated);
 
-                $('#selectedParticipants').append('<li data-personId="' + resultId + '"><span class="listedParticipantLink">' + resultName + '</span><span class="label label-warning pull-right js-remove-participantBeforeSessionExists listedParticipantRemove">Ta bort</span></li>');
-                //$('#Participant_Id option[value="' + resultId + '"]').remove();
-
-                //var currentVal = $('#AddedParticipants').val();
-                //if (currentVal === "")
-                //    $('#AddedParticipants').val(resultId);
-                //else
-                //    $('#AddedParticipants').val(currentVal + ',' + resultId);
+                var html = '<li data-personId="' +
+                    resultId +
+                    '"><span class="listedParticipantLink">' +
+                    resultName +
+                    '</span><span class="label label-warning pull-right js-remove-participantBeforeSessionExists listedParticipantRemove">Ta bort</span></li>';
+                $(html).hide().appendTo("#selectedParticipants").fadeIn();
 
                 console.log(listOfParticiantsThatParticipated);
             });

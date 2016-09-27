@@ -136,7 +136,7 @@
                             });
 
                         } else {
-                            link.after(' <div class="alert alert-danger js-fadeOutThisMessage" role="alert">' + result.ErrorMessage + '</div>');
+                            link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">Finns redan!</span>');
 
                             $(".js-fadeOutThisMessage").fadeOut(2000, function () {
                                 $(this).remove();
