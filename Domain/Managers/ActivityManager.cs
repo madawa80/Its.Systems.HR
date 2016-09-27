@@ -137,5 +137,50 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
+        public bool SaveCommentsForSession(int id, string comments)
+        {
+            Session session = GetAllSessions().SingleOrDefault(n => n.Id == id);
+            if (session == null)
+                return false;
+
+            session.Comments = comments;
+            try
+            {
+                db.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return true;
+        }
+
+
+        public bool SaveEvaluationForSession(int id, string evaluation)
+        {
+            Session session = GetAllSessions().SingleOrDefault(n => n.Id == id);
+            if (session == null)
+                return false;
+
+            session.Evaluation = evaluation;
+            try
+            {
+                db.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return true;
+        }
+
     }
+
+
 }

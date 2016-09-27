@@ -24,7 +24,8 @@ namespace Its.Systems.HR.Domain.Model
         public int ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
 
-
+        public string Comments { get; set; }
+        public string Evaluation { get; set; }
         public virtual List<SessionParticipant> SessionParticipants { get; set; }
 
         //public List<Tag> Tags { get; set; }

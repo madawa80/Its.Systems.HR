@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Its.Systems.HR.Domain.Model
@@ -14,5 +15,7 @@ namespace Its.Systems.HR.Domain.Model
 
         public virtual Session Session { get; set; }
         public virtual Participant Participant { get; set; }
+
+      
     }
 }

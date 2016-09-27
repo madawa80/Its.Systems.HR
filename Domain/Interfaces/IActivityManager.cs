@@ -42,5 +42,9 @@ namespace Its.Systems.HR.Domain.Interfaces
         IQueryable<Location> GetAllLocations();
 
         IQueryable<Session> GetAllSessions();
+
+        bool SaveCommentsForSession(int id, string comments);
+
+        bool SaveEvaluationForSession(int id, string evaluation);
     }
 }

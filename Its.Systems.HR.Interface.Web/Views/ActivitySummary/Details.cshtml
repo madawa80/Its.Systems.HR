@@ -1,0 +1,102 @@
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.ActivitySummaryViewModel
+
+@{
+    ViewBag.Title = "Översikt Activitiet";
+}
+
+<h2>Skapa kurssammanfatning</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ActivityName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-04">
+
+                        @Html.DropDownListFor(n => n.ActivityId, Model.Activities, new { @class = "form-control" })
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SessionName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-04">
+                    @Html.DropDownListFor(n => n.SessionId, Model.Sessions, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SessionParticipants, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@foreach (var paticipant in @Model.SessionParticipants)
+                {
+                    <p> @paticipant </p>
+
+                }*@
+                
+                <ul>
+                    @foreach (var paticipant in @Model.SessionParticipants)
+                {
+                    @*<li>
+                        @paticipant.FullName
+                    </li>*@
+
+                    @Html.ActionLink("<td>" + @paticipant.FullName + "</td>", "myaction", "ActivitySummary")
+                    }
+                </ul>
+
+            </div>
+            
+            
+           
+
+            <div>
+                <p>Totalt antal deltagare: @Model.SessionParticipants.Count()</p>
+            </div>
+        </div>
+
+
+
+        <div class=".col-md-offset-4">
+            <div class="form-group">
+                <label for="Comments" class=".col-md-offset-4">Kommentarer</label>
+                @using (Html.BeginForm("SaveComments", "ActivitySummary", new { id = Model.SessionId }, FormMethod.Post))
+                {
+                    <div class=".col-md-offset-4">
+                        @Html.TextAreaFor(n => n.Comments, 10, 40, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                        <input type="submit" value="Spara kommentar" class="btn btn-success" />
+                    </div>
+                }
+            </div>
+        </div>
+        <div class=".col-md-offset-4">
+            @*<div class="form-group">*@
+            <label for="Evaluation" class=".col-md-offset-4">Utvärdering</label>
+            @using (Html.BeginForm("SaveEvaluation", "ActivitySummary", new { id = Model.SessionId }, FormMethod.Post))
+                {
+                <div class=".col-md-offset-4">
+                    @Html.TextAreaFor(n => n.Evaluation, 10, 40, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Evaluation, "", new { @class = "text-danger" })
+                    <input type="submit" value="Spara kommentar" class="btn btn-success" />
+                </div>
+            }
+            @*</div>*@
+
+        </div>
+
+    </div>
+
+
+}
+
+
