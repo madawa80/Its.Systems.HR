@@ -68,9 +68,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                                             allSessionsForActivityResult,
                                             "Id",
                                             "Name",
-                                            2),
+                                            session.Id),
 
-                SessionParticipants = _manager.GetAllParticipantsForSession(2).OrderBy(n => n.FirstName),
+                SessionParticipants = _manager.GetAllParticipantsForSession(session.Id).OrderBy(n => n.FirstName),
 
             };
 
