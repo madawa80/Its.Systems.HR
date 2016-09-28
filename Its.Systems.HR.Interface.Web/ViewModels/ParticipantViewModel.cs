@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
@@ -7,6 +8,12 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
     {
         public string Comments { get; set; }
         public string Evaluation { get; set; }
+
+        public DateTime StartDate{ get; set; }
+
+        public DateTime EndDate { get; set; }
+
+        public string HRPerson { get; set; }
 
         public int TotalPaticipants { get; set; }
         public int SessionId { get; set; }

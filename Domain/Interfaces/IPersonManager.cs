@@ -23,5 +23,6 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         bool SaveWishesForParticipant(int personId, string wishes);
 
+        HrPerson GetHRPersonById(int sessionId);
     }
 }
