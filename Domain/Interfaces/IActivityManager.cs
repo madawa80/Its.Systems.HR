@@ -49,5 +49,6 @@ namespace Its.Systems.HR.Domain.Interfaces
         bool SaveCommentsForSession(int id, string comments);
 
         bool SaveEvaluationForSession(int id, string evaluation);
+        int AddLocation(string location);
     }
 }

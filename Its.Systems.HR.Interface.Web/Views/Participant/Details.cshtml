@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <h4>Deltagit på följande kurstillfällen</h4>
+        <h3 class="m-b-30">Deltagit på följande kurstillfällen</h3>
         <ul id="allSessionsForParticipant">
             @foreach (var session in Model.Sessions)
             {
@@ -22,25 +22,24 @@
         <div id="statisticsSummary">
             @Html.Action("ParticipantStatisticSummary", new { personId = Model.PersonId })
         </div>
-    </div>
-    <div class="col-md-6 col-md-offset-1">
-        <div class="form-horizontal">
-            <div class="form-group">
-                <label for="Id" class="control-label col-md-3">Kurstillfällen</label>
-                <div class="col-md-9">
-                    @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })
-                    <button type="button" class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till kurstillfälle för person
-                    </button>
-                </div>
-            </div>
 
+        <div class="m-t-30">
+            @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })
+            <button type="button" class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till kurstillfälle för person
+            </button>
+        </div>
+
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <h3 class="m-b-30">Allmän information</h3>
+        <div>
             <div class="form-group">
-                <label for="Comments" class="control-label col-md-3">Kommentarer</label>
+                <label for="Comments" class="control-label">Kommentarer</label>
                 @*@using (Html.BeginForm("SaveComments", "Participant", routeValues: new { personId = Model.PersonId }, method: FormMethod.Post))
                     {*@
-                <div class="col-md-9">
+                <div>
                     @Html.TextAreaFor(n => n.Comments, 10, 40, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
                     <button type="button" class="btn btn-default js-save-participantComment" data-personId="@Model.PersonId">
@@ -51,10 +50,10 @@
             </div>
 
             <div class="form-group">
-                <label for="Wishes" class="control-label col-md-3">Önskemål</label>
+                <label for="Wishes" class="control-label">Önskemål</label>
                 @*@using (Html.BeginForm("SaveWishes", "Participant", routeValues: new { personId = Model.PersonId }, method: FormMethod.Post))
                     {*@
-                <div class="col-md-9">
+                <div>
                     @Html.TextAreaFor(n => n.Wishes, 10, 40, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Wishes, "", new { @class = "text-danger" })
                     <button type="button" class="btn btn-default js-save-participantWish" data-personId="@Model.PersonId">
@@ -152,7 +151,7 @@
                             });
 
                         } else {
-                            link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">Finns redan!</span>');
+                            link.after(' <div class="alert alert-danger js-fadeOutThisMessage" role="alert">Kurstillfället redan tillagt!</div>');
 
                             $(".js-fadeOutThisMessage").fadeOut(2000, function () {
                                 $(this).remove();

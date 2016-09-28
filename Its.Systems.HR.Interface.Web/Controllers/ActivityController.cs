@@ -208,7 +208,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //{
             //    LocationList = new SelectList(_manager.GetAllLocations(), "Id", "Name", 1)
             //};
-            ViewBag.LocationId = new SelectList(_manager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
+            //ViewBag.LocationId = new SelectList(_manager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
             ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", 1);
             ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", 1);
             ViewBag.SessionParticipantId = new SelectList(
@@ -245,13 +245,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                     var activityName = _manager.GetActivityById(sessionVm.Activity.Id).Name;
 
+                    int locationId = GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
+
                     var result = new Session()
                     {
                         Name = activityName + " " + sessionVm.Name,
                         ActivityId = sessionVm.Activity.Id,
                         StartDate = sessionVm.StartDate,
                         EndDate = sessionVm.EndDate,
-                        LocationId = sessionVm.Location.Id,
+                        LocationId = locationId,
                         HrPersonId = sessionVm.HrPerson.Id,
                         SessionParticipants = null,
                     };
@@ -282,6 +284,26 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ModelState.AddModelError("", "Aktiviteten existerar redan.");
             }
             return View(sessionVm);
+        }
+
+        private int GetIdForLocationOrCreateIfNotExists(string location)
+        {
+            // TODO MOVE TO MANAGER!
+            int resultId = -1;
+
+            Location locationExisting =
+                _manager.GetAllLocations().SingleOrDefault(n => n.Name.ToLower() == location.ToLower());
+
+            if (locationExisting == null)
+            {
+                resultId = _manager.AddLocation(location);
+            }
+            else
+            {
+                resultId = locationExisting.Id;
+            }
+
+            return resultId;
         }
     }
 }

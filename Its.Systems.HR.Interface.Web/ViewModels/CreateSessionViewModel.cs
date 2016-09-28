@@ -13,6 +13,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
     {
         //public int Id { get; set; }
         [Display(Name = "Namn på kurstillfälle")]
+        [Required]
         public string Name { get; set; }
 
         [DataType(DataType.Date)]
@@ -24,7 +25,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 
-        public Location Location { get; set; }
+        public string NameOfLocation { get; set; }
         [Required]
         public HrPerson HrPerson { get; set; }
         [Required]

@@ -242,5 +242,17 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
+        public int AddLocation(string location)
+        {
+            var result = new Location()
+            {
+                Name = location
+            };
+
+            db.Add<Location>(result);
+            db.SaveChanges();
+
+            return result.Id;
+        }
     }
 }

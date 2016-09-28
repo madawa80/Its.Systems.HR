@@ -25,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Exempel: 2017" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -47,12 +47,22 @@
         </div>
 
         <div class="form-group">
-            <label for="Location_Id" class="control-label col-md-2">Plats</label>
+            <label for="NameOfLocation" class="control-label col-md-2">Plats</label>
             <div class="col-md-10">
-                @Html.DropDownListFor(n => n.Location.Id, (IEnumerable<SelectListItem>)ViewBag.LocationId, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Location.Id, "", new { @class = "text-danger" })
+                @*@Html.TextBoxFor(n => n.NameOfLocation, new { @class = "form-control ui-autocomplete", @data-autocomplete = "@Url.Action("AutoCompleteLocations", "Home")" })*@
+                <input type="text" id="NameOfLocation" name="NameOfLocation" class="form-control ui-autocomplete"
+                       data-autocomplete="@Url.Action("AutoCompleteLocations", "Home")"/>
+                @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
             </div>
         </div>
+
+        @*<div class="form-group">
+                <label for="NameOfLocation_Id" class="control-label col-md-2">Plats</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(n => n.NameOfLocation.Id, (IEnumerable<SelectListItem>)ViewBag.NameOfLocationId, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
             <label for="HrPerson_Id" class="control-label col-md-2">Ansvarig HR</label>
@@ -83,8 +93,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <br/>
-                <input type="submit" value="Skapa kurstillfälle" class="btn btn-success"/>
+                <br />
+                <input type="submit" value="Skapa kurstillfälle" class="btn btn-success" />
             </div>
         </div>
     </div>
@@ -93,6 +103,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
     <script>
         $(function () {
@@ -160,23 +171,34 @@
             });
 
 
-            $('body').on('click', '#listedParticipantRemove', function () {
+            // AUTOCOMPLETE
+            // submits form upon selecting a value
+            var submitAutocompleteForm = function (event, ui) {
+                var $input = $(this); // the HTML element (Textbox)
 
-                window.location.href = "#";
-                listOfParticiantsThatParticipated
+                // selected value
+                $input.val(ui.item.label); // ui.item.label = the label value (product)
 
-            });
+                window.location.href = "/Product/Details?id=" + ui.item.label;
+            };
 
-            @*$("body").on("click", "#addParticipant", function() {
-                $.ajax({
-                    url: "/Activity/AddParticpant",
-                    type: "post",
-                    data: { participantId: @Model., activitySessionId:  }, //if you need to post Model data, use this
-                    success: function(result) {
-                        $("#addedParticipants").html(result);
-                    }
-                });
-            });*@
+            var createAutocomplete = function () {
+                var $input = $(this); // the HTML element (Textbox)
+
+                var options = {
+                    // selecting the source by finding elements with the 'data-' attribute
+                    source: $input.attr("data-autocomplete") // Required
+                    //select: submitAutocompleteForm // Optional
+                };
+
+                // apply options
+                $input.autocomplete(options);
+            };
+
+            // targets input elements with the 'data-' attributes and each time the input changes
+            // it calls the 'createAutocomplete' function
+            $("input[data-autocomplete]").each(createAutocomplete);
+
         });
     </script>
 
