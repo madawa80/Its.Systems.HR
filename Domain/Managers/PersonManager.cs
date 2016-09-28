@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Its.Systems.HR.Domain.Interfaces;
@@ -66,6 +67,13 @@ namespace Its.Systems.HR.Domain.Managers
         public Participant GetParticipantById(int id)
         {
             return db.Get<Participant>().SingleOrDefault(n => n.Id == id);
+        }
+
+
+        public HrPerson GetHRPersonById(int sessionId)
+        {
+            return db.Get<Session>().SingleOrDefault(n => n.Id == sessionId).HrPerson;
+
         }
 
 

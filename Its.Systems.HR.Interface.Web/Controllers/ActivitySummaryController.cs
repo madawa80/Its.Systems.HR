@@ -113,6 +113,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 Comments = theSession.Comments,
                 Evaluation = theSession.Evaluation,
+                StartDate = theSession.StartDate,
+                EndDate = theSession.EndDate,
+                //HRPerson = _personManager.GetHRPersonById(sessionId).FullName,
                 TotalPaticipants =allParticipant.Count,
                 Participants = allParticipant,
                 SessionName = theSession.Name,
