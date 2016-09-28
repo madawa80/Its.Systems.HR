@@ -25,17 +25,63 @@ textarea {
 
 /* BOOTSTRAP OVERRIDES */
 
-/*body {
-    font-size: 17px;
-}*/
+body {
+    font-size: 16px;
+    font-family: Verdana, sans-serif;
+}
+
+.form-control {
+    font-size: 16px;
+    font-family: Verdana, sans-serif;
+}
+
+.btn {
+    font-size: 16px;
+    font-family: Verdana, sans-serif;
+}
+
+.navbar-inverse {
+    background-color: #444;
+    border-color: #444;
+}
+
+    .navbar-inverse .navbar-nav > li > a {
+        color: white;
+    }
+
+        .navbar-inverse .navbar-nav > li > a:hover {
+            background-color: #00a0e6;
+        }
+
+    .navbar-inverse .navbar-brand {
+        color: white;
+    }
+
+    .navbar-inverse .navbar-nav > .dropdown > a .caret {
+        border-top-color: white;
+        border-bottom-color: white;
+    }
 
 /* CUSTOM ADDED */
 
-span.listedParticipantLink {
+.listedParticipantLink {
     text-decoration: underline;
     cursor: pointer;
 }
 
-span.listedParticipantRemove {
+.listedParticipantRemove {
     cursor: pointer;
+}
+
+footer {
+    /*background-color: #333;
+    background: linear-gradient(#333, #666);
+    color: white;*/
+    padding-top: 50px;
+    /*width: 100%;
+    margin-top: 100px;
+    height: 100px;
+    position: absolute;
+    bottom: 0;
+    left: 0;*/
 }

@@ -17,7 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("HR-app Kompetensutveckling", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("HR Kompetens", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -27,7 +27,7 @@
                     <li>@Html.ActionLink("Översikt aktiviteter", "Details", "ActivitySummary")</li>
                     <li>@Html.ActionLink("Översikt personer", "Index", "Participant")</li>
 
-                    <li class="dropdown">
+                    @*<li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Action</a></li>
@@ -36,7 +36,7 @@
                             <li role="separator" class="divider"></li>
                             <li><a href="#">Separated link</a></li>
                         </ul>
-                    </li>
+                    </li>*@
 
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -45,11 +45,13 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <footer>
-            <hr />
-            <p>&copy; @DateTime.Now.Year - ITS UmU</p>
-        </footer>
     </div>
+<footer>
+    <div class="container body-content">
+        <hr />
+        <p>&copy; @DateTime.Now.Year - ITS UmU</p>
+    </div>
+</footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

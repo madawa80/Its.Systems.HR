@@ -14,7 +14,7 @@
             {
                 <li>
                     <a href="@Url.Action("Index", "Home")">@session.Name</a>
-                    <span> (@session.StartDate.Year-@session.StartDate.Month-@session.StartDate.Day)</span>
+                    <span> (@session.StartDate.ToShortDateString())</span>
                     <span class="label label-warning pull-right listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort</span>
                 </li>
             }
@@ -26,8 +26,8 @@
     <div class="col-md-6 col-md-offset-1">
         <div class="form-horizontal">
             <div class="form-group">
-                <label for="Id" class="control-label col-md-2">Lägg till kurstillfälle</label>
-                <div class="col-md-10">
+                <label for="Id" class="control-label col-md-3">Kurstillfällen</label>
+                <div class="col-md-9">
                     @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })
                     <button type="button" class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
@@ -37,10 +37,10 @@
             </div>
 
             <div class="form-group">
-                <label for="Comments" class="control-label col-md-2">Kommentarer</label>
+                <label for="Comments" class="control-label col-md-3">Kommentarer</label>
                 @*@using (Html.BeginForm("SaveComments", "Participant", routeValues: new { personId = Model.PersonId }, method: FormMethod.Post))
                     {*@
-                <div class="col-md-10">
+                <div class="col-md-9">
                     @Html.TextAreaFor(n => n.Comments, 10, 40, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
                     <button type="button" class="btn btn-default js-save-participantComment" data-personId="@Model.PersonId">
@@ -51,10 +51,10 @@
             </div>
 
             <div class="form-group">
-                <label for="Wishes" class="control-label col-md-2">Önskemål</label>
+                <label for="Wishes" class="control-label col-md-3">Önskemål</label>
                 @*@using (Html.BeginForm("SaveWishes", "Participant", routeValues: new { personId = Model.PersonId }, method: FormMethod.Post))
                     {*@
-                <div class="col-md-10">
+                <div class="col-md-9">
                     @Html.TextAreaFor(n => n.Wishes, 10, 40, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Wishes, "", new { @class = "text-danger" })
                     <button type="button" class="btn btn-default js-save-participantWish" data-personId="@Model.PersonId">
@@ -77,35 +77,51 @@
             $("body").on("click", ".js-delete-sessionParticipant", function (e) {
                 var link = $(e.target);
 
-                if (confirm("Vill du verkligen ta bort detta kurstillfälle för personen?")) {
-                    $.ajax({
-                        url: "/Participant/RemovePersonFromSession",
-                        type: "POST",
-                        data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
-                        success: function (result) {
-                            link.parents("li")
-                                .fadeOut(function () {
-                                    $(this).remove();
 
-                                    $.ajax({
-                                        url: "/Participant/ParticipantStatisticSummary",
-                                        type: "GET",
-                                        data: { personId: link.attr("data-personId") },
-                                        success: function (result2) {
-                                            $("#statisticsSummary").html(result2);
-                                        },
-                                        error: function () {
-                                            alert("Anropet misslyckades, prova gärna igen.");
-                                        }
-                                    });
-                                });
+                bootbox.confirm({
+                    title: "Vänligen bekräfta",
+                    message: "Vill du verkligen ta bort detta kurstillfälle för personen?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
                         },
-                        error: function () {
-                            alert("Anropet misslyckades, prova gärna igen.");
+                        confirm: {
+                            label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
+                            className: 'btn-danger'
                         }
-                    });
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/Participant/RemovePersonFromSession",
+                                type: "POST",
+                                data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
+                                success: function () {
+                                    link.parents("li")
+                                        .fadeOut(function () {
+                                            $(this).remove();
 
-                }
+                                            $.ajax({
+                                                url: "/Participant/ParticipantStatisticSummary",
+                                                type: "GET",
+                                                data: { personId: link.attr("data-personId") },
+                                                success: function (result2) {
+                                                    $("#statisticsSummary").html(result2);
+                                                },
+                                                error: function () {
+                                                    alert("Anropet misslyckades, prova gärna igen.");
+                                                }
+                                            });
+                                        });
+                                },
+                                error: function () {
+                                    alert("Anropet misslyckades, prova gärna igen.");
+                                }
+                            });
+                        }
+                    }
+                });
+
             });
 
 
@@ -120,7 +136,7 @@
                     data: { sessionId: sessionId, personId: link.attr("data-personId") },
                     success: function (result) {
                         if (result.Success) {
-                            var html = '<li><a href="/Index/Home">' + result.SessionName + '</a><span> (' + result.Year + '-' + result.Month + '-' + result.Day + ')</span><span class="label label-warning pull-right listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></li>';
+                            var html = '<li><a href="/Index/Home">' + result.SessionName + '</a><span> (' + result.StartDate + ')</span><span class="label label-warning pull-right listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></li>';
                             $(html).hide().appendTo("#allSessionsForParticipant").fadeIn();
 
                             $.ajax({
@@ -136,7 +152,7 @@
                             });
 
                         } else {
-                            link.after(' <div class="alert alert-danger js-fadeOutThisMessage" role="alert">' + result.ErrorMessage + '</div>');
+                            link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">Finns redan!</span>');
 
                             $(".js-fadeOutThisMessage").fadeOut(2000, function () {
                                 $(this).remove();
@@ -155,7 +171,7 @@
                     type: "POST",
                     data: { personId: link.attr("data-personId"), comments: comments },
                     success: function () {
-                        link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Kommentarer sparade!</span>');
+                        link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Sparat!</span>');
 
                         $(".js-fadeOutThisMessage").fadeOut(2000, function () {
                             $(this).remove();
@@ -176,7 +192,7 @@
                     type: "POST",
                     data: { personId: link.attr("data-personId"), wishes: wishes },
                     success: function () {
-                        link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Önskemål sparade!</span>');
+                        link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Sparat!</span>');
 
                         $(".js-fadeOutThisMessage").fadeOut(2000, function () {
                             $(this).remove();

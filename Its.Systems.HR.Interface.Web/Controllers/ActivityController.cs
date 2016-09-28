@@ -223,7 +223,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSession(CreateSessionViewModel sessionVm)
         {
-            //var test = Request.Form["addedParticipantsSelectBox"];
+            var test = Request.Form["AddedParticipants"];
 
             try
             {
