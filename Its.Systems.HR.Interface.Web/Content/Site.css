@@ -30,20 +30,22 @@ textarea {
 }
 
 .ui-widget-content {
-    background-color: #444;
-    color: white;
+    background-color: #c4c4c4;
+    color: #484848;
     width: 150px;
     padding: 10px;
-    /*border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;*/
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
     .ui-widget-content li {
         list-style: none;
+        padding: 3px;
     }
 
     .ui-widget-content li:hover {
-        color: #00a0e6;
+        color: white;
+        background-color: #00a0e6;
         list-style: none;
         cursor: pointer;
     }

@@ -108,6 +108,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var theSession = _activityManager.GetSessionById(sessionId);
 
+            if (theSession == null)
+                return PartialView("_NothingPartial");
+
             var allParticipant = _activityManager.GetAllParticipantsForSession(sessionId).ToList();
             var result = new ParticipantViewModel()
             {
