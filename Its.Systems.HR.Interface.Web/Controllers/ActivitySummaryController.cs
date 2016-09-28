@@ -106,15 +106,17 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult GetParticipants(int sessionId)
         {
+            var theSession = _activityManager.GetSessionById(sessionId);
+
             var allParticipant = _activityManager.GetAllParticipantsForSession(sessionId).ToList();
             var result = new ParticipantViewModel()
             {
-                Comments = "",
-                Evaluation = "",
+                Comments = theSession.Comments,
+                Evaluation = theSession.Evaluation,
                 TotalPaticipants =allParticipant.Count,
                 Participants = allParticipant,
-                SessionName = _activityManager.GetSessionById(sessionId).Name
-
+                SessionName = theSession.Name,
+                SessionId = sessionId,
             };
 
             return PartialView("_ParticipantPartial", result);

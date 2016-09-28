@@ -133,10 +133,4 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return PartialView("_ParticipantStatisticSummaryPartial", result);
         }
     }
-
-    public class ParticipantStatisticSummaryViewModel
-    {
-        public int TotalCount { get; set; }
-        public int CountThisYear { get; set; }
-    }
 }
