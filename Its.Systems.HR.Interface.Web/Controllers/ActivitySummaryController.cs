@@ -28,24 +28,28 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         // GET: Participant/Details/5
         public ActionResult Details(int? id)
         {
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
+          
+            Activity activity;
+            if (id != null)
+            {
+                activity = _activityManager.GetAllActivities().SingleOrDefault(n => n.Id == id);
+            }
 
-            Activity activity = _activityManager.GetAllActivities().SingleOrDefault(n => n.Id == id);
-
+            else
+            {
+                activity = _activityManager.GetAllActivities().OrderBy(n=>n.Name).FirstOrDefault();
+            }
 
             if (activity == null)
             {
                 return HttpNotFound();
             }
 
-            var allSessionsForActivityResult = new List<Session>();
-            var allSessionsForActivity = _activityManager.GetAllSessionsForActivity(activity.Id).OrderBy(n => n.Name).ToList();
+            //var allSessionsForActivityResult = new List<Session>();
+            //var allSessionsForActivity = _activityManager.GetAllSessionsForActivity(activity.Id).OrderBy(n => n.Name).ToList();
 
-            if (allSessionsForActivity.Count != 0)
-                allSessionsForActivityResult = allSessionsForActivity;
+            //if (allSessionsForActivity.Count != 0)
+            //    allSessionsForActivityResult = allSessionsForActivity;
 
             var viewModel = new ActivitySummaryViewModel()
             {
@@ -107,68 +111,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 Comments = "",
                 Evaluation = "",
-                Participants = allParticipant
+                TotalPaticipants =allParticipant.Count,
+                Participants = allParticipant,
+                SessionName = _activityManager.GetSessionById(sessionId).Name
+
             };
 
             return PartialView("_ParticipantPartial", result);
         }
 
-        //public ActionResult GetPaticipants([Bind(Include = "SessionId")]ViewModels.ActivitySummaryViewModel sumpaticipants)
-        //{
-
-        //    //var paticipants = new List<Participant>();
-        //    var paticipants = _activityManager.GetAllParticipantsForSession(sumpaticipants.SessionId).OrderBy(n => n.FirstName);
-        //    SelectList obgpaticipants = new SelectList(paticipants, "Id", "Name", 0);
-        //    return Json(obgpaticipants);
-        //}
-
-        //public ActionResult Delete(int? id, bool? saveChangesError = false)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    if (saveChangesError.GetValueOrDefault())
-        //    {
-        //        ViewBag.ErrorMessage = "Radera misslyckades. Försök igen, och om problemet kvarstår se systemadministratören .";
-        //    }
-        //    var paticipant = _personManager.GetParticipantById(id.Value);
-        //    var result = new ActivitySummaryViewModel();
-        //    var fullname = paticipant.GetParticipantFullName();
-        //    fullname = result.PaticipantName;
-        //    if (paticipant == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(result);
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id)
-        //{
-        //    try
-        //    {
-        //        var paticipant = _personManager.GetParticipantById(id);
-        //        _personManager.DeletePaticipantById(id);
-        //    }
-        //    catch (RetryLimitExceededException/* dex */)
-        //    {
-
-        //        return RedirectToAction("Delete", new { id = id, saveChangesError = true });
-        //    }
-        //   return RedirectToAction("Index");
-        //}
-        //public ActionResult RemovePersonFromSession(int sessionId, int personId)
-        //{
-        //    var result = new { Success = true };
-
-
-        //    if (!_activityManager.RemoveParticipantFromSession(personId, sessionId))
-        //        result = new { Success = false };
-
-        //    return Json(result, JsonRequestBehavior.AllowGet);
-        //}
-
+      
         [HttpPost]
         public ActionResult SaveComments(int sessionId, string comments)
         {

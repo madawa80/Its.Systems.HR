@@ -13,196 +13,125 @@
 
     <div class="row">
 
-        <div class="col-md-6">
+        <P>Activitet</P>
+        @Html.DropDownListFor(n => n.Activities, Model.Activities, new { @class = "form-control", onchange = "javascript:getSessions(this.value);" })
 
-            <P>Activitet</P>
-            @Html.DropDownListFor(n => n.Activities, Model.Activities, new { @class = "form-control", onchange = "javascript:getSessions(this.value);" })
-            @*@Html.DropDownListFor(m => m.Activities, Model.Activities, new { @id = "ddlactivity", @style = "width:200px;", @onchange = "GetSessions(this.value);" })
-                <br />
-                <br />
-                <select id="ddlsession" name="ddlsession" style="width: 200px"></select>
+        <P>Kurstillfälle</P>
+        <select id="sessionsDropdown" name="sessionsDropdown" class="form-control" onchange="javascript: getPaticipants(this.value);"></select>
 
-                <br /><br />*@
+    </div>
 
-            <P>Kurstillfälle</P>
-            <select id="sessionsDropdown" name="sessionsDropdown" class="form-control" onchange="javascript: getPaticipants(this.value);"></select>
+    <div class="row">
+        <div id="participantsPartial">
+            <h4>Listar deltagare osv:</h4>
+        </div>
 
-            <div id="participantsPartial">
-                <h4>Listar deltagare osv:</h4>
-            </div>
-
-
-            @*@Html.DropDownListFor(n => n.SessionId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control" })*@
-            @*@Html.DropDownListFor(m => m.Sessions, Model.Sessions, new { @id = "ddlsession", @style = "width:200px;", @onchange = "GetPaticipants(this.value);" })
-                <br />
-                <br />
-                <select id="ddlpaticipant" name="ddlpaticipant" style="width: 200px"></select>*@
-
-
-            @*<P>Deltagarna</P>
-                <ul>
-                    @foreach (var paticipant in @Model.SessionParticipants)
-                    {
-                        <li>
-                            @*@*@*@Html.ActionLink(@paticipant, "Details", "Participant")*@
-                            @*</li>
-
-
-                                    }
-                                </ul>*@*@*@*@
-
-
-                                @*<div class="form-group">
-                                        <div class="col-md-4">
-                                            <p>Totalt antal deltagare: @Model.SessionParticipants.Count()</p>
-                                        </div>
-                                    </div>*@
-
-                            </div>
-
-
-
-
-                            @*<div class="col-md-6">
-
-
-                                    <div class="form-horizontal">
-
-                                        <div class="form-group">
-                                            <label for="Comments" class="control-label col-md-2">Kommentarer</label>
-                                            <div class="col-md-10">
-                                                @Html.TextAreaFor(n => n.Comments, 10, 40, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
-                                                <button type="button" class="btn btn-default js-save-sessionComment" data-personId="@Model.SessionId">
-                                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Spara kommentar
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="Evaluation" class="control-label col-md-2">Utvärdering</label>
-                                            <div class="col-md-10">
-                                                @Html.TextAreaFor(n => n.Evaluation, 10, 40, new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.Evaluation, "", new { @class = "text-danger" })
-                                                <button type="button" class="btn btn-default js-save-sessionEvaluation" data-personId="@Model.SessionId">
-                                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Spara Utvärdering
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>*@
-
-                        </div>
-
+    </div>
 
 }
 
-@section scripts {
+        @section scripts {
 
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    <script>
-        function myFunction() {
-            alert("test");
-        }
+            <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+            <script>
+                
+                function getSessions(_ActivityId) {
+                    var procemessage = "<option value='0'> Please wait...</option>";
+                    $("#sessionsDropdown").html(procemessage).show();
+                    var url = "/ActivitySummary/GetSessions/";
 
-        function getSessions(_ActivityId) {
-            var procemessage = "<option value='0'> Please wait...</option>";
-            $("#sessionsDropdown").html(procemessage).show();
-            var url = "/ActivitySummary/GetSessions/";
+                    $.ajax({
+                        url: url,
+                        data: { activityid: _ActivityId },
+                        cache: false,
+                        type: "POST",
+                        success: function (data) {
+                            var markup = "<option value='0'>Välja activitet</option>";
+                            //var markup = "";
+                            for (var x = 0; x < data.length; x++) {
+                                markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                            }
+                            $("#sessionsDropdown").html(markup).show();
+                            $("#participantsPartial").html(" ");
 
-            $.ajax({
-                url: url,
-                data: { activityid: _ActivityId },
-                cache: false,
-                type: "POST",
-                success: function (data) {
-                    var markup = "<option value='0'>Välja activitet</option>";
-                    //var markup = "";
-                    for (var x = 0; x < data.length; x++) {
-                        markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
-                    }
-                    $("#sessionsDropdown").html(markup).show();
-                },
-                error: function (reponse) {
-                    alert("error : " + reponse);
+                        },
+
+                        error: function (reponse) {
+                            alert("error : " + reponse);
+                        }
+                    });
+
                 }
-            });
 
-        }
+                function getPaticipants(_SessionId) {
+                 var url = "/ActivitySummary/GetParticipants/";
 
-        function getPaticipants(_SessionId) {
-            //var procemessage = "<option value='0'> Please wait...</option>";
-            //$("#sessionsDropdown").html(procemessage).show();
-            var url = "/ActivitySummary/GetParticipants/";
+                    $.ajax({
+                        url: url,
+                        data: { sessionId: _SessionId },
+                        cache: false,
+                        type: "POST",
+                        success: function (data) {
+                            $("#participantsPartial").html(data);
+                        },
+                        error: function (reponse) {
+                            alert("error : " + reponse);
+                        }
+                    });
 
-            $.ajax({
-                url: url,
-                data: { sessionId: _SessionId },
-                cache: false,
-                type: "POST",
-                success: function (data) {
-                    $("#participantsPartial").html(data);
-                },
-                error: function (reponse) {
-                    alert("error : " + reponse);
                 }
-            });
 
+                //$(document).ready(function () {
+
+
+                   
+
+
+
+
+
+                    $(".js-save-sessionComment").click(function (e) {
+                        var link = $(e.target);
+                        var comments = $("#Comments").val();
+
+                        $.ajax({
+                            url: "/ActivitySummary/SaveComments",
+                            type: "POST",
+                            data: { sessionId: link.attr("data-sessionId"), comments: comments },
+                            success: function () {
+                                link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Kommentarer sparade!</span>');
+
+                                $(".js-fadeOutThisMessage").fadeOut(2000, function () {
+                                    $(this).remove();
+                                });
+                            },
+                            error: function () {
+                                alert("Anropet misslyckades, prova gärna igen.");
+                            }
+                        });
+                    });
+
+                    $(".js-save-sessionEvaluation").click(function (e) {
+                        var link = $(e.target);
+                        var evaluation = $("#Utvärdering").val();
+
+                        $.ajax({
+                            url: "/ActivitySummary/SaveEvaluation",
+                            type: "POST",
+                            data: { sessionId: link.attr("data-sessionId"), evaluation: evaluation },
+                            success: function () {
+                                link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Utvärdering sparade!</span>');
+
+                                $(".js-fadeOutThisMessage").fadeOut(2000, function () {
+                                    $(this).remove();
+                                });
+                            },
+                            error: function () {
+                                alert("Anropet misslyckades, prova gärna igen.");
+                            }
+                        });
+                    });
+
+               // });
+            </script>
         }
-
-        $(document).ready(function () {
-
-
-            //getSessions(2);
-
-
-
-
-
-            //$(".js-save-sessionComment").click(function (e) {
-            //    var link = $(e.target);
-            //    var comments = $("#Comments").val();
-
-            //    $.ajax({
-            //        url: "/ActivitySummary/SaveComments",
-            //        type: "POST",
-            //        data: { sessionId: link.attr("data-sessionId"), comments: comments },
-            //        success: function () {
-            //            link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Kommentarer sparade!</span>');
-
-            //            $(".js-fadeOutThisMessage").fadeOut(2000, function () {
-            //                $(this).remove();
-            //            });
-            //        },
-            //        error: function () {
-            //            alert("Anropet misslyckades, prova gärna igen.");
-            //        }
-            //    });
-            //});
-
-            //$(".js-save-sessionEvaluation").click(function (e) {
-            //    var link = $(e.target);
-            //    var evaluation = $("#Utvärdering").val();
-
-            //    $.ajax({
-            //        url: "/ActivitySummary/SaveEvaluation",
-            //        type: "POST",
-            //        data: { sessionId: link.attr("data-sessionId"), evaluation: evaluation },
-            //        success: function () {
-            //            link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Utvärdering sparade!</span>');
-
-            //            $(".js-fadeOutThisMessage").fadeOut(2000, function () {
-            //                $(this).remove();
-            //            });
-            //        },
-            //        error: function () {
-            //            alert("Anropet misslyckades, prova gärna igen.");
-            //        }
-            //    });
-            //});
-
-        });
-    </script>
-}
