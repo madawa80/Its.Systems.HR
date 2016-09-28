@@ -28,10 +28,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         // GET: Participant/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
 
             Activity activity = _manager.GetAllActivities().SingleOrDefault(n => n.Id == id);
             Session session = _manager.GetAllSessions().SingleOrDefault(n => n.Id == id);
@@ -64,75 +64,127 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                                             "Name",
                                             _manager.GetAllActivities().OrderBy(n => n.Name).First().Id),
 
-                Sessions = new SelectList(
-                                            allSessionsForActivityResult,
-                                            "Id",
-                                            "Name",
-                                            session.Id),
+                //Sessions = new SelectList(
+                //                            allSessionsForActivityResult,
+                //                            "Id",
+                //                            "Name",
+                //                            session.Id),
 
-                SessionParticipants = _manager.GetAllParticipantsForSession(session.Id).OrderBy(n => n.FirstName),
+                //SessionParticipants = _manager.GetAllParticipantsForSession(session.Id).OrderBy(n => n.FirstName),
 
             };
 
             return View(viewModel);
         }
-    
 
-        public ActionResult Delete(int? id, bool? saveChangesError = false)
+        public ActionResult GetSessions([Bind(Include = "ActivityId")]ViewModels.ActivitySummaryViewModel sumsessions)
         {
-            if (id == null)
+
+            var allSessionsForActivityResult = new List<Session>();
+            var allSessionsForActivity = _manager.GetAllSessionsForActivity(sumsessions.ActivityId).OrderBy(n => n.Name).ToList();
+
+            SelectList obgsessions;
+            if (allSessionsForActivity.Count != 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+                List<Session> sessions = new List<Session>();
+                sessions = _manager.GetAllSessionsForActivity(sumsessions.ActivityId).ToList();
+                obgsessions = new SelectList(sessions, "Id", "Name", 0);
+                
             }
-            if (saveChangesError.GetValueOrDefault())
+            else
             {
-                ViewBag.ErrorMessage = "Radera misslyckades. Försök igen, och om problemet kvarstår se systemadministratören .";
+                obgsessions = new SelectList(new List<SelectListItem>(), "Id", "Name", 0);
             }
-            var paticipant = _personManager.GetParticipantById(id.Value);
-            var result = new ActivitySummaryViewModel();
-            var fullname = paticipant.GetParticipantFullName();
-            fullname = result.PaticipantName;
-            if (paticipant == null)
-            {
-                return HttpNotFound();
-            }
-            return View(result);
+            
+
+            return Json(obgsessions);
+
         }
+
+        public ActionResult GetPaticipants([Bind(Include = "SessionId")]ViewModels.ActivitySummaryViewModel sumpaticipants)
+        {
+
+            //var paticipants = new List<Participant>();
+            var paticipants = _manager.GetAllParticipantsForSession(sumpaticipants.SessionId).OrderBy(n => n.FirstName);
+            SelectList obgpaticipants = new SelectList(paticipants, "Id", "Name", 0);
+            return Json(obgpaticipants);
+        }
+
+        //public ActionResult Delete(int? id, bool? saveChangesError = false)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    if (saveChangesError.GetValueOrDefault())
+        //    {
+        //        ViewBag.ErrorMessage = "Radera misslyckades. Försök igen, och om problemet kvarstår se systemadministratören .";
+        //    }
+        //    var paticipant = _personManager.GetParticipantById(id.Value);
+        //    var result = new ActivitySummaryViewModel();
+        //    var fullname = paticipant.GetParticipantFullName();
+        //    fullname = result.PaticipantName;
+        //    if (paticipant == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(result);
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id)
+        //{
+        //    try
+        //    {
+        //        var paticipant = _personManager.GetParticipantById(id);
+        //        _personManager.DeletePaticipantById(id);
+        //    }
+        //    catch (RetryLimitExceededException/* dex */)
+        //    {
+
+        //        return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+        //    }
+        //   return RedirectToAction("Index");
+        //}
+        //public ActionResult RemovePersonFromSession(int sessionId, int personId)
+        //{
+        //    var result = new { Success = true };
+
+
+        //    if (!_manager.RemoveParticipantFromSession(personId, sessionId))
+        //        result = new { Success = false };
+
+        //    return Json(result, JsonRequestBehavior.AllowGet);
+        //}
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public ActionResult SaveComments(int sessionId, string comments)
         {
-            try
-            {
-                var paticipant = _personManager.GetParticipantById(id);
-                _personManager.DeletePaticipantById(id);
-            }
-            catch (RetryLimitExceededException/* dex */)
-            {
-
-                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
-            }
-           return RedirectToAction("Index");
-        }
-
-
-        public ActionResult SaveComments(int sessionId)
-        {
-            // TODO: Possible security risk here!?
-            if (_manager.SaveCommentsForSession(sessionId, Request.Form["Comments"]))
-                return RedirectToAction("Details", new { id = sessionId });
+            var result = new { Success = true };
+            if (_manager.SaveCommentsForSession(sessionId, comments))
+                return Json(result, JsonRequestBehavior.AllowGet);
 
             // TODO: ErrorMessage
-            return RedirectToAction("Details", new { id = sessionId});
+            result = new { Success = false };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult SaveEvaluation(int sessionId)
-        {
-            // TODO: Possible security risk here!?
-            if (_manager.SaveEvaluationForSession(sessionId, Request.Form["Comments"]))
-                return RedirectToAction("Details", new { id = sessionId });
 
-            // TODO: ErrorMessage
-            return RedirectToAction("Details", new { id = sessionId });
+        [HttpPost]
+        public ActionResult SaveEvaluation(int sessionId, string evaluation)
+        {
+            var result = new { Success = true };
+
+            if (_manager.SaveEvaluationForSession(sessionId, evaluation))
+                return Json(result, JsonRequestBehavior.AllowGet);
+
+            result = new { Success = false };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+
+       
+
+
     }
 }

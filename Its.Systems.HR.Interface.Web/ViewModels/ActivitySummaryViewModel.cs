@@ -22,7 +22,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public string Evaluation { get; set; }
         public IEnumerable<SelectListItem> Activities { get; set; }
         public IEnumerable<SelectListItem> Sessions { get; set; }
-        public IEnumerable<Participant> SessionParticipants { get; set; }
+        public List<SelectListItem> SessionParticipants { get; set; }
 
     }
 }
