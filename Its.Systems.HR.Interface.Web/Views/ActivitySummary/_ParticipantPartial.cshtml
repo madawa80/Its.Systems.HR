@@ -1,0 +1,19 @@
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.ParticipantViewModel
+
+
+<table class="table">
+    <tr>
+        <th>
+            Namn
+        </th>
+    </tr>
+
+@foreach (var item in Model.Participants) {
+    <tr>
+        <td>
+            @item.FullName
+        </td>
+    </tr>
+}
+
+</table>

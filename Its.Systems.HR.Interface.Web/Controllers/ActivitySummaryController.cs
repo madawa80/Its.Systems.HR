@@ -13,12 +13,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 {
     public class ActivitySummaryController : Controller
     {
-        private IActivityManager _manager;
+        private IActivityManager _activityManager;
         private IPersonManager _personManager;
    
         public ActivitySummaryController(IActivityManager manager, IPersonManager personManager)
         {
-            _manager = manager;
+            _activityManager = manager;
             _personManager = personManager;
         
         }
@@ -33,36 +33,35 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             //}
 
-            Activity activity = _manager.GetAllActivities().SingleOrDefault(n => n.Id == id);
-            Session session = _manager.GetAllSessions().SingleOrDefault(n => n.Id == id);
-            Participant participant = _personManager.GetAllParticipants().SingleOrDefault(n => n.Id == id);
+            Activity activity = _activityManager.GetAllActivities().SingleOrDefault(n => n.Id == id);
 
-            if (activity == null || session== null || participant == null)
+
+            if (activity == null)
             {
                 return HttpNotFound();
             }
 
             var allSessionsForActivityResult = new List<Session>();
-            var allSessionsForActivity = _manager.GetAllSessionsForActivity(activity.Id).OrderBy(n => n.Name).ToList();
+            var allSessionsForActivity = _activityManager.GetAllSessionsForActivity(activity.Id).OrderBy(n => n.Name).ToList();
 
             if (allSessionsForActivity.Count != 0)
                 allSessionsForActivityResult = allSessionsForActivity;
 
             var viewModel = new ActivitySummaryViewModel()
             {
-                ActivityId = activity.Id,
-                ActivityName = activity.Name,
-                SessionId = session.Id,
-                SessionName = session.Name,
-                PaticipantId = participant.Id,
-                PaticipantName = participant.FullName,
-                Comments = session.Comments,
-                Evaluation = session.Evaluation,
+                //ActivityId = activity.Id,
+                //ActivityName = activity.Name,
+                //SessionId = session.Id,
+                //SessionName = session.Name,
+                //PaticipantId = participant.Id,
+                //PaticipantName = participant.FullName,
+                //Comments = session.Comments,
+                //Evaluation = session.Evaluation,
                 Activities= new SelectList(
-                                            _manager.GetAllActivities().OrderBy(n => n.Name),
+                                            _activityManager.GetAllActivities().OrderBy(n => n.Name),
                                             "Id",
                                             "Name",
-                                            _manager.GetAllActivities().OrderBy(n => n.Name).First().Id),
+                                            _activityManager.GetAllActivities().OrderBy(n => n.Name).First().Id),
 
                 //Sessions = new SelectList(
                 //                            allSessionsForActivityResult,
@@ -70,25 +69,25 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 //                            "Name",
                 //                            session.Id),
 
-                //SessionParticipants = _manager.GetAllParticipantsForSession(session.Id).OrderBy(n => n.FirstName),
+                //SessionParticipants = _activityManager.GetAllParticipantsForSession(session.Id).OrderBy(n => n.FirstName),
 
             };
 
             return View(viewModel);
         }
 
-        public ActionResult GetSessions([Bind(Include = "ActivityId")]ViewModels.ActivitySummaryViewModel sumsessions)
+        public ActionResult GetSessions(int activityId)
         {
 
             var allSessionsForActivityResult = new List<Session>();
-            var allSessionsForActivity = _manager.GetAllSessionsForActivity(sumsessions.ActivityId).OrderBy(n => n.Name).ToList();
+            var allSessionsForActivity = _activityManager.GetAllSessionsForActivity(activityId).OrderBy(n => n.Name).ToList();
 
             SelectList obgsessions;
             if (allSessionsForActivity.Count != 0)
             {
 
                 List<Session> sessions = new List<Session>();
-                sessions = _manager.GetAllSessionsForActivity(sumsessions.ActivityId).ToList();
+                sessions = _activityManager.GetAllSessionsForActivity(activityId).ToList();
                 obgsessions = new SelectList(sessions, "Id", "Name", 0);
                 
             }
@@ -99,17 +98,29 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             
 
             return Json(obgsessions);
-
         }
 
-        public ActionResult GetPaticipants([Bind(Include = "SessionId")]ViewModels.ActivitySummaryViewModel sumpaticipants)
+        public ActionResult GetParticipants(int sessionId)
         {
+            var allParticipant = _activityManager.GetAllParticipantsForSession(sessionId).ToList();
+            var result = new ParticipantViewModel()
+            {
+                Comments = "",
+                Evaluation = "",
+                Participants = allParticipant
+            };
 
-            //var paticipants = new List<Participant>();
-            var paticipants = _manager.GetAllParticipantsForSession(sumpaticipants.SessionId).OrderBy(n => n.FirstName);
-            SelectList obgpaticipants = new SelectList(paticipants, "Id", "Name", 0);
-            return Json(obgpaticipants);
+            return PartialView("_ParticipantPartial", result);
         }
+
+        //public ActionResult GetPaticipants([Bind(Include = "SessionId")]ViewModels.ActivitySummaryViewModel sumpaticipants)
+        //{
+
+        //    //var paticipants = new List<Participant>();
+        //    var paticipants = _activityManager.GetAllParticipantsForSession(sumpaticipants.SessionId).OrderBy(n => n.FirstName);
+        //    SelectList obgpaticipants = new SelectList(paticipants, "Id", "Name", 0);
+        //    return Json(obgpaticipants);
+        //}
 
         //public ActionResult Delete(int? id, bool? saveChangesError = false)
         //{
@@ -152,7 +163,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         //    var result = new { Success = true };
 
 
-        //    if (!_manager.RemoveParticipantFromSession(personId, sessionId))
+        //    if (!_activityManager.RemoveParticipantFromSession(personId, sessionId))
         //        result = new { Success = false };
 
         //    return Json(result, JsonRequestBehavior.AllowGet);
@@ -162,7 +173,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult SaveComments(int sessionId, string comments)
         {
             var result = new { Success = true };
-            if (_manager.SaveCommentsForSession(sessionId, comments))
+            if (_activityManager.SaveCommentsForSession(sessionId, comments))
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             // TODO: ErrorMessage
@@ -175,7 +186,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var result = new { Success = true };
 
-            if (_manager.SaveEvaluationForSession(sessionId, evaluation))
+            if (_activityManager.SaveEvaluationForSession(sessionId, evaluation))
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             result = new { Success = false };

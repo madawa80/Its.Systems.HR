@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
 {
@@ -12,6 +11,13 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
     {
 
 
+        public IEnumerable<SelectListItem> Activities { get; set; }
+        public SelectList Sessions { get; set; }
+
+    }
+
+    public class OldActivitySummaryViewModel
+    {
         public int ActivityId { get; set; }
         public string ActivityName { get; set; }
         public int SessionId { get; set; }
@@ -20,9 +26,6 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public string PaticipantName { get; set; }
         public string Comments { get; set; }
         public string Evaluation { get; set; }
-        public IEnumerable<SelectListItem> Activities { get; set; }
-        public IEnumerable<SelectListItem> Sessions { get; set; }
         public List<SelectListItem> SessionParticipants { get; set; }
-
     }
 }
