@@ -107,6 +107,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult GetParticipants(int sessionId)
         {
             var theSession = _activityManager.GetSessionById(sessionId);
+
+            if (theSession == null)
+                return PartialView("_NothingPartial");
+
             HrPerson HRPerson = _personManager.GetHRPersonById(theSession.HrPersonId);
             var allParticipant = _activityManager.GetAllParticipantsForSession(sessionId).ToList();
             var result = new ParticipantViewModel()

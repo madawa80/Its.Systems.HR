@@ -291,6 +291,7 @@
     <Content Include="Views\Participant\Details.cshtml" />
     <Content Include="Views\Participant\Index.cshtml" />
     <Content Include="Views\ActivitySummary\_ParticipantPartial.cshtml" />
+    <None Include="Views\ActivitySummary\_NothingPartial.cshtml" />
     <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>

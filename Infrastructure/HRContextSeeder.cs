@@ -37,6 +37,9 @@ namespace Its.Systems.HR.Infrastructure
                 new Location() {Name = "San Fransisco", Address = "Silicon Valley 123"},
                 new Location() {Name = "Berlin", Address = "Alexanderplatz 123"},
                 new Location() {Name = "London", Address = "Kings Cross 123"},
+                new Location() {Name = "Skavsta", Address = "Flygplatsvägen 123"},
+                new Location() {Name = "Skellefteå", Address = "Gata 123"},
+                new Location() {Name = "Karlskoga", Address = "Gata 123"},
             };
 
             foreach (var location in locations)
@@ -68,6 +71,8 @@ namespace Its.Systems.HR.Infrastructure
                 new HrPerson() {FirstName  = "Jan",LastName = "Petersson"},
                 new HrPerson() {FirstName = "Kim",LastName = "Henriksson"},
                 new HrPerson() {FirstName = "Linda",LastName = "Bengtsson"},
+                new HrPerson() {FirstName = "Ingen",LastName = "ansvarig"},
+
             };
 
             foreach (var HR in HRS)
@@ -78,6 +83,24 @@ namespace Its.Systems.HR.Infrastructure
             // Sessions
             var sessions = new List<Session>()
             {
+                new Session()
+                {
+                    Name = "AirHack PowerHackathon 2017",
+                    StartDate = GenerateRandomStartDate(),
+                    EndDate = GenerateRandomEndDate(),
+                    HrPerson = context.HrPersons.SingleOrDefault(n => n.FirstName == "Elina"),
+                    Location = context.Locations.SingleOrDefault(n => n.Name == "Stockholm"),
+                    Activity = context.Activities.SingleOrDefault(n => n.Name == "AirHack"),
+                },
+                new Session()
+                {
+                    Name = "Lunchföreläsning Kompetensutveckling i arbetet",
+                    StartDate = GenerateRandomStartDate(),
+                    EndDate = GenerateRandomEndDate(),
+                    HrPerson = context.HrPersons.SingleOrDefault(n => n.FirstName == "Elina"),
+                    Location = context.Locations.SingleOrDefault(n => n.Name == "Umeå"),
+                    Activity = context.Activities.SingleOrDefault(n => n.Name == "Lunchföreläsning"),
+                },
                 new Session()
                 {
                     Name = "JavaOne 2015",
@@ -96,6 +119,7 @@ namespace Its.Systems.HR.Infrastructure
                     Location = context.Locations.SingleOrDefault(n => n.Name == "Umeå"),
                     Activity = context.Activities.SingleOrDefault(n => n.Name == "JavaOne"),
                 },
+
             };
 
             foreach (var session in sessions)
@@ -140,6 +164,22 @@ namespace Its.Systems.HR.Infrastructure
                     FirstName  = "Joe",
                     LastName = "Root"
                 },
+                new Participant()
+                {
+                    FirstName  = "Linda",
+                    LastName = "Bengtsson"
+                },
+                new Participant()
+                {
+                    FirstName  = "Karin",
+                    LastName = "Andersson"
+                },
+                new Participant()
+                {
+                    FirstName  = "Pelle",
+                    LastName = "Persson"
+                },
+
             };
 
             foreach (var participant in participants)
@@ -168,7 +208,44 @@ namespace Its.Systems.HR.Infrastructure
                     ParticipantId = 1,
                     Session = context.Sessions.SingleOrDefault(n => n.Name=="JavaOne 2015"),
                     Rating = 3,
+                },
+                new SessionParticipant()
+                {
+                    ParticipantId = 5,
+                    Session = context.Sessions.SingleOrDefault(n => n.Name=="JavaOne 2015"),
+                    Rating = 2,
+                },
+                new SessionParticipant()
+                {
+                    ParticipantId = 2,
+                    Session = context.Sessions.SingleOrDefault(n => n.Name=="AirHack PowerHackathon 2017"),
+                    Rating = 3,
+                },
+                new SessionParticipant()
+                {
+                    ParticipantId = 3,
+                    Session = context.Sessions.SingleOrDefault(n => n.Name=="AirHack PowerHackathon 2017"),
+                    Rating = 5,
+                },
+                new SessionParticipant()
+                {
+                    ParticipantId = 4,
+                    Session = context.Sessions.SingleOrDefault(n => n.Name=="AirHack PowerHackathon 2017"),
+                    Rating = 3,
+                },
+                new SessionParticipant()
+                {
+                    ParticipantId = 5,
+                    Session = context.Sessions.SingleOrDefault(n => n.Name=="AirHack PowerHackathon 2017"),
+                    Rating = 3,
+                },
+                new SessionParticipant()
+                {
+                    ParticipantId = 1,
+                    Session = context.Sessions.SingleOrDefault(n => n.Name=="Lunchföreläsning Kompetensutveckling i arbetet"),
+                    Rating = 5,
                 }
+                
             };
 
             foreach (var sessionParticipant in sessionParticipants)
