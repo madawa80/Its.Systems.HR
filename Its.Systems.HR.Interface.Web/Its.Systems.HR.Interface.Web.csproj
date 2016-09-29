@@ -187,6 +187,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\ParticipantStatisticSummaryViewModel.cs" />
+    <Compile Include="Controllers\SessionSummaryStatisticsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -198,6 +199,7 @@
     <Compile Include="ViewModels\ListActivitiesViewModel.cs" />
     <Compile Include="ViewModels\ParticipantSummaryViewModel.cs" />
     <Compile Include="ViewModels\ParticipantViewModel.cs" />
+    <Compile Include="ViewModels\SessionSummaryStatistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker.css" />
