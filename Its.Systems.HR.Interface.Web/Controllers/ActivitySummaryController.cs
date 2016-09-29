@@ -107,7 +107,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult GetParticipants(int sessionId)
         {
             var theSession = _activityManager.GetSessionById(sessionId);
-
+            HrPerson HRPerson = _personManager.GetHRPersonById(theSession.HrPersonId);
             var allParticipant = _activityManager.GetAllParticipantsForSession(sessionId).ToList();
             var result = new ParticipantViewModel()
             {
@@ -115,7 +115,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Evaluation = theSession.Evaluation,
                 StartDate = theSession.StartDate,
                 EndDate = theSession.EndDate,
-                //HRPerson = _personManager.GetHRPersonById(sessionId).FullName,
+                HRPerson = HRPerson.FullName,
                 TotalPaticipants =allParticipant.Count,
                 Participants = allParticipant,
                 SessionName = theSession.Name,

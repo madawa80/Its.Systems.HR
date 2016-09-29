@@ -70,10 +70,18 @@ namespace Its.Systems.HR.Domain.Managers
         }
 
 
-        public HrPerson GetHRPersonById(int sessionId)
+        public HrPerson GetHRPersonById(int HrId)
         {
-            return db.Get<Session>().SingleOrDefault(n => n.Id == sessionId).HrPerson;
+            
 
+            //var query =
+            //(
+            //    from HR in db.Get<>()
+            //    join @event in _db.Events
+            //        on eventUser.EventId equals @event.Id
+            //    where eventUser.ProfileId == profileId
+            //    select Name
+                return db.Get<HrPerson>().SingleOrDefault(n => n.Id == HrId);
         }
 
 
