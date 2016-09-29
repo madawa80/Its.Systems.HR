@@ -134,3 +134,15 @@ footer {
 /*.js-fadeOutThisMessage {
     display: 
 }*/
+
+textarea.commentsWishes {
+    max-width: 450px;
+}
+
+.wide-textbox {
+    max-width: 450px;
+}
+
+.input-group {
+  max-width: 280px;
+}
