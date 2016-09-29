@@ -106,12 +106,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult GetParticipants(int sessionId)
         {
-            var theSession = _activityManager.GetSessionById(sessionId);
+            //var theSession = _activityManager.GetSessionById(sessionId);
+            var theSession = _activityManager.GetSessionByIdWithIncludes(sessionId);
 
             if (theSession == null)
                 return PartialView("_NothingPartial");
 
-            HrPerson HRPerson = _personManager.GetHRPersonById(theSession.HrPersonId);
+            //HrPerson HRPerson = _personManager.GetHRPersonById(theSession.HrPersonId);
             var allParticipant = _activityManager.GetAllParticipantsForSession(sessionId).ToList();
             var result = new ParticipantViewModel()
             {
@@ -119,8 +120,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Evaluation = theSession.Evaluation,
                 StartDate = theSession.StartDate,
                 EndDate = theSession.EndDate,
-                HRPerson = HRPerson.FullName,
-                TotalPaticipants =allParticipant.Count,
+                HRPerson = theSession.HrPerson.FullName,
+                Location = theSession.Location,
+                TotalPaticipants = allParticipant.Count,
                 Participants = allParticipant,
                 SessionName = theSession.Name,
                 SessionId = sessionId,

@@ -21,5 +21,6 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public string SessionName { get; set; }
 
         public List<Participant> Participants { get; set; }
+        public Location Location { get; set; }
     }
 }

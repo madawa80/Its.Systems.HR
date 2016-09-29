@@ -50,5 +50,6 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         bool SaveEvaluationForSession(int id, string evaluation);
         int AddLocation(string location);
+        Session GetSessionByIdWithIncludes(int sessionId);
     }
 }
