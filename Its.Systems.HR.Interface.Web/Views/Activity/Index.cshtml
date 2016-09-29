@@ -43,7 +43,7 @@
 
             <td>
                 @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Ta bort", "Delete", new { id = item.Id })
+                <a href="#" class="js-delete-activity" data-activityId="@item.Id">Ta bort</a>
             </td>
         </tr>
     }
@@ -56,16 +56,16 @@
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
 
 @section scripts {
-    
+
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    
+
     <script>
 
         $(document)
-            .ready(function() {
+            .ready(function () {
 
                 // submits form upon selecting a value
-                var submitAutocompleteForm = function(event, ui) {
+                var submitAutocompleteForm = function (event, ui) {
                     var $input = $(this); // the HTML element (Textbox)
 
                     // selected value
@@ -79,7 +79,7 @@
 
                     var options = {
                         // selecting the source by finding elements with the 'data-' attribute
-                        source: $input.attr("data-autocomplete"), // Required
+                        source: $input.attr("data-autocomplete") // Required
                         //select: submitAutocompleteForm // Optional
                     };
 
@@ -90,6 +90,45 @@
                 // targets input elements with the 'data-' attributes and each time the input changes
                 // it calls the 'createAutocomplete' function
                 $("input[data-autocomplete]").each(createAutocomplete);
+
+
+                $("body").on("click", ".js-delete-activity", function (e) {
+                    e.preventDefault();
+                    var link = $(e.target);
+
+                    bootbox.confirm({
+                        title: "Vänligen bekräfta",
+                        message: "Vill du verkligen ta bort den här aktiviteten?",
+                        buttons: {
+                            cancel: {
+                                label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
+                            },
+                            confirm: {
+                                label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "/Activity/DeleteActivity",
+                                    type: "POST",
+                                    data: { activityId: link.attr("data-activityId") },
+                                    success: function () {
+                                        link.parents("tr")
+                                            .fadeOut(function () {
+                                                $(this).remove();
+                                            });
+                                    },
+                                    error: function () {
+                                        alert("Anropet misslyckades, prova gärna igen.");
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+                });
 
             });
     </script>

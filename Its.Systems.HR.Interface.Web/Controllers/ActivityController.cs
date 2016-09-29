@@ -185,6 +185,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             return View(result);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
@@ -200,6 +201,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return RedirectToAction("Delete", new { id = id, saveChangesError = true });
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteActivity(int activityId)
+        {
+            if (!_manager.DeleteActivityById(activityId))
+                return new HttpNotFoundResult();
+
+            var result = new { Success = "True" };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult CreateSession()

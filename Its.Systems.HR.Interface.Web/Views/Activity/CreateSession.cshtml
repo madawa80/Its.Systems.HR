@@ -5,50 +5,50 @@
 }
 
 <h2>Skapa kurstillfälle</h2>
+<h4>Skapa ett nytt kurstillfälle till en aktivitet. Deltagare kan också läggas till efter tillfället är skapat!</h4>
 <hr />
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            <label for="Activity_Id" class="control-label col-md-2">Kurstillfälle för aktivitet</label>
-            <div class="col-md-10">
+            <label for="Activity_Id" class="control-label">Kurstillfälle för aktivitet</label>
+            <div>
                 @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>)ViewBag.ActivityId, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Activity.Id, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Name)
+            <div>
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Exempel: 2017" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.StartDate)
+            <div>
                 @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.EndDate)
+            <div>
                 @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <label for="NameOfLocation" class="control-label col-md-2">Plats</label>
-            <div class="col-md-10">
+            <label for="NameOfLocation">Plats</label>
+            <div>
                 @*@Html.TextBoxFor(n => n.NameOfLocation, new { @class = "form-control ui-autocomplete", @data-autocomplete = "@Url.Action("AutoCompleteLocations", "Home")" })*@
                 <input type="text" id="NameOfLocation" name="NameOfLocation" class="form-control ui-autocomplete"
                        data-autocomplete="@Url.Action("AutoCompleteLocations", "Home")"/>
@@ -57,24 +57,24 @@
         </div>
 
         @*<div class="form-group">
-                <label for="NameOfLocation_Id" class="control-label col-md-2">Plats</label>
-                <div class="col-md-10">
+                <label for="NameOfLocation_Id">Plats</label>
+                <div>
                     @Html.DropDownListFor(n => n.NameOfLocation.Id, (IEnumerable<SelectListItem>)ViewBag.NameOfLocationId, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })
                 </div>
             </div>*@
 
         <div class="form-group">
-            <label for="HrPerson_Id" class="control-label col-md-2">Ansvarig HR</label>
-            <div class="col-md-10">
+            <label for="HrPerson_Id">Ansvarig HR</label>
+            <div>
                 @Html.DropDownListFor(n => n.HrPerson.Id, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.HrPerson.Id, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <label for="Participant_Id" class="control-label col-md-2">Lägg till deltagare</label>
-            <div class="col-md-10">
+            <label for="Participant_Id">Lägg till deltagare</label>
+            <div>
                 @Html.DropDownListFor(n => n.SessionParticipants.First().Participant.Id, (IEnumerable<SelectListItem>)ViewBag.SessionParticipantId, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.SessionParticipants.First().Participant.Id, "", new { @class = "text-danger" })
                 <button type="button" class="btn btn-default js-add-participantBeforeSessionExists">
@@ -85,19 +85,22 @@
 
         <div>
             @*@Html.Action("GetBookingData", new { eventId = @Model.Event.Id })*@
-            <div class="col-md-2"></div>
-            <ul id="selectedParticipants" class="col-md-3">
+            <div></div>
+            <ul id="selectedParticipants">
                 @Html.HiddenFor(n => n.AddedParticipants)
             </ul>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <br />
-                <input type="submit" value="Skapa kurstillfälle" class="btn btn-success" />
+            <div class="m-t-50">
+                <button class="btn btn-default">
+                    <i class="glyphicon glyphicon-ok"></i> Skapa kurstillfälle
+                </button>
+                <a href="@Url.Action("Index")" class="btn btn-danger">
+                    <i class="glyphicon glyphicon-remove"></i> Avbryt
+                </a>
             </div>
         </div>
-    </div>
 }
 
 
@@ -131,10 +134,10 @@
                     resultId +
                     '"><span class="listedParticipantLink">' +
                     resultName +
-                    '</span><span class="label label-warning pull-right js-remove-participantBeforeSessionExists listedParticipantRemove">Ta bort</span></li>';
+                    '</span><span> </span><span class="badge js-remove-participantBeforeSessionExists listedParticipantRemove"> x </span></li>';
                 $(html).hide().appendTo("#selectedParticipants").fadeIn();
 
-                console.log(listOfParticiantsThatParticipated);
+                //console.log(listOfParticiantsThatParticipated);
             });
 
             $('body').on('click', '.js-remove-participantBeforeSessionExists', function (e) {
@@ -161,13 +164,20 @@
                 //else
                 //    $('#AddedParticipants').val(currentVal + ',' + resultId);
 
-                console.log(listOfParticiantsThatParticipated);
+                //console.log(listOfParticiantsThatParticipated);
             });
 
-            $('body').on('click', '#listedParticipantLink', function () {
+            $('body').on('click', '.listedParticipantLink', function (e) {
 
-                window.location.href = "http://stackoverflow.com";
+                var link = $(e.target);
+                // get parent li data-personId
+                var resultId = link.parents("li").attr("data-personId");
 
+                var url = "/Participant/Details/" + resultId;
+                window.open(
+                          url,
+                          "_blank"
+                        );
             });
 
 
