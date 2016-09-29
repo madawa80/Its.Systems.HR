@@ -18,9 +18,7 @@
     </table>
 
     <em>Total antal deltagare: @Model.TotalPaticipants</em>
-    <P>Ansvarig HR:@Model.HRPerson </P>
-    <P>Start Datum: @Model.StartDate.ToString("dd MMM yyyy hh:mm")</P>
-    <P>End Datum: @Model.EndDate.ToString("dd MMM yyyy hh:mm")</P>
+
 
 </div>
 <div class="col-md-6">
@@ -29,9 +27,9 @@
 
         <div class="panel panel-default wide-textbox">
             <div class="panel-body">
-                <p>Ansvarig HR:@Model.HRPerson </p>
-                <p>Startdatum: @Model.StartDate.ToString("HH:mm")</p>
-                <p>Slutdatum: @Model.EndDate.ToString("HH:mm")</p>
+                <p>Ansvarig HR: @Model.HRPerson </p>
+                <p>Startdatum: @Model.StartDate.ToString("dd MMM yyyy hh:mm")</p>
+                <p>Slutdatum: @Model.EndDate.ToString("dd MMM yyyy hh:mm")</p>
             </div>
         </div>
 
