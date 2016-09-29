@@ -142,3 +142,7 @@ textarea.commentsWishes {
 .wide-textbox {
     max-width: 450px;
 }
+
+.input-group {
+  max-width: 280px;
+}
