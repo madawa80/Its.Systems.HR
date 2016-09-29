@@ -254,5 +254,13 @@ namespace Its.Systems.HR.Domain.Managers
 
             return result.Id;
         }
+
+        public Session GetSessionByIdWithIncludes(int sessionId)
+        {
+            return db.Get<Session>()
+                .Include(n => n.Location)
+                .Include(n => n.HrPerson)
+                .SingleOrDefault(n => n.Id == sessionId);
+        }
     }
 }
