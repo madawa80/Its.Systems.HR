@@ -1,0 +1,38 @@
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.FilterSessionsViewModel
+
+@{
+    ViewBag.Title = "FilterSessions";
+}
+
+<h2>Filtrera kurstillfällen <span class="badge">DEBUG</span></h2>
+
+<table class="table">
+    <tr>
+        <th>Namn</th>
+        <th>Start</th>
+        <th>Slut</th>
+        <th>Hr-Person</th>
+        <th>Plats</th>
+    </tr>
+
+@foreach (var session in Model.Sessions) {
+    <tr>
+        <td>
+            @session.Name
+        </td>
+        <td>
+            @session.StartDate
+        </td>
+        <td>
+            @session.EndDate
+        </td>
+        <td>
+            @session.HrPerson.FullName
+        </td>
+        <td>
+            @session.Location.Name
+        </td>
+    </tr>
+}
+
+</table>

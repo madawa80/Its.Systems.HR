@@ -262,5 +262,13 @@ namespace Its.Systems.HR.Domain.Managers
                 .Include(n => n.HrPerson)
                 .SingleOrDefault(n => n.Id == sessionId);
         }
+
+        public IQueryable<Session> GetAllSessionsWithIncludes()
+        {
+            return db.Get<Session>()
+                .Include(n => n.Location)
+                .Include(n => n.HrPerson);
+            //.Include(n => n.SessionParticipants)
+        }
     }
 }

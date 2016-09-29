@@ -297,6 +297,31 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(sessionVm);
         }
 
+        public ViewResult FilterSessions()
+        {
+            var allSessions = _manager.GetAllSessionsWithIncludes();
+            
+
+            var result = new FilterSessionsViewModel() {Sessions = new List<Session>()};
+
+            foreach (var session in allSessions)
+            {
+                result.Sessions.Add(new Session()
+                {
+                    Id = session.Id,
+                    Name = session.Name,
+                    StartDate = session.StartDate,
+                    EndDate = session.EndDate,
+                    Location = session.Location,
+                    HrPerson = session.HrPerson
+                    // TODO: + Count of participants etc
+                });
+            }
+
+
+            return View(result);
+        }
+
         private int GetIdForLocationOrCreateIfNotExists(string location)
         {
             // TODO MOVE TO MANAGER!
