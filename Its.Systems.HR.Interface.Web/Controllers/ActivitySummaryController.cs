@@ -15,20 +15,17 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
         private IActivityManager _activityManager;
         private IPersonManager _personManager;
-   
+
         public ActivitySummaryController(IActivityManager manager, IPersonManager personManager)
         {
             _activityManager = manager;
             _personManager = personManager;
-        
         }
 
-     
 
         // GET: Participant/Details/5
         public ActionResult Details(int? id)
         {
-          
             Activity activity;
             if (id != null)
             {
@@ -37,7 +34,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             else
             {
-                activity = _activityManager.GetAllActivities().OrderBy(n=>n.Name).FirstOrDefault();
+                activity = _activityManager.GetAllActivities().OrderBy(n => n.Name).FirstOrDefault();
             }
 
             if (activity == null)
@@ -61,11 +58,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 //PaticipantName = participant.FullName,
                 //Comments = session.Comments,
                 //Evaluation = session.Evaluation,
-                Activities= new SelectList(
-                                            _activityManager.GetAllActivities().OrderBy(n => n.Name),
-                                            "Id",
-                                            "Name",
-                                            _activityManager.GetAllActivities().OrderBy(n => n.Name).First().Id),
+                Activities = new SelectList(
+                    _activityManager.GetAllActivities().OrderBy(n => n.Name),
+                    "Id",
+                    "Name",
+                    _activityManager.GetAllActivities().OrderBy(n => n.Name).First().Id),
 
                 //Sessions = new SelectList(
                 //                            allSessionsForActivityResult,
@@ -74,7 +71,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 //                            session.Id),
 
                 //SessionParticipants = _activityManager.GetAllParticipantsForSession(session.Id).OrderBy(n => n.FirstName),
-
             };
 
             return View(viewModel);
@@ -82,24 +78,22 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult GetSessions(int activityId)
         {
-
             var allSessionsForActivityResult = new List<Session>();
-            var allSessionsForActivity = _activityManager.GetAllSessionsForActivity(activityId).OrderBy(n => n.Name).ToList();
+            var allSessionsForActivity =
+                _activityManager.GetAllSessionsForActivity(activityId).OrderBy(n => n.Name).ToList();
 
             SelectList obgsessions;
             if (allSessionsForActivity.Count != 0)
             {
-
                 List<Session> sessions = new List<Session>();
                 sessions = _activityManager.GetAllSessionsForActivity(activityId).ToList();
                 obgsessions = new SelectList(sessions, "Id", "Name", 0);
-                
             }
             else
             {
                 obgsessions = new SelectList(new List<SelectListItem>(), "Id", "Name", 0);
             }
-            
+
 
             return Json(obgsessions);
         }
@@ -120,7 +114,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 StartDate = theSession.StartDate,
                 EndDate = theSession.EndDate,
                 HRPerson = HRPerson.FullName,
-                TotalPaticipants =allParticipant.Count,
+                TotalPaticipants = allParticipant.Count,
                 Participants = allParticipant,
                 SessionName = theSession.Name,
                 SessionId = sessionId,
@@ -129,34 +123,29 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return PartialView("_ParticipantPartial", result);
         }
 
-      
+
         [HttpPost]
         public ActionResult SaveComments(int sessionId, string comments)
         {
-            var result = new { Success = true };
+            var result = new {Success = true};
             if (_activityManager.SaveCommentsForSession(sessionId, comments))
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             // TODO: ErrorMessage
-            result = new { Success = false };
+            result = new {Success = false};
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public ActionResult SaveEvaluation(int sessionId, string evaluation)
         {
-            var result = new { Success = true };
+            var result = new {Success = true};
 
             if (_activityManager.SaveEvaluationForSession(sessionId, evaluation))
                 return Json(result, JsonRequestBehavior.AllowGet);
 
-            result = new { Success = false };
+            result = new {Success = false};
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-
-       
-
-
     }
 }
