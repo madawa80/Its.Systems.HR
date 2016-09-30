@@ -16,6 +16,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         private IActivityManager _activityManager;
         private IPersonManager _personManager;
+        List<int>  PaticipantCount = new List<int>();
 
         public SessionSummaryStatisticsController(IActivityManager manager, IPersonManager personManager)
         {
@@ -23,45 +24,36 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
         }
 
-        //public ActionResult Details(int? year)
-        //{
-        //    Session session;
+        public ActionResult Details(int year)
+        {
+           var years = Enumerable.Range(1960,140).ToList();
+           var sessionsForYear = _activityManager.GetAllSessionsForYear(year).OrderBy(n => n.Id);
 
-        //    activity = _activityManager.GetAllActivities().OrderBy(n => n.Name).FirstOrDefault();
-
-
-            //var viewModel = new SessionSummaryStatisticsViewModel()
-            //{
-            //    Year = activity.Id,
-            //    //ActivityName = activity.Name,
-            //    //SessionId = session.Id,
-            //    //SessionName = session.Name,
-            //    //PaticipantId = participant.Id,
-            //    //PaticipantName = participant.FullName,
-            //    //Comments = session.Comments,
-            //    //Evaluation = session.Evaluation,
-            //    Sessions = new SelectList(
-            //                               _activityManager.GetAllSessionsForYear(int Year).OrderBy(n => n.Name),
-            //                               "Id",
-            //                               "Name",
-            //                               _activityManager.GetAllActivities().OrderBy(n => n.Name).First().Id),
-
-            //    //Sessions = new SelectList(
-                //                            allSessionsForActivityResult,
-                //                            "Id",
-                //                            "Name",
-                //                            session.Id),
-
-                //SessionParticipants = _activityManager.GetAllParticipantsForSession(session.Id).OrderBy(n => n.FirstName),
-
-            //};
+            foreach (var session in sessionsForYear)
+            {
+                PaticipantCount.Add(_activityManager.GetAllParticipantsForSession(session.Id).Count());
+            }
 
 
+            var viewModel = new SessionSummaryStatisticsViewModel()
+            {
+                Years = years,
 
-            //return View();
+                Sessions = _activityManager.GetAllSessionsForYear(year).OrderBy(n => n.Id),
+
+                SessionParticipants = PaticipantCount,
+                
+            };
+            
+            return View(viewModel);
 
         }
 
-    }
+      }
 
-//}
+}
+
+
+
+
+

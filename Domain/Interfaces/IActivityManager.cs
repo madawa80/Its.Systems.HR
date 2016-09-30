@@ -53,5 +53,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         int AddLocation(string location);
         Session GetSessionByIdWithIncludes(int sessionId);
         IQueryable<Session> GetAllSessionsWithIncludes();
+
+        IQueryable<Session> GetAllSessionsForYear(int year);
     }
 }
