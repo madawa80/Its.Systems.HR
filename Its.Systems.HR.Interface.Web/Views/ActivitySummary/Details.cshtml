@@ -47,7 +47,7 @@
         function getSessions(_ActivityId) {
             var procemessage = "<option value='0'> Please wait...</option>";
             $("#sessionsDropdown").html(procemessage).show();
-            var url = "/ActivitySummary/GetSessions/";
+            var url = "@Url.Action("GetSessions", "ActivitySummary")";
 
             $.ajax({
                 url: url,
@@ -73,7 +73,7 @@
         }
 
         function getPaticipants(_SessionId) {
-            var url = "/ActivitySummary/GetParticipants/";
+            var url = "@Url.Action("GetParticipants", "ActivitySummary")";
 
             $.ajax({
                 url: url,
@@ -103,7 +103,7 @@
                 var comments = $("#Comments").val();
 
                 $.ajax({
-                    url: "/ActivitySummary/SaveComments",
+                    url: "@Url.Action("SaveComments", "ActivitySummary")",
                     type: "POST",
                     data: { sessionId: link.attr("data-sessionId"), comments: comments },
                     success: function () {
@@ -124,7 +124,7 @@
                     var evaluation = $("#Evaluation").val();
 
                     $.ajax({
-                        url: "/ActivitySummary/SaveEvaluation",
+                        url: "@Url.Action("SaveEvaluation", "ActivitySummary")",
                         type: "POST",
                         data: { sessionId: link.attr("data-sessionId"), evaluation: evaluation },
                         success: function () {

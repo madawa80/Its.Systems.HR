@@ -43,12 +43,12 @@ textarea {
         padding: 3px;
     }
 
-    .ui-widget-content li:hover {
-        color: white;
-        background-color: #00a0e6;
-        list-style: none;
-        cursor: pointer;
-    }
+        .ui-widget-content li:hover {
+            color: white;
+            background-color: #00a0e6;
+            list-style: none;
+            cursor: pointer;
+        }
 
 /* CUSTOM Utils */
 
@@ -92,6 +92,7 @@ body {
 
     .navbar-inverse .navbar-nav > li > a {
         color: white;
+        font-size: 18px;
     }
 
         .navbar-inverse .navbar-nav > li > a:hover {
@@ -100,12 +101,49 @@ body {
 
     .navbar-inverse .navbar-brand {
         color: white;
+        font-size: 20px;
     }
 
     .navbar-inverse .navbar-nav > .dropdown > a .caret {
         border-top-color: white;
         border-bottom-color: white;
     }
+
+    .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+        background-color: #00a0e6;
+    }
+
+
+.dropdown-menu {
+    background-color: #00a0e6;
+    -ms-border-radius: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.dropdown-menu > li > a {
+        padding: 10px 20px;
+        color: white;
+        font-size: 16px;
+        line-height: 1;
+    }
+
+        .dropdown-menu > li > a:hover {
+            /*padding: 3px 20px;*/
+            background-color: #444;
+            color: white;
+        }
+
+    .dropdown-menu .divider {
+        margin: 0;
+        background-color: #51b8e5;
+    }
+
+.navbar-nav > li > .dropdown-menu {
+    margin: 0;
+    padding: 0;
+    border:0;
+}
 
 /* CUSTOM ADDED */
 
@@ -144,5 +182,5 @@ textarea.commentsWishes {
 }
 
 .input-group {
-  max-width: 280px;
+    max-width: 280px;
 }

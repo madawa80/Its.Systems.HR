@@ -263,6 +263,14 @@ namespace Its.Systems.HR.Domain.Managers
                 .SingleOrDefault(n => n.Id == sessionId);
         }
 
+        public IQueryable<Session> GetAllSessionsWithIncludes()
+        {
+            return db.Get<Session>()
+                .Include(n => n.Location)
+                .Include(n => n.HrPerson);
+            //.Include(n => n.SessionParticipants)
+        }
+
         //public IQueryable<Session> GetAllSessionsForYear(int Year)
         //{
 
