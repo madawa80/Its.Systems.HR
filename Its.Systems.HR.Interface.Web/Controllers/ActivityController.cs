@@ -297,7 +297,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(sessionVm);
         }
 
-        public ViewResult FilterSessions()
+        public ViewResult FilterSessions(string searchString)
         {
             var allSessions = _manager.GetAllSessionsWithIncludes();
             
