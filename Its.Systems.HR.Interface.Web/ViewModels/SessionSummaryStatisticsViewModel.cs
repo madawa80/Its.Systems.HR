@@ -6,7 +6,7 @@ using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
 {
-    public class SessionSummaryStatistics
+    public class SessionSummaryStatisticsViewModel
     {
         public int Year { get; set; }
         public string SessionName { get; set; }
