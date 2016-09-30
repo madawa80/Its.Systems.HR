@@ -8,10 +8,15 @@ namespace Its.Systems.HR.Infrastructure
 {
     public class HRContext : DbContext
     {
-        public HRContext() : base("name=HRContext")
+        private const string connString = "HRContext";
+        //private const string connString = "name=HRContext";
+
+        public HRContext() : base(connString)
         {
             this.Configuration.LazyLoadingEnabled = false;
-            Database.SetInitializer(new HRContextSeeder());
+
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<HRContext, Infrastructure.Migrations.Configuration>(connString));
+            //Database.SetInitializer(new HRContextSeeder());
         }
 
         public HRContext(DbConnection connection) : base(connection, true)

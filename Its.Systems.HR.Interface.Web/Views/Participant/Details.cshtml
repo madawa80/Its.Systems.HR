@@ -109,7 +109,7 @@
                     callback: function (result) {
                         if (result) {
                             $.ajax({
-                                url: "/Participant/RemovePersonFromSession",
+                                url: "@Url.Action("RemovePersonFromSession", "Participant")",
                                 type: "POST",
                                 data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
                                 success: function () {
@@ -118,7 +118,7 @@
                                             $(this).remove();
 
                                             $.ajax({
-                                                url: "/Participant/ParticipantStatisticSummary",
+                                                url: "@Url.Action("ParticipantStatisticSummary", "Participant")",
                                                 type: "GET",
                                                 data: { personId: link.attr("data-personId") },
                                                 success: function (result2) {
@@ -147,7 +147,7 @@
 
 
                 $.ajax({
-                    url: "/Participant/AddPersonToSession",
+                    url: "@Url.Action("AddPersonToSession", "Participant")",
                     type: "POST",
                     data: { sessionId: sessionId, personId: link.attr("data-personId") },
                     success: function (result) {
@@ -156,7 +156,7 @@
                             $(html).hide().appendTo("#allSessionsForParticipant").fadeIn();
 
                             $.ajax({
-                                url: "/Participant/ParticipantStatisticSummary",
+                                url: "@Url.Action("ParticipantStatisticSummary", "Participant")",
                                 type: "GET",
                                 data: { personId: link.attr("data-personId") },
                                 success: function (result2) {
@@ -183,7 +183,7 @@
                 var comments = $("#Comments").val();
 
                 $.ajax({
-                    url: "/Participant/SaveComments",
+                    url: "@Url.Action("SaveComments", "Participant")",
                     type: "POST",
                     data: { personId: link.attr("data-personId"), comments: comments },
                     success: function () {
@@ -204,7 +204,7 @@
                 var wishes = $("#Wishes").val();
 
                 $.ajax({
-                    url: "/Participant/SaveWishes",
+                    url: "@Url.Action("SaveWishes", "Participant")",
                     type: "POST",
                     data: { personId: link.attr("data-personId"), wishes: wishes },
                     success: function () {

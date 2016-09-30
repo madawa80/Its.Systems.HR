@@ -111,7 +111,7 @@
                         callback: function (result) {
                             if (result) {
                                 $.ajax({
-                                    url: "/Activity/DeleteActivity",
+                                    url: "@Url.Action("DeleteActivity", "Activity")",
                                     type: "POST",
                                     data: { activityId: link.attr("data-activityId") },
                                     success: function () {
