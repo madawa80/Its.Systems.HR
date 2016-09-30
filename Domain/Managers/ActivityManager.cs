@@ -271,12 +271,10 @@ namespace Its.Systems.HR.Domain.Managers
             //.Include(n => n.SessionParticipants)
         }
 
-        //public IQueryable<Session> GetAllSessionsForYear(int Year)
-        //{
+        public IQueryable<Session> GetAllSessionsForYear(int Year)
+        {
+            return db.Get<Session>().Where(n => n.StartDate.Year == Year);
 
-
-        //    //return db.Get<Session>().Where(n => n.ActivityId == id);
-
-        //}
+        }
     }
 }

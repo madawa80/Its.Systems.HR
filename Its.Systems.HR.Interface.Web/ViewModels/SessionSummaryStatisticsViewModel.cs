@@ -8,11 +8,9 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 {
     public class SessionSummaryStatisticsViewModel
     {
-        public int Year { get; set; }
-        public string SessionName { get; set; }
-
-        public List<Session> Sessions { get; set; }
-        public List<SessionParticipant> SessionParticipants { get; set; }
+        public List<int> Years { get; set; }
+        public IQueryable Sessions { get; set; }
+        public List<int> SessionParticipants { get; set; }
 
     }
 }
