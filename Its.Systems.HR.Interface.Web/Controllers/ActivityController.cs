@@ -297,27 +297,55 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(sessionVm);
         }
 
-        public ViewResult FilterSessions(string searchString)
+        public ViewResult FilterSessions(string searchString, string yearSlider, string hrPerson)
         {
-            var allSessions = _manager.GetAllSessionsWithIncludes();
-            
+            var temp = Request.Form["searchString"];
 
-            var result = new FilterSessionsViewModel() {Sessions = new List<Session>()};
 
-            foreach (var session in allSessions)
+            IQueryable<Session> allSessions;
+            if (string.IsNullOrEmpty(searchString))
+                allSessions = _manager.GetAllSessionsWithIncludes();
+            else
+                allSessions = _manager.GetAllSessionsWithIncludes().Where(n => n.Name.Contains(searchString));
+            // TODO: Take 10?
+
+            if (!string.IsNullOrEmpty(yearSlider))
             {
-                result.Sessions.Add(new Session()
-                {
-                    Id = session.Id,
-                    Name = session.Name,
-                    StartDate = session.StartDate,
-                    EndDate = session.EndDate,
-                    Location = session.Location,
-                    HrPerson = session.HrPerson
-                    // TODO: + Count of participants etc
-                });
+                var years = yearSlider.Split(',');
+                var yearStart = int.Parse(years[0]);
+                var yearEnd = int.Parse(years[1]);
+
+                allSessions = allSessions.Where(n => n.StartDate.Year >= yearStart && n.StartDate.Year <= yearEnd);
             }
 
+            if (!string.IsNullOrEmpty(hrPerson))
+            {
+                var hrPersonAsInt = int.Parse(hrPerson);
+                allSessions = allSessions.Where(n => n.HrPersonId == hrPersonAsInt); //TODO error handling
+            }
+
+            var result = new FilterSessionsViewModel() { Sessions = allSessions.ToList() };
+            //foreach (var session in allSessions)
+            //{
+            //    result.Sessions.Add(new Session()
+            //    {
+            //        Id = session.Id,
+            //        Name = session.Name,
+            //        StartDate = session.StartDate,
+            //        EndDate = session.EndDate,
+            //        Location = session.Location,
+            //        HrPerson = session.HrPerson
+            //        
+            //    });
+            //}
+
+            // TODO: first item should be empty...
+            var allHrPersons = _personManager.GetAllHrPersons().OrderBy(n => n.FirstName).ToList();
+            result.HrPersons = new SelectList(
+                allHrPersons,
+                "Id",
+                "FullName",
+                5);
 
             return View(result);
         }
