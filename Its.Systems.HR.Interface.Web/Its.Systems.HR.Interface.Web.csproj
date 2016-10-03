@@ -186,7 +186,7 @@
     <Compile Include="Controllers\ActivitySummaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
-    <Compile Include="Controllers\ParticipantStatisticSummaryViewModel.cs" />
+    <Compile Include="Controllers\ParticipantStatisticSummaryController.cs" />
     <Compile Include="Controllers\SessionSummaryStatisticsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -9,6 +9,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 {
     public class ActivitySummaryViewModel
     {
+        public IEnumerable<SelectListItem> Years { get; set; }
         public IEnumerable<SelectListItem> Activities { get; set; }
         public SelectList Sessions { get; set; }
 
