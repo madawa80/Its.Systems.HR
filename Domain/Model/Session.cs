@@ -13,21 +13,19 @@ namespace Its.Systems.HR.Domain.Model
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public string Comments { get; set; }
+        public string Evaluation { get; set; }
 
         // nav props
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public virtual Location Location { get; set; }
-        [Required]
-        public int HrPersonId { get; set; }
+        public int? HrPersonId { get; set; }
         public virtual HrPerson HrPerson { get; set; }
         [Required]
         public int ActivityId { get; set; }
         public virtual Activity Activity { get; set; }
 
-        public string Comments { get; set; }
-        public string Evaluation { get; set; }
         public virtual List<SessionParticipant> SessionParticipants { get; set; }
-
-        //public List<Tag> Tags { get; set; }
+        public virtual List<Tag> Tags { get; set; }
     }
 }

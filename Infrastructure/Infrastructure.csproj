@@ -55,6 +55,18 @@
     <Compile Include="Migrations\201609300654597_InitialCreate.Designer.cs">
       <DependentUpon>201609300654597_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610030650540_Added relationship for tags and removed required on hr-person.cs" />
+    <Compile Include="Migrations\201610030650540_Added relationship for tags and removed required on hr-person.Designer.cs">
+      <DependentUpon>201610030650540_Added relationship for tags and removed required on hr-person.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610030714129_Optional hrperson.cs" />
+    <Compile Include="Migrations\201610030714129_Optional hrperson.Designer.cs">
+      <DependentUpon>201610030714129_Optional hrperson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610030720290_removed Name prop from HrPerson.cs" />
+    <Compile Include="Migrations\201610030720290_removed Name prop from HrPerson.Designer.cs">
+      <DependentUpon>201610030720290_removed Name prop from HrPerson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
@@ -73,6 +85,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201609300654597_InitialCreate.resx">
       <DependentUpon>201609300654597_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610030650540_Added relationship for tags and removed required on hr-person.resx">
+      <DependentUpon>201610030650540_Added relationship for tags and removed required on hr-person.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610030714129_Optional hrperson.resx">
+      <DependentUpon>201610030714129_Optional hrperson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610030720290_removed Name prop from HrPerson.resx">
+      <DependentUpon>201610030720290_removed Name prop from HrPerson.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

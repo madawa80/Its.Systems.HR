@@ -28,6 +28,7 @@ namespace Its.Systems.HR.Interface.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datetimepicker.min.css",
+                      "~/Content/bootstrap-slider/bootstrap-slider.min.css",
                       "~/Content/site.css"));
         }
     }
