@@ -1,6 +1,6 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.ParticipantViewModel
 <div class="col-md-12">
-    <h2><strong>@Model.SessionName</strong> <button class="btn btn-warning">Editera kurstillfälle</button> <button class="btn btn-danger">Ta bort kurstillfälle</button></h2>
+    <h2><strong>@Model.SessionName</strong> <a href="@Url.Action("EditSession", "Activity", new {id = Model.SessionId})" class="btn btn-warning">Editera kurstillfälle</a> <button class="btn btn-danger">Ta bort kurstillfälle</button></h2>
 </div>
 <div class="col-md-6">
     <h3 class="m-b-30">Deltagare</h3>

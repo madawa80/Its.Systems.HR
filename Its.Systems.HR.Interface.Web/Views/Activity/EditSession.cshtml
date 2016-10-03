@@ -1,0 +1,139 @@
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.EditSessionViewModel
+
+@{
+    ViewBag.Title = "Editera kurstillfälle";
+}
+
+<h2>Editera kurstillfälle</h2>
+<h4>...</h4>
+<hr />
+
+@using (Html.BeginForm("EditSession", "Activity", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(n => n.SessionId)
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        <label for="Activity_Id" class="control-label">Kurstillfälle för aktivitet</label>
+        <div>
+            @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>)ViewBag.ActivityId, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Activity.Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NameOfSession)
+        <div>
+            @Html.EditorFor(model => model.NameOfSession, new { htmlAttributes = new { @class = "form-control", placeholder = "Exempel: 2017" } })
+            @Html.ValidationMessageFor(model => model.NameOfSession, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartDate)
+        <div class='input-group date' id='datetimepicker1'>
+            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EndDate)
+        <div class='input-group date' id='datetimepicker2'>
+            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="form-group">
+        <label for="NameOfLocation">Plats</label>
+        <div>
+            <input type="text" id="NameOfLocation" name="NameOfLocation" value="@ViewBag.NameOfLocation" class="form-control ui-autocomplete"
+                   data-autocomplete="@Url.Action("AutoCompleteLocations", "Home")" />
+            @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+
+        <div class="form-group">
+            <label for="HrPerson_Id">Ansvarig HR</label>
+            <div>
+                @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, "-- Ingen ansvarig HR --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.HrPerson, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="m-t-50">
+                <button class="btn btn-default">
+                    <i class="glyphicon glyphicon-ok"></i> Editera kurstillfälle
+                </button>
+                @*<a href="@Url.Action("Index")" class="btn btn-danger">
+                        <i class="glyphicon glyphicon-remove"></i> Avbryt
+                    </a>*@
+            </div>
+        </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    @*<script src="~/Scripts/moment.min.js"></script>*@
+    <script src="~/Scripts/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+
+    <script>
+        $(function () {
+
+            // Init Bootstrap 3 datepickers (addon)
+            //moment.locale('sv');
+            $('#datetimepicker1').datetimepicker({
+                locale: 'sv'
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'sv'
+            });
+
+
+            // AUTOCOMPLETE
+            // submits form upon selecting a value
+            var submitAutocompleteForm = function (event, ui) {
+                var $input = $(this); // the HTML element (Textbox)
+
+                // selected value
+                $input.val(ui.item.label); // ui.item.label = the label value (product)
+
+                window.location.href = "/Product/Details?id=" + ui.item.label;
+            };
+
+            var createAutocomplete = function () {
+                var $input = $(this); // the HTML element (Textbox)
+
+                var options = {
+                    // selecting the source by finding elements with the 'data-' attribute
+                    source: $input.attr("data-autocomplete") // Required
+                    //select: submitAutocompleteForm // Optional
+                };
+
+                // apply options
+                $input.autocomplete(options);
+            };
+
+            // targets input elements with the 'data-' attributes and each time the input changes
+            // it calls the 'createAutocomplete' function
+            $("input[data-autocomplete]").each(createAutocomplete);
+
+        });
+    </script>   
+}
