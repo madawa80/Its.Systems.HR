@@ -1,28 +1,31 @@
-﻿@model IQueryable<Its.Systems.HR.Interface.Web.ViewModels.SessionSummaryStatisticsViewModel>
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.SessionSummaryStatisticsViewModel
 @{
     ViewBag.Title = "SessionSummaryStatistics";
 
 }
 
-<div class="row">
 
-    @*<div class="form-group">
+@using (Html.BeginForm("Details", "SessionSummaryStatistics", FormMethod.Post))
+{
+    <div class="form-group">
         <label for="Year">År</label><br />
-        @Html.DropDownListFor(n => n.Years, Model.Years,)
-    </div>
-    <div>
+        @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2010, 140).ToList()), "-- Select Year --", new { name = "yearslist" })
 
-        @foreach (var item in Model)
+        <button type="submit" class="btn btn-default">Filtrera!</button>
+    </div>
+
+
+}
+       @* <p>Aktiviteter @Html.DropDownList.v </p>*@
+
+        @foreach (var item in Model.SessionStatisticsRows)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    <p>@Html.DisplayFor(modelItem => item.Session.Name), @Html.DisplayFor(modelItem => item.NumberOfParticipants) Deltagare</p>
+                    
                 </td>
 
-                
+              
             </tr>
         }
-
-    </div>*@
-
-</div>

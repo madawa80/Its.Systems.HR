@@ -124,7 +124,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult ParticipantStatisticSummary(int personid)
         {
             var allParticipantSessions = _activityManager.GetAllSessionsForParticipantById(personid).ToList();
-            var result = new ParticipantStatisticSummaryViewModel()
+            var result = new ParticipantStatisticSummaryController()
             {
                 TotalCount = allParticipantSessions.Count,
                 CountThisYear = allParticipantSessions.Count(n => n.StartDate.Year == DateTime.Now.Year)

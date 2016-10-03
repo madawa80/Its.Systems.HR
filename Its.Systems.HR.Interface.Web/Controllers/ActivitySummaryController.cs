@@ -45,36 +45,17 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return HttpNotFound();
             }
 
-            //var allSessionsForActivityResult = new List<Session>();
-            //var allSessionsForActivity = _activityManager.GetAllSessionsForActivity(activity.Id).OrderBy(n => n.Name).ToList();
-
-            //if (allSessionsForActivity.Count != 0)
-            //    allSessionsForActivityResult = allSessionsForActivity;
-
+      
             var viewModel = new ActivitySummaryViewModel()
             {
-                //ActivityId = activity.Id,
-                //ActivityName = activity.Name,
-                //SessionId = session.Id,
-                //SessionName = session.Name,
-                //PaticipantId = participant.Id,
-                //PaticipantName = participant.FullName,
-                //Comments = session.Comments,
-                //Evaluation = session.Evaluation,
+                
                 Activities= new SelectList(
                                             _activityManager.GetAllActivities().OrderBy(n => n.Name),
                                             "Id",
                                             "Name",
                                             _activityManager.GetAllActivities().OrderBy(n => n.Name).First().Id),
 
-                //Sessions = new SelectList(
-                //                            allSessionsForActivityResult,
-                //                            "Id",
-                //                            "Name",
-                //                            session.Id),
-
-                //SessionParticipants = _activityManager.GetAllParticipantsForSession(session.Id).OrderBy(n => n.FirstName),
-
+                
             };
 
             return View(viewModel);
@@ -106,13 +87,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult GetParticipants(int sessionId)
         {
-            //var theSession = _activityManager.GetSessionById(sessionId);
             var theSession = _activityManager.GetSessionByIdWithIncludes(sessionId);
 
             if (theSession == null)
                 return PartialView("_NothingPartial");
-
-            //HrPerson HRPerson = _personManager.GetHRPersonById(theSession.HrPersonId);
+            
             var allParticipant = _activityManager.GetAllParticipantsForSession(sessionId).ToList();
             var result = new ParticipantViewModel()
             {
