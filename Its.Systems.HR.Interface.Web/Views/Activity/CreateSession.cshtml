@@ -205,7 +205,7 @@
                 // get parent li data-personId
                 var resultId = link.parents("li").attr("data-personId");
 
-                var url = "@Url.Action("Details", "Participant")" + resultId;
+                var url = "@Url.Action("Details", "Participant")" + "/" + resultId;
                 window.open(
                           url,
                           "_blank"
