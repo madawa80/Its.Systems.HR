@@ -135,9 +135,43 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetSessionsForActivity(int activityId)
+        {
 
-       
+            var allSessionsForActivityResult = new List<Session>();
+            var allSessionsForActivity = _activityManager.GetAllSessionsForActivity(activityId).OrderBy(n => n.Name).ToList();
+            var sessionRowsList = new List<SessionRow>();
+            
+            if (allSessionsForActivity.Count == 0)
+            {
+                return PartialView("_NothingPartial");
+               
 
+            }
+          
+                List<Session> sessions = new List<Session>();
+                sessions = _activityManager.GetAllSessionsForActivity(activityId).ToList();
+               
+               foreach (var session in sessions)
+               {
+                    sessionRowsList.Add(new SessionRow()
+                    {
 
-    }
+                        //Id = session.Id,
+                        Name = session.Name,
+                        StartDate = session.StartDate,
+                        EndDate = session.EndDate,
+                    });
+
+                }
+
+                var result = new SessionViewModel()
+                {
+                    SessionRows = sessionRowsList
+                };
+             
+            return PartialView("_SessionsforactivityPartial", result);
+        }
+
+  }
 }
