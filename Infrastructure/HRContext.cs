@@ -8,14 +8,14 @@ namespace Its.Systems.HR.Infrastructure
 {
     public class HRContext : DbContext
     {
-        private const string connString = "HRContext";
+        private const string ConnString = "HRContext";
         //private const string connString = "name=HRContext";
 
-        public HRContext() : base(connString)
+        public HRContext() : base(ConnString)
         {
             this.Configuration.LazyLoadingEnabled = false;
 
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<HRContext, Infrastructure.Migrations.Configuration>(connString));
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<HRContext, Infrastructure.Migrations.Configuration>(ConnString));
             //Database.SetInitializer(new HRContextSeeder());
         }
 
@@ -26,35 +26,49 @@ namespace Its.Systems.HR.Infrastructure
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            // Activity Sessions
             modelBuilder.Entity<Activity>()
                 .HasMany(e => e.Sessions)
                 .WithRequired(e => e.Activity)
                 .HasForeignKey(e => e.ActivityId);
 
-            //one-to-many 
+            // Session Activity (one-to-many)
             modelBuilder.Entity<Session>()
                         .HasRequired<Activity>(s => s.Activity) // Student entity requires Standard 
                         .WithMany(s => s.Sessions); // Standard entity includes many Students entities
 
-            //one-to-many 
+            // Session Location (one-to-many)
             modelBuilder.Entity<Session>()
-                .HasRequired<Location>(s => s.Location)
+                .HasOptional<Location>(s => s.Location)
                 .WithMany(n => n.Sessions);
 
-            //one-to-many 
-            modelBuilder.Entity<Session>()
-                .HasRequired<HrPerson>(s => s.HrPerson)
-                .WithMany(n => n.Sessions);
-
-            //one-to-many 
+            // SessionParticipant Sessions (one-to-many)
             modelBuilder.Entity<SessionParticipant>()
                 .HasRequired<Session>(s => s.Session)
                 .WithMany(n => n.SessionParticipants);
 
-            //one-to-many 
+            // SessionParticipants Participants (one-to-many)
             modelBuilder.Entity<SessionParticipant>()
                 .HasRequired<Participant>(s => s.Participant)
                 .WithMany(n => n.SessionParticipants);
+
+            // Session HrPerson
+            modelBuilder.Entity<Session>()
+                        .HasOptional<HrPerson>(s => s.HrPerson) // Student entity requires Standard 
+                        .WithMany(s => s.Sessions); // Standard entity includes many Students entities
+
+            // TODO: Write all relations in fluent!
+
+            modelBuilder.Entity<Session>()
+            .HasMany<Tag>(s => s.Tags)
+            .WithMany(c => c.Sessions)
+            .Map(cs =>
+            {
+                cs.MapLeftKey("SessionId");
+                cs.MapRightKey("TagId");
+                cs.ToTable("SessionTags");
+            });
+
         }
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
@@ -62,7 +76,6 @@ namespace Its.Systems.HR.Infrastructure
         public virtual DbSet<HrPerson> HrPersons { get; set; }
         public virtual DbSet<Participant> Participants { get; set; }
         public virtual DbSet<SessionParticipant> SessionParticipants { get; set; }
-
         public virtual DbSet<Tag> Tags { get; set; }
     }
 }
