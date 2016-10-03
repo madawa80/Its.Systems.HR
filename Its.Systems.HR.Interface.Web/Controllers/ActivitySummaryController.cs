@@ -120,7 +120,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Evaluation = theSession.Evaluation,
                 StartDate = theSession.StartDate,
                 EndDate = theSession.EndDate,
-                HRPerson = theSession.HrPerson.FullName,
+                HrPerson = theSession.HrPerson,
                 Location = theSession.Location,
                 TotalPaticipants = allParticipant.Count,
                 Participants = allParticipant,

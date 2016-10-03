@@ -13,7 +13,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public DateTime EndDate { get; set; }
 
-        public string HRPerson { get; set; }
+        public HrPerson HrPerson { get; set; }
 
         public int TotalPaticipants { get; set; }
         public int SessionId { get; set; }

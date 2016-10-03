@@ -85,8 +85,8 @@
         <div class="form-group">
             <label for="HrPerson_Id">Ansvarig HR</label>
             <div>
-                @Html.DropDownListFor(n => n.HrPerson.Id, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.HrPerson.Id, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, "-- Ingen ansvarig HR --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.HrPerson, "", new { @class = "text-danger" })
             </div>
         </div>
 

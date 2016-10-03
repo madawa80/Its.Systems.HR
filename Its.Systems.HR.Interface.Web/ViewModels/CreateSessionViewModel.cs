@@ -27,8 +27,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public DateTime EndDate { get; set; }
 
         public string NameOfLocation { get; set; }
-        [Required]
-        public HrPerson HrPerson { get; set; }
+        public int? HrPerson { get; set; }
         [Required]
         public Activity Activity { get; set; }
 

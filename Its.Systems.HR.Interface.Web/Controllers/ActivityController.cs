@@ -220,8 +220,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //    LocationList = new SelectList(_manager.GetAllLocations(), "Id", "Name", 1)
             //};
             //ViewBag.LocationId = new SelectList(_manager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
-            ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", 1);
-            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", 1);
+            ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName");
+            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", _manager.GetAllActivities().OrderBy(n => n.Name).First().Id);
             ViewBag.SessionParticipantId = new SelectList(
                 _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
                 "Id",
@@ -256,7 +256,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                     var activityName = _manager.GetActivityById(sessionVm.Activity.Id).Name;
 
-                    int locationId = GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
+                    int? locationId = GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
 
                     var result = new Session()
                     {
@@ -265,7 +265,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         StartDate = sessionVm.StartDate,
                         EndDate = sessionVm.EndDate,
                         LocationId = locationId,
-                        HrPersonId = sessionVm.HrPerson.Id,
+                        HrPersonId = sessionVm.HrPerson,
                         SessionParticipants = null,
                     };
 
@@ -297,11 +297,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(sessionVm);
         }
 
-        public ViewResult FilterSessions(string searchString, string yearSlider, string hrPerson)
+        public ViewResult FilterSessions(string searchString, string yearSlider, string hrPerson, string nameOfLocation)
         {
-            var temp = Request.Form["searchString"];
-
-
             IQueryable<Session> allSessions;
             if (string.IsNullOrEmpty(searchString))
                 allSessions = _manager.GetAllSessionsWithIncludes();
@@ -324,6 +321,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 allSessions = allSessions.Where(n => n.HrPersonId == hrPersonAsInt); //TODO error handling
             }
 
+            if (!string.IsNullOrEmpty(nameOfLocation))
+            {
+                allSessions = allSessions.Where(n => n.Location.Name == nameOfLocation);
+            }
+
             var result = new FilterSessionsViewModel() { Sessions = allSessions.ToList() };
             //foreach (var session in allSessions)
             //{
@@ -344,14 +346,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             result.HrPersons = new SelectList(
                 allHrPersons,
                 "Id",
-                "FullName",
-                5);
+                "FullName");
 
             return View(result);
         }
 
-        private int GetIdForLocationOrCreateIfNotExists(string location)
+        private int? GetIdForLocationOrCreateIfNotExists(string location)
         {
+            if (string.IsNullOrEmpty(location))
+                return null;
+
             // TODO MOVE TO MANAGER!
             int resultId = -1;
 
