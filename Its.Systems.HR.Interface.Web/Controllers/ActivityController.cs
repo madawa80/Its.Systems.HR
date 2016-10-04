@@ -213,7 +213,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CreateSession()
+        public ActionResult CreateSession(int id = 0) //activityId
         {
             //var viewModel = new CreateSessionViewModel()
             //{
@@ -221,7 +221,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //};
             //ViewBag.LocationId = new SelectList(_manager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
             ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName");
-            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", _manager.GetAllActivities().OrderBy(n => n.Name).First().Id);
+
+            var selectedActivityId = 
+                (id == 0) ? _manager.GetAllActivities().OrderBy(n => n.Name).First().Id : id;
+            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", selectedActivityId);
+
             ViewBag.SessionParticipantId = new SelectList(
                 _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
                 "Id",
