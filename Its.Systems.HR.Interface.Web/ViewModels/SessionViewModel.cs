@@ -7,12 +7,12 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 {
     public class SessionViewModel
     {
-       
 
-       
-    
 
-    public List<SessionRow> SessionRows { get; set; }
+
+        public string ActivityName { get; set; }
+
+        public List<SessionRow> SessionRows { get; set; }
 
     }
 

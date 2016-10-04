@@ -1,1 +1,20 @@
 ﻿
+@model Its.Systems.HR.Interface.Web.ViewModels.SessionViewModel
+<div class="col-md-6">
+    <h3 class="m-b-30">@Model.ActivityName</h3>
+    <table class="table">
+        @foreach (var item in Model.SessionRows)
+        {
+            <tr>
+                <td>
+
+                <p>@Html.ActionLink(@item.Name, "GetParticipants", "ActivitySummary", new { id = item.Id },null)   @item.StartDate.ToString("dd MMM yyyy HH:mm")    @item.EndDate.ToString("dd MMM yyyy HH:mm") </p>
+                  
+                <td>
+            </tr>
+         }
+
+    </table>
+    
+</div>
+

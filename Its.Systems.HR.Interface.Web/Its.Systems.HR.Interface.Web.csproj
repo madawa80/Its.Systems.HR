@@ -200,6 +200,7 @@
     <Compile Include="ViewModels\ListActivitiesViewModel.cs" />
     <Compile Include="ViewModels\ParticipantSummaryViewModel.cs" />
     <Compile Include="ViewModels\ParticipantViewModel.cs" />
+    <Compile Include="ViewModels\SessionPaticipantsViewModel.cs" />
     <Compile Include="ViewModels\SessionSummaryStatisticsViewModel.cs" />
     <Compile Include="ViewModels\SessionViewModel.cs" />
   </ItemGroup>
@@ -318,7 +319,7 @@
     <Content Include="Views\ActivitySummary\Details.cshtml" />
     <Content Include="Views\Participant\Details.cshtml" />
     <Content Include="Views\Participant\Index.cshtml" />
-    <Content Include="Views\ActivitySummary\_ParticipantPartial.cshtml" />
+    <Content Include="Views\ActivitySummary\_SessionParticipantPartial.cshtml" />
     <None Include="Views\ActivitySummary\_NothingPartial.cshtml" />
     <Content Include="Views\Activity\FilterSessions.cshtml" />
     <Content Include="Views\ActivitySummary\_SessionsforactivityPartial.cshtml" />

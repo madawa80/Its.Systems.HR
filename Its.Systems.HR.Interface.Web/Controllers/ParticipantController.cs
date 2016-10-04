@@ -25,8 +25,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         // GET: Participant
         public ActionResult Index()
         {
-            return View(_personManager.GetAllParticipants().ToList());
+
+           return View(_personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
+            
         }
+
+
 
         // GET: Participant/Details/5
         public ActionResult Details(int? id)
