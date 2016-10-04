@@ -56,5 +56,7 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         IQueryable<Session> GetAllSessionsForYear(int year);
         bool EditSession(Session sessionToUpdate);
+        IQueryable<Tag> GetAllTags();
+        void AddTags(List<Tag> tags);
     }
 }

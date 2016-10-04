@@ -34,10 +34,38 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public List<SessionParticipant> SessionParticipants { get; set; }
         public string AddedParticipants { get; set; }
+        public string AddedTags { get; set; }
 
 
         //public string[] addedParticipantsSelectBox { set; get; }
 
         //public IEnumerable<SelectListItem> addedParticipantsSelectBox { get; set; }
+
+        public List<Tag> GenerateSessionTags
+        {
+            get
+            {
+                if (AddedTags == null)
+                    return new List<Tag>();
+
+
+                var sessionTags = AddedTags.Split(',');
+                for (int i = 0; i < sessionTags.Length; i++)
+                {
+                    sessionTags[i] = sessionTags[i].Trim().ToLower();
+                }
+
+                var result = new List<Tag>();
+                foreach (var tag in sessionTags.Distinct())
+                {
+                    result.Add(new Tag()
+                    {
+                        Name = tag.ToLower()
+                    });
+                }
+
+                return result;
+            }
+        }
     }
 }

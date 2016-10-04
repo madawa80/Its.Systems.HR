@@ -222,7 +222,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //ViewBag.LocationId = new SelectList(_manager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
             ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName");
 
-            var selectedActivityId = 
+            var selectedActivityId =
                 (id == 0) ? _manager.GetAllActivities().OrderBy(n => n.Name).First().Id : id;
             ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", selectedActivityId);
 
@@ -258,8 +258,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         participantsToAddFromDb = _personManager.GetAllParticipants().Where(n => participantsId.Contains(n.Id)).ToList();
                     }
 
-                    var activityName = _manager.GetActivityById(sessionVm.Activity.Id).Name;
 
+                    // -> TAGS
+                    var tagsToAdd = sessionVm.GenerateSessionTags;
+
+                    AddNewTagsToDb(tagsToAdd);
+                    // <- END TAGS
+
+
+                    var activityName = _manager.GetActivityById(sessionVm.Activity.Id).Name;
                     int? locationId = GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
 
                     var result = new Session()
@@ -271,6 +278,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         LocationId = locationId,
                         HrPersonId = sessionVm.HrPerson,
                         SessionParticipants = null,
+                        Tags = null // TODO: tagsToAdd...
                     };
 
                     if (sessionVm.AddedParticipants != null)
@@ -289,7 +297,20 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                     }
 
+                    // Save session in db
                     _manager.AddSession(result);
+
+
+                    //// TODO: Now add tags to the created session!...
+                    //foreach (var tag in tagsToAdd)
+                    //{
+                    //    db.EventTags.Add(new EventTag()
+                    //    {
+                    //        Tag = db.Tags.SingleOrDefault(n => n.Name == tag.Name),
+                    //        EventId = result.Id
+                    //    });
+                    //}
+
 
                     return RedirectToAction("Index");
                 }
@@ -354,7 +375,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return View(result);
         }
-        
+
         [HttpGet]
         public ActionResult EditSession(int? id)
         {
@@ -455,6 +476,25 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return resultId;
         }
 
+        private void AddNewTagsToDb(List<Tag> tagsToAdd)
+        {
+            // tagsToAdd is the incoming stuff, with all the tags to add to EventTags in DB
+            // but the list needs to be filtered for any existing tags in db.Tags!!
+            var tagsToAddToDb = new List<Tag>(tagsToAdd);
+            var currentTags = _manager.GetAllTags().ToList();
+
+
+            var result = new List<Tag>();
+            foreach (var tag in tagsToAddToDb.Where(n => currentTags.All(n2 => n2.Name != n.Name)))
+            {
+                result.Add(tag);
+            }
+
+            _manager.AddTags(result);
+
+
+            // NOTICE! Have to savechanges later!
+        }
     }
 }
 

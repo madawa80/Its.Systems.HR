@@ -66,7 +66,7 @@ namespace Its.Systems.HR.Infrastructure
             {
                 cs.MapLeftKey("SessionId");
                 cs.MapRightKey("TagId");
-                cs.ToTable("SessionTags");
+                cs.ToTable("SessionTag");
             });
 
         }
