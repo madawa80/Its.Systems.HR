@@ -186,7 +186,6 @@
     <Compile Include="Controllers\ActivitySummaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
-    <Compile Include="Controllers\ParticipantStatisticSummaryController.cs" />
     <Compile Include="Controllers\SessionSummaryStatisticsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -196,8 +195,10 @@
     <Compile Include="ViewModels\ActivitySummaryViewModel.cs" />
     <Compile Include="ViewModels\ActivityViewModel.cs" />
     <Compile Include="ViewModels\CreateSessionViewModel.cs" />
+    <Compile Include="ViewModels\EditSessionViewModel.cs" />
     <Compile Include="ViewModels\FilterSessionsViewModel.cs" />
     <Compile Include="ViewModels\ListActivitiesViewModel.cs" />
+    <Compile Include="ViewModels\ParticipantStatisticSummaryViewModel.cs" />
     <Compile Include="ViewModels\ParticipantSummaryViewModel.cs" />
     <Compile Include="ViewModels\ParticipantViewModel.cs" />
     <Compile Include="ViewModels\SessionPaticipantsViewModel.cs" />
@@ -323,6 +324,7 @@
     <None Include="Views\ActivitySummary\_NothingPartial.cshtml" />
     <Content Include="Views\Activity\FilterSessions.cshtml" />
     <Content Include="Views\ActivitySummary\_SessionsforactivityPartial.cshtml" />
+    <Content Include="Views\Activity\EditSession.cshtml" />
     <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
     <Content Include="Views\SessionSummaryStatistics\Details.cshtml" />
   </ItemGroup>

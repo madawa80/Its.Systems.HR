@@ -276,5 +276,20 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<Session>().Where(n => n.StartDate.Year == Year);
 
         }
+
+        public bool EditSession(Session sessionToUpdate)
+        {
+            //var allActivities = db.Get<Activity>().ToList();
+
+            //if (allActivities.Any(n => n.Name == activityToEdit.Name))
+            //    return false;
+
+            //TODO: Add error handling!?
+            db.Context().Entry(sessionToUpdate).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return true;
+
+        }
     }
 }

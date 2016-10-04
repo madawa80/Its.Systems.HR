@@ -213,7 +213,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CreateSession()
+        public ActionResult CreateSession(int id = 0) //activityId
         {
             //var viewModel = new CreateSessionViewModel()
             //{
@@ -221,7 +221,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //};
             //ViewBag.LocationId = new SelectList(_manager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
             ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName");
-            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", _manager.GetAllActivities().OrderBy(n => n.Name).First().Id);
+
+            var selectedActivityId = 
+                (id == 0) ? _manager.GetAllActivities().OrderBy(n => n.Name).First().Id : id;
+            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", selectedActivityId);
+
             ViewBag.SessionParticipantId = new SelectList(
                 _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
                 "Id",
@@ -350,6 +354,83 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return View(result);
         }
+        
+        [HttpGet]
+        public ActionResult EditSession(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var session = _manager.GetSessionByIdWithIncludes((int)id);
+            if (session == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var activity = _manager.GetActivityById(session.ActivityId);
+
+            var viewModel = new EditSessionViewModel()
+            {
+                SessionId = session.Id,
+                Activity = activity,
+                NameOfSession = session.Name,
+                StartDate = session.StartDate,
+                EndDate = session.EndDate,
+                HrPerson = session.HrPersonId,
+                //this.ModelControl as CreerEtablissementModel ??
+                NameOfLocation = (session.Location == null) ? string.Empty : session.Location.Name,
+            };
+
+            ViewBag.NameOfLocation = viewModel.NameOfLocation;
+
+            ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", session.HrPersonId);
+            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", session.ActivityId);
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("EditSession")]
+        public ActionResult EditSessionPost(EditSessionViewModel inputVm)
+        {
+            if (inputVm == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var sessionToUpdate = _manager.GetSessionByIdWithIncludes(inputVm.SessionId);
+
+            try
+            {
+                if (sessionToUpdate.Name == inputVm.NameOfSession || !_manager.GetAllSessions().Any(n => n.Name == inputVm.NameOfSession))
+                {
+                    int? location = GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
+
+                    int? hrPerson = inputVm.HrPerson;
+
+                    sessionToUpdate.Name = inputVm.NameOfSession;
+                    sessionToUpdate.ActivityId = inputVm.Activity.Id;
+                    sessionToUpdate.StartDate = inputVm.StartDate;
+                    sessionToUpdate.EndDate = inputVm.EndDate;
+                    sessionToUpdate.LocationId = location;
+                    sessionToUpdate.HrPersonId = hrPerson;
+
+                    _manager.EditSession(sessionToUpdate);
+
+                    return RedirectToAction("FilterSessions", "Activity");
+                }
+
+                ModelState.AddModelError("NameOfSession", "Aktiviteten existerar redan.");
+            }
+            catch (RetryLimitExceededException /* dex */)
+            {
+                ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
+            }
+
+            ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", sessionToUpdate.HrPersonId);
+            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", sessionToUpdate.ActivityId);
+
+            ViewBag.NameOfLocation = inputVm.NameOfLocation;
+
+            return View("EditSession", inputVm);
+        }
 
         private int? GetIdForLocationOrCreateIfNotExists(string location)
         {
@@ -373,6 +454,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return resultId;
         }
+
     }
 }
 
