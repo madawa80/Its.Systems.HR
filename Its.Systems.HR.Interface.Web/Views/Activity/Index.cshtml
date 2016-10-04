@@ -38,7 +38,8 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @*@Html.DisplayFor(modelItem => item.Name)*@
+                @Html.ActionLink(@item.Name, "GetSessionsForActivity", "ActivitySummary", new { id = item.Id },null)
             </td>
 
             <td>
@@ -50,10 +51,6 @@
 
 </table>
 <br />
-@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount*@
-
-@*@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
 
 @section scripts {
 
