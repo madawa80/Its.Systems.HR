@@ -4,28 +4,30 @@
 
 }
 
+<div class="col-md-6">
 
-@using (Html.BeginForm("Details", "SessionSummaryStatistics", FormMethod.Post))
-{
-    <div class="form-group">
-        <label for="Year">År</label><br />
-        @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2010, 140).ToList()), "-- Select Year --", new { name = "yearslist" })
+    @using (Html.BeginForm("Details", "SessionSummaryStatistics", FormMethod.Post))
+    {
+        <div class="form-group">
+            <label for="Activity">Aktiviteter</label>
+            @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2010, 140).ToList()), "-- Select Year --", new { name = "yearslist" })
 
-        <button type="submit" class="btn btn-default">Filtrera!</button>
-    </div>
+            <button type="submit" class="btn btn-default">Filtrera!</button>
+        </div>
 
 
-}
-       @* <p>Aktiviteter @Html.DropDownList.v </p>*@
-
+    }
+    <table class="table" id="sessionsinyear">
         @foreach (var item in Model.SessionStatisticsRows)
         {
             <tr>
                 <td>
                     <p>@Html.DisplayFor(modelItem => item.Session.Name), @Html.DisplayFor(modelItem => item.NumberOfParticipants) Deltagare</p>
-                    
+                    <p>@Html.ActionLink(@item.Session.Name, "GetParticipants", "ActivitySummary", new { id = item.Id }, null)   @item.StartDate.ToString("dd MMM yyyy HH:mm")    @item.EndDate.ToString("dd MMM yyyy HH:mm") </p>
                 </td>
 
-              
+
             </tr>
         }
+    </table>
+</div>
