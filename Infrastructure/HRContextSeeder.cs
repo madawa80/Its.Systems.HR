@@ -156,7 +156,7 @@ namespace Its.Systems.HR.Infrastructure
                 {
                     FirstName  = "Jean",
                     LastName = "Smith",
-                    Comments = "Jean har deltagit på alla kurstillfällen under 10 år",
+                    Comments = "Jean har deltagit på alla tillfällen under 10 år",
                     Wishes = ""
                 },
                 new Participant()

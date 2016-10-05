@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-7">
-        <h3 class="m-b-30">Deltagit på följande kurstillfällen</h3>
+        <h3 class="m-b-30">Deltagit på följande tillfällen</h3>
         @*<ul id="allSessionsForParticipant">
             
             @foreach (var session in Model.Sessions)
@@ -44,7 +44,7 @@
             @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control wide-textbox" })
             @Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till kurstillfälle för person
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till tillfälle för person
             </button>
         </div>
 
@@ -96,7 +96,7 @@
 
                 bootbox.confirm({
                     title: "Vänligen bekräfta",
-                    message: "Vill du verkligen ta bort detta kurstillfälle för personen?",
+                    message: "Vill du verkligen ta bort detta tillfälle för personen?",
                     buttons: {
                         cancel: {
                             label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
@@ -168,7 +168,7 @@
                             });
 
                         } else {
-                            link.after(' <div class="alert alert-danger js-fadeOutThisMessage" role="alert">Kurstillfället redan tillagt!</div>');
+                            link.after(' <div class="alert alert-danger js-fadeOutThisMessage" role="alert">Tillfället redan tillagt!</div>');
 
                             $(".js-fadeOutThisMessage").fadeOut(2000, function () {
                                 $(this).remove();

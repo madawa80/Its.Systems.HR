@@ -4,14 +4,14 @@
     ViewBag.Title = "FilterSessions";
 }
 
-<h2>Filtrera kurstillfällen <span class="badge">DEBUG</span></h2>
+<h2>Lista tillfällen <span class="badge">DEBUG</span></h2>
 
 @using (Html.BeginForm("FilterSessions", "Activity", FormMethod.Get))
 {
     <div class="well-lg">
 
         <div class="form-group">
-            <label for="SearchString">Namn på kurstillfälle innehåller</label>
+            <label for="SearchString">Namn på tillfälle innehåller</label>
             <div>
                 @Html.TextBox("SearchString", null, new { @class = "form-control" })
             </div>

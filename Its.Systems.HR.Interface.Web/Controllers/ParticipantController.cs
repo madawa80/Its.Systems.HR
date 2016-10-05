@@ -101,7 +101,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             };
 
             if (!_activityManager.AddParticipantToSession(personId, sessionId))
-                result = new { Success = false, ErrorMessage = "Personen är redan registrerad på kurstillfället.",
+                result = new { Success = false, ErrorMessage = "Personen är redan registrerad på tillfället.",
                     PersonId = 0, SessionId = 0, SessionName = "", StartDate = ""};
             //, Year = 0, Month = 0, Day = 0
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -125,7 +125,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 result = new
                 {
                     Success = false,
-                    ErrorMessage = "Personen är redan registrerad på kurstillfället.",
+                    ErrorMessage = "Personen är redan registrerad på tillfället.",
                     PersonId = 0,
                     SessionId = 0,
                     PersonFullName = "",

@@ -1,11 +1,11 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.EditSessionViewModel
 
 @{
-    ViewBag.Title = "Editera kurstillfälle";
+    ViewBag.Title = "Ändra tillfälle";
 }
 
-<h2>Editera kurstillfälle</h2>
-<h4>...</h4>
+<h2>Ändra tillfälle</h2>
+<h4><em>@Model.NameOfSession</em></h4>
 <hr />
 
 @using (Html.BeginForm("EditSession", "Activity", FormMethod.Post))
@@ -17,7 +17,7 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     <div class="form-group">
-        <label for="Activity_Id" class="control-label">Kurstillfälle för aktivitet</label>
+        <label for="Activity_Id" class="control-label">Tillfälle för aktivitet</label>
         <div>
             @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>)ViewBag.ActivityId, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Activity.Id, "", new { @class = "text-danger" })
@@ -75,7 +75,7 @@
         <div class="form-group">
             <div class="m-t-50">
                 <button class="btn btn-default">
-                    <i class="glyphicon glyphicon-ok"></i> Editera kurstillfälle
+                    <i class="glyphicon glyphicon-ok"></i> Ändra tillfälle
                 </button>
                 @*<a href="@Url.Action("Index")" class="btn btn-danger">
                         <i class="glyphicon glyphicon-remove"></i> Avbryt

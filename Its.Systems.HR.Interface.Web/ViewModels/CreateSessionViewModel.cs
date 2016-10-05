@@ -12,7 +12,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
     public class CreateSessionViewModel
     {
         //public int Id { get; set; }
-        [Display(Name = "Namn på kurstillfälle")]
+        [Display(Name = "Namn på tillfälle")]
         [Required]
         public string Name { get; set; }
 

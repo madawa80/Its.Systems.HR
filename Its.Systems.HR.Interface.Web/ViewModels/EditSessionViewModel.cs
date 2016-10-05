@@ -11,7 +11,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         [Required]
         [Display(Name = "Aktivitet")]
         public Activity Activity { get; set; }
-        [Display(Name = "Namn på kurstillfälle")]
+        [Display(Name = "Namn på tillfälle")]
         [Required]
         public string NameOfSession { get; set; }
 
