@@ -4,7 +4,7 @@ using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
 {
-    public class ParticipantViewModel
+    public class SessionForActivityViewModel
     {
         public string Comments { get; set; }
         public string Evaluation { get; set; }

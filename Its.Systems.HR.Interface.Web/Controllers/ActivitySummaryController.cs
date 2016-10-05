@@ -92,7 +92,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return View("Error");
 
             var allParticipant = _activityManager.GetAllParticipantsForSession(id).ToList();
-            var result = new ParticipantViewModel()
+            var result = new SessionForActivityViewModel()
             {
                 Comments = theSession.Comments,
                 Evaluation = theSession.Evaluation,
