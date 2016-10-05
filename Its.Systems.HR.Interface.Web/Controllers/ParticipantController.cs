@@ -112,6 +112,33 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, int personId)
+        {
+            var fullName = _personManager.GetParticipantById(personId).FullName;
+
+            var result = new
+            {
+                Success = true,
+                ErrorMessage = "",
+                PersonId = personId,
+                SessionId = sessionId,
+                PersonFullName = fullName
+            };
+
+            if (!_activityManager.AddParticipantToSession(personId, sessionId))
+                result = new
+                {
+                    Success = false,
+                    ErrorMessage = "Personen är redan registrerad på kurstillfället.",
+                    PersonId = 0,
+                    SessionId = 0,
+                    PersonFullName = "",
+                };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult RemovePersonFromSession(int sessionId, int personId)
         {
             var result = new { Success = true };

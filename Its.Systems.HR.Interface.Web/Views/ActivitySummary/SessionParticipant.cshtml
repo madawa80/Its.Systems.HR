@@ -1,5 +1,5 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.ParticipantViewModel
-@*@model Its.Systems.HR.Interface.Web.ViewModels.CreateSessionViewModel*@*
+@*@model Its.Systems.HR.Interface.Web.ViewModels.CreateSessionViewModel*@
 @*@model Its.Systems.HR.Interface.Web.ViewModels.SessionPaticipantsViewModel*@
 <div class="col-md-12">
     <h2><strong>@Model.SessionName</strong> <a href="@Url.Action("EditSession", "Activity", new {id = Model.SessionId})" class="btn btn-warning">Editera kurstillfälle</a> <button class="btn btn-danger">Ta bort kurstillfälle</button></h2>
@@ -7,44 +7,39 @@
 
 
 <div class="col-md-6">
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
+
     <h3 class="m-b-30">Deltagare</h3>
 
     <div class="form-group">
         <label for="Participant_Id">Lägg till deltagare</label>
         <div>
-            @Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>) ViewBag.SessionParticipantId, new {@class = "form-control"})
+            @Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>)ViewBag.SessionParticipantId, new { @class = "form-control", id = "participantDropdown" })
 
-            @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new {@class = "text-danger"})
-            <button type="button" class="btn btn-default js-add-participantBeforeSessionExists">
+            @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })
+            <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare
             </button>
         </div>
     </div>
-    }
-    @*<div>
-            <div></div>
-            <ul id="selectedParticipants">
-                @Html.HiddenFor(n => n.AddedParticipants)
-            </ul>
-        </div>*@
 
-    <table class="table">
+    <div>
 
-        @foreach (var item in Model.Participants)
-        {
+    </div>
+
+    <table class="table" id="allSessionsForParticipant">
+        @foreach (var participant in Model.Participants)
+            {
             <tr>
                 <td>
-
-                    @Html.ActionLink(@item.FullName, "Details", "Participant", new {id = item.Id}, null)
+                    @Html.ActionLink(participant.FullName, "Details", "Participant", new { id = participant.Id }, null)
+                    <span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@Model.SessionId" data-personId="@participant.Id">Ta bort</span>
                 </td>
             </tr>
         }
 
     </table>
 
+    @*TODO: count participants with javascript instead*@
     <em>Totalt antal deltagare: @Model.TotalPaticipants</em>
 
 
@@ -98,94 +93,103 @@
 </div>
 
 @section scripts {
-@Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
     <script>
         $(document).ready(function () {
-    // Array holding participants added "on-the-fly"
-        var listOfParticiantsThatParticipated = [];
 
-        $('.js-add-participantBeforeSessionExists').on('click', function (e) {
-            var link = $(e.target);
-            var resultName = $('#Participant_Id :selected').text();
-            var resultId = $('#Participant_Id').val();
+            $(".js-add-sessionParticipant").click(function (e) {
+                var link = $(e.target);
+                var personId = $("#participantDropdown").val();
 
-            if ($.inArray(resultId, listOfParticiantsThatParticipated) > -1) {
+                $.ajax({
+                    url: "@Url.Action("AddPersonToSessionFromActivitySummary", "Participant")",
+                    type: "POST",
+                    data: { sessionId: link.attr("data-sessionId"), personId: personId },
+                    success: function (result) {
+                        if (result.Success) {
+                            //<span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionid="10" data-personid="1">Ta bort</span>
+                            //<a href="/HrKompetensutveckling/Participant/Details/1">Madawa Abeywickrama</a>
+                            var html = '<tr><td><a href="/HrKompetensutveckling/Participant/Details/' + result.PersonId + '">' + result.PersonFullName + '</a><span> </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionid="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
+                            $(html).hide().appendTo("#allSessionsForParticipant").fadeIn();
 
-                link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">Redan tillagd!</span>');
-                $(".js-fadeOutThisMessage").fadeOut(2000, function () {
-                    $(this).remove();
+                            @*$.ajax({
+                                url: "@Url.Action("ParticipantStatisticSummary", "Participant")",
+                                type: "GET",
+                                data: { personId: link.attr("data-personId") },
+                                success: function (result2) {
+                                    $("#statisticsSummary").html(result2);
+                                },
+                                error: function () {
+                                    alert("Anropet misslyckades, prova gärna igen.");
+                                }
+                            });*@
+
+                        } else {
+                            link.after(' <div class="alert alert-danger js-fadeOutThisMessage" role="alert">Personen redan tillagd!</div>');
+
+                            $(".js-fadeOutThisMessage").fadeOut(2000, function () {
+                                $(this).remove();
+                            });
+                        }
+                    }
                 });
-                return;
-            }
-
-            listOfParticiantsThatParticipated.push(resultId);
-            $('#AddedParticipants').val(listOfParticiantsThatParticipated);
-
-            var html = '<li data-personId="' +
-                resultId +
-                '"><span class="listedParticipantLink">' +
-                resultName +
-                '</span><span> </span><span class="badge js-remove-participantBeforeSessionExists listedParticipantRemove"> x </span></li>';
-            $(html).hide().appendTo("#selectedParticipants").fadeIn();
-
-            //console.log(listOfParticiantsThatParticipated);
-        });
-
-        $('body').on('click', '.js-remove-participantBeforeSessionExists', function (e) {
-
-            var link = $(e.target);
-            // get parent li data-personId
-            var resultId = link.parents("li").attr("data-personId");
-
-            var index = listOfParticiantsThatParticipated.indexOf(resultId);
-            if (index > -1) {
-                listOfParticiantsThatParticipated.splice(index, 1);
-                $('#AddedParticipants').val(listOfParticiantsThatParticipated);
-
-                link.parents("li")
-                                .fadeOut(function () {
-                                    $(this).remove();
-                                });
-            }
-
-        });
-
-        $('body').on('click', '.listedParticipantLink', function (e) {
-
-            var link = $(e.target);
-            // get parent li data-personId
-            var resultId = link.parents("li").attr("data-personId");
-
-            var url = "@Url.Action("Details", "Participant")" + "/" + resultId;
-            window.open(
-                      url,
-                      "_blank"
-                    );
-        });
-
-        function getPaticipants(_SessionId) {
-            var url = "@Url.Action("GetParticipants", "ActivitySummary")";
-
-            $.ajax({
-                url: url,
-                data: { sessionId: _SessionId },
-                cache: false,
-                type: "POST",
-                success: function (data) {
-                    $("#participantsPartial").html(data);
-                },
-                error: function (reponse) {
-                    alert("error : " + reponse);
-                }
             });
 
-        }
+            $("body").on("click", ".js-delete-sessionParticipant", function (e) {
+                var link = $(e.target);
 
 
-        //$(document).ready(function () {
-        
+                bootbox.confirm({
+                    title: "Vänligen bekräfta",
+                    message: "Vill du verkligen ta bort denna person för detta kurstillfälle?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
+                        },
+                        confirm: {
+                            label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "@Url.Action("RemovePersonFromSession", "Participant")",
+                                type: "POST",
+                                data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
+                                success: function () {
+                                    link.parents("tr")
+                                        .fadeOut(function () {
+                                            $(this).remove();
+
+                                            @*$.ajax({
+                                                url: "@Url.Action("ParticipantStatisticSummary", "Participant")",
+                                                type: "GET",
+                                                data: { personId: link.attr("data-personId") },
+                                                success: function (result2) {
+                                                    $("#statisticsSummary").html(result2);
+                                                },
+                                                error: function () {
+                                                    alert("Anropet misslyckades, prova gärna igen.");
+                                                }
+                                            });*@
+                                        });
+                                },
+                                error: function () {
+                                    alert("Anropet misslyckades, prova gärna igen.");
+                                }
+                            });
+                        }
+                    }
+                });
+
+            });
+
+
+            //$(document).ready(function () {
+
 
             $("body").on("click", ".js-save-sessionComment", function (e) {
                 var link = $(e.target);
@@ -208,7 +212,7 @@
                 });
             });
 
-       
+
             $("body").on("click", ".js-save-sessionEvaluation", function (e) {
                 var link = $(e.target);
                 var evaluation = $("#Evaluation").val();
