@@ -10,5 +10,10 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public IEnumerable<SelectListItem> HrPersons { get; set; }
 
         public HrPerson HrPerson { get; set; }
+        public string NameOfLocation { get; set; }
+        public int YearStart { get; set; }
+        public int YearEnd { get; set; }
+        public int MinYear { get; set; }
+        public int MaxYear { get; set; }
     }
 }

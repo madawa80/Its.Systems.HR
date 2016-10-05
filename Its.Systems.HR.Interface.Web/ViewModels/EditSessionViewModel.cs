@@ -15,10 +15,10 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         [Required]
         public string NameOfSession { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         [Display(Name = "Startdatum")]
         public DateTime StartDate { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         [Display(Name = "Slutdatum")]
         public DateTime EndDate { get; set; }
 

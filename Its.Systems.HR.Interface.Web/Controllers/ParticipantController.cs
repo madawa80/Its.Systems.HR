@@ -19,18 +19,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             _activityManager = activityManager;
             _personManager = personManager;
-            
         }
 
         // GET: Participant
         public ActionResult Index()
         {
-
-           return View(_personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
-            
+           return View(_personManager.GetAllParticipants().OrderBy(n => n.FirstName).ToList());
         }
-
-
 
         // GET: Participant/Details/5
         public ActionResult Details(int? id)

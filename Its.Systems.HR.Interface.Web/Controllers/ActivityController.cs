@@ -331,11 +331,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 allSessions = _manager.GetAllSessionsWithIncludes().Where(n => n.Name.Contains(searchString));
             // TODO: Take 10?
 
+            int yearStart = 0;
+            int yearEnd = 10000;
             if (!string.IsNullOrEmpty(yearSlider))
             {
                 var years = yearSlider.Split(',');
-                var yearStart = int.Parse(years[0]);
-                var yearEnd = int.Parse(years[1]);
+                yearStart = int.Parse(years[0]);
+                yearEnd = int.Parse(years[1]);
 
                 allSessions = allSessions.Where(n => n.StartDate.Year >= yearStart && n.StartDate.Year <= yearEnd);
             }
@@ -351,27 +353,18 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 allSessions = allSessions.Where(n => n.Location.Name == nameOfLocation);
             }
 
-            var result = new FilterSessionsViewModel() { Sessions = allSessions.ToList() };
-            //foreach (var session in allSessions)
-            //{
-            //    result.Sessions.Add(new Session()
-            //    {
-            //        Id = session.Id,
-            //        Name = session.Name,
-            //        StartDate = session.StartDate,
-            //        EndDate = session.EndDate,
-            //        Location = session.Location,
-            //        HrPerson = session.HrPerson
-            //        
-            //    });
-            //}
 
-            // TODO: first item should be empty...
             var allHrPersons = _personManager.GetAllHrPersons().OrderBy(n => n.FirstName).ToList();
-            result.HrPersons = new SelectList(
-                allHrPersons,
-                "Id",
-                "FullName");
+            var result = new FilterSessionsViewModel()
+            {
+                Sessions = allSessions.ToList(),
+                HrPersons = new SelectList(allHrPersons, "Id", "FullName"),
+                NameOfLocation = nameOfLocation,
+                YearStart = yearStart,
+                YearEnd = yearEnd,
+                MinYear = 2011,
+                MaxYear = DateTime.Now.AddYears(1).Year,    // Maximum year set to this year + 1
+            };
 
             return View(result);
         }

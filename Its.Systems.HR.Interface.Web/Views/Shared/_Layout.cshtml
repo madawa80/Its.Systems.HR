@@ -33,14 +33,14 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Visa<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Lista kurstillfällen", "Details", "ActivitySummary")</li>
+                            <li>@Html.ActionLink("Lista kurstillfällen", "FilterSessions", "Activity")</li>
                             <li role="separator" class="divider"></li>
                             <li>@Html.ActionLink("Lista aktiviteter", "Index", "Activity")</li>
                             <li role="separator" class="divider"></li>
                             <li>@Html.ActionLink("Översikt personer", "Index", "Participant")</li>
                         </ul>
                     </li>
-                    <li>@Html.ActionLink("Filtrera kurstillfällen", "FilterSessions", "Activity")</li>
+                    <li>@Html.ActionLink("Statistik", "Details", "SessionSummaryStatistics")</li>
 
                 </ul>
                 @Html.Partial("_LoginPartial")

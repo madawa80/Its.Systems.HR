@@ -20,7 +20,7 @@
         <div class="form-group">
             <label>År</label>
             <div>
-                <input name="yearSlider" id="yearSlider" type="text" class="" value="" data-slider-min="2011" data-slider-max="2017" data-slider-step="1" data-slider-value="[2011,2017]" />
+                <input name="yearSlider" id="yearSlider" type="text" class="" value="" data-slider-min="@Model.MinYear" data-slider-max="@Model.MaxYear" data-slider-step="1" data-slider-value="[@Model.YearStart,@Model.YearEnd]" />
             </div>
         </div>
 
@@ -36,7 +36,7 @@
             <label for="NameOfLocation">Plats</label>
             <div>
                 @*@Html.TextBoxFor(n => n.NameOfLocation, new { @class = "form-control ui-autocomplete", @data-autocomplete = "@Url.Action("AutoCompleteLocations", "Home")" })*@
-                <input type="text" id="NameOfLocation" name="NameOfLocation" class="form-control ui-autocomplete"
+                <input type="text" id="NameOfLocation" name="NameOfLocation" value="@Model.NameOfLocation" class="form-control ui-autocomplete"
                        data-autocomplete="@Url.Action("AutoCompleteLocations", "Home")" />
                 @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
             </div>

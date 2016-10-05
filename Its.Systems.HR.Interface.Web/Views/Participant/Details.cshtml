@@ -25,7 +25,7 @@
             {
                 <tr>
                     <td>
-                        <a href="@Url.Action("Index", "Home")">@session.Name</a>
+                        <a href="@Url.Action("GetParticipants", "ActivitySummary", new {id = session.Id})">@session.Name</a>
                         <span> (@session.StartDate.ToShortDateString())</span>
                         <span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort</span>
                     </td>
@@ -152,7 +152,7 @@
                     data: { sessionId: sessionId, personId: link.attr("data-personId") },
                     success: function (result) {
                         if (result.Success) {
-                            var html = '<tr><td><a href="/Index/Home">' + result.SessionName + '</a><span> (' + result.StartDate + ') </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
+                            var html = '<tr><td><a href="/HrKompetensutveckling/ActivitySummary/GetParticipants/' + sessionId + '">' + result.SessionName + '</a><span> (' + result.StartDate + ') </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
                             $(html).hide().appendTo("#allSessionsForParticipant").fadeIn();
 
                             $.ajax({
