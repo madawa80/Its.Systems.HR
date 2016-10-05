@@ -113,7 +113,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
               "FullName",
               _personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
 
-            return View("SessionParticipant", result);
+            return View("SessionForActivity", result);
         }
 
         public ViewResult FilterSessions(string searchString, string yearSlider, string hrPerson, string nameOfLocation)

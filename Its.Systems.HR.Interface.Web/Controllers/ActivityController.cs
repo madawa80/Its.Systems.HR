@@ -51,11 +51,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 activities = _activityManager.GetAllActivities().Where(s => s.Name.Contains(searchString));
             }
 
-            var result = new List<ListActivitiesViewModel>();
+            var result = new List<ActivityViewModel>();
 
             foreach (var activity in activities)
             {
-                result.Add(new ListActivitiesViewModel()
+                result.Add(new ActivityViewModel()
                 {
                     Id = activity.Id,
                     Name = activity.Name,
