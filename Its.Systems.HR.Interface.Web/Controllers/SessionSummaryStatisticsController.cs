@@ -24,30 +24,37 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _activityManager = manager;
             _personManager = personManager;
         }
-        [HttpGet]
+        
         public ActionResult Details()
         {
 
             var viewModel = new SessionSummaryStatisticsViewModel()
             {
-                SessionStatisticsRows = new List<SessionStatisticsRow>()
-                {
-                    new SessionStatisticsRow()
-                }
+                //SessionStatisticsRows = new List<SessionStatisticsRow>()
+                //{
+                //    new SessionStatisticsRow()
+                //}
             };
 
             return View(viewModel);
 
         }
 
+
+
         [HttpPost]
         public ViewResult Details(string yearsList)
         {
             int yearInInt;
             var sessionStatisticsRowsList = new List<SessionStatisticsRow>();
-            //Session = _activityManager.GetAllSessionsForYear(selectedyear).OrderBy(n => n.Id),
 
-            
+
+            if (string.IsNullOrEmpty(yearsList))
+            {
+                return View(new SessionSummaryStatisticsViewModel());
+
+            }
+
 
 
             if (int.TryParse(Request.Form["yearslist"], out yearInInt) == true)

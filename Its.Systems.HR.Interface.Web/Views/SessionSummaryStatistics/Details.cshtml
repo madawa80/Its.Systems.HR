@@ -17,17 +17,29 @@
 
 
     }
-    <table class="table" id="sessionsinyear">
-        @foreach (var item in Model.SessionStatisticsRows)
-        {
-            <tr>
-                <td>
-                    <p>@Html.DisplayFor(modelItem => item.Session.Name), @Html.DisplayFor(modelItem => item.NumberOfParticipants) Deltagare</p>
-                    <p>@Html.ActionLink(@item.Session.Name, "GetParticipants", "ActivitySummary", new { id = item.Id }, null)   @item.StartDate.ToString("dd MMM yyyy HH:mm")    @item.EndDate.ToString("dd MMM yyyy HH:mm") </p>
-                </td>
+    
+    @if (@Model.SessionStatisticsRows != null)
+
+    {
+
+        <table class="table" id="sessionsinyear">
+            @foreach (var item in Model.SessionStatisticsRows)
+            {
+                <tr>
+                    <td>
+                        @*<p>@Html.DisplayFor(modelItem => item.Session.Name), @Html.DisplayFor(modelItem => item.NumberOfParticipants) Deltagare</p>*@
+                        <p>@Html.ActionLink(@item.Session.Name, "GetParticipants", "ActivitySummary", new { id = item.Session.Id }, null)   @item.NumberOfParticipants Deltagare</p>
+                    </td>
 
 
-            </tr>
-        }
-    </table>
+                </tr>
+            }
+        </table>
+
+    }
+
+
+    
+    
+
 </div>
