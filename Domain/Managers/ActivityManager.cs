@@ -306,5 +306,25 @@ namespace Its.Systems.HR.Domain.Managers
             }
             db.SaveChanges();
         }
+
+        public bool DeleteSessionById(int id)
+        {
+            var sessionInDb = db.Get<Session>().SingleOrDefault(n => n.Id == id);
+            if (sessionInDb == null)
+                return false;
+
+            db.Delete(sessionInDb);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return true;
+        }
     }
 }

@@ -58,5 +58,6 @@ namespace Its.Systems.HR.Domain.Interfaces
         bool EditSession(Session sessionToUpdate);
         IQueryable<Tag> GetAllTags();
         void AddTags(List<Tag> tags);
+        bool DeleteSessionById(int id);
     }
 }

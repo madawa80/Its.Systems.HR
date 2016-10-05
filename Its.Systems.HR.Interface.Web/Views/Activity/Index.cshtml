@@ -39,10 +39,11 @@
         <tr>
             <td>
                 @*@Html.DisplayFor(modelItem => item.Name)*@
-                @Html.ActionLink(@item.Name, "FilterSessions", "ActivitySummary", new { SearchString = item.Name },null)
+                @Html.ActionLink(@item.Name, "FilterSessions", "ActivitySummary", new { SearchString = item.Name }, null)
             </td>
 
             <td>
+                @Html.ActionLink("Skapa tillfälle", "CreateSession", new { id = item.Id }) |
                 @Html.ActionLink("Redigera", "EditActivity", new { id = item.Id }) |
                 <a href="#" class="js-delete-activity" data-activityId="@item.Id">Ta bort</a>
             </td>
@@ -95,7 +96,7 @@
 
                     bootbox.confirm({
                         title: "Vänligen bekräfta",
-                        message: "Vill du verkligen ta bort den här aktiviteten?",
+                        message: "Vill du verkligen ta bort den här aktiviteten och alla aktivitetens tillfällen?",
                         buttons: {
                             cancel: {
                                 label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'

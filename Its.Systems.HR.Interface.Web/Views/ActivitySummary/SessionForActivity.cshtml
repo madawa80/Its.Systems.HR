@@ -1,8 +1,11 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.SessionForActivityViewModel
-@*@model Its.Systems.HR.Interface.Web.ViewModels.CreateSessionViewModel*@
-@*@model Its.Systems.HR.Interface.Web.ViewModels.SessionPaticipantsViewModel*@
+
 <div class="col-md-12">
-    <h2><strong>@Model.SessionName</strong> <a href="@Url.Action("EditSession", "Activity", new {id = Model.SessionId})" class="btn btn-warning">Ändra tillfälle</a> <button class="btn btn-danger">Ta bort tillfälle</button></h2>
+    <h2>
+        <strong>@Model.SessionName</strong>
+        <a href="@Url.Action("EditSession", "Activity", new {id = Model.SessionId})" class="btn btn-warning">Ändra tillfälle</a>
+        <button class="btn btn-danger js-delete-session" data-sessionId="@Model.SessionId">Ta bort tillfälle</button>
+    </h2>
 </div>
 
 
@@ -188,9 +191,6 @@
             });
 
 
-            //$(document).ready(function () {
-
-
             $("body").on("click", ".js-save-sessionComment", function (e) {
                 var link = $(e.target);
                 var comments = $("#Comments").val();
@@ -232,6 +232,40 @@
                         alert("Anropet misslyckades, prova gärna igen.");
                     }
                 });
+            });
+
+
+            $("body").on("click", ".js-delete-session", function (e) {
+                var link = $(e.target);
+
+                bootbox.confirm({
+                    title: "Vänligen bekräfta",
+                    message: "Vill du verkligen ta bort hela detta tillfälle?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
+                        },
+                        confirm: {
+                            label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "@Url.Action("RemoveSession", "Activity")" + "/" + link.attr("data-sessionId"),
+                                type: "POST",
+                                success: function () {
+                                    window.location.href = "/HrKompetensutveckling/Activity/Index/";
+                                },
+                                error: function () {
+                                    alert("Anropet misslyckades, prova gärna igen.");
+                                }
+                            });
+                        }
+                    }
+                });
+
             });
 
         });

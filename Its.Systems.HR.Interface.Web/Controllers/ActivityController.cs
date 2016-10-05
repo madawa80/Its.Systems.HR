@@ -320,7 +320,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             return View(sessionVm);
         }
-        
+
         [HttpGet]
         public ActionResult EditSession(int? id)
         {
@@ -380,7 +380,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                     _activityManager.EditSession(sessionToUpdate);
 
-                    return RedirectToAction("FilterSessions", "ActivitySummary");
+                    return RedirectToAction("GetSession", "ActivitySummary", new { id = sessionToUpdate.Id });
                 }
 
                 ModelState.AddModelError("NameOfSession", "Aktiviteten existerar redan.");
@@ -470,6 +470,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult RemoveSession(int id)
+        {
+            var result = new { Success = true };
+
+            if (!_activityManager.DeleteSessionById(id))
+                result = new { Success = false };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         //AJAX AUTOCOMPLETE
         public ActionResult AutoCompleteLocations(string term)
         {
@@ -527,6 +537,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             // NOTICE! Have to savechanges later!
         }
+
     }
 }
 
