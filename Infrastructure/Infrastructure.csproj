@@ -67,6 +67,10 @@
     <Compile Include="Migrations\201610030720290_removed Name prop from HrPerson.Designer.cs">
       <DependentUpon>201610030720290_removed Name prop from HrPerson.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610041342370_SessionTags renamed to SessionTag.cs" />
+    <Compile Include="Migrations\201610041342370_SessionTags renamed to SessionTag.Designer.cs">
+      <DependentUpon>201610041342370_SessionTags renamed to SessionTag.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610030720290_removed Name prop from HrPerson.resx">
       <DependentUpon>201610030720290_removed Name prop from HrPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610041342370_SessionTags renamed to SessionTag.resx">
+      <DependentUpon>201610041342370_SessionTags renamed to SessionTag.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

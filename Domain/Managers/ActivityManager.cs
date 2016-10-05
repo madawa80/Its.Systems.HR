@@ -291,5 +291,20 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
 
         }
+
+        public IQueryable<Tag> GetAllTags()
+        {
+            return db.Get<Tag>();
+        }
+
+        public void AddTags(List<Tag> tags)
+        {
+            // TODO: this will result in one roundtrip for every new tag...
+            foreach (var tag in tags)
+            {
+                db.Add<Tag>(tag);
+            }
+            db.SaveChanges();
+        }
     }
 }

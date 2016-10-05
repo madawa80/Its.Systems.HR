@@ -72,21 +72,34 @@
     </div>
 
 
-        <div class="form-group">
-            <label for="NameOfLocation">Plats</label>
-            <div>
-                @*@Html.TextBoxFor(n => n.NameOfLocation, new { @class = "form-control ui-autocomplete", @data-autocomplete = "@Url.Action("AutoCompleteLocations", "Home")" })*@
-                <input type="text" id="NameOfLocation" name="NameOfLocation" class="form-control ui-autocomplete"
-                       data-autocomplete="@Url.Action("AutoCompleteLocations", "Home")" />
-                @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
-            </div>
+    <div class="form-group">
+        <label for="NameOfLocation">Plats</label>
+        <div>
+            @*@Html.TextBoxFor(n => n.NameOfLocation, new { @class = "form-control ui-autocomplete", @data-autocomplete = "@Url.Action("AutoCompleteLocations", "Home")" })*@
+            <input type="text" id="NameOfLocation" name="NameOfLocation" class="form-control ui-autocomplete"
+                   data-autocomplete="@Url.Action("AutoCompleteLocations", "Home")" />
+            @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
         </div>
+    </div>
+
+    <div class="form-group">
+        <label for="HrPerson_Id">Ansvarig HR</label>
+        <div>
+            @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, "-- Ingen ansvarig HR --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.HrPerson, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
         <div class="form-group">
-            <label for="HrPerson_Id">Ansvarig HR</label>
-            <div>
-                @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, "-- Ingen ansvarig HR --", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.HrPerson, "", new { @class = "text-danger" })
+            <label for="tagsInput">Etiketter</label>
+            <div class="form-inline">
+                <div class="form-group">
+                    <input type="text" id="tagsInput" name="tagsInput" class="form-control" />
+                </div>
+                <button type="button" class="btn btn-default js-add-tag">Lägg till</button>
+            </div>
+            <div id="selectedTags">
+                @Html.HiddenFor(n => n.AddedTags)
             </div>
         </div>
 
@@ -210,6 +223,54 @@
                           url,
                           "_blank"
                         );
+            });
+
+
+            // Tags
+            // Array holding tags
+            var listOfAddedTags = [];
+
+            $('.js-add-tag').on('click', function (e) {
+                var link = $(e.target);
+                var addedTag = $("#tagsInput").val();
+
+                if ($.inArray(addedTag, listOfAddedTags) > -1) {
+
+                    link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">Redan tillagd!</span>');
+                    $(".js-fadeOutThisMessage").fadeOut(2000, function () {
+                        $(this).remove();
+                    });
+                    return;
+                }
+
+                listOfAddedTags.push(addedTag);
+                $('#AddedTags').val(listOfAddedTags);
+
+                var html = '<span data-tagName="' +
+                    addedTag +
+                    '" class="label label-primary js-remove-tag">' +
+                    addedTag +
+                    '&nbsp;<span class="glyphicon glyphicon-remove"></span></span>';
+                $(html).hide().appendTo("#selectedTags").fadeIn();
+
+                $("#tagsInput").val("");
+            });
+
+            $('body').on('click', '.js-remove-tag', function (e) {
+
+                var link = $(e.target);
+                // get parent li data-personId
+                var resultTagName = link.attr("data-tagName");
+
+                var index = listOfAddedTags.indexOf(resultTagName);
+                if (index > -1) {
+                    listOfAddedTags.splice(index, 1);
+                    $('#AddedTags').val(listOfAddedTags);
+
+                    link.fadeOut(function () {
+                                        $(this).remove();
+                                    });
+                }
             });
 
 

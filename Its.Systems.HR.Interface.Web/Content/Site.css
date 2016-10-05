@@ -157,6 +157,20 @@ ul.dropdown-menu {
     cursor: pointer;
 }
 
+.js-remove-tag {
+    margin-right: 10px;
+}
+
+.js-remove-tag:hover {
+    cursor: pointer;
+    background-color: red;
+}
+
+/*#selectedTags {
+    width: 100px;
+    max-width: 100px;
+}*/
+
 footer {
     /*background-color: #333;
     background: linear-gradient(#333, #666);
