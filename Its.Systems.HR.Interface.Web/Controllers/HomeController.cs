@@ -38,20 +38,5 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View();
         }
 
-        //AJAX AUTOCOMPLETE
-        public ActionResult AutoCompleteLocations(string term)
-        {
-            var locations = GetLocations(term);
-            return Json(locations, JsonRequestBehavior.AllowGet);
-        }
-
-        private IEnumerable<string> GetLocations(string searchString)
-        {
-            IEnumerable<string> locations = 
-                _activityManager.GetAllLocations().Where(n => n.Name.ToUpper().Contains(searchString.ToUpper())).Select(a => a.Name);
-
-            return locations;
-        }
-
     }
 }

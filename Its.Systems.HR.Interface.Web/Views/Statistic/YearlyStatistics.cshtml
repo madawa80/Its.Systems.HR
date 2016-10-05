@@ -6,7 +6,7 @@
 
 <div class="col-md-6">
 
-    @using (Html.BeginForm("Details", "SessionSummaryStatistics", FormMethod.Post))
+    @using (Html.BeginForm("YearlyStatistics", "Statistic", FormMethod.Post))
     {
         <div class="form-group">
             <label for="Activity">Aktiviteter</label>
@@ -28,7 +28,7 @@
                 <tr>
                     <td>
                         @*<p>@Html.DisplayFor(modelItem => item.Session.Name), @Html.DisplayFor(modelItem => item.NumberOfParticipants) Deltagare</p>*@
-                        <p>@Html.ActionLink(@item.Session.Name, "GetParticipants", "ActivitySummary", new { id = item.Session.Id }, null)   @item.NumberOfParticipants Deltagare</p>
+                        <p>@Html.ActionLink(@item.Session.Name, "GetSession", "ActivitySummary", new { id = item.Session.Id }, null) @item.NumberOfParticipants Deltagare</p>
                     </td>
 
 

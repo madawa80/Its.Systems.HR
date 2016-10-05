@@ -17,13 +17,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
 
 
-        private IActivityManager _manager;
+        private IActivityManager _activityManager;
         private IPersonManager _personManager;
 
 
-        public ActivityController(IActivityManager manager, IPersonManager personManager)
+        public ActivityController(IActivityManager activityManager, IPersonManager personManager)
         {
-            _manager = manager;
+            _activityManager = activityManager;
             _personManager = personManager;
 
         }
@@ -44,11 +44,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var activities = _manager.GetAllActivities();
+            var activities = _activityManager.GetAllActivities();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                activities = _manager.GetAllActivities().Where(s => s.Name.Contains(searchString));
+                activities = _activityManager.GetAllActivities().Where(s => s.Name.Contains(searchString));
             }
 
             var result = new List<ListActivitiesViewModel>();
@@ -69,28 +69,28 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
 
         // GET: Create activity
-        public ActionResult Create()
+        public ActionResult CreateActivity()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")]ViewModels.ActivityViewModel activity)
+        public ActionResult CreateActivity([Bind(Include = "Name")]ViewModels.ActivityViewModel activity)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
 
-                    if (!_manager.GetAllActivities().Any(n => n.Name == activity.Name))
+                    if (!_activityManager.GetAllActivities().Any(n => n.Name == activity.Name))
                     {
                         var result = new Activity()
                         {
                             Name = activity.Name,
                         };
 
-                        _manager.AddActivity(result);
+                        _activityManager.AddActivity(result);
 
                         return RedirectToAction("Index");
                     }
@@ -113,13 +113,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         //Edit an activity
         [HttpGet]
-        public ActionResult Edit(int? id)
+        public ActionResult EditActivity(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var activity = _manager.GetActivityById(id.Value);
+            var activity = _activityManager.GetActivityById(id.Value);
             var result = new ActivityViewModel();
             result.Name = activity.Name;
             if (activity == null)
@@ -127,26 +127,25 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return HttpNotFound();
             }
             return View(result);
-
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(ActivityViewModel activityFromInput)
+        [ActionName("EditActivity")]
+        public ActionResult EditActivityPost(ActivityViewModel activityFromInput)
         {
             if (activityFromInput == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var activityToUpdate = _manager.GetActivityById(activityFromInput.Id);
+            var activityToUpdate = _activityManager.GetActivityById(activityFromInput.Id);
 
             try
             {
-                if (!_manager.GetAllActivities().Any(n => n.Name == activityFromInput.Name))
+                if (!_activityManager.GetAllActivities().Any(n => n.Name == activityFromInput.Name))
                 {
                     activityToUpdate.Name = activityFromInput.Name;
-                    _manager.EditActivity(activityToUpdate);
+                    _activityManager.EditActivity(activityToUpdate);
 
                     return RedirectToAction("Index");
                 }
@@ -158,7 +157,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
             }
 
-            return View("Edit", new ActivityViewModel()
+            return View("EditActivity", new ActivityViewModel()
             {
                 Name = activityToUpdate.Name
             });
@@ -166,25 +165,25 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
 
 
-        public ActionResult Delete(int? id, bool? saveChangesError = false)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (saveChangesError.GetValueOrDefault())
-            {
-                ViewBag.ErrorMessage = "Radera misslyckades. Försök igen, och om problemet kvarstår se systemadministratören .";
-            }
-            var activity = _manager.GetActivityById(id.Value);
-            var result = new ActivityViewModel();
-            result.Name = activity.Name;
-            if (activity == null)
-            {
-                return HttpNotFound();
-            }
-            return View(result);
-        }
+        //public ActionResult Delete(int? id, bool? saveChangesError = false)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    if (saveChangesError.GetValueOrDefault())
+        //    {
+        //        ViewBag.ErrorMessage = "Radera misslyckades. Försök igen, och om problemet kvarstår se systemadministratören .";
+        //    }
+        //    var activity = _activityManager.GetActivityById(id.Value);
+        //    var result = new ActivityViewModel();
+        //    result.Name = activity.Name;
+        //    if (activity == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(result);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -192,8 +191,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             try
             {
-                var activity = _manager.GetActivityById(id);
-                _manager.DeleteActivityById(id);
+                var activity = _activityManager.GetActivityById(id);
+                _activityManager.DeleteActivityById(id);
             }
             catch (RetryLimitExceededException/* dex */)
             {
@@ -206,7 +205,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult DeleteActivity(int activityId)
         {
-            if (!_manager.DeleteActivityById(activityId))
+            if (!_activityManager.DeleteActivityById(activityId))
                 return new HttpNotFoundResult();
 
             var result = new { Success = "True" };
@@ -217,14 +216,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             //var viewModel = new CreateSessionViewModel()
             //{
-            //    LocationList = new SelectList(_manager.GetAllLocations(), "Id", "Name", 1)
+            //    LocationList = new SelectList(_activityManager.GetAllLocations(), "Id", "Name", 1)
             //};
-            //ViewBag.LocationId = new SelectList(_manager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
+            //ViewBag.LocationId = new SelectList(_activityManager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
             ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName");
 
             var selectedActivityId =
-                (id == 0) ? _manager.GetAllActivities().OrderBy(n => n.Name).First().Id : id;
-            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", selectedActivityId);
+                (id == 0) ? _activityManager.GetAllActivities().OrderBy(n => n.Name).First().Id : id;
+            ViewBag.ActivityId = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", selectedActivityId);
 
             ViewBag.SessionParticipantId = new SelectList(
                 _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
@@ -266,7 +265,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     // <- END TAGS
 
 
-                    var activityName = _manager.GetActivityById(sessionVm.Activity.Id).Name;
+                    var activityName = _activityManager.GetActivityById(sessionVm.Activity.Id).Name;
                     int? locationId = GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
 
                     var result = new Session()
@@ -298,7 +297,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     }
 
                     // Save session in db
-                    _manager.AddSession(result);
+                    _activityManager.AddSession(result);
 
 
                     //// TODO: Now add tags to the created session!...
@@ -321,65 +320,18 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             return View(sessionVm);
         }
-
-        public ViewResult FilterSessions(string searchString, string yearSlider, string hrPerson, string nameOfLocation)
-        {
-            IQueryable<Session> allSessions;
-            if (string.IsNullOrEmpty(searchString))
-                allSessions = _manager.GetAllSessionsWithIncludes();
-            else
-                allSessions = _manager.GetAllSessionsWithIncludes().Where(n => n.Name.Contains(searchString));
-            // TODO: Take 10?
-
-            int yearStart = 0;
-            int yearEnd = 10000;
-            if (!string.IsNullOrEmpty(yearSlider))
-            {
-                var years = yearSlider.Split(',');
-                yearStart = int.Parse(years[0]);
-                yearEnd = int.Parse(years[1]);
-
-                allSessions = allSessions.Where(n => n.StartDate.Year >= yearStart && n.StartDate.Year <= yearEnd);
-            }
-
-            if (!string.IsNullOrEmpty(hrPerson))
-            {
-                var hrPersonAsInt = int.Parse(hrPerson);
-                allSessions = allSessions.Where(n => n.HrPersonId == hrPersonAsInt); //TODO error handling
-            }
-
-            if (!string.IsNullOrEmpty(nameOfLocation))
-            {
-                allSessions = allSessions.Where(n => n.Location.Name == nameOfLocation);
-            }
-
-
-            var allHrPersons = _personManager.GetAllHrPersons().OrderBy(n => n.FirstName).ToList();
-            var result = new FilterSessionsViewModel()
-            {
-                Sessions = allSessions.ToList(),
-                HrPersons = new SelectList(allHrPersons, "Id", "FullName"),
-                NameOfLocation = nameOfLocation,
-                YearStart = yearStart,
-                YearEnd = yearEnd,
-                MinYear = 2011,
-                MaxYear = DateTime.Now.AddYears(1).Year,    // Maximum year set to this year + 1
-            };
-
-            return View(result);
-        }
-
+        
         [HttpGet]
         public ActionResult EditSession(int? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var session = _manager.GetSessionByIdWithIncludes((int)id);
+            var session = _activityManager.GetSessionByIdWithIncludes((int)id);
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var activity = _manager.GetActivityById(session.ActivityId);
+            var activity = _activityManager.GetActivityById(session.ActivityId);
 
             var viewModel = new EditSessionViewModel()
             {
@@ -396,7 +348,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             ViewBag.NameOfLocation = viewModel.NameOfLocation;
 
             ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", session.HrPersonId);
-            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", session.ActivityId);
+            ViewBag.ActivityId = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", session.ActivityId);
 
             return View(viewModel);
         }
@@ -409,11 +361,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (inputVm == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var sessionToUpdate = _manager.GetSessionByIdWithIncludes(inputVm.SessionId);
+            var sessionToUpdate = _activityManager.GetSessionByIdWithIncludes(inputVm.SessionId);
 
             try
             {
-                if (sessionToUpdate.Name == inputVm.NameOfSession || !_manager.GetAllSessions().Any(n => n.Name == inputVm.NameOfSession))
+                if (sessionToUpdate.Name == inputVm.NameOfSession || !_activityManager.GetAllSessions().Any(n => n.Name == inputVm.NameOfSession))
                 {
                     int? location = GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
 
@@ -426,9 +378,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     sessionToUpdate.LocationId = location;
                     sessionToUpdate.HrPersonId = hrPerson;
 
-                    _manager.EditSession(sessionToUpdate);
+                    _activityManager.EditSession(sessionToUpdate);
 
-                    return RedirectToAction("FilterSessions", "Activity");
+                    return RedirectToAction("FilterSessions", "ActivitySummary");
                 }
 
                 ModelState.AddModelError("NameOfSession", "Aktiviteten existerar redan.");
@@ -439,11 +391,98 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
 
             ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", sessionToUpdate.HrPersonId);
-            ViewBag.ActivityId = new SelectList(_manager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", sessionToUpdate.ActivityId);
+            ViewBag.ActivityId = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", sessionToUpdate.ActivityId);
 
             ViewBag.NameOfLocation = inputVm.NameOfLocation;
 
             return View("EditSession", inputVm);
+        }
+
+        [HttpPost]
+        public ActionResult AddPersonToSession(int sessionId, int personId)
+        {
+            var session = _activityManager.GetSessionById(sessionId);
+
+            var result = new
+            {
+                Success = true,
+                ErrorMessage = "",
+                PersonId = personId,
+                SessionId = sessionId,
+                SessionName = session.Name,
+                StartDate = session.StartDate.ToShortDateString(),
+                //Year = session.StartDate.Year,
+                //Month = session.StartDate.Month,
+                //Day = session.StartDate.Day,
+            };
+
+            if (!_activityManager.AddParticipantToSession(personId, sessionId))
+                result = new
+                {
+                    Success = false,
+                    ErrorMessage = "Personen är redan registrerad på tillfället.",
+                    PersonId = 0,
+                    SessionId = 0,
+                    SessionName = "",
+                    StartDate = ""
+                };
+            //, Year = 0, Month = 0, Day = 0
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, int personId)
+        {
+            var fullName = _personManager.GetParticipantById(personId).FullName;
+
+            var result = new
+            {
+                Success = true,
+                ErrorMessage = "",
+                PersonId = personId,
+                SessionId = sessionId,
+                PersonFullName = fullName
+            };
+
+            if (!_activityManager.AddParticipantToSession(personId, sessionId))
+                result = new
+                {
+                    Success = false,
+                    ErrorMessage = "Personen är redan registrerad på tillfället.",
+                    PersonId = 0,
+                    SessionId = 0,
+                    PersonFullName = "",
+                };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult RemovePersonFromSession(int sessionId, int personId)
+        {
+            var result = new { Success = true };
+
+            //if (_personManager.GetParticipantById(personId) == null || _activityManager.GetSessionById(sessionId) == null)
+            //    result = new { Success = "Fail" };
+
+            if (!_activityManager.RemoveParticipantFromSession(personId, sessionId))
+                result = new { Success = false };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        //AJAX AUTOCOMPLETE
+        public ActionResult AutoCompleteLocations(string term)
+        {
+            var locations = GetLocations(term);
+            return Json(locations, JsonRequestBehavior.AllowGet);
+        }
+
+        private IEnumerable<string> GetLocations(string searchString)
+        {
+            IEnumerable<string> locations =
+                _activityManager.GetAllLocations().Where(n => n.Name.ToUpper().Contains(searchString.ToUpper())).Select(a => a.Name);
+
+            return locations;
         }
 
         private int? GetIdForLocationOrCreateIfNotExists(string location)
@@ -455,11 +494,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             int resultId = -1;
 
             Location locationExisting =
-                _manager.GetAllLocations().SingleOrDefault(n => n.Name.ToLower() == location.ToLower());
+                _activityManager.GetAllLocations().SingleOrDefault(n => n.Name.ToLower() == location.ToLower());
 
             if (locationExisting == null)
             {
-                resultId = _manager.AddLocation(location);
+                resultId = _activityManager.AddLocation(location);
             }
             else
             {
@@ -474,7 +513,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             // tagsToAdd is the incoming stuff, with all the tags to add to EventTags in DB
             // but the list needs to be filtered for any existing tags in db.Tags!!
             var tagsToAddToDb = new List<Tag>(tagsToAdd);
-            var currentTags = _manager.GetAllTags().ToList();
+            var currentTags = _activityManager.GetAllTags().ToList();
 
 
             var result = new List<Tag>();
@@ -483,7 +522,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 result.Add(tag);
             }
 
-            _manager.AddTags(result);
+            _activityManager.AddTags(result);
 
 
             // NOTICE! Have to savechanges later!

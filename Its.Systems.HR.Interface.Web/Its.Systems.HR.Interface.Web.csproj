@@ -186,7 +186,7 @@
     <Compile Include="Controllers\ActivitySummaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
-    <Compile Include="Controllers\SessionSummaryStatisticsController.cs" />
+    <Compile Include="Controllers\StatisticController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -311,20 +311,19 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
-    <Content Include="Views\Activity\Create.cshtml" />
-    <Content Include="Views\Activity\Delete.cshtml" />
-    <Content Include="Views\Activity\Edit.cshtml" />
+    <Content Include="Views\Activity\CreateActivity.cshtml" />
+    <Content Include="Views\Activity\EditActivity.cshtml" />
     <Content Include="Views\Activity\Index.cshtml" />
     <Content Include="Views\Activity\CreateSession.cshtml" />
     <Content Include="Views\Participant\Details.cshtml" />
     <Content Include="Views\Participant\Index.cshtml" />
     <Content Include="Views\ActivitySummary\SessionParticipant.cshtml" />
     <None Include="Views\ActivitySummary\_NothingPartial.cshtml" />
-    <Content Include="Views\Activity\FilterSessions.cshtml" />
+    <Content Include="Views\ActivitySummary\FilterSessions.cshtml" />
     <Content Include="Views\ActivitySummary\Sessionsforactivity.cshtml" />
     <Content Include="Views\Activity\EditSession.cshtml" />
     <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
-    <Content Include="Views\SessionSummaryStatistics\Details.cshtml" />
+    <Content Include="Views\Statistic\YearlyStatistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

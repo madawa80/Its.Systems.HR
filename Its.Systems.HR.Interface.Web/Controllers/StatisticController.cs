@@ -11,7 +11,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 {
 
 
-    public class SessionSummaryStatisticsController : Controller
+    public class StatisticController : Controller
     {
         public List<int> years;
         private IActivityManager _activityManager;
@@ -19,13 +19,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private int PaticipantCount;
         public int selectedyear;
 
-        public SessionSummaryStatisticsController(IActivityManager manager, IPersonManager personManager)
+        public StatisticController(IActivityManager manager, IPersonManager personManager)
         {
             _activityManager = manager;
             _personManager = personManager;
         }
         
-        public ActionResult Details()
+        public ActionResult YearlyStatistics()
         {
 
             var viewModel = new SessionSummaryStatisticsViewModel()
@@ -43,7 +43,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
 
         [HttpPost]
-        public ViewResult Details(string yearsList)
+        public ViewResult YearlyStatistics(string yearsList)
         {
             int yearInInt;
             var sessionStatisticsRowsList = new List<SessionStatisticsRow>();

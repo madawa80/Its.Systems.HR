@@ -59,7 +59,7 @@
         <label for="NameOfLocation">Plats</label>
         <div>
             <input type="text" id="NameOfLocation" name="NameOfLocation" value="@ViewBag.NameOfLocation" class="form-control ui-autocomplete"
-                   data-autocomplete="@Url.Action("AutoCompleteLocations", "Home")" />
+                   data-autocomplete="@Url.Action("AutoCompleteLocations", "Activity")" />
             @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
         </div>
     </div>

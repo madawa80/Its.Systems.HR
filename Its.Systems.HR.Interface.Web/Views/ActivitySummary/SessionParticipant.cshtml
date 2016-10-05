@@ -104,7 +104,7 @@
                 var personId = $("#participantDropdown").val();
 
                 $.ajax({
-                    url: "@Url.Action("AddPersonToSessionFromActivitySummary", "Participant")",
+                    url: "@Url.Action("AddPersonToSessionFromActivitySummary", "Activity")",
                     type: "POST",
                     data: { sessionId: link.attr("data-sessionId"), personId: personId },
                     success: function (result) {
@@ -156,7 +156,7 @@
                     callback: function (result) {
                         if (result) {
                             $.ajax({
-                                url: "@Url.Action("RemovePersonFromSession", "Participant")",
+                                url: "@Url.Action("RemovePersonFromSession", "Activity")",
                                 type: "POST",
                                 data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
                                 success: function () {
@@ -196,7 +196,7 @@
                 var comments = $("#Comments").val();
 
                 $.ajax({
-                    url: "@Url.Action("SaveComments", "ActivitySummary")",
+                    url: "@Url.Action("SaveSessionComments", "ActivitySummary")",
                     type: "POST",
                     data: { sessionId: link.attr("data-sessionId"), comments: comments },
                     success: function () {
@@ -218,7 +218,7 @@
                 var evaluation = $("#Evaluation").val();
 
                 $.ajax({
-                    url: "@Url.Action("SaveEvaluation", "ActivitySummary")",
+                    url: "@Url.Action("SaveSessionEvaluation", "ActivitySummary")",
                     type: "POST",
                     data: { sessionId: link.attr("data-sessionId"), evaluation: evaluation },
                     success: function () {

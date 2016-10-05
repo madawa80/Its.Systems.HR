@@ -6,7 +6,7 @@
 
 <h2>Lista tillfällen <span class="badge">DEBUG</span></h2>
 
-@using (Html.BeginForm("FilterSessions", "Activity", FormMethod.Get))
+@using (Html.BeginForm("FilterSessions", "ActivitySummary", FormMethod.Get))
 {
     <div class="well-lg">
 
@@ -37,7 +37,7 @@
             <div>
                 @*@Html.TextBoxFor(n => n.NameOfLocation, new { @class = "form-control ui-autocomplete", @data-autocomplete = "@Url.Action("AutoCompleteLocations", "Home")" })*@
                 <input type="text" id="NameOfLocation" name="NameOfLocation" value="@Model.NameOfLocation" class="form-control ui-autocomplete"
-                       data-autocomplete="@Url.Action("AutoCompleteLocations", "Home")" />
+                       data-autocomplete="@Url.Action("AutoCompleteLocations", "Activity")" />
                 @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -70,7 +70,7 @@
     {
         <tr>
             <td>
-                <a href="@Url.Action("GetParticipants", "ActivitySummary", new {id = session.Id})">@session.Name</a>
+                <a href="@Url.Action("GetSession", "ActivitySummary", new {id = session.Id})">@session.Name</a>
             </td>
             <td>
                 @session.StartDate.ToString("dd MMM yyyy HH:mm")

@@ -25,7 +25,7 @@
             {
                 <tr>
                     <td>
-                        <a href="@Url.Action("GetParticipants", "ActivitySummary", new {id = session.Id})">@session.Name</a>
+                        <a href="@Url.Action("GetSession", "ActivitySummary", new {id = session.Id})">@session.Name</a>
                         <span> (@session.StartDate.ToShortDateString())</span>
                         <span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort</span>
                     </td>
@@ -109,7 +109,7 @@
                     callback: function (result) {
                         if (result) {
                             $.ajax({
-                                url: "@Url.Action("RemovePersonFromSession", "Participant")",
+                                url: "@Url.Action("RemovePersonFromSession", "Activity")",
                                 type: "POST",
                                 data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
                                 success: function () {
@@ -147,7 +147,7 @@
 
 
                 $.ajax({
-                    url: "@Url.Action("AddPersonToSession", "Participant")",
+                    url: "@Url.Action("AddPersonToSession", "Activity")",
                     type: "POST",
                     data: { sessionId: sessionId, personId: link.attr("data-personId") },
                     success: function (result) {

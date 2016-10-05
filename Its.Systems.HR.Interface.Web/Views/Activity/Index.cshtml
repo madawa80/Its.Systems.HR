@@ -39,11 +39,11 @@
         <tr>
             <td>
                 @*@Html.DisplayFor(modelItem => item.Name)*@
-                @Html.ActionLink(@item.Name, "FilterSessions", "Activity", new { SearchString = item.Name },null)
+                @Html.ActionLink(@item.Name, "FilterSessions", "ActivitySummary", new { SearchString = item.Name },null)
             </td>
 
             <td>
-                @Html.ActionLink("Redigera", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Redigera", "EditActivity", new { id = item.Id }) |
                 <a href="#" class="js-delete-activity" data-activityId="@item.Id">Ta bort</a>
             </td>
         </tr>
