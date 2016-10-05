@@ -114,7 +114,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
               "FullName",
               _personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
 
-            return PartialView("_SessionParticipantPartial",result);
+            return PartialView("SessionParticipant",result);
         }
 
 
@@ -178,7 +178,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     ActivityName = activity.Name,
                 };
              
-            return PartialView("_SessionsforactivityPartial", result);
+            return PartialView("Sessionsforactivity", result);
         }
 
   }

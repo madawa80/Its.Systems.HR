@@ -7,8 +7,9 @@
 
 
 <div class="col-md-6">
-    @using (Html.BeginForm("Index", "Participant", FormMethod.Post))
+    @using (Html.BeginForm())
     {
+        @Html.AntiForgeryToken()
     <h3 class="m-b-30">Deltagare</h3>
 
     <div class="form-group">
@@ -97,9 +98,11 @@
 </div>
 
 @section scripts {
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
     <script>
-        
+        $(document).ready(function () {
     // Array holding participants added "on-the-fly"
         var listOfParticiantsThatParticipated = [];
 
@@ -205,7 +208,7 @@
                 });
             });
 
-        $(document).ready(function () {
+       
             $("body").on("click", ".js-save-sessionEvaluation", function (e) {
                 var link = $(e.target);
                 var evaluation = $("#Evaluation").val();
