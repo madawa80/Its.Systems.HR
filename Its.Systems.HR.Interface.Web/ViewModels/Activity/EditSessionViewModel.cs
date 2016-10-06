@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Its.Systems.HR.Domain.Model;
 
@@ -25,5 +26,6 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public string NameOfLocation { get; set; }
         public int? HrPerson { get; set; }
 
+        public List<Tag> AddedTags { get; set; }
     }
 }

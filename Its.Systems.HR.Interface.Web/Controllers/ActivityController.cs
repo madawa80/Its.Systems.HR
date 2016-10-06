@@ -328,6 +328,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             var activity = _activityManager.GetActivityById(session.ActivityId);
 
+            // Get Tags for session
+            var sessionTagIdsForSession = session.SessionTags.Select(n => n.TagId);
+            var allTagsForSession =
+                _activityManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
+
             var viewModel = new EditSessionViewModel()
             {
                 SessionId = session.Id,
@@ -338,6 +343,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 HrPerson = session.HrPersonId,
                 //this.ModelControl as CreerEtablissementModel ??
                 NameOfLocation = (session.Location == null) ? string.Empty : session.Location.Name,
+                AddedTags = allTagsForSession
             };
 
             ViewBag.NameOfLocation = viewModel.NameOfLocation;
@@ -471,6 +477,27 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             if (!_activityManager.DeleteSessionById(id))
                 result = new { Success = false };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AddTagToSession(int sessionId, string tagName)
+        {
+            var result = new { Success = false, TagId = -1 };
+
+            var tagIdFromDb = _activityManager.AddTagToSession(sessionId, tagName);
+            if (tagIdFromDb != -1)
+                result = new {Success = true, TagId = tagIdFromDb};
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult RemoveTagFromSession(int sessionId, int tagId)
+        {
+            var result = new { Success = false};
+
+            if (_activityManager.RemoveTagFromSession(sessionId, tagId))
+                result = new {Success = true};
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }

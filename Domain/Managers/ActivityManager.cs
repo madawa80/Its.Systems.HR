@@ -342,5 +342,49 @@ namespace Its.Systems.HR.Domain.Managers
 
             return true;
         }
+
+        public int AddTagToSession(int sessionId, string tagName)
+        {
+            tagName = tagName.ToLower();
+
+            // 0. Check if the tag is already in the SessionTag table!
+            if (db.Get<SessionTag>().Any(n => n.SessionId == sessionId && n.Tag.Name == tagName))
+                return -1;
+
+            int tagId;
+            // 1. check if the tagName already exists
+            var existingTag = db.Get<Tag>().SingleOrDefault(n => n.Name == tagName);
+            // 2. If exists, take the tag id, if NOT; create a new tag and take the id
+            if (existingTag != null)
+                tagId = existingTag.Id;
+            else
+            {
+                var createdTagInDb = db.Add<Tag>(new Tag()
+                {
+                    Name = tagName
+                });
+
+                tagId = createdTagInDb.Id;
+            }
+            // 3. Create a SessionTag with the result.
+            db.Add<SessionTag>(new SessionTag()
+            {
+                SessionId = sessionId,
+                TagId = tagId
+            });
+
+            return tagId;
+        }
+
+        public bool RemoveTagFromSession(int sessionId, int tagId)
+        {
+            var sessionTagtoDelete =
+                db.Get<SessionTag>().SingleOrDefault(n => n.SessionId == sessionId && n.TagId == tagId);
+            if (sessionTagtoDelete == null)
+                return false;
+
+            db.Delete(sessionTagtoDelete);
+            return true;
+        }
     }
 }

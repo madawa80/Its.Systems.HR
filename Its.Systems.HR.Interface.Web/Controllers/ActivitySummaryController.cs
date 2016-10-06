@@ -94,6 +94,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             var allParticipant = _activityManager.GetAllParticipantsForSession(id).ToList();
 
+            // Get Tags for session
             var sessionTagIdsForSession = theSession.SessionTags.Select(n => n.TagId);
             var allTagsForSession =
                 _activityManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
