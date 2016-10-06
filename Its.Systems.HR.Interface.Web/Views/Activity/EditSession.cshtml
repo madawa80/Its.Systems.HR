@@ -64,13 +64,13 @@
         </div>
     </div>
 
-        <div class="form-group">
-            <label for="HrPerson_Id">Ansvarig HR</label>
-            <div>
-                @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, "-- Ingen ansvarig HR --", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.HrPerson, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        <label for="HrPerson_Id">Ansvarig HR</label>
+        <div>
+            @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, "-- Ingen ansvarig HR --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.HrPerson, "", new { @class = "text-danger" })
         </div>
+    </div>
 
         <div class="form-group">
             <div class="m-t-50">
@@ -135,5 +135,5 @@
             $("input[data-autocomplete]").each(createAutocomplete);
 
         });
-    </script>   
+    </script>
 }

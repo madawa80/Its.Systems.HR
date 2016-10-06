@@ -66,6 +66,15 @@
                 }
                 <p>Startdatum: @Model.StartDate.ToString("dd MMM yyyy HH:mm")</p>
                 <p>Slutdatum: @Model.EndDate.ToString("dd MMM yyyy HH:mm")</p>
+                @if (Model.Tags.Count > 0)
+                {
+                    <p>
+                        Etiketter: @foreach (var tag in Model.Tags)
+                        {
+                            <span class="label label-primary">@tag.Name</span>
+                        }
+                    </p>
+                }
             </div>
         </div>
 

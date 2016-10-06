@@ -22,5 +22,6 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public List<Participant> Participants { get; set; }
         public Location Location { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }

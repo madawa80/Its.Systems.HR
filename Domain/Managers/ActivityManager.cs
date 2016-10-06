@@ -260,6 +260,7 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<Session>()
                 .Include(n => n.Location)
                 .Include(n => n.HrPerson)
+                .Include(n => n.SessionTags)
                 .SingleOrDefault(n => n.Id == sessionId);
         }
 

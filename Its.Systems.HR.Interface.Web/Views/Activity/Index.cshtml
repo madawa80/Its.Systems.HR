@@ -38,8 +38,8 @@
     {
         <tr>
             <td>
-                @*@Html.DisplayFor(modelItem => item.Name)*@
-                @Html.ActionLink(@item.Name, "FilterSessions", "ActivitySummary", new { SearchString = item.Name }, null)
+                @*@Html.ActionLink(@item.Name, "FilterSessions", "ActivitySummary", new { SearchString = item.Name }, null)*@
+                @Html.ActionLink(@item.Name, "AllSessionsForActivity", "ActivitySummary", new { id = item.Id}, null)
             </td>
 
             <td>

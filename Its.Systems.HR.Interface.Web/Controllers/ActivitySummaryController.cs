@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -92,6 +93,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return View("Error");
 
             var allParticipant = _activityManager.GetAllParticipantsForSession(id).ToList();
+
+            var sessionTagIdsForSession = theSession.SessionTags.Select(n => n.TagId);
+            var allTagsForSession =
+                _activityManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
+
             var result = new SessionForActivityViewModel()
             {
                 Comments = theSession.Comments,
@@ -104,7 +110,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Participants = allParticipant,
                 SessionName = theSession.Name,
                 SessionId = id,
-
+                Tags = allTagsForSession
             };
 
             ViewBag.SessionParticipantId = new SelectList(
@@ -221,5 +227,22 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         //    return View("Sessionsforactivity", result);
         //}
 
+        public ActionResult AllSessionsForActivity(int id)
+        {
+            var allSessionsForActivity = _activityManager
+                            .GetAllSessionsForActivity(id)
+                            .Include(n => n.HrPerson)
+                            .Include(n => n.Location)
+                            .ToList();
+            var activityName = _activityManager.GetActivityById(id).Name;
+
+            var viewModel = new AllSessionsForActivityViewModel()
+            {
+                ActivityId = id,
+                ActivityName = activityName,
+                Sessions = allSessionsForActivity
+            };
+            return View(viewModel);
+        }
     }
 }

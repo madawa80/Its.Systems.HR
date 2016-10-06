@@ -280,7 +280,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         LocationId = locationId,
                         HrPersonId = sessionVm.HrPerson,
                         SessionParticipants = null,
-                        SessionTags = null 
+                        SessionTags = null
                     };
 
                     if (sessionVm.AddedParticipants != null)
@@ -303,11 +303,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     _activityManager.AddSession(result);
 
 
-                    // TODO: Now add tags to the created session!...
+                    // Now add tags to the created session!...
                     _activityManager.AddSessionTags(tagsToAdd, result.Id);
 
-
-                    return RedirectToAction("Index");
+                    return RedirectToAction("GetSession", "ActivitySummary", new { id = result.Id });
                 }
             }
             catch (RetryLimitExceededException /* dex */)

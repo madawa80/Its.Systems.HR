@@ -191,6 +191,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ActivitySummary\AllSessionsForActivityViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityViewModel.cs" />
     <Compile Include="ViewModels\Activity\CreateSessionViewModel.cs" />
     <Compile Include="ViewModels\Activity\EditSessionViewModel.cs" />
@@ -314,6 +315,7 @@
     <Content Include="Views\ActivitySummary\SessionForActivity.cshtml" />
     <Content Include="Views\ActivitySummary\FilterSessions.cshtml" />
     <Content Include="Views\Activity\EditSession.cshtml" />
+    <Content Include="Views\ActivitySummary\AllSessionsForActivity.cshtml" />
     <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
     <Content Include="Views\Statistic\YearlyStatistics.cshtml" />
   </ItemGroup>
