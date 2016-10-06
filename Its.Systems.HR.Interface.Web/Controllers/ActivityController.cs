@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -185,22 +186,22 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         //    return View(result);
         //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                var activity = _activityManager.GetActivityById(id);
-                _activityManager.DeleteActivityById(id);
-            }
-            catch (RetryLimitExceededException/* dex */)
-            {
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id)
+        //{
+        //    try
+        //    {
+        //        var activity = _activityManager.GetActivityById(id);
+        //        _activityManager.DeleteActivityById(id);
+        //    }
+        //    catch (RetryLimitExceededException/* dex */)
+        //    {
 
-                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
-            }
-            return RedirectToAction("Index");
-        }
+        //        return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+        //    }
+        //    return RedirectToAction("Index");
+        //}
 
         [HttpPost]
         public ActionResult DeleteActivity(int activityId)
@@ -219,17 +220,21 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //    LocationList = new SelectList(_activityManager.GetAllLocations(), "Id", "Name", 1)
             //};
             //ViewBag.LocationId = new SelectList(_activityManager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
-            ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName");
+
+            var allActivities = _activityManager.GetAllActivities().OrderBy(n => n.Name).ToList();
+            var allSessionParticipants = _personManager.GetAllParticipants().OrderBy(n => n.FirstName).ToList();
+            var allHrPersons = _personManager.GetAllHrPersons().OrderBy(n => n.FirstName).ToList();
 
             var selectedActivityId =
-                (id == 0) ? _activityManager.GetAllActivities().OrderBy(n => n.Name).First().Id : id;
-            ViewBag.ActivityId = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", selectedActivityId);
+                (id == 0) ? allActivities.First().Id : id;
 
+            ViewBag.ActivityId = new SelectList(allActivities, "Id", "Name", selectedActivityId);
             ViewBag.SessionParticipantId = new SelectList(
-                _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
+                allSessionParticipants,
                 "Id",
                 "FullName",
-                _personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
+                allSessionParticipants.First().Id);
+            ViewBag.HrPersonId = new SelectList(allHrPersons, "Id", "FullName");
             return View();
         }
 
@@ -237,8 +242,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSession(CreateSessionViewModel sessionVm)
         {
-            var test = Request.Form["AddedParticipants"];
-
             try
             {
                 if (ModelState.IsValid)
@@ -277,7 +280,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         LocationId = locationId,
                         HrPersonId = sessionVm.HrPerson,
                         SessionParticipants = null,
-                        Tags = null // TODO: tagsToAdd...
+                        SessionTags = null 
                     };
 
                     if (sessionVm.AddedParticipants != null)
@@ -300,15 +303,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     _activityManager.AddSession(result);
 
 
-                    //// TODO: Now add tags to the created session!...
-                    //foreach (var tag in tagsToAdd)
-                    //{
-                    //    db.EventTags.Add(new EventTag()
-                    //    {
-                    //        Tag = db.Tags.SingleOrDefault(n => n.Name == tag.Name),
-                    //        EventId = result.Id
-                    //    });
-                    //}
+                    // TODO: Now add tags to the created session!...
+                    _activityManager.AddSessionTags(tagsToAdd, result.Id);
 
 
                     return RedirectToAction("Index");
@@ -520,7 +516,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         private void AddNewTagsToDb(List<Tag> tagsToAdd)
         {
-            // tagsToAdd is the incoming stuff, with all the tags to add to EventTags in DB
+            // tagsToAdd is the incoming stuff, with all the tags to add to Tags in DB
             // but the list needs to be filtered for any existing tags in db.Tags!!
             var tagsToAddToDb = new List<Tag>(tagsToAdd);
             var currentTags = _activityManager.GetAllTags().ToList();

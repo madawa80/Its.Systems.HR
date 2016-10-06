@@ -26,6 +26,6 @@ namespace Its.Systems.HR.Domain.Model
         public virtual Activity Activity { get; set; }
 
         public virtual List<SessionParticipant> SessionParticipants { get; set; }
-        public virtual List<Tag> Tags { get; set; }
+        public virtual List<SessionTag> SessionTags { get; set; }
     }
 }

@@ -307,6 +307,21 @@ namespace Its.Systems.HR.Domain.Managers
             db.SaveChanges();
         }
 
+        public void AddSessionTags(List<Tag> tags, int sessionId)
+        {
+            foreach (var tag in tags)
+            {
+                var tagFromDb = db.Get<Tag>().SingleOrDefault(n => n.Name == tag.Name);
+                if (tagFromDb != null)
+                    db.Add<SessionTag>(new SessionTag()
+                    {
+                        TagId = tagFromDb.Id,
+                        SessionId = sessionId
+                    });
+            }
+            db.SaveChanges();
+        }
+
         public bool DeleteSessionById(int id)
         {
             var sessionInDb = db.Get<Session>().SingleOrDefault(n => n.Id == id);

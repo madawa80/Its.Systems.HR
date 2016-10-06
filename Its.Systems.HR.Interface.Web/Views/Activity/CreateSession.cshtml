@@ -128,7 +128,7 @@
     <script>
         $(function () {
 
-            // Init Bootstrap 3 datepickers (addon)
+            // INIT BOOTSTRAP 3 DATEPICKERS (ADDON)
             //moment.locale('sv');
             $('#datetimepicker1').datetimepicker({
                 locale: 'sv'
@@ -138,6 +138,7 @@
             });
 
 
+            // ADDING PARTICIPANTS "ON-THE-FLY"
             // Array holding participants added "on-the-fly"
             var listOfParticiantsThatParticipated = [];
 
@@ -209,7 +210,7 @@
             });
 
 
-            // Tags
+            // TAGS
             // Array holding tags
             var listOfAddedTags = [];
 
@@ -258,23 +259,12 @@
 
 
             // AUTOCOMPLETE
-            // submits form upon selecting a value
-            var submitAutocompleteForm = function (event, ui) {
-                var $input = $(this); // the HTML element (Textbox)
-
-                // selected value
-                $input.val(ui.item.label); // ui.item.label = the label value (product)
-
-                window.location.href = "/Product/Details?id=" + ui.item.label;
-            };
-
             var createAutocomplete = function () {
                 var $input = $(this); // the HTML element (Textbox)
 
                 var options = {
                     // selecting the source by finding elements with the 'data-' attribute
                     source: $input.attr("data-autocomplete") // Required
-                    //select: submitAutocompleteForm // Optional
                 };
 
                 // apply options
@@ -285,6 +275,15 @@
             // it calls the 'createAutocomplete' function
             $("input[data-autocomplete]").each(createAutocomplete);
 
+
+
+            // HANDLE ENTER-BUTTON WHEN ADDING TAGS
+            $(document).on("keypress", "#tagsInput", function (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    $(".js-add-tag").trigger("click");
+                }
+            });
         });
     </script>
 

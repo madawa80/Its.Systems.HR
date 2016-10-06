@@ -58,16 +58,17 @@ namespace Its.Systems.HR.Infrastructure
                         .WithMany(s => s.Sessions); // Standard entity includes many Students entities
 
             // TODO: Write all relations in fluent!
+            // ( And make sure that SessionTags table gets renamed to SessionTag)
 
-            modelBuilder.Entity<Session>()
-            .HasMany<Tag>(s => s.Tags)
-            .WithMany(c => c.Sessions)
-            .Map(cs =>
-            {
-                cs.MapLeftKey("SessionId");
-                cs.MapRightKey("TagId");
-                cs.ToTable("SessionTag");
-            });
+            //modelBuilder.Entity<Session>()
+            //.HasMany<Tag>(s => s.Tags)
+            //.WithMany(c => c.Sessions)
+            //.Map(cs =>
+            //{
+            //    cs.MapLeftKey("SessionId");
+            //    cs.MapRightKey("TagId");
+            //    cs.ToTable("SessionTag");
+            //});
 
         }
         public virtual DbSet<Activity> Activities { get; set; }
