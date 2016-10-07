@@ -28,7 +28,6 @@
             {
                 <tr>
                     <td>
-                        @*<p>@Html.DisplayFor(modelItem => item.Session.Name), @Html.DisplayFor(modelItem => item.NumberOfParticipants) Deltagare</p>*@
                         <p>@Html.ActionLink(@item.Session.Name, "GetSession", "ActivitySummary", new { id = item.Session.Id }, null) @item.NumberOfParticipants Deltagare</p>
                     </td>
 
@@ -36,6 +35,8 @@
                 </tr>
             }
         </table>
+
+        <em>Totalt antal deltagare: @Model.TotalPaticipants, Totalt antal activiteter: @Model.TotalSessions</em>
 
     }
 

@@ -47,21 +47,22 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             int yearInInt;
             var sessionStatisticsRowsList = new List<SessionStatisticsRow>();
-
+            int PaticipantsPerYear =0;
+            int sessionscount = 0;
 
             if (string.IsNullOrEmpty(yearsList))
             {
                 return View(new SessionSummaryStatisticsViewModel());
 
             }
-
-
+            
 
             if (int.TryParse(Request.Form["yearslist"], out yearInInt) == true)
             {
                 selectedyear = Int32.Parse(Request.Form["yearslist"]);
                 years = Enumerable.Range(2010, 100).ToList();
                 var sessionsForYear = _activityManager.GetAllSessionsForYear(selectedyear).ToList().OrderBy(n => n.Id);
+                sessionscount = sessionsForYear.Count();
                
 
                 foreach (var session in sessionsForYear)
@@ -72,6 +73,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         NumberOfParticipants = PaticipantCount,
                         Session = session
                     });
+
+                     PaticipantsPerYear = PaticipantsPerYear + PaticipantCount;
                 }
             }
 
@@ -80,7 +83,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 
                 Years = years,
-                SessionStatisticsRows = sessionStatisticsRowsList
+                SessionStatisticsRows = sessionStatisticsRowsList,
+                TotalPaticipants = PaticipantsPerYear,
+                TotalSessions = sessionscount,
 
             };
 
