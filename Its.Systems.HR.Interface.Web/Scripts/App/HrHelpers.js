@@ -1,11 +1,12 @@
-﻿// Global namespace...
+﻿//HrHelpers.js
+// Global namespace...
 
 // JAVASCRIPT TODOS:
 // TODO: Proper error handling
 
 
 
-// TODO: Check for localhost in url
+// CHECKS URL TO ADD PROPER URL-PREFIX
 if (window.location.href.indexOf("localhost") > -1) {
     hr_urlPrefix = "";
 } else {

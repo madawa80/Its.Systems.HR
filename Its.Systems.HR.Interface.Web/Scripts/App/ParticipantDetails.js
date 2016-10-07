@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿//ParticipantDetails.js
+$(document).ready(function () {
 
     // DELETE SESSION PARTICIPANT
     $("body").on("click", ".js-delete-sessionParticipant", function (e) {

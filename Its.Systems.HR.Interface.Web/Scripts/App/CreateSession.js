@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿//CreateSession.js
+$(document).ready(function () {
 
     // INIT BOOTSTRAP 3 DATEPICKERS
     hr_initBootstrap3DatePickers();
