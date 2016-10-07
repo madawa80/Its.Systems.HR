@@ -26,7 +26,7 @@
 
     </div>
 
-    <table class="table" id="allSessionsForParticipant">
+    <table class="table" id="ParticipantsForSession">
         @foreach (var participant in Model.Participants)
             {
             <tr>
@@ -39,10 +39,10 @@
 
     </table>
 
-    @*TODO: count participants with javascript instead*@
-    <em>Totalt antal deltagare: @Model.TotalPaticipants</em>
-
-
+    
+    <em>Totalt antal deltagare:</em><em id="totDeltagare"></em>
+    
+    
 </div>
 
 
@@ -98,6 +98,11 @@
 
     <script>
         $(document).ready(function () {
+            paticipantCount();
+            function paticipantCount() {
+                var rowCount = $("#ParticipantsForSession").find('tr').length;
+                $("#totDeltagare").html(rowCount);
+            }
 
             $(".js-add-sessionParticipant").click(function (e) {
                 var link = $(e.target);
@@ -109,24 +114,15 @@
                     data: { sessionId: link.attr("data-sessionId"), personId: personId },
                     success: function (result) {
                         if (result.Success) {
-                            //<span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionid="10" data-personid="1">Ta bort</span>
-                            //<a href="/HrKompetensutveckling/Participant/Details/1">Madawa Abeywickrama</a>
                             var html = '<tr><td><a href="/HrKompetensutveckling/Participant/Details/' + result.PersonId + '">' + result.PersonFullName + '</a><span> </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionid="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
-                            $(html).hide().appendTo("#allSessionsForParticipant").fadeIn();
+                            $(html).hide().appendTo("#ParticipantsForSession").fadeIn();
 
-                            @*$.ajax({
-                                url: "@Url.Action("ParticipantStatisticSummary", "Participant")",
-                                type: "GET",
-                                data: { personId: link.attr("data-personId") },
-                                success: function (result2) {
-                                    $("#statisticsSummary").html(result2);
-                                },
-                                error: function () {
-                                    alert("Anropet misslyckades, prova gärna igen.");
-                                }
-                            });*@
+                            paticipantCount();
+                        
 
-                        } else {
+                        }
+
+                        else {
                             link.after(' <div class="alert alert-danger js-fadeOutThisMessage" role="alert">Personen redan tillagd!</div>');
 
                             $(".js-fadeOutThisMessage").fadeOut(2000, function () {
@@ -164,17 +160,8 @@
                                         .fadeOut(function () {
                                             $(this).remove();
 
-                                            @*$.ajax({
-                                                url: "@Url.Action("ParticipantStatisticSummary", "Participant")",
-                                                type: "GET",
-                                                data: { personId: link.attr("data-personId") },
-                                                success: function (result2) {
-                                                    $("#statisticsSummary").html(result2);
-                                                },
-                                                error: function () {
-                                                    alert("Anropet misslyckades, prova gärna igen.");
-                                                }
-                                            });*@
+                                            paticipantCount();
+
                                         });
                                 },
                                 error: function () {
@@ -188,10 +175,7 @@
             });
 
 
-            //$(document).ready(function () {
-
-
-            $("body").on("click", ".js-save-sessionComment", function (e) {
+        $("body").on("click", ".js-save-sessionComment", function (e) {
                 var link = $(e.target);
                 var comments = $("#Comments").val();
 
