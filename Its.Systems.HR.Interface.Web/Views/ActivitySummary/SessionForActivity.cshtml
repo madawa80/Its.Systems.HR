@@ -42,10 +42,10 @@
 
     </table>
 
-    
-    <em>Totalt antal deltagare:</em><em id="totDeltagare"></em>
-    
-    
+
+    <em>Totalt antal deltagare:&nbsp;</em><em id="totDeltagare"></em>
+
+
 </div>
 
 
@@ -108,164 +108,8 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            paticipantCount();
-            function paticipantCount() {
-                var rowCount = $("#ParticipantsForSession").find('tr').length;
-                $("#totDeltagare").html(rowCount);
-            }
-
-            $(".js-add-sessionParticipant").click(function (e) {
-                var link = $(e.target);
-                var personId = $("#participantDropdown").val();
-
-                $.ajax({
-                    url: "@Url.Action("AddPersonToSessionFromActivitySummary", "Activity")",
-                    type: "POST",
-                    data: { sessionId: link.attr("data-sessionId"), personId: personId },
-                    success: function (result) {
-                        if (result.Success) {
-                            var html = '<tr><td><a href="/HrKompetensutveckling/Participant/Details/' + result.PersonId + '">' + result.PersonFullName + '</a><span> </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionid="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
-                            $(html).hide().appendTo("#ParticipantsForSession").fadeIn();
-
-                            paticipantCount();
-                        
-
-                        }
-
-                        else {
-                            link.after(' <div class="alert alert-danger js-fadeOutThisMessage" role="alert">Personen redan tillagd!</div>');
-
-                            $(".js-fadeOutThisMessage").fadeOut(2000, function () {
-                                $(this).remove();
-                            });
-                        }
-                    }
-                });
-            });
-
-            $("body").on("click", ".js-delete-sessionParticipant", function (e) {
-                var link = $(e.target);
-
-
-                bootbox.confirm({
-                    title: "Vänligen bekräfta",
-                    message: "Vill du verkligen ta bort denna person för detta tillfälle?",
-                    buttons: {
-                        cancel: {
-                            label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
-                        },
-                        confirm: {
-                            label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            $.ajax({
-                                url: "@Url.Action("RemovePersonFromSession", "Activity")",
-                                type: "POST",
-                                data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
-                                success: function () {
-                                    link.parents("tr")
-                                        .fadeOut(function () {
-                                            $(this).remove();
-
-                                            paticipantCount();
-
-                                        });
-                                },
-                                error: function () {
-                                    alert("Anropet misslyckades, prova gärna igen.");
-                                }
-                            });
-                        }
-                    }
-                });
-
-            });
-
-
-        $("body").on("click", ".js-save-sessionComment", function (e) {
-                var link = $(e.target);
-                var comments = $("#Comments").val();
-
-                $.ajax({
-                    url: "@Url.Action("SaveSessionComments", "ActivitySummary")",
-                    type: "POST",
-                    data: { sessionId: link.attr("data-sessionId"), comments: comments },
-                    success: function () {
-                        link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Kommentarer sparade!</span>');
-
-                        $(".js-fadeOutThisMessage").fadeOut(2000, function () {
-                            $(this).remove();
-                        });
-                    },
-                    error: function () {
-                        alert("Anropet misslyckades, prova gärna igen.");
-                    }
-                });
-            });
-
-
-            $("body").on("click", ".js-save-sessionEvaluation", function (e) {
-                var link = $(e.target);
-                var evaluation = $("#Evaluation").val();
-
-                $.ajax({
-                    url: "@Url.Action("SaveSessionEvaluation", "ActivitySummary")",
-                    type: "POST",
-                    data: { sessionId: link.attr("data-sessionId"), evaluation: evaluation },
-                    success: function () {
-                        link.after(' <span class="alert alert-success js-fadeOutThisMessage" role="alert">Utvärdering sparade!</span>');
-
-                        $(".js-fadeOutThisMessage").fadeOut(2000, function () {
-                            $(this).remove();
-                        });
-                    },
-                    error: function () {
-                        alert("Anropet misslyckades, prova gärna igen.");
-                    }
-                });
-            });
-
-
-            $("body").on("click", ".js-delete-session", function (e) {
-                var link = $(e.target);
-
-                bootbox.confirm({
-                    title: "Vänligen bekräfta",
-                    message: "Vill du verkligen ta bort hela detta tillfälle?",
-                    buttons: {
-                        cancel: {
-                            label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
-                        },
-                        confirm: {
-                            label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            $.ajax({
-                                url: "@Url.Action("RemoveSession", "Activity")" + "/" + link.attr("data-sessionId"),
-                                type: "POST",
-                                success: function () {
-                                    window.location.href = "/HrKompetensutveckling/Activity/Index/";
-                                },
-                                error: function () {
-                                    alert("Anropet misslyckades, prova gärna igen.");
-                                }
-                            });
-                        }
-                    }
-                });
-
-            });
-
-        });
-    </script>
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script src="~/Scripts/App/SessionsForActivity.js"></script>
 }
 
 

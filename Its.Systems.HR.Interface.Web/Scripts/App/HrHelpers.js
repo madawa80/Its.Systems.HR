@@ -1,5 +1,14 @@
 ﻿// Global namespace...
 
+// JAVASCRIPT TODOS:
+// TODO: Proper error handling
+
+
+
+// TODO: Check for localhost in url
+hr_urlHrKompetensUtveckling = "/HrKompetensutveckling";
+//hr_urlHrKompetensUtveckling = "";
+
 
 // INIT BOOTSTRAP 3 DATEPICKERS (ADDON)
 function hr_initBootstrap3DatePickers() {

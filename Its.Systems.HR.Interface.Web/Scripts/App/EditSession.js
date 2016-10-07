@@ -14,7 +14,7 @@
         var addedTag = $("#tagsInput").val();
 
         $.ajax({
-            url: "/HrKompetensutveckling/Activity/AddTagToSession",
+            url: hr_urlHrKompetensUtveckling + "/Activity/AddTagToSession",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), tagName: addedTag },
             success: function (data) {
@@ -24,11 +24,11 @@
                         '" data-sessionId="' + link.attr("data-sessionId") + '" class="label label-primary js-remove-tag-edit-session">' +
                         addedTag +
                         '&nbsp;<span class="glyphicon glyphicon-remove"></span></span>';
-                    $(html).hide().appendTo("#selectedTags").fadeIn();
+                    $(html).hide().appendTo("#selectedTags").fadeIn(100);
 
                     $("#tagsInput").val("");
                 } else {
-                    hr_messageFadingOut(link, "Redan tillagd!", "warning");
+                    hr_messageFadingOut(link, "Redan tillagd!", "danger");
                 }
             },
             error: function () {
@@ -42,7 +42,7 @@
         var link = $(e.target);
 
         $.ajax({
-            url: "/HrKompetensutveckling/Activity/RemoveTagFromSession",
+            url: hr_urlHrKompetensUtveckling + "/Activity/RemoveTagFromSession",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), tagId: link.attr("data-tagId") },
             success: function () {

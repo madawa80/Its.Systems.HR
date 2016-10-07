@@ -18,7 +18,7 @@
         var resultId = $("#Participant_Id").val();
 
         if ($.inArray(resultId, listOfParticiantsThatParticipated) > -1) {
-            hr_messageFadingOut(link, "Redan tillagd!", "warning");
+            hr_messageFadingOut(link, "Redan tillagd!", "danger");
             return;
         }
 
@@ -45,7 +45,7 @@
         var link = $(e.target);
         var resultId = link.parents("li").attr("data-personId");
 
-        var url = "/HrKompetensutveckling/Participant/Details/" + resultId;
+        var url = hr_urlHrKompetensUtveckling + "Participant/Details/" + resultId;
         window.open(url, "_blank");
     });
 
@@ -67,7 +67,7 @@
         var addedTag = $("#tagsInput").val();
 
         if ($.inArray(addedTag, listOfAddedTags) > -1) {
-            hr_messageFadingOut(link, "Redan tillagd!", "warning");
+            hr_messageFadingOut(link, "Redan tillagd!", "danger");
             return;
         }
 
