@@ -7,6 +7,7 @@
 
 
 // CHECKS URL TO ADD PROPER URL-PREFIX
+// TODO: WATCH OUT FOR THIS ONE!!!
 if (window.location.href.indexOf("localhost") > -1) {
     hr_urlPrefix = "";
 } else {
