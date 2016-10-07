@@ -73,18 +73,18 @@
         </div>
     </div>
 
-        <div class="form-group">
-            <label for="tagsInput">Etiketter</label>
-            <div class="form-inline">
-                <div class="form-group">
-                    <input type="text" id="tagsInput" name="tagsInput" class="form-control" />
-                </div>
-                <button type="button" class="btn btn-default js-add-tag">Lägg till</button>
+    <div class="form-group">
+        <label for="tagsInput">Etiketter</label>
+        <div class="form-inline">
+            <div class="form-group">
+                <input type="text" id="tagsInput" name="tagsInput" class="form-control" />
             </div>
-            <div id="selectedTags">
-                @Html.HiddenFor(n => n.AddedTags)
-            </div>
+            <button type="button" class="btn btn-default js-add-tag-create-session">Lägg till</button>
         </div>
+        <div id="selectedTags">
+            @Html.HiddenFor(n => n.AddedTags)
+        </div>
+    </div>
 
         <div class="form-group">
             <label for="Participant_Id">Lägg till deltagare</label>
@@ -125,168 +125,6 @@
     <script src="~/Scripts/moment-with-locales.min.js"></script>
     <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-
-            // INIT BOOTSTRAP 3 DATEPICKERS (ADDON)
-            //moment.locale('sv');
-            $('#datetimepicker1').datetimepicker({
-                locale: 'sv'
-            });
-            $('#datetimepicker2').datetimepicker({
-                locale: 'sv'
-            });
-
-
-            // ADDING PARTICIPANTS "ON-THE-FLY"
-            // Array holding participants added "on-the-fly"
-            var listOfParticiantsThatParticipated = [];
-
-            $('.js-add-participantBeforeSessionExists').on('click', function (e) {
-                var link = $(e.target);
-                var resultName = $('#Participant_Id :selected').text();
-                var resultId = $('#Participant_Id').val();
-
-                if ($.inArray(resultId, listOfParticiantsThatParticipated) > -1) {
-
-                    link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">Redan tillagd!</span>');
-                    $(".js-fadeOutThisMessage").fadeOut(2000, function () {
-                        $(this).remove();
-                    });
-                    return;
-                }
-
-                listOfParticiantsThatParticipated.push(resultId);
-                $('#AddedParticipants').val(listOfParticiantsThatParticipated);
-
-                var html = '<li data-personId="' +
-                    resultId +
-                    '"><span class="listedParticipantLink">' +
-                    resultName +
-                    '</span><span> </span><span class="badge js-remove-participantBeforeSessionExists listedParticipantRemove"> x </span></li>';
-                $(html).hide().appendTo("#selectedParticipants").fadeIn();
-
-                //console.log(listOfParticiantsThatParticipated);
-            });
-
-            $('body').on('click', '.js-remove-participantBeforeSessionExists', function (e) {
-
-                var link = $(e.target);
-                // get parent li data-personId
-                var resultId = link.parents("li").attr("data-personId");
-
-                var index = listOfParticiantsThatParticipated.indexOf(resultId);
-                if (index > -1) {
-                    listOfParticiantsThatParticipated.splice(index, 1);
-                    $('#AddedParticipants').val(listOfParticiantsThatParticipated);
-
-                    link.parents("li")
-                                    .fadeOut(function () {
-                                        $(this).remove();
-                                    });
-                }
-                //$('#Participant_Id option[value="' + resultId + '"]').remove();
-
-                //var currentVal = $('#AddedParticipants').val();
-                //if (currentVal === "")
-                //    $('#AddedParticipants').val(resultId);
-                //else
-                //    $('#AddedParticipants').val(currentVal + ',' + resultId);
-
-                //console.log(listOfParticiantsThatParticipated);
-            });
-
-            $('body').on('click', '.listedParticipantLink', function (e) {
-
-                var link = $(e.target);
-                // get parent li data-personId
-                var resultId = link.parents("li").attr("data-personId");
-
-                var url = "@Url.Action("Details", "Participant")" + "/" + resultId;
-                window.open(
-                          url,
-                          "_blank"
-                        );
-            });
-
-
-            // TAGS
-            // Array holding tags
-            var listOfAddedTags = [];
-
-            $('.js-add-tag').on('click', function (e) {
-                var link = $(e.target);
-                var addedTag = $("#tagsInput").val();
-
-                if ($.inArray(addedTag, listOfAddedTags) > -1) {
-
-                    link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">Redan tillagd!</span>');
-                    $(".js-fadeOutThisMessage").fadeOut(2000, function () {
-                        $(this).remove();
-                    });
-                    return;
-                }
-
-                listOfAddedTags.push(addedTag);
-                $('#AddedTags').val(listOfAddedTags);
-
-                var html = '<span data-tagName="' +
-                    addedTag +
-                    '" class="label label-primary js-remove-tag">' +
-                    addedTag +
-                    '&nbsp;<span class="glyphicon glyphicon-remove"></span></span>';
-                $(html).hide().appendTo("#selectedTags").fadeIn();
-
-                $("#tagsInput").val("");
-            });
-
-            $('body').on('click', '.js-remove-tag', function (e) {
-
-                var link = $(e.target);
-                // get parent li data-personId
-                var resultTagName = link.attr("data-tagName");
-
-                var index = listOfAddedTags.indexOf(resultTagName);
-                if (index > -1) {
-                    listOfAddedTags.splice(index, 1);
-                    $('#AddedTags').val(listOfAddedTags);
-
-                    link.fadeOut(function () {
-                                        $(this).remove();
-                                    });
-                }
-            });
-
-
-            // AUTOCOMPLETE
-            var createAutocomplete = function () {
-                var $input = $(this); // the HTML element (Textbox)
-
-                var options = {
-                    // selecting the source by finding elements with the 'data-' attribute
-                    source: $input.attr("data-autocomplete") // Required
-                };
-
-                // apply options
-                $input.autocomplete(options);
-            };
-
-            // targets input elements with the 'data-' attributes and each time the input changes
-            // it calls the 'createAutocomplete' function
-            $("input[data-autocomplete]").each(createAutocomplete);
-
-
-
-            // HANDLE ENTER-BUTTON WHEN ADDING TAGS
-            $(document).on("keypress", "#tagsInput", function (event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    $(".js-add-tag").trigger("click");
-                }
-            });
-        });
-    </script>
-
-
-
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script src="~/Scripts/App/CreateSession.js"></script>
 }

@@ -78,12 +78,12 @@
             <div class="form-group">
                 <input type="text" id="tagsInput" name="tagsInput" class="form-control" />
             </div>
-            <button type="button" class="btn btn-default js-add-tag-from-edit" data-sessionId="@Model.SessionId">Lägg till</button>
+            <button type="button" class="btn btn-default js-add-tag-edit-session" data-sessionId="@Model.SessionId">Lägg till</button>
         </div>
         <div id="selectedTags">
             @foreach (var tag in Model.AddedTags)
             {
-                <span data-tagId="@tag.Id" data-sessionId="@Model.SessionId" class="label label-primary js-remove-tag-from-edit">
+                <span data-tagId="@tag.Id" data-sessionId="@Model.SessionId" class="label label-primary js-remove-tag-edit-session">
                     @tag.Name&nbsp;<span class="glyphicon glyphicon-remove"></span>
                 </span>
             }
@@ -110,114 +110,7 @@
     @*<script src="~/Scripts/moment.min.js"></script>*@
     <script src="~/Scripts/moment-with-locales.min.js"></script>
     <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
-
-    <script>
-        $(document)
-            .ready(function () {
-
-                // Init Bootstrap 3 datepickers (addon)
-                //moment.locale('sv');
-                $('#datetimepicker1')
-                    .datetimepicker({
-                        locale: 'sv'
-                    });
-                $('#datetimepicker2')
-                    .datetimepicker({
-                        locale: 'sv'
-                    });
-
-
-                // AUTOCOMPLETE
-                // submits form upon selecting a value
-                var submitAutocompleteForm = function (event, ui) {
-                    var $input = $(this); // the HTML element (Textbox)
-
-                    // selected value
-                    $input.val(ui.item.label); // ui.item.label = the label value (product)
-
-                    window.location.href = "/Product/Details?id=" + ui.item.label;
-                };
-
-                var createAutocomplete = function () {
-                    var $input = $(this); // the HTML element (Textbox)
-
-                    var options = {
-                        // selecting the source by finding elements with the 'data-' attribute
-                        source: $input.attr("data-autocomplete") // Required
-                        //select: submitAutocompleteForm // Optional
-                    };
-
-                    // apply options
-                    $input.autocomplete(options);
-                };
-
-                // targets input elements with the 'data-' attributes and each time the input changes
-                // it calls the 'createAutocomplete' function
-                $("input[data-autocomplete]").each(createAutocomplete);
-
-
-                // TAGS
-                $('.js-add-tag-from-edit').on('click', function (e) {
-
-                    var link = $(e.target);
-                    var addedTag = $("#tagsInput").val();
-
-                    $.ajax({
-                        url: "@Url.Action("AddTagToSession", "Activity")",
-                        type: "POST",
-                        data: { sessionId: link.attr("data-sessionId"), tagName: addedTag },
-                        success: function (data) {
-                            if (data.Success) {
-                                var html = '<span data-tagId="' + //TODO: tagId!!!!
-                                    data.TagId +
-                                    '" data-sessionId="' + link.attr("data-sessionId") + '" class="label label-primary js-remove-tag-from-edit">' +
-                                    addedTag +
-                                    '&nbsp;<span class="glyphicon glyphicon-remove"></span></span>';
-                                $(html).hide().appendTo("#selectedTags").fadeIn();
-
-                                $("#tagsInput").val("");
-                            } else {
-                                link.after(' <span class="alert alert-danger js-fadeOutThisMessage" role="alert">Redan tillagd!</span>');
-                                $(".js-fadeOutThisMessage").fadeOut(2000, function () {
-                                    $(this).remove();
-                                });
-                            }
-                        },
-                        error: function () {
-                            alert("Anropet misslyckades, prova gärna igen.");
-                        }
-                    });
-
-                });
-
-                $('body').on('click', '.js-remove-tag-from-edit', function (e) {
-
-                    var link = $(e.target);
-
-                    $.ajax({
-                        url: "@Url.Action("RemoveTagFromSession", "Activity")",
-                        type: "POST",
-                        data: { sessionId: link.attr("data-sessionId"), tagId: link.attr("data-tagId") },
-                        success: function () {
-                            link.fadeOut(function () {
-                                $(this).remove();
-                            });
-                        },
-                        error: function () {
-                            alert("Anropet misslyckades, prova gärna igen.");
-                        }
-                    });
-
-                });
-
-
-                // HANDLE ENTER-BUTTON WHEN ADDING TAGS
-                $(document).on("keypress", "#tagsInput", function (event) {
-                    if (event.keyCode == 13) {
-                        event.preventDefault();
-                        $(".js-add-tag-from-edit").trigger("click");
-                    }
-                });
-            });
-    </script>
+    
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script src="~/Scripts/App/EditSession.js"></script>
 }

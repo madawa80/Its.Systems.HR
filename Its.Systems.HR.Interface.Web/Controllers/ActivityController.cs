@@ -399,6 +399,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View("EditSession", inputVm);
         }
 
+
+        // AJAX METHODS BELOW
         [HttpPost]
         public ActionResult AddPersonToSession(int sessionId, int personId)
         {
@@ -428,7 +430,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     StartDate = ""
                 };
             //, Year = 0, Month = 0, Day = 0
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         [HttpPost]
@@ -455,7 +457,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     PersonFullName = "",
                 };
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         public ActionResult RemovePersonFromSession(int sessionId, int personId)
@@ -468,7 +470,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (!_activityManager.RemoveParticipantFromSession(personId, sessionId))
                 result = new { Success = false };
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         public ActionResult RemoveSession(int id)
@@ -478,7 +480,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (!_activityManager.DeleteSessionById(id))
                 result = new { Success = false };
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         public ActionResult AddTagToSession(int sessionId, string tagName)
@@ -489,7 +491,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (tagIdFromDb != -1)
                 result = new {Success = true, TagId = tagIdFromDb};
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         public ActionResult RemoveTagFromSession(int sessionId, int tagId)
@@ -499,7 +501,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (_activityManager.RemoveTagFromSession(sessionId, tagId))
                 result = new {Success = true};
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         //AJAX AUTOCOMPLETE
@@ -509,6 +511,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(locations, JsonRequestBehavior.AllowGet);
         }
 
+
+        // PRIVATE METHODS BELOW
         private IEnumerable<string> GetLocations(string searchString)
         {
             IEnumerable<string> locations =
