@@ -157,11 +157,11 @@ ul.dropdown-menu {
     cursor: pointer;
 }
 
-.js-remove-tag {
+.js-remove-tag-create-session, .js-remove-tag-edit-session {
     margin-right: 10px;
 }
 
-.js-remove-tag:hover {
+.js-remove-tag-create-session:hover, .js-remove-tag-edit-session:hover {
     cursor: pointer;
     background-color: red;
 }

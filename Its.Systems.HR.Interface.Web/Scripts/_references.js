@@ -1,4 +1,7 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="app/createsession.js" />
+/// <reference path="app/editsession.js" />
+/// <reference path="app/hrhelpers.js" />
 /// <reference path="bootbox.min.js" />
 /// <reference path="bootstrap.js" />
 /// <reference path="bootstrap-datetimepicker.min.js" />

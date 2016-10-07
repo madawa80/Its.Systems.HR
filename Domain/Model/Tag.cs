@@ -15,6 +15,6 @@ namespace Its.Systems.HR.Domain.Model
         [Index("NameIndex", IsUnique = true)]
         public string Name { get; set; }
 
-        public virtual List<Session> Sessions { get; set; }
+        public virtual List<SessionTag> SessionTags { get; set; }
     }
 }

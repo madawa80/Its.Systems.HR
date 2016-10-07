@@ -184,7 +184,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
     <Compile Include="Controllers\ActivitySummaryController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\StatisticController.cs" />
     <Compile Include="Global.asax.cs">
@@ -192,17 +191,16 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\ActivitySummaryViewModel.cs" />
-    <Compile Include="ViewModels\ActivityViewModel.cs" />
-    <Compile Include="ViewModels\CreateSessionViewModel.cs" />
-    <Compile Include="ViewModels\EditSessionViewModel.cs" />
-    <Compile Include="ViewModels\FilterSessionsViewModel.cs" />
-    <Compile Include="ViewModels\ListActivitiesViewModel.cs" />
-    <Compile Include="ViewModels\ParticipantStatisticSummaryViewModel.cs" />
-    <Compile Include="ViewModels\ParticipantSummaryViewModel.cs" />
-    <Compile Include="ViewModels\ParticipantViewModel.cs" />
-    <Compile Include="ViewModels\SessionSummaryStatisticsViewModel.cs" />
-    <Compile Include="ViewModels\SessionViewModel.cs" />
+    <Compile Include="ViewModels\ActivitySummary\AllSessionsForActivityViewModel.cs" />
+    <Compile Include="ViewModels\Activity\ActivityViewModel.cs" />
+    <Compile Include="ViewModels\Activity\CreateSessionViewModel.cs" />
+    <Compile Include="ViewModels\Activity\EditSessionViewModel.cs" />
+    <Compile Include="ViewModels\ActivitySummary\FilterSessionsViewModel.cs" />
+    <Compile Include="ViewModels\Participant\ParticipantStatisticSummaryViewModel.cs" />
+    <Compile Include="ViewModels\Participant\ParticipantSummaryViewModel.cs" />
+    <Compile Include="ViewModels\ActivitySummary\SessionForActivityViewModel.cs" />
+    <Compile Include="ViewModels\Statistic\SessionStatisticsRow.cs" />
+    <Compile Include="ViewModels\Statistic\SessionSummaryStatisticsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker.css" />
@@ -258,6 +256,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\App\EditSession.js" />
+    <Content Include="Scripts\App\HrHelpers.js" />
+    <Content Include="Scripts\App\CreateSession.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
@@ -306,9 +307,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
     <Content Include="Views\Activity\CreateActivity.cshtml" />
@@ -317,11 +315,10 @@
     <Content Include="Views\Activity\CreateSession.cshtml" />
     <Content Include="Views\Participant\Details.cshtml" />
     <Content Include="Views\Participant\Index.cshtml" />
-    <Content Include="Views\ActivitySummary\SessionParticipant.cshtml" />
-    <None Include="Views\ActivitySummary\_NothingPartial.cshtml" />
+    <Content Include="Views\ActivitySummary\SessionForActivity.cshtml" />
     <Content Include="Views\ActivitySummary\FilterSessions.cshtml" />
-    <Content Include="Views\ActivitySummary\Sessionsforactivity.cshtml" />
     <Content Include="Views\Activity\EditSession.cshtml" />
+    <Content Include="Views\ActivitySummary\AllSessionsForActivity.cshtml" />
     <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
     <Content Include="Views\Statistic\YearlyStatistics.cshtml" />
   </ItemGroup>
