@@ -45,7 +45,7 @@
         var link = $(e.target);
         var resultId = link.parents("li").attr("data-personId");
 
-        var url = hr_urlPrefix + "Participant/Details/" + resultId;
+        var url = hr_urlPrefix + "/Participant/Details/" + resultId;
         window.open(url, "_blank");
     });
 
