@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿//CreateSession.js
+$(document).ready(function () {
 
     // INIT BOOTSTRAP 3 DATEPICKERS
     hr_initBootstrap3DatePickers();
@@ -18,7 +19,7 @@
         var resultId = $("#Participant_Id").val();
 
         if ($.inArray(resultId, listOfParticiantsThatParticipated) > -1) {
-            hr_messageFadingOut(link, "Redan tillagd!", "warning");
+            hr_messageFadingOut(link, "Redan tillagd!", "danger");
             return;
         }
 
@@ -45,7 +46,7 @@
         var link = $(e.target);
         var resultId = link.parents("li").attr("data-personId");
 
-        var url = "/HrKompetensutveckling/Participant/Details/" + resultId;
+        var url = hr_urlPrefix + "/Participant/Details/" + resultId;
         window.open(url, "_blank");
     });
 
@@ -55,7 +56,7 @@
         '"><span class="listedParticipantLink">' +
         resultName +
         '</span><span> </span><span class="badge js-remove-participantBeforeSessionExists listedParticipantRemove"> x </span></li>';
-        $(html).hide().appendTo("#selectedParticipants").fadeIn(100);
+        $(html).hide().appendTo("#selectedParticipants").fadeIn(hr_fadeInSpeed);
     }
 
     // ADDING TAGS
@@ -67,7 +68,7 @@
         var addedTag = $("#tagsInput").val();
 
         if ($.inArray(addedTag, listOfAddedTags) > -1) {
-            hr_messageFadingOut(link, "Redan tillagd!", "warning");
+            hr_messageFadingOut(link, "Redan tillagd!", "danger");
             return;
         }
 
@@ -98,7 +99,7 @@
             '" class="label label-primary js-remove-tag-create-session">' +
             addedTag +
             '&nbsp;<span class="glyphicon glyphicon-remove"></span></span>';
-        $(html).hide().appendTo("#selectedTags").fadeIn(100);
+        $(html).hide().appendTo("#selectedTags").fadeIn(hr_fadeInSpeed);
     }
 
 });
