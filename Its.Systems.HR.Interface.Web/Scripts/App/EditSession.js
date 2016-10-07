@@ -14,7 +14,7 @@
         var addedTag = $("#tagsInput").val();
 
         $.ajax({
-            url: hr_urlHrKompetensUtveckling + "/Activity/AddTagToSession",
+            url: hr_urlPrefix + "/Activity/AddTagToSession",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), tagName: addedTag },
             success: function (data) {
@@ -24,7 +24,7 @@
                         '" data-sessionId="' + link.attr("data-sessionId") + '" class="label label-primary js-remove-tag-edit-session">' +
                         addedTag +
                         '&nbsp;<span class="glyphicon glyphicon-remove"></span></span>';
-                    $(html).hide().appendTo("#selectedTags").fadeIn(100);
+                    $(html).hide().appendTo("#selectedTags").fadeIn(hr_fadeInSpeed);
 
                     $("#tagsInput").val("");
                 } else {
@@ -42,7 +42,7 @@
         var link = $(e.target);
 
         $.ajax({
-            url: hr_urlHrKompetensUtveckling + "/Activity/RemoveTagFromSession",
+            url: hr_urlPrefix + "/Activity/RemoveTagFromSession",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), tagId: link.attr("data-tagId") },
             success: function () {

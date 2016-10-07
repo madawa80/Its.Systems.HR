@@ -45,7 +45,7 @@
         var link = $(e.target);
         var resultId = link.parents("li").attr("data-personId");
 
-        var url = hr_urlHrKompetensUtveckling + "Participant/Details/" + resultId;
+        var url = hr_urlPrefix + "Participant/Details/" + resultId;
         window.open(url, "_blank");
     });
 
@@ -55,7 +55,7 @@
         '"><span class="listedParticipantLink">' +
         resultName +
         '</span><span> </span><span class="badge js-remove-participantBeforeSessionExists listedParticipantRemove"> x </span></li>';
-        $(html).hide().appendTo("#selectedParticipants").fadeIn(100);
+        $(html).hide().appendTo("#selectedParticipants").fadeIn(hr_fadeInSpeed);
     }
 
     // ADDING TAGS
@@ -98,7 +98,7 @@
             '" class="label label-primary js-remove-tag-create-session">' +
             addedTag +
             '&nbsp;<span class="glyphicon glyphicon-remove"></span></span>';
-        $(html).hide().appendTo("#selectedTags").fadeIn(100);
+        $(html).hide().appendTo("#selectedTags").fadeIn(hr_fadeInSpeed);
     }
 
 });

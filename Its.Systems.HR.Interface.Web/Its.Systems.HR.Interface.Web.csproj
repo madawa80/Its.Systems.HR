@@ -257,7 +257,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\App\ParticipantDetails.js" />
-    <Content Include="Scripts\App\SessionsForActivity.js" />
+    <Content Include="Scripts\App\SessionForActivity.js" />
     <Content Include="Scripts\App\FilterSessions.js" />
     <Content Include="Scripts\App\EditSession.js" />
     <Content Include="Scripts\App\HrHelpers.js" />

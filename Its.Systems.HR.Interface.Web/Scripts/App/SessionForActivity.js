@@ -10,16 +10,16 @@
         var personId = $("#participantDropdown").val();
 
         $.ajax({
-            url: hr_urlHrKompetensUtveckling + "/Activity/AddPersonToSessionFromActivitySummary/",
+            url: hr_urlPrefix + "/Activity/AddPersonToSessionFromActivitySummary/",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), personId: personId },
             success: function (result) {
                 if (result.Success) {
-                    var html = '<tr><td><a href="' + hr_urlHrKompetensUtveckling + '"/Participant/Details/' +
+                    var html = '<tr><td><a href="' + hr_urlPrefix + '"/Participant/Details/' +
                         result.PersonId + '">' + result.PersonFullName +
                         '</a><span> </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionid="' +
                         result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
-                    $(html).hide().appendTo("#ParticipantsForSession").fadeIn(100);
+                    $(html).hide().appendTo("#ParticipantsForSession").fadeIn(hr_fadeInSpeed);
 
                     paticipantCount();
                 }
@@ -50,12 +50,12 @@
             callback: function (result) {
                 if (result) {
                     $.ajax({
-                        url: hr_urlHrKompetensUtveckling + "/Activity/RemovePersonFromSession/",
+                        url: hr_urlPrefix + "/Activity/RemovePersonFromSession/",
                         type: "POST",
                         data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
                         success: function () {
                             link.parents("tr")
-                                .fadeOut(function () {
+                                .fadeOut(hr_fadeOutSpeed, function () {
                                     $(this).remove();
 
                                     paticipantCount();
@@ -78,7 +78,7 @@
         var comments = $("#Comments").val();
 
         $.ajax({
-            url: hr_urlHrKompetensUtveckling + "/ActivitySummary/SaveSessionComments/",
+            url: hr_urlPrefix + "/ActivitySummary/SaveSessionComments/",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), comments: comments },
             success: function () {
@@ -96,7 +96,7 @@
         var evaluation = $("#Evaluation").val();
 
         $.ajax({
-            url: hr_urlHrKompetensUtveckling + "/ActivitySummary/SaveSessionEvaluation/",
+            url: hr_urlPrefix + "/ActivitySummary/SaveSessionEvaluation/",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), evaluation: evaluation },
             success: function () {
@@ -128,11 +128,11 @@
             callback: function (result) {
                 if (result) {
                     $.ajax({
-                        url: hr_urlHrKompetensUtveckling + "/Activity/RemoveSession/" + link.attr("data-sessionId"),
+                        url: hr_urlPrefix + "/Activity/RemoveSession/" + link.attr("data-sessionId"),
                         type: "POST",
                         success: function () {
                             alert("Kurstillfället är borttaget.");
-                            window.location.href = hr_urlHrKompetensUtveckling + "/Activity/Index/";
+                            window.location.href = hr_urlPrefix + "/Activity/Index/";
                         },
                         error: function () {
                             alert("Anropet misslyckades, prova gärna igen.");

@@ -6,9 +6,15 @@
 
 
 // TODO: Check for localhost in url
-hr_urlHrKompetensUtveckling = "/HrKompetensutveckling";
-//hr_urlHrKompetensUtveckling = "";
+if (window.location.href.indexOf("localhost") > -1) {
+    hr_urlPrefix = "";
+} else {
+    hr_urlPrefix = "/HrKompetensutveckling";
+}
 
+// FADEIN/OUT-SPEEDS, NOTE: hr_messageFadingOut speed hardcoded in this file.
+hr_fadeInSpeed = 100;
+hr_fadeOutSpeed = 100;
 
 // INIT BOOTSTRAP 3 DATEPICKERS (ADDON)
 function hr_initBootstrap3DatePickers() {
@@ -20,7 +26,7 @@ function hr_initBootstrap3DatePickers() {
     });
 };
 
-// Message to the user in a span
+// MESSAGE TO THE USER IN ADDED IN A SPAN AFTER <source> THEN FADES OUT
 function hr_messageFadingOut(source, message, type) {
     source.after(' <span class="alert alert-' + type + ' js-fadeOutThisMessage" role="alert">' + message + '</span>');
     $(".js-fadeOutThisMessage").fadeOut(4000, function () {
@@ -28,9 +34,9 @@ function hr_messageFadingOut(source, message, type) {
     });
 };
 
-// Fade out an object
+// FADE OUT AN OBJECT
 function hr_fadeOutObject(source) {
-    source.fadeOut(100, function () {
+    source.fadeOut(hr_fadeOutSpeed, function () {
         $(this).remove();
     });
 }
