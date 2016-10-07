@@ -100,32 +100,6 @@
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <script src="~/Scripts/bootstrap-slider.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            $("#yearSlider").bootstrapSlider({
-                    tooltip: 'always'
-                });
-
-
-            //$("#yearSlider").on("slide", function (slideEvt) {
-            //    $("#exampleWithSlider").text(slideEvt.value);
-            //});
-
-
-            // AUTOCOMPLETE
-            var createAutocomplete = function () {
-                var $input = $(this); // the HTML element (Textbox)
-
-                var options = {
-                    source: $input.attr("data-autocomplete") // Required
-                };
-                // apply options
-                $input.autocomplete(options);
-            };
-
-            // targets input elements with the 'data-' attributes and each time the input changes
-            // it calls the 'createAutocomplete' function
-            $("input[data-autocomplete]").each(createAutocomplete);
-        });
-    </script>
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script src="~/Scripts/App/FilterSessions.js"></script>
 }
