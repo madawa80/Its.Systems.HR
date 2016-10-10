@@ -25,7 +25,7 @@
             {
                 <tr>
                     <td>
-                        <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.Name</a>
+                        <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.NameWithActivity</a>
                         <span> (@session.StartDate.ToShortDateString())</span>
                         <span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort</span>
                     </td>

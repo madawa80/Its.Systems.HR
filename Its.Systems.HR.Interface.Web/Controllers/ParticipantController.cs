@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -12,13 +13,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 {
     public class ParticipantController : Controller
     {
-        private IActivityManager _activityManager;
         private readonly ISessionManager _sessionManager;
-        private IPersonManager _personManager;
+        private readonly IPersonManager _personManager;
        
-        public ParticipantController(IActivityManager activityManager, ISessionManager sessionManager, IPersonManager personManager)
+        public ParticipantController(ISessionManager sessionManager, IPersonManager personManager)
         {
-            _activityManager = activityManager;
             _sessionManager = sessionManager;
             _personManager = personManager;
         }
@@ -39,7 +38,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (participant == null)
                 return HttpNotFound();
 
-            var allSessions = _sessionManager.GetAllSessions().OrderBy(n => n.Name);
+            var allSessions = _sessionManager.GetAllSessions().Include(n => n.Activity).OrderBy(n => n.Activity.Name).ThenBy(n => n.Name);
 
             var viewModel = new ParticipantSummaryViewModel()
             {
@@ -47,11 +46,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 FullName = participant.FullName,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
-                Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id).ToList(),
+                Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id).Include(n => n.Activity).ToList(),
                 AllSessions = new SelectList(
                                             allSessions,
                                             "Id",
-                                            "Name",
+                                            "NameWithActivity",
                                             allSessions.First().Id)
             };
 

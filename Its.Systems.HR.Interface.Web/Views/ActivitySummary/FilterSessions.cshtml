@@ -11,7 +11,7 @@
     <div class="well-lg">
 
         <div class="form-group">
-            <label for="SearchString">Namn på tillfälle innehåller</label>
+            <label for="SearchString">Fullständigt namn innehåller</label>
             <div>
                 @Html.TextBox("SearchString", null, new { @class = "form-control" })
             </div>
@@ -59,18 +59,18 @@
 
 <table class="table">
     <tr>
-        <th>Namn</th>
+        <th>Aktivitet och Namn</th>
         <th>Start</th>
         <th>Slut</th>
         <th>Hr-Person</th>
         <th>Plats</th>
     </tr>
 
-    @foreach (var session in Model.Sessions.OrderBy(n => n.Name))
+    @foreach (var session in Model.Sessions.OrderBy(n => n.NameWithActivity))
     {
         <tr>
             <td>
-                <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.Name</a>
+                <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.NameWithActivity</a>
             </td>
             <td>
                 @session.StartDate.ToString("dd MMM yyyy HH:mm")

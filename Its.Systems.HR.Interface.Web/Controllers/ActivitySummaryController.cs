@@ -51,7 +51,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Location = theSession.Location,
                 TotalPaticipants = allParticipant.Count,
                 Participants = allParticipant,
-                SessionName = theSession.Name,
+                SessionNameWithActivity = theSession.NameWithActivity,
                 SessionId = id,
                 Tags = allTagsForSession
             };
@@ -71,7 +71,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (string.IsNullOrEmpty(searchString))
                 allSessions = _sessionManager.GetAllSessionsWithIncludes();
             else
-                allSessions = _sessionManager.GetAllSessionsWithIncludes().Where(n => n.Name.Contains(searchString));
+                allSessions = _sessionManager.GetAllSessionsWithIncludes().Where(n => n.Name.Contains(searchString) || n.Activity.Name.Contains(searchString));
             // TODO: Take 10?
 
             int yearStart = 0;

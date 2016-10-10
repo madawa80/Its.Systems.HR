@@ -86,6 +86,7 @@ namespace Its.Systems.HR.Domain.Managers
         public Session GetSessionByIdWithIncludes(int sessionId)
         {
             return _db.Get<Session>()
+                .Include(n => n.Activity)
                 .Include(n => n.Location)
                 .Include(n => n.HrPerson)
                 .Include(n => n.SessionTags)
@@ -97,7 +98,8 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<Session>()
                 .Include(n => n.Activity)
                 .Include(n => n.Location)
-                .Include(n => n.HrPerson);
+                .Include(n => n.HrPerson)
+                .Include(n => n.SessionTags);
             //.Include(n => n.SessionParticipants)
         }
 

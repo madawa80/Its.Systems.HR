@@ -8,6 +8,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
     public class EditSessionViewModel
     {
         public int SessionId { get; set; }
+        public string NameOfSessionWithActivity { get; set; }
 
         [Required]
         [Display(Name = "Aktivitet")]

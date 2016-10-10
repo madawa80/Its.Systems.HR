@@ -1,6 +1,7 @@
 ﻿using Its.Systems.HR.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,16 +14,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
     public class StatisticController : Controller
     {
-        public List<int> years;
-        private readonly IActivityManager _activityManager;
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
-        private int PaticipantCount;
-        public int selectedyear;
 
-        public StatisticController(IActivityManager manager, ISessionManager sessionManager, IPersonManager personManager)
+        private List<int> years;
+        private int PaticipantCount;
+        private int selectedyear;
+
+        public StatisticController(ISessionManager sessionManager, IPersonManager personManager)
         {
-            _activityManager = manager;
             _sessionManager = sessionManager;
             _personManager = personManager;
         }
@@ -39,10 +39,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             };
 
             return View(viewModel);
-
         }
-
-
 
         [HttpPost]
         public ViewResult YearlyStatistics(string yearsList)
@@ -63,7 +60,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 selectedyear = Int32.Parse(Request.Form["yearslist"]);
                 years = Enumerable.Range(2010, 100).ToList();
-                var sessionsForYear = _sessionManager.GetAllSessionsForYear(selectedyear).ToList().OrderBy(n => n.Id);
+                var sessionsForYear = _sessionManager.GetAllSessionsForYear(selectedyear).Include(n => n.Activity).ToList().OrderBy(n => n.Id);
                 sessionscount = sessionsForYear.Count();
                
 

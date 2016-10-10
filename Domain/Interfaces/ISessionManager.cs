@@ -59,14 +59,14 @@ namespace Its.Systems.HR.Domain.Interfaces
         bool SaveEvaluationForSession(int id, string evaluation);
 
         /// <summary>
-        /// Gets the session by sessionId, includes Location, HrPerson and Tags.
+        /// Gets the session by sessionId, includes Activity, Location, HrPerson and Tags.
         /// </summary>
         /// <param name="sessionId"></param>
         /// <returns>The session with Location, HrPerson and Tags.</returns>
         Session GetSessionByIdWithIncludes(int sessionId);
 
         /// <summary>
-        /// Gets all sessions, includes Location, HrPerson and Tags.
+        /// Gets all sessions, includes Activity, Location, HrPerson and Tags.
         /// </summary>
         /// <returns>IQueryble of Session with Location, HrPerson and Tags.</returns>
         IQueryable<Session> GetAllSessionsWithIncludes();

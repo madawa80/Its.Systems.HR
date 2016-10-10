@@ -39,7 +39,7 @@
         <tr>
             <td>
                 @*@Html.ActionLink(@item.Name, "FilterSessions", "ActivitySummary", new { SearchString = item.Name }, null)*@
-                @Html.ActionLink(@item.Name, "AllSessionsForActivity", "ActivitySummary", new { id = item.Id}, null)
+                @Html.ActionLink(@item.Name, "AllSessionsForActivity", "ActivitySummary", new { id = item.Id }, null)
             </td>
 
             <td>
@@ -51,3 +51,8 @@
     }
 
 </table>
+
+@section scripts {
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script src="~/Scripts/App/ActivityIndex.js"></script>
+}

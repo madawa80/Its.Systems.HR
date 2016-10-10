@@ -81,12 +81,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     // <- END TAGS
 
 
-                    var activityName = _activityManager.GetActivityById(sessionVm.Activity.Id).Name;
                     int? locationId = GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
 
                     var result = new Session()
                     {
-                        Name = activityName + " " + sessionVm.Name,
+                        Name = sessionVm.Name,
                         ActivityId = sessionVm.Activity.Id,
                         StartDate = sessionVm.StartDate,
                         EndDate = sessionVm.EndDate,
@@ -149,6 +148,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var viewModel = new EditSessionViewModel()
             {
                 SessionId = session.Id,
+                NameOfSessionWithActivity = session.NameWithActivity,
                 Activity = activity,
                 NameOfSession = session.Name,
                 StartDate = session.StartDate,

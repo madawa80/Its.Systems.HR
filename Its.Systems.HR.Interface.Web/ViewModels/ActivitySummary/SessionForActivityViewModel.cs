@@ -18,7 +18,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public int TotalPaticipants { get; set; }
         public int SessionId { get; set; }
 
-        public string SessionName { get; set; }
+        public string SessionNameWithActivity { get; set; }
 
         public List<Participant> Participants { get; set; }
         public Location Location { get; set; }

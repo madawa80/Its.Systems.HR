@@ -16,6 +16,8 @@ namespace Its.Systems.HR.Domain.Model
         public string Comments { get; set; }
         public string Evaluation { get; set; }
 
+        public string NameWithActivity => Activity.Name + " " + Name;
+
         // nav props
         public int? LocationId { get; set; }
         public virtual Location Location { get; set; }

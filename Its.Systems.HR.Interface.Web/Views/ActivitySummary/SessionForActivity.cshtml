@@ -2,7 +2,7 @@
 
 <div class="col-md-12">
     <h2>
-        <strong>@Model.SessionName</strong>
+        <strong>@Model.SessionNameWithActivity</strong>
         <a href="@Url.Action("EditSession", "Session", new {id = Model.SessionId})" class="btn btn-warning">Ändra tillfälle</a>
         <button class="btn btn-danger js-delete-session" data-sessionId="@Model.SessionId">Ta bort tillfälle</button>
     </h2>

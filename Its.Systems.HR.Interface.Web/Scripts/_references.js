@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="app/activityindex.js" />
 /// <reference path="app/createsession.js" />
 /// <reference path="app/editsession.js" />
 /// <reference path="app/filtersessions.js" />
