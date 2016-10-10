@@ -17,12 +17,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     public class ActivityController : Controller
     {
         private readonly IActivityManager _activityManager;
+        private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
         private readonly IUtilityManager _utilitiesManager;
 
-        public ActivityController(IActivityManager activityManager, IPersonManager personManager, IUtilityManager utilityManager)
+        public ActivityController(IActivityManager activityManager, ISessionManager sessionManager, IPersonManager personManager, IUtilityManager utilityManager)
         {
             _activityManager = activityManager;
+            _sessionManager = sessionManager;
             _personManager = personManager;
             _utilitiesManager = utilityManager;
         }
@@ -298,11 +300,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     }
 
                     // Save session in db
-                    _activityManager.AddSession(result);
+                    _sessionManager.AddSession(result);
 
 
                     // Now add tags to the created session!...
-                    _activityManager.AddSessionTags(tagsToAdd, result.Id);
+                    _sessionManager.AddSessionTags(tagsToAdd, result.Id);
 
                     return RedirectToAction("GetSession", "ActivitySummary", new { id = result.Id });
                 }
@@ -320,7 +322,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var session = _activityManager.GetSessionByIdWithIncludes((int)id);
+            var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -360,11 +362,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (inputVm == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var sessionToUpdate = _activityManager.GetSessionByIdWithIncludes(inputVm.SessionId);
+            var sessionToUpdate = _sessionManager.GetSessionByIdWithIncludes(inputVm.SessionId);
 
             try
             {
-                if (sessionToUpdate.Name == inputVm.NameOfSession || !_activityManager.GetAllSessions().Any(n => n.Name == inputVm.NameOfSession))
+                if (sessionToUpdate.Name == inputVm.NameOfSession || !_sessionManager.GetAllSessions().Any(n => n.Name == inputVm.NameOfSession))
                 {
                     int? location = GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
 
@@ -377,7 +379,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     sessionToUpdate.LocationId = location;
                     sessionToUpdate.HrPersonId = hrPerson;
 
-                    _activityManager.EditSession(sessionToUpdate);
+                    _sessionManager.EditSession(sessionToUpdate);
 
                     return RedirectToAction("GetSession", "ActivitySummary", new { id = sessionToUpdate.Id });
                 }
@@ -402,7 +404,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult AddPersonToSession(int sessionId, int personId)
         {
-            var session = _activityManager.GetSessionById(sessionId);
+            var session = _sessionManager.GetSessionById(sessionId);
 
             var result = new
             {
@@ -475,7 +477,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var result = new { Success = true };
 
-            if (!_activityManager.DeleteSessionById(id))
+            if (!_sessionManager.DeleteSessionById(id))
                 result = new { Success = false };
 
             return Json(result);
@@ -485,7 +487,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var result = new { Success = false, TagId = -1 };
 
-            var tagIdFromDb = _activityManager.AddTagToSession(sessionId, tagName);
+            var tagIdFromDb = _sessionManager.AddTagToSession(sessionId, tagName);
             if (tagIdFromDb != -1)
                 result = new {Success = true, TagId = tagIdFromDb};
 
@@ -496,7 +498,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var result = new { Success = false};
 
-            if (_activityManager.RemoveTagFromSession(sessionId, tagId))
+            if (_sessionManager.RemoveTagFromSession(sessionId, tagId))
                 result = new {Success = true};
 
             return Json(result);
@@ -514,7 +516,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private IEnumerable<string> GetLocations(string searchString)
         {
             IEnumerable<string> locations =
-                _activityManager.GetAllLocations().Where(n => n.Name.ToUpper().Contains(searchString.ToUpper())).Select(a => a.Name);
+                _utilitiesManager.GetAllLocations().Where(n => n.Name.ToUpper().Contains(searchString.ToUpper())).Select(a => a.Name);
 
             return locations;
         }
@@ -528,7 +530,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             int resultId = -1;
 
             Location locationExisting =
-                _activityManager.GetAllLocations().SingleOrDefault(n => n.Name.ToLower() == location.ToLower());
+                _utilitiesManager.GetAllLocations().SingleOrDefault(n => n.Name.ToLower() == location.ToLower());
 
             if (locationExisting == null)
             {

@@ -10,6 +10,12 @@ namespace Its.Systems.HR.Domain.Interfaces
     public interface IUtilityManager
     {
         /// <summary>
+        /// Get all the locations in the db.
+        /// </summary>
+        /// <returns>IQueryable of Location.</returns>
+        IQueryable<Location> GetAllLocations();
+
+        /// <summary>
         /// Adds an location.
         /// </summary>
         /// <param name="location"></param>
@@ -26,6 +32,6 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// Adds the list of tags passed.
         /// </summary>
         /// <param name="tags"></param>
-        void AddTags(List<Tag> tags);
+        void AddTags(IEnumerable<Tag> tags);
     }
 }

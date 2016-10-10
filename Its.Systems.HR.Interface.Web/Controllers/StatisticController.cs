@@ -14,14 +14,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     public class StatisticController : Controller
     {
         public List<int> years;
-        private IActivityManager _activityManager;
-        private IPersonManager _personManager;
+        private readonly IActivityManager _activityManager;
+        private readonly ISessionManager _sessionManager;
+        private readonly IPersonManager _personManager;
         private int PaticipantCount;
         public int selectedyear;
 
-        public StatisticController(IActivityManager manager, IPersonManager personManager)
+        public StatisticController(IActivityManager manager, ISessionManager sessionManager, IPersonManager personManager)
         {
             _activityManager = manager;
+            _sessionManager = sessionManager;
             _personManager = personManager;
         }
         
@@ -61,13 +63,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 selectedyear = Int32.Parse(Request.Form["yearslist"]);
                 years = Enumerable.Range(2010, 100).ToList();
-                var sessionsForYear = _activityManager.GetAllSessionsForYear(selectedyear).ToList().OrderBy(n => n.Id);
+                var sessionsForYear = _sessionManager.GetAllSessionsForYear(selectedyear).ToList().OrderBy(n => n.Id);
                 sessionscount = sessionsForYear.Count();
                
 
                 foreach (var session in sessionsForYear)
                 {
-                    PaticipantCount = _activityManager.GetAllParticipantsForSession(session.Id).ToList().Count;
+                    PaticipantCount = _personManager.GetAllParticipantsForSession(session.Id).ToList().Count;
                     sessionStatisticsRowsList.Add(new SessionStatisticsRow()
                     {
                         NumberOfParticipants = PaticipantCount,

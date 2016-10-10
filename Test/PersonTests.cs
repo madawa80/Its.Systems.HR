@@ -13,7 +13,9 @@ namespace Its.Systems.HR.Test
         private IPersonManager impl;
 
         public PersonTests() : base()
-        { }
+        {
+            impl = Container().Resolve<IPersonManager>();
+        }
 
         [TestMethod]
         public void GetAllParticipants_ShouldReturnCountOf6()
@@ -28,8 +30,6 @@ namespace Its.Systems.HR.Test
         [TestMethod]
         public void GetAllHrPersons_ShouldReturnCountOf5()
         {
-            impl = Container().Resolve<IPersonManager>();
-
             var p = impl.GetAllHrPersons().ToList();
 
             Assert.AreEqual(5, p.Count);
@@ -43,9 +43,7 @@ namespace Its.Systems.HR.Test
                 FirstName = "UniqueFirstName123",
                 LastName = "UniqueLastName123",
             };
-
-            impl = Container().Resolve<IPersonManager>();
-
+            
             var result = impl.AddHrPerson(newHrPerson);
 
             Assert.AreEqual(true, result);
@@ -59,14 +57,19 @@ namespace Its.Systems.HR.Test
                 FirstName = "Samme",
                 LastName = "Petersson",
             };
-
-            impl = Container().Resolve<IPersonManager>();
-
+            
             var result = impl.AddHrPerson(newHrPerson);
 
             Assert.AreEqual(false, result);
         }
 
+        [TestMethod]
+        public void GetAllParticipantsForSessionJavaOne2015_ShouldReturnCountOf3()
+        {
+            var result = impl.GetAllParticipantsForSession(1).Count();
+
+            Assert.AreEqual(3, result);
+        }
 
     }
 }

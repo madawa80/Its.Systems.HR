@@ -14,13 +14,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 {
     public class ActivitySummaryController : Controller
     {
-        private IActivityManager _activityManager;
-        private IPersonManager _personManager;
+        private readonly IActivityManager _activityManager;
+        private readonly ISessionManager _sessionManager;
+        private readonly IPersonManager _personManager;
         private readonly IUtilityManager _utilityManager;
 
-        public ActivitySummaryController(IActivityManager manager, IPersonManager personManager, IUtilityManager utilityManager)
+        public ActivitySummaryController(IActivityManager manager, ISessionManager sessionManager, IPersonManager personManager, IUtilityManager utilityManager)
         {
             _activityManager = manager;
+            _sessionManager = sessionManager;
             _personManager = personManager;
             _utilityManager = utilityManager;
         }
@@ -88,12 +90,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult GetSession(int id)
         {
-            var theSession = _activityManager.GetSessionByIdWithIncludes(id);
+            var theSession = _sessionManager.GetSessionByIdWithIncludes(id);
 
             if (theSession == null)
                 return View("Error");
 
-            var allParticipant = _activityManager.GetAllParticipantsForSession(id).ToList();
+            var allParticipant = _personManager.GetAllParticipantsForSession(id).ToList();
 
             // Get Tags for session
             var sessionTagIdsForSession = theSession.SessionTags.Select(n => n.TagId);
@@ -128,9 +130,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             IQueryable<Session> allSessions;
             if (string.IsNullOrEmpty(searchString))
-                allSessions = _activityManager.GetAllSessionsWithIncludes();
+                allSessions = _sessionManager.GetAllSessionsWithIncludes();
             else
-                allSessions = _activityManager.GetAllSessionsWithIncludes().Where(n => n.Name.Contains(searchString));
+                allSessions = _sessionManager.GetAllSessionsWithIncludes().Where(n => n.Name.Contains(searchString));
             // TODO: Take 10?
 
             int yearStart = 0;
@@ -175,7 +177,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult SaveSessionComments(int sessionId, string comments)
         {
             var result = new { Success = true };
-            if (_activityManager.SaveCommentsForSession(sessionId, comments))
+            if (_sessionManager.SaveCommentsForSession(sessionId, comments))
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             // TODO: ErrorMessage
@@ -188,7 +190,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var result = new { Success = true };
 
-            if (_activityManager.SaveEvaluationForSession(sessionId, evaluation))
+            if (_sessionManager.SaveEvaluationForSession(sessionId, evaluation))
                 return Json(result, JsonRequestBehavior.AllowGet);
 
             result = new { Success = false };
@@ -231,7 +233,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult AllSessionsForActivity(int id)
         {
-            var allSessionsForActivity = _activityManager
+            var allSessionsForActivity = _sessionManager
                             .GetAllSessionsForActivity(id)
                             .Include(n => n.HrPerson)
                             .Include(n => n.Location)

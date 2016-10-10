@@ -45,6 +45,7 @@ namespace Its.Systems.HR.Interface.Web.App_Start
             container.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
             container.RegisterType<IActivityManager, ActivityManager>(new PerResolveLifetimeManager());
             container.RegisterType<IUtilityManager, UtilityManager>(new PerResolveLifetimeManager());
+            container.RegisterType<ISessionManager, SessionManager>(new PerResolveLifetimeManager());
         }
     }
 }

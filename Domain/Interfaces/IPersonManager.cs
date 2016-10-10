@@ -53,7 +53,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <returns>True if successfull.</returns>
         bool SaveWishesForParticipant(int personId, string wishes);
 
-        HrPerson GetHRPersonById(int sessionId);
+        HrPerson GetHrPersonById(int sessionId);
 
         /// <summary>
         /// Adds a participant by participantId to a session, by sessionId.
@@ -70,5 +70,12 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <param name="sessionId"></param>
         /// <returns>True if successfull.</returns>
         bool RemoveParticipantFromSession(int participantId, int sessionId);
+
+        /// <summary>
+        /// Gets all participants for a session by sessionId.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        IQueryable<Participant> GetAllParticipantsForSession(int id);
     }
 }

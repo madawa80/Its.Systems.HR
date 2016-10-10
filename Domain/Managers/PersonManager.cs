@@ -11,13 +11,14 @@ namespace Its.Systems.HR.Domain.Managers
 {
     public class PersonManager : IPersonManager
     {
-        public IDbRepository db;
+        private readonly IDbRepository _db;
 
         public PersonManager(IDbRepository repo)
         {
-            db = repo;
+            _db = repo;
         }
 
+        // TEMPLATE:
         //public IQueryable<Person> GetPersons()
         //{
         //    db.Get<Person>().Include().Where().
@@ -25,36 +26,36 @@ namespace Its.Systems.HR.Domain.Managers
 
         public IQueryable<Participant> GetAllParticipants()
         {
-            return db.Get<Participant>();
+            return _db.Get<Participant>();
         }
 
         public IQueryable<HrPerson> GetAllHrPersons()
         {
-            return db.Get<HrPerson>();
+            return _db.Get<HrPerson>();
         }
 
         public bool AddHrPerson(HrPerson hrPerson)
         {
-            var allHrPersons = db.Get<HrPerson>().ToList();
+            var allHrPersons = _db.Get<HrPerson>().ToList();
 
             if (allHrPersons.Any(n => n.GetHrFullName() == hrPerson.GetHrFullName()))
                 return false;
 
-            db.Add<HrPerson>(hrPerson);
+            _db.Add<HrPerson>(hrPerson);
 
             return true;
         }
 
         public bool DeletePaticipantById(int id)
         {
-            var paticipantFromDb = db.Get<Participant>().SingleOrDefault(n => n.Id == id);
+            var paticipantFromDb = _db.Get<Participant>().SingleOrDefault(n => n.Id == id);
             if (paticipantFromDb == null)
                 return false;
 
-            db.Delete(paticipantFromDb);
+            _db.Delete(paticipantFromDb);
             try
             {
-                db.SaveChanges();
+                _db.SaveChanges();
             }
             catch (Exception)
             {
@@ -67,10 +68,10 @@ namespace Its.Systems.HR.Domain.Managers
 
         public Participant GetParticipantById(int id)
         {
-            return db.Get<Participant>().SingleOrDefault(n => n.Id == id);
+            return _db.Get<Participant>().SingleOrDefault(n => n.Id == id);
         }
 
-        public HrPerson GetHRPersonById(int HrId)
+        public HrPerson GetHrPersonById(int HrId)
         {
             //var query =
             //(
@@ -79,7 +80,7 @@ namespace Its.Systems.HR.Domain.Managers
             //        on eventUser.EventId equals @event.Id
             //    where eventUser.ProfileId == profileId
             //    select Name
-            return db.Get<HrPerson>().SingleOrDefault(n => n.Id == HrId);
+            return _db.Get<HrPerson>().SingleOrDefault(n => n.Id == HrId);
         }
 
         public bool SaveCommentsForParticipant(int personId, string comments)
@@ -91,7 +92,7 @@ namespace Its.Systems.HR.Domain.Managers
             participant.Comments = comments;
             try
             {
-                db.SaveChanges();
+                _db.SaveChanges();
 
             }
             catch (Exception)
@@ -112,7 +113,7 @@ namespace Its.Systems.HR.Domain.Managers
             participant.Wishes = wishes;
             try
             {
-                db.SaveChanges();
+                _db.SaveChanges();
 
             }
             catch (Exception)
@@ -131,7 +132,7 @@ namespace Its.Systems.HR.Domain.Managers
             // Test sessionId for null
             if (!CheckIfSessionExists(sessionId)) return false;
             // Make sure no SessionParticipant exists
-            var sessionParticipantFromDb = db.Get<SessionParticipant>()
+            var sessionParticipantFromDb = _db.Get<SessionParticipant>()
                 .SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
 
             if (sessionParticipantFromDb != null)
@@ -145,8 +146,8 @@ namespace Its.Systems.HR.Domain.Managers
                 Rating = 0
             };
 
-            db.Add<SessionParticipant>(result);
-            db.SaveChanges();
+            _db.Add<SessionParticipant>(result);
+            _db.SaveChanges();
 
             return true;
         }
@@ -158,22 +159,22 @@ namespace Its.Systems.HR.Domain.Managers
             // Test sessionId for null
             if (!CheckIfSessionExists(sessionId)) return false;
             // Make sure SessionParticipant exists!
-            var sessionParticipantFromDb = db.Get<SessionParticipant>()
+            var sessionParticipantFromDb = _db.Get<SessionParticipant>()
                 .SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
 
             if (sessionParticipantFromDb == null)
                 return false;
 
 
-            db.Delete<SessionParticipant>(sessionParticipantFromDb);
-            db.SaveChanges();
+            _db.Delete<SessionParticipant>(sessionParticipantFromDb);
+            _db.SaveChanges();
 
             return true;
         }
 
         private bool CheckIfSessionExists(int sessionId)
         {
-            var sessionFromDb = db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
+            var sessionFromDb = _db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
             if (sessionFromDb == null)
                 return false;
             return true;
@@ -181,10 +182,15 @@ namespace Its.Systems.HR.Domain.Managers
 
         private bool CheckIfParticipantExists(int participantId)
         {
-            var participantFromDb = db.Get<Participant>().SingleOrDefault(n => n.Id == participantId);
+            var participantFromDb = _db.Get<Participant>().SingleOrDefault(n => n.Id == participantId);
             if (participantFromDb == null)
                 return false;
             return true;
+        }
+
+        public IQueryable<Participant> GetAllParticipantsForSession(int id)
+        {
+            return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
         }
     }
 }

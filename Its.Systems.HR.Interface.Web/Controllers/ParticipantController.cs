@@ -13,11 +13,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     public class ParticipantController : Controller
     {
         private IActivityManager _activityManager;
+        private readonly ISessionManager _sessionManager;
         private IPersonManager _personManager;
        
-        public ParticipantController(IActivityManager activityManager, IPersonManager personManager)
+        public ParticipantController(IActivityManager activityManager, ISessionManager sessionManager, IPersonManager personManager)
         {
             _activityManager = activityManager;
+            _sessionManager = sessionManager;
             _personManager = personManager;
         }
 
@@ -37,7 +39,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (participant == null)
                 return HttpNotFound();
 
-            var allSessions = _activityManager.GetAllSessions().OrderBy(n => n.Name);
+            var allSessions = _sessionManager.GetAllSessions().OrderBy(n => n.Name);
 
             var viewModel = new ParticipantSummaryViewModel()
             {
@@ -45,7 +47,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 FullName = participant.FullName,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
-                Sessions = _activityManager.GetAllSessionsForParticipantById(participant.Id).ToList(),
+                Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id).ToList(),
                 AllSessions = new SelectList(
                                             allSessions,
                                             "Id",
@@ -84,7 +86,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult ParticipantStatisticSummary(int personid)
         {
-            var allParticipantSessions = _activityManager.GetAllSessionsForParticipantById(personid).ToList();
+            var allParticipantSessions = _sessionManager.GetAllSessionsForParticipantById(personid).ToList();
             var result = new ParticipantStatisticSummaryViewModel()
             {
                 TotalCount = allParticipantSessions.Count,

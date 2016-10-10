@@ -14,6 +14,11 @@ namespace Its.Systems.HR.Domain.Managers
             _db = repo;
         }
 
+        public IQueryable<Location> GetAllLocations()
+        {
+            return _db.Get<Location>();
+        }
+
         public int AddLocation(string location)
         {
             var result = new Location()
@@ -32,7 +37,7 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<Tag>();
         }
 
-        public void AddTags(List<Tag> tags)
+        public void AddTags(IEnumerable<Tag> tags)
         {
             // TODO: this will result in one roundtrip for every new tag...
             foreach (var tag in tags)
