@@ -16,17 +16,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 {
     public class ActivityController : Controller
     {
+        private readonly IActivityManager _activityManager;
+        private readonly IPersonManager _personManager;
+        private readonly IUtilityManager _utilitiesManager;
 
-
-        private IActivityManager _activityManager;
-        private IPersonManager _personManager;
-
-
-        public ActivityController(IActivityManager activityManager, IPersonManager personManager)
+        public ActivityController(IActivityManager activityManager, IPersonManager personManager, IUtilityManager utilityManager)
         {
             _activityManager = activityManager;
             _personManager = personManager;
-
+            _utilitiesManager = utilityManager;
         }
 
         // find Activity 
@@ -331,7 +329,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             // Get Tags for session
             var sessionTagIdsForSession = session.SessionTags.Select(n => n.TagId);
             var allTagsForSession =
-                _activityManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
+                _utilitiesManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
 
             var viewModel = new EditSessionViewModel()
             {
@@ -534,7 +532,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             if (locationExisting == null)
             {
-                resultId = _activityManager.AddLocation(location);
+                resultId = _utilitiesManager.AddLocation(location);
             }
             else
             {
@@ -549,7 +547,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             // tagsToAdd is the incoming stuff, with all the tags to add to Tags in DB
             // but the list needs to be filtered for any existing tags in db.Tags!!
             var tagsToAddToDb = new List<Tag>(tagsToAdd);
-            var currentTags = _activityManager.GetAllTags().ToList();
+            var currentTags = _utilitiesManager.GetAllTags().ToList();
 
 
             var result = new List<Tag>();
@@ -558,7 +556,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 result.Add(tag);
             }
 
-            _activityManager.AddTags(result);
+            _utilitiesManager.AddTags(result);
 
 
             // NOTICE! Have to savechanges later!

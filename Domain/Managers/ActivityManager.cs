@@ -9,51 +9,51 @@ namespace Its.Systems.HR.Domain.Managers
 {
     public class ActivityManager : IActivityManager
     {
-        public IDbRepository db;
+        private readonly IDbRepository _db;
 
         public ActivityManager(IDbRepository repo)
         {
-            db = repo;
+            _db = repo;
         }
 
         public IQueryable<Activity> GetAllActivities()
         {
-            return db.Get<Activity>();
+            return _db.Get<Activity>();
         }
 
         public IQueryable<Activity> GetAllActivitiesWithSessions()
         {
-            return db.Get<Activity>().Include(n => n.Sessions); //.Where(s => s.Activity == n)
+            return _db.Get<Activity>().Include(n => n.Sessions); //.Where(s => s.Activity == n)
         }
 
         public IQueryable<Session> GetAllSessionsForActivity(int id)
         {
-            return db.Get<Session>().Where(n => n.ActivityId == id);
+            return _db.Get<Session>().Where(n => n.ActivityId == id);
         }
 
         public IQueryable<Participant> GetAllParticipantsForSession(int id)
         {
-            return db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
+            return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
         }
 
         public IQueryable<Session> GetAllSessionsForParticipantById(int id)
         {
-            return db.Get<SessionParticipant>().Where(n => n.ParticipantId == id).Select(n => n.Session);
+            return _db.Get<SessionParticipant>().Where(n => n.ParticipantId == id).Select(n => n.Session);
         }
 
         public Activity GetActivityById(int id)
         {
-            return db.Get<Activity>().SingleOrDefault(n => n.Id == id);
+            return _db.Get<Activity>().SingleOrDefault(n => n.Id == id);
         }
 
         public bool AddActivity(Activity activityToAdd)
         {
-            var allActivities = db.Get<Activity>().ToList();
+            var allActivities = _db.Get<Activity>().ToList();
 
             if (allActivities.Any(n => n.Name == activityToAdd.Name))
                 return false;
 
-            db.Add<Activity>(activityToAdd);
+            _db.Add<Activity>(activityToAdd);
 
             return true;
         }
@@ -66,22 +66,22 @@ namespace Its.Systems.HR.Domain.Managers
             //    return false;
 
             //TODO: Add error handling!?
-            db.Context().Entry(activityToEdit).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Context().Entry(activityToEdit).State = EntityState.Modified;
+            _db.SaveChanges();
 
             return true;
         }
 
         public bool DeleteActivityById(int id)
         {
-            var activityFromDb = db.Get<Activity>().SingleOrDefault(n => n.Id == id);
+            var activityFromDb = _db.Get<Activity>().SingleOrDefault(n => n.Id == id);
             if (activityFromDb == null)
                 return false;
 
-            db.Delete(activityFromDb);
+            _db.Delete(activityFromDb);
             try
             {
-                db.SaveChanges();
+                _db.SaveChanges();
             }
             catch (Exception)
             {
@@ -94,22 +94,22 @@ namespace Its.Systems.HR.Domain.Managers
 
         public void AddSession(Session session)
         {
-            db.Add<Session>(session);
+            _db.Add<Session>(session);
         }
 
         public Session GetSessionById(int id)
         {
-            return db.Get<Session>().SingleOrDefault(n => n.Id == id);
+            return _db.Get<Session>().SingleOrDefault(n => n.Id == id);
         }
 
         public IQueryable<Location> GetAllLocations()
         {
-            return db.Get<Location>();
+            return _db.Get<Location>();
         }
 
         public IQueryable<Session> GetAllSessions()
         {
-            return db.Get<Session>();
+            return _db.Get<Session>();
         }
 
         //public bool DeletePaticipantById(int id)
@@ -141,7 +141,7 @@ namespace Its.Systems.HR.Domain.Managers
             session.Comments = comments;
             try
             {
-                db.SaveChanges();
+                _db.SaveChanges();
 
             }
             catch (Exception)
@@ -162,7 +162,7 @@ namespace Its.Systems.HR.Domain.Managers
             session.Evaluation = evaluation;
             try
             {
-                db.SaveChanges();
+                _db.SaveChanges();
 
             }
             catch (Exception)
@@ -174,22 +174,9 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public int AddLocation(string location)
-        {
-            var result = new Location()
-            {
-                Name = location
-            };
-
-            db.Add<Location>(result);
-            db.SaveChanges();
-
-            return result.Id;
-        }
-
         public Session GetSessionByIdWithIncludes(int sessionId)
         {
-            return db.Get<Session>()
+            return _db.Get<Session>()
                 .Include(n => n.Location)
                 .Include(n => n.HrPerson)
                 .Include(n => n.SessionTags)
@@ -198,7 +185,7 @@ namespace Its.Systems.HR.Domain.Managers
 
         public IQueryable<Session> GetAllSessionsWithIncludes()
         {
-            return db.Get<Session>()
+            return _db.Get<Session>()
                 .Include(n => n.Activity)
                 .Include(n => n.Location)
                 .Include(n => n.HrPerson);
@@ -207,7 +194,7 @@ namespace Its.Systems.HR.Domain.Managers
 
         public IQueryable<Session> GetAllSessionsForYear(int Year)
         {
-            return db.Get<Session>().Where(n => n.StartDate.Year == Year);
+            return _db.Get<Session>().Where(n => n.StartDate.Year == Year);
         }
 
         public bool EditSession(Session sessionToUpdate)
@@ -218,34 +205,19 @@ namespace Its.Systems.HR.Domain.Managers
             //    return false;
 
             //TODO: Add error handling!?
-            db.Context().Entry(sessionToUpdate).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Context().Entry(sessionToUpdate).State = EntityState.Modified;
+            _db.SaveChanges();
 
             return true;
-        }
-
-        public IQueryable<Tag> GetAllTags()
-        {
-            return db.Get<Tag>();
-        }
-
-        public void AddTags(List<Tag> tags)
-        {
-            // TODO: this will result in one roundtrip for every new tag...
-            foreach (var tag in tags)
-            {
-                db.Add<Tag>(tag);
-            }
-            db.SaveChanges();
         }
 
         public void AddSessionTags(List<Tag> tags, int sessionId)
         {
             foreach (var tag in tags)
             {
-                var tagFromDb = db.Get<Tag>().SingleOrDefault(n => n.Name == tag.Name);
+                var tagFromDb = _db.Get<Tag>().SingleOrDefault(n => n.Name == tag.Name);
                 if (tagFromDb != null)
-                    db.Add<SessionTag>(new SessionTag()
+                    _db.Add<SessionTag>(new SessionTag()
                     {
                         TagId = tagFromDb.Id,
                         SessionId = sessionId
@@ -257,14 +229,14 @@ namespace Its.Systems.HR.Domain.Managers
 
         public bool DeleteSessionById(int sessionId)
         {
-            var sessionInDb = db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
+            var sessionInDb = _db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
             if (sessionInDb == null)
                 return false;
 
-            db.Delete(sessionInDb);
+            _db.Delete(sessionInDb);
             try
             {
-                db.SaveChanges();
+                _db.SaveChanges();
             }
             catch (Exception)
             {
@@ -280,18 +252,18 @@ namespace Its.Systems.HR.Domain.Managers
             tagName = tagName.ToLower();
 
             // 0. Check if the tag is already in the SessionTag table!
-            if (db.Get<SessionTag>().Any(n => n.SessionId == sessionId && n.Tag.Name == tagName))
+            if (_db.Get<SessionTag>().Any(n => n.SessionId == sessionId && n.Tag.Name == tagName))
                 return -1;
 
             int tagId;
             // 1. check if the tagName already exists
-            var existingTag = db.Get<Tag>().SingleOrDefault(n => n.Name == tagName);
+            var existingTag = _db.Get<Tag>().SingleOrDefault(n => n.Name == tagName);
             // 2. If exists, take the tag id, if NOT; create a new tag and take the id
             if (existingTag != null)
                 tagId = existingTag.Id;
             else
             {
-                var createdTagInDb = db.Add<Tag>(new Tag()
+                var createdTagInDb = _db.Add<Tag>(new Tag()
                 {
                     Name = tagName
                 });
@@ -299,7 +271,7 @@ namespace Its.Systems.HR.Domain.Managers
                 tagId = createdTagInDb.Id;
             }
             // 3. Create a SessionTag with the result.
-            db.Add<SessionTag>(new SessionTag()
+            _db.Add<SessionTag>(new SessionTag()
             {
                 SessionId = sessionId,
                 TagId = tagId
@@ -311,11 +283,11 @@ namespace Its.Systems.HR.Domain.Managers
         public bool RemoveTagFromSession(int sessionId, int tagId)
         {
             var sessionTagtoDelete =
-                db.Get<SessionTag>().SingleOrDefault(n => n.SessionId == sessionId && n.TagId == tagId);
+                _db.Get<SessionTag>().SingleOrDefault(n => n.SessionId == sessionId && n.TagId == tagId);
             if (sessionTagtoDelete == null)
                 return false;
 
-            db.Delete(sessionTagtoDelete);
+            _db.Delete(sessionTagtoDelete);
             return true;
         }
     }

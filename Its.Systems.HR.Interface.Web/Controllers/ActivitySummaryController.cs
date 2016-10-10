@@ -16,12 +16,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
         private IActivityManager _activityManager;
         private IPersonManager _personManager;
+        private readonly IUtilityManager _utilityManager;
 
-        public ActivitySummaryController(IActivityManager manager, IPersonManager personManager)
+        public ActivitySummaryController(IActivityManager manager, IPersonManager personManager, IUtilityManager utilityManager)
         {
             _activityManager = manager;
             _personManager = personManager;
-
+            _utilityManager = utilityManager;
         }
 
 
@@ -97,7 +98,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             // Get Tags for session
             var sessionTagIdsForSession = theSession.SessionTags.Select(n => n.TagId);
             var allTagsForSession =
-                _activityManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
+                _utilityManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
 
             var result = new SessionForActivityViewModel()
             {

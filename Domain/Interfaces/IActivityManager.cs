@@ -103,16 +103,9 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// Saves the evaluation passed for a session, by sessionId.
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="comments"></param>
+        /// <param name="evaluation"></param>
         /// <returns>True if successfull.</returns>
         bool SaveEvaluationForSession(int id, string evaluation);
-
-        /// <summary>
-        /// Adds an location.
-        /// </summary>
-        /// <param name="location"></param>
-        /// <returns>The id of the added location.</returns>
-        int AddLocation(string location);
 
         /// <summary>
         /// Gets the session by sessionId, includes Location, HrPerson and Tags.
@@ -140,18 +133,6 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <param name="sessionToUpdate"></param>
         /// <returns>True if successfull.</returns>
         bool EditSession(Session sessionToUpdate);
-
-        /// <summary>
-        /// Gets all the tags.
-        /// </summary>
-        /// <returns>IQueryable of Tag.</returns>
-        IQueryable<Tag> GetAllTags();
-
-        /// <summary>
-        /// Adds the list of tags passed.
-        /// </summary>
-        /// <param name="tags"></param>
-        void AddTags(List<Tag> tags);
 
         /// <summary>
         /// Adds a list of tags to a session by sessionId.

@@ -52,6 +52,8 @@
     <Compile Include="Interfaces\IActivityManager.cs" />
     <Compile Include="Interfaces\IDbRepository.cs" />
     <Compile Include="Interfaces\IPersonManager.cs" />
+    <Compile Include="Interfaces\IUtilityManager.cs" />
+    <Compile Include="Managers\UtilityManager.cs" />
     <Compile Include="Managers\ActivityManager.cs" />
     <Compile Include="Managers\PersonManager.cs" />
     <Compile Include="Model\Activity.cs" />
