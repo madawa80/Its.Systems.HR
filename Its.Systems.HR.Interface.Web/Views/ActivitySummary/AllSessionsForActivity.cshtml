@@ -6,7 +6,7 @@
 
 <h2><strong>@Model.ActivityName</strong></h2>
 <h4>Listar alla tillfällen för aktiviteten.</h4>
-<a href="@Url.Action("CreateSession", "Activity", new {id = Model.ActivityId})" class="btn btn-default">
+<a href="@Url.Action("CreateSession", "Session", new {id = Model.ActivityId})" class="btn btn-default">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Skapa nytt tillfälle
 </a>
 
@@ -24,7 +24,7 @@
     {
         <tr>
             <td>
-                <a href="@Url.Action("GetSession", "ActivitySummary", new {id = session.Id})">@session.Name</a>
+                <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.Name</a>
             </td>
             <td>
                 @session.StartDate.ToString("dd MMM yyyy HH:mm")

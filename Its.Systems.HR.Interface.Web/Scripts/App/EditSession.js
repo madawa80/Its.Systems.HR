@@ -14,7 +14,7 @@
         var addedTag = $("#tagsInput").val();
 
         $.ajax({
-            url: hr_urlPrefix + "/Activity/AddTagToSession",
+            url: hr_urlPrefix + "/Session/AddTagToSession",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), tagName: addedTag },
             success: function (data) {
@@ -42,7 +42,7 @@
         var link = $(e.target);
 
         $.ajax({
-            url: hr_urlPrefix + "/Activity/RemoveTagFromSession",
+            url: hr_urlPrefix + "/Session/RemoveTagFromSession",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), tagId: link.attr("data-tagId") },
             success: function () {

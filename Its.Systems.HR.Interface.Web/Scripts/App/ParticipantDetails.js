@@ -20,7 +20,7 @@ $(document).ready(function () {
             callback: function (result) {
                 if (result) {
                     $.ajax({
-                        url: hr_urlPrefix + "/Activity/RemovePersonFromSession/",
+                        url: hr_urlPrefix + "/Session/RemovePersonFromSession/",
                         type: "POST",
                         data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
                         success: function () {
@@ -57,12 +57,12 @@ $(document).ready(function () {
         var sessionId = $("#Id").val();
 
         $.ajax({
-            url: hr_urlPrefix + "/Activity/AddPersonToSession",
+            url: hr_urlPrefix + "/Session/AddPersonToSession",
             type: "POST",
             data: { sessionId: sessionId, personId: link.attr("data-personId") },
             success: function (result) {
                 if (result.Success) {
-                    var html = '<tr><td><a href="' + hr_urlPrefix + '/ActivitySummary/GetParticipants/' + sessionId + '">' + result.SessionName + '</a><span> (' + result.StartDate + ') </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
+                    var html = '<tr><td><a href="' + hr_urlPrefix + '/ActivitySummary/SessionForActivity/' + sessionId + '">' + result.SessionName + '</a><span> (' + result.StartDate + ') </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
                     $(html).hide().appendTo("#allSessionsForParticipant").fadeIn(hr_fadeInSpeed);
 
                     $.ajax({

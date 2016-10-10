@@ -27,68 +27,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _utilityManager = utilityManager;
         }
 
-
-        //// GET: Participant/Details/5
-        //public ActionResult Details(int? id)
-        //{
-
-        //    Activity activity;
-        //    if (id != null)
-        //    {
-        //        activity = _activityManager.GetAllActivities().SingleOrDefault(n => n.Id == id);
-        //    }
-
-        //    else
-        //    {
-        //        activity = _activityManager.GetAllActivities().OrderBy(n => n.Name).FirstOrDefault();
-        //    }
-
-        //    if (activity == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-
-        //    var viewModel = new ActivitySummaryViewModel()
-        //    {
-
-        //        Activities = new SelectList(
-        //                                    _activityManager.GetAllActivities().OrderBy(n => n.Name),
-        //                                    "Id",
-        //                                    "Name",
-        //                                    _activityManager.GetAllActivities().OrderBy(n => n.Name).First().Id),
-
-
-        //    };
-
-        //    return View(viewModel);
-        //}
-
-        //public ActionResult GetSessions(int activityId)
-        //{
-
-        //    var allSessionsForActivityResult = new List<Session>();
-        //    var allSessionsForActivity = _activityManager.GetAllSessionsForActivity(activityId).OrderBy(n => n.Name).ToList();
-
-        //    SelectList obgsessions;
-        //    if (allSessionsForActivity.Count != 0)
-        //    {
-
-        //        List<Session> sessions = new List<Session>();
-        //        sessions = _activityManager.GetAllSessionsForActivity(activityId).ToList();
-        //        obgsessions = new SelectList(sessions, "Id", "Name", 0);
-
-        //    }
-        //    else
-        //    {
-        //        obgsessions = new SelectList(new List<SelectListItem>(), "Id", "Name", 0);
-        //    }
-
-
-        //    return Json(obgsessions);
-        //}
-
-        public ActionResult GetSession(int id)
+        public ActionResult SessionForActivity(int id)
         {
             var theSession = _sessionManager.GetSessionByIdWithIncludes(id);
 
@@ -123,7 +62,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
               "FullName",
               _personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
 
-            return View("SessionForActivity", result);
+            return View(result);
         }
 
         public ViewResult FilterSessions(string searchString, string yearSlider, string hrPerson, string nameOfLocation)
@@ -178,11 +117,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var result = new { Success = true };
             if (_sessionManager.SaveCommentsForSession(sessionId, comments))
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result);
 
             // TODO: ErrorMessage
             result = new { Success = false };
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         [HttpPost]
@@ -191,47 +130,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var result = new { Success = true };
 
             if (_sessionManager.SaveEvaluationForSession(sessionId, evaluation))
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result);
 
             result = new { Success = false };
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
-        //public ActionResult GetSessionsForActivity(int id)
-        //{
-
-        //    var allSessionsForActivityResult = new List<Session>();
-        //    var allSessionsForActivity = _activityManager.GetAllSessionsForActivity(id).OrderBy(n => n.Name).ToList();
-        //    var activity = _activityManager.GetActivityById(id);
-        //    var sessionRowsList = new List<SessionRow>();
-
-        //    if (allSessionsForActivity.Count == 0)
-        //    {
-        //        return PartialView("_NothingPartial");
-        //    }
-
-        //    foreach (var session in allSessionsForActivity)
-        //    {
-        //        sessionRowsList.Add(new SessionRow()
-        //        {
-        //            Id = session.Id,
-        //            Name = session.Name,
-        //            StartDate = session.StartDate,
-        //            EndDate = session.EndDate,
-        //        });
-
-        //    }
-
-        //    var result = new SessionViewModel()
-        //    {
-        //        SessionRows = sessionRowsList,
-        //        ActivityName = activity.Name,
-        //    };
-
-        //    return View("Sessionsforactivity", result);
-        //}
-
-        public ActionResult AllSessionsForActivity(int id)
+       public ActionResult AllSessionsForActivity(int id)
         {
             var allSessionsForActivity = _sessionManager
                             .GetAllSessionsForActivity(id)

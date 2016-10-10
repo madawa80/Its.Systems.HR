@@ -11,7 +11,7 @@ $(document).ready(function () {
         var personId = $("#participantDropdown").val();
 
         $.ajax({
-            url: hr_urlPrefix + "/Activity/AddPersonToSessionFromActivitySummary/",
+            url: hr_urlPrefix + "/Session/AddPersonToSessionFromActivitySummary/",
             type: "POST",
             data: { sessionId: link.attr("data-sessionId"), personId: personId },
             success: function (result) {
@@ -51,7 +51,7 @@ $(document).ready(function () {
             callback: function (result) {
                 if (result) {
                     $.ajax({
-                        url: hr_urlPrefix + "/Activity/RemovePersonFromSession/",
+                        url: hr_urlPrefix + "/Session/RemovePersonFromSession/",
                         type: "POST",
                         data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
                         success: function () {
@@ -129,7 +129,7 @@ $(document).ready(function () {
             callback: function (result) {
                 if (result) {
                     $.ajax({
-                        url: hr_urlPrefix + "/Activity/RemoveSession/" + link.attr("data-sessionId"),
+                        url: hr_urlPrefix + "/Session/RemoveSession/" + link.attr("data-sessionId"),
                         type: "POST",
                         success: function () {
                             alert("Kurstillfället är borttaget.");

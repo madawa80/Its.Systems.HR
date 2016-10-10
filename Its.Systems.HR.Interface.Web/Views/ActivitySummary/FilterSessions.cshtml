@@ -70,7 +70,7 @@
     {
         <tr>
             <td>
-                <a href="@Url.Action("GetSession", "ActivitySummary", new {id = session.Id})">@session.Name</a>
+                <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.Name</a>
             </td>
             <td>
                 @session.StartDate.ToString("dd MMM yyyy HH:mm")
