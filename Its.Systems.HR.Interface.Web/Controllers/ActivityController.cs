@@ -17,15 +17,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     public class ActivityController : Controller
     {
         private readonly IActivityManager _activityManager;
-        private readonly ISessionManager _sessionManager;
-        private readonly IPersonManager _personManager;
         private readonly IUtilityManager _utilitiesManager;
 
-        public ActivityController(IActivityManager activityManager, ISessionManager sessionManager, IPersonManager personManager, IUtilityManager utilityManager)
+        public ActivityController(IActivityManager activityManager, IUtilityManager utilityManager)
         {
             _activityManager = activityManager;
-            _sessionManager = sessionManager;
-            _personManager = personManager;
             _utilitiesManager = utilityManager;
         }
 
@@ -47,9 +43,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             var activities = _activityManager.GetAllActivities();
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                activities = _activityManager.GetAllActivities().Where(s => s.Name.Contains(searchString));
+                activities = activities.Where(s => s.Name.Contains(searchString));
             }
 
             var result = new List<ActivityViewModel>();
@@ -67,8 +63,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
-
-
         // GET: Create activity
         public ActionResult CreateActivity()
         {
@@ -77,13 +71,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateActivity([Bind(Include = "Name")]ViewModels.ActivityViewModel activity)
+        public ActionResult CreateActivity(ActivityViewModel activity)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-
                     if (!_activityManager.GetAllActivities().Any(n => n.Name == activity.Name))
                     {
                         var result = new Activity()
@@ -93,20 +86,18 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                         _activityManager.AddActivity(result);
 
-                        return RedirectToAction("Index");
+                        return RedirectToAction("AllSessionsForActivity", "ActivitySummary", new { id = result.Id });
                     }
                     else
                     {
-                        ModelState.AddModelError("", "aktivitet existerar redan ");
-                        return View();
+                        ModelState.AddModelError("", "En aktivitet med samma namn existerar redan.");
+                        return View(activity);
                     }
-
 
                 }
             }
             catch (RetryLimitExceededException /* dex */)
             {
-
                 ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
             }
             return View(activity);
@@ -121,12 +112,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var activity = _activityManager.GetActivityById(id.Value);
-            var result = new ActivityViewModel();
-            result.Name = activity.Name;
             if (activity == null)
             {
                 return HttpNotFound();
             }
+            var result = new ActivityViewModel { Name = activity.Name };
             return View(result);
         }
 
@@ -174,7 +164,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-       
+
 
         //AJAX AUTOCOMPLETE
         public ActionResult AutoCompleteLocations(string term)

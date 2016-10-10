@@ -217,7 +217,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult AddPersonToSession(int sessionId, int personId)
         {
-            var session = _sessionManager.GetSessionById(sessionId);
+            var session = _sessionManager.GetSessionByIdWithIncludes(sessionId);
 
             var result = new
             {
@@ -225,7 +225,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ErrorMessage = "",
                 PersonId = personId,
                 SessionId = sessionId,
-                SessionName = session.Name,
+                SessionName = session.NameWithActivity,
                 StartDate = session.StartDate.ToShortDateString(),
                 //Year = session.StartDate.Year,
                 //Month = session.StartDate.Month,

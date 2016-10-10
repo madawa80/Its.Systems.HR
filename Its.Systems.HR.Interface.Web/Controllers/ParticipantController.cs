@@ -63,11 +63,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var result = new { Success = true };
 
             if (_personManager.SaveCommentsForParticipant(personId, comments))
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result);
 
             // TODO: ErrorMessage
             result = new { Success = false };
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
             //return RedirectToAction("Details", new { id = personId });
         }
 
@@ -77,10 +77,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var result = new { Success = true };
 
             if (_personManager.SaveWishesForParticipant(personId, wishes))
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result);
 
             result = new { Success = false };
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         public ActionResult ParticipantStatisticSummary(int personid)
