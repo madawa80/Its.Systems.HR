@@ -419,7 +419,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 //Day = session.StartDate.Day,
             };
 
-            if (!_activityManager.AddParticipantToSession(personId, sessionId))
+            if (!_personManager.AddParticipantToSession(personId, sessionId))
                 result = new
                 {
                     Success = false,
@@ -447,7 +447,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 PersonFullName = fullName
             };
 
-            if (!_activityManager.AddParticipantToSession(personId, sessionId))
+            if (!_personManager.AddParticipantToSession(personId, sessionId))
                 result = new
                 {
                     Success = false,
@@ -467,7 +467,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //if (_personManager.GetParticipantById(personId) == null || _activityManager.GetSessionById(sessionId) == null)
             //    result = new { Success = "Fail" };
 
-            if (!_activityManager.RemoveParticipantFromSession(personId, sessionId))
+            if (!_personManager.RemoveParticipantFromSession(personId, sessionId))
                 result = new { Success = false };
 
             return Json(result);

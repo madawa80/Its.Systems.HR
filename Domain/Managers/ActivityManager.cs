@@ -41,8 +41,6 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<SessionParticipant>().Where(n => n.ParticipantId == id).Select(n => n.Session);
         }
 
-
-
         public Activity GetActivityById(int id)
         {
             return db.Get<Activity>().SingleOrDefault(n => n.Id == id);
@@ -94,8 +92,6 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-
-
         public void AddSession(Session session)
         {
             db.Add<Session>(session);
@@ -105,7 +101,6 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return db.Get<Session>().SingleOrDefault(n => n.Id == id);
         }
-
 
         public IQueryable<Location> GetAllLocations()
         {
@@ -117,88 +112,26 @@ namespace Its.Systems.HR.Domain.Managers
             return db.Get<Session>();
         }
 
-        public bool DeletePaticipantById(int id)
-        {
-            var paticipantFromDb = db.Get<Participant>().SingleOrDefault(n => n.Id == id);
-            if (paticipantFromDb == null)
-                return false;
+        //public bool DeletePaticipantById(int id)
+        //{
+        //    var paticipantFromDb = db.Get<Participant>().SingleOrDefault(n => n.Id == id);
+        //    if (paticipantFromDb == null)
+        //        return false;
 
-            db.Delete(paticipantFromDb);
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (Exception)
-            {
+        //    db.Delete(paticipantFromDb);
+        //    try
+        //    {
+        //        db.SaveChanges();
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
+        //        throw;
+        //    }
 
-            return true;
-        }
-
-        public bool AddParticipantToSession(int participantId, int sessionId)
-        {
-            // Test participantId for null
-            if (!CheckIfParticipantExists(participantId)) return false;
-            // Test sessionId for null
-            if (!CheckIfSessionExists(sessionId)) return false;
-            // Make sure no SessionParticipant exists
-            var sessionParticipantFromDb = db.Get<SessionParticipant>()
-                .SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
-
-            if (sessionParticipantFromDb != null)
-                return false;
-
-            // Create a new SessionParticipant
-            var result = new SessionParticipant()
-            {
-                ParticipantId = participantId,
-                SessionId = sessionId,
-                Rating = 0
-            };
-
-            db.Add<SessionParticipant>(result);
-            db.SaveChanges();
-
-            return true;
-        }
-
-        public bool RemoveParticipantFromSession(int participantId, int sessionId)
-        {
-            // Test participantId for null
-            if (!CheckIfParticipantExists(participantId)) return false;
-            // Test sessionId for null
-            if (!CheckIfSessionExists(sessionId)) return false;
-            // Make sure SessionParticipant exists!
-            var sessionParticipantFromDb = db.Get<SessionParticipant>()
-                .SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
-
-            if (sessionParticipantFromDb == null)
-                return false;
-
-
-            db.Delete<SessionParticipant>(sessionParticipantFromDb);
-            db.SaveChanges();
-
-            return true;
-        }
-
-        private bool CheckIfSessionExists(int sessionId)
-        {
-            var sessionFromDb = db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
-            if (sessionFromDb == null)
-                return false;
-            return true;
-        }
-
-        private bool CheckIfParticipantExists(int participantId)
-        {
-            var participantFromDb = db.Get<Participant>().SingleOrDefault(n => n.Id == participantId);
-            if (participantFromDb == null)
-                return false;
-            return true;
-        }
+        //    return true;
+        //}
+       
         public bool SaveCommentsForSession(int id, string comments)
         {
             Session session = GetAllSessions().SingleOrDefault(n => n.Id == id);
@@ -219,7 +152,6 @@ namespace Its.Systems.HR.Domain.Managers
 
             return true;
         }
-
 
         public bool SaveEvaluationForSession(int id, string evaluation)
         {
@@ -267,6 +199,7 @@ namespace Its.Systems.HR.Domain.Managers
         public IQueryable<Session> GetAllSessionsWithIncludes()
         {
             return db.Get<Session>()
+                .Include(n => n.Activity)
                 .Include(n => n.Location)
                 .Include(n => n.HrPerson);
             //.Include(n => n.SessionParticipants)
@@ -275,7 +208,6 @@ namespace Its.Systems.HR.Domain.Managers
         public IQueryable<Session> GetAllSessionsForYear(int Year)
         {
             return db.Get<Session>().Where(n => n.StartDate.Year == Year);
-
         }
 
         public bool EditSession(Session sessionToUpdate)
@@ -290,7 +222,6 @@ namespace Its.Systems.HR.Domain.Managers
             db.SaveChanges();
 
             return true;
-
         }
 
         public IQueryable<Tag> GetAllTags()
@@ -320,12 +251,13 @@ namespace Its.Systems.HR.Domain.Managers
                         SessionId = sessionId
                     });
             }
-            db.SaveChanges();
+            // already saves changes in db.Add<T>
+            //db.SaveChanges();
         }
 
-        public bool DeleteSessionById(int id)
+        public bool DeleteSessionById(int sessionId)
         {
-            var sessionInDb = db.Get<Session>().SingleOrDefault(n => n.Id == id);
+            var sessionInDb = db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
             if (sessionInDb == null)
                 return false;
 
