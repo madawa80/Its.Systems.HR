@@ -43,7 +43,7 @@
             </td>
 
             <td>
-                @Html.ActionLink("Skapa tillfälle", "CreateSession", new { controller = "Session"}, new { id = item.Id }) |
+                @Html.ActionLink("Skapa tillfälle", "CreateSession", "Session", new { id = item.Id }, null) |
                 @Html.ActionLink("Redigera", "EditActivity", new { id = item.Id }) |
                 <a href="#" class="js-delete-activity" data-activityId="@item.Id">Ta bort</a>
             </td>

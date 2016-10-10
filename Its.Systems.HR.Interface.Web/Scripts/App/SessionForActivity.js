@@ -16,7 +16,7 @@ $(document).ready(function () {
             data: { sessionId: link.attr("data-sessionId"), personId: personId },
             success: function (result) {
                 if (result.Success) {
-                    var html = '<tr><td><a href="' + hr_urlPrefix + '"/Participant/Details/' +
+                    var html = '<tr><td><a href="' + hr_urlPrefix + '/Participant/Details/' +
                         result.PersonId + '">' + result.PersonFullName +
                         '</a><span> </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionid="' +
                         result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
@@ -132,7 +132,7 @@ $(document).ready(function () {
                         url: hr_urlPrefix + "/Session/RemoveSession/" + link.attr("data-sessionId"),
                         type: "POST",
                         success: function () {
-                            alert("Kurstillfället är borttaget.");
+                            alert("Tillfället är borttaget.");
                             window.location.href = hr_urlPrefix + "/Activity/Index/";
                         },
                         error: function () {
