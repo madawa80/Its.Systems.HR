@@ -26,26 +26,29 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         // find Activity 
-        public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ViewResult Index(string sortOrder, string searchString)
         {
-            ViewBag.CurrentSort = sortOrder;
+            //ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
+            ViewBag.CurrentSearchString = searchString;
 
-            ViewBag.CurrentFilter = searchString;
 
             var activities = _activityManager.GetAllActivities();
 
             if (!string.IsNullOrEmpty(searchString))
             {
                 activities = activities.Where(s => s.Name.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    activities = activities.OrderByDescending(s => s.Name);
+                    break;
+                default:  // Name ascending 
+                    activities = activities.OrderBy(s => s.Name);
+                    break;
             }
 
             var result = new List<ActivityViewModel>();
