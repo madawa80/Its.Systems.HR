@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
@@ -17,11 +18,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     public class ActivityController : Controller
     {
         private readonly IActivityManager _activityManager;
+        private readonly IPersonManager _personManager;
         private readonly IUtilityManager _utilitiesManager;
 
-        public ActivityController(IActivityManager activityManager, IUtilityManager utilityManager)
+        public ActivityController(IActivityManager activityManager, IPersonManager personManager, IUtilityManager utilityManager)
         {
             _activityManager = activityManager;
+            _personManager = personManager;
             _utilitiesManager = utilityManager;
         }
 
@@ -175,6 +178,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var locations = GetLocations(term);
             return Json(locations, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult AutoCompleteParticipants(string term)
+        {
+            var participants = GetParticipants(term);
+            return Json(participants, JsonRequestBehavior.AllowGet);
+        }
 
 
         // PRIVATE METHODS BELOW
@@ -184,6 +192,23 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 _utilitiesManager.GetAllLocations().Where(n => n.Name.ToUpper().Contains(searchString.ToUpper())).Select(a => a.Name);
 
             return locations;
+        }
+
+        private IEnumerable<string> GetParticipants(string searchString)
+        {
+            var participants = from element in _personManager.GetAllParticipants()
+                         let fullNameWithCas = element.FirstName + " " + element.LastName + " " + element.CasId
+                         where fullNameWithCas.Contains(searchString.ToUpper())
+                         select element.FirstName + " " + element.LastName + " (" + element.CasId + ")";
+
+            //IEnumerable<string> participants =
+            //    _personManager.GetAllParticipants()
+            //    .Where(n => sb.Append(n.FirstName.ToUpper() + n.LastName.ToUpper() + n.CasId.ToUpper(). sb.Contains(searchString.ToUpper())
+            //    || n.LastName.ToUpper().Contains(searchString.ToUpper())
+            //    || n.CasId.ToUpper().Contains(searchString.ToUpper()))
+            //    .Select(a => a.FirstName + " " + a.LastName + " (" + a.CasId + ")");
+
+            return participants;
         }
     }
 }

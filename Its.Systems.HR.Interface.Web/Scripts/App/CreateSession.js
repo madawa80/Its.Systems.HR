@@ -13,8 +13,8 @@ $(document).ready(function () {
     // Array holding participants
     var listOfParticiantsThatParticipated = [];
 
-    $(".js-add-participantBeforeSessionExists").on("click", function (e) {
-        var link = $(e.target);
+    $(".js-add-participantBeforeSessionExists").on("click", function () {
+        var link = $(this);
         var resultName = $("#Participant_Id :selected").text();
         var resultId = $("#Participant_Id").val();
 
@@ -29,8 +29,8 @@ $(document).ready(function () {
         addParticipantLi(resultId, resultName);
     });
 
-    $("body").on("click", ".js-remove-participantBeforeSessionExists", function (e) {
-        var link = $(e.target);
+    $("body").on("click", ".js-remove-participantBeforeSessionExists", function () {
+        var link = $(this);
         var resultId = link.parents("li").attr("data-personId");
 
         var index = listOfParticiantsThatParticipated.indexOf(resultId);
@@ -42,8 +42,8 @@ $(document).ready(function () {
         }
     });
 
-    $("body").on("click", ".listedParticipantLink", function (e) {
-        var link = $(e.target);
+    $("body").on("click", ".listedParticipantLink", function () {
+        var link = $(this);
         var resultId = link.parents("li").attr("data-personId");
 
         var url = hr_urlPrefix + "/Participant/Details/" + resultId;
@@ -63,7 +63,7 @@ $(document).ready(function () {
     // Array holding tags
     var listOfAddedTags = [];
 
-    $(".js-add-tag-create-session").on("click", function (e) {
+    $(".js-add-tag-create-session").on("click", function () {
         var link = $(this);
         var addedTag = $("#tagsInput").val();
 
@@ -84,7 +84,7 @@ $(document).ready(function () {
         $("#tagsInput").val("");
     });
 
-    $("body").on("click", ".js-remove-tag-create-session", function (e) {
+    $("body").on("click", ".js-remove-tag-create-session", function () {
         var link = $(this);
         var resultTagName = link.attr("data-tagName");
 

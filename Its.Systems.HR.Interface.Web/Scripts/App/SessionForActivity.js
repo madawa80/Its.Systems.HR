@@ -3,17 +3,18 @@ $(document).ready(function () {
 
     // COUNT TOTAL PARTICIPANTS
     paticipantCount();
-
+    // INIT AUTOCOMPLETE
+    hr_createAutocomplete();
 
     // PARTICIPANT ADDING AND REMOVING
-    $(".js-add-sessionParticipant").click(function (e) {
-        var link = $(e.target);
-        var personId = $("#participantDropdown").val();
+    $(".js-add-sessionParticipant").click(function () {
+        var link = $(this);
+        var personName = $("#nameOfParticipant").val();
 
         $.ajax({
             url: hr_urlPrefix + "/Session/AddPersonToSessionFromActivitySummary/",
             type: "POST",
-            data: { sessionId: link.attr("data-sessionId"), personId: personId },
+            data: { sessionId: link.attr("data-sessionId"), personName: personName },
             success: function (result) {
                 if (result.Success) {
                     var html = '<tr><td><a href="' + hr_urlPrefix + '/Participant/Details/' +
@@ -32,8 +33,8 @@ $(document).ready(function () {
         });
     });
 
-    $("body").on("click", ".js-delete-sessionParticipant", function (e) {
-        var link = $(e.target);
+    $("body").on("click", ".js-delete-sessionParticipant", function () {
+        var link = $(this);
 
 
         bootbox.confirm({
@@ -74,8 +75,8 @@ $(document).ready(function () {
 
 
     // SAVE SESSION COMMENTS AND EVALUATION
-    $("body").on("click", ".js-save-sessionComment", function (e) {
-        var link = $(e.target);
+    $("body").on("click", ".js-save-sessionComment", function () {
+        var link = $(this);
         var comments = $("#Comments").val();
 
         $.ajax({
@@ -92,8 +93,8 @@ $(document).ready(function () {
     });
 
 
-    $("body").on("click", ".js-save-sessionEvaluation", function (e) {
-        var link = $(e.target);
+    $("body").on("click", ".js-save-sessionEvaluation", function () {
+        var link = $(this);
         var evaluation = $("#Evaluation").val();
 
         $.ajax({
@@ -111,8 +112,8 @@ $(document).ready(function () {
 
 
     // DELETE THE WHOLE SESSION
-    $("body").on("click", ".js-delete-session", function (e) {
-        var link = $(e.target);
+    $("body").on("click", ".js-delete-session", function () {
+        var link = $(this);
 
         bootbox.confirm({
             title: "Vänligen bekräfta",

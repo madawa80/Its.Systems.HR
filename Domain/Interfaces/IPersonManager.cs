@@ -35,6 +35,8 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <returns>The participant, if found.</returns>
         Participant GetParticipantById(int id);
 
+        Participant GetParticipantByCas(string cas); 
+
         bool DeletePaticipantById(int id);
 
         /// <summary>

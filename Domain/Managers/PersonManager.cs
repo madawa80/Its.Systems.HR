@@ -70,6 +70,10 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return _db.Get<Participant>().SingleOrDefault(n => n.Id == id);
         }
+        public Participant GetParticipantByCas(string cas)
+        {
+            return _db.Get<Participant>().SingleOrDefault(n => n.CasId == cas);
+        }
 
         public HrPerson GetHrPersonById(int HrId)
         {

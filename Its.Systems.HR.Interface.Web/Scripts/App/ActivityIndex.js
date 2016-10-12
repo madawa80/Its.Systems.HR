@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     $("body").on("click", ".js-delete-activity", function (e) {
         e.preventDefault();
-        var link = $(e.target);
+        var link = $(this);
 
         bootbox.confirm({
             title: "Vänligen bekräfta",

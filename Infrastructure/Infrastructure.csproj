@@ -83,6 +83,10 @@
     <Compile Include="Migrations\201610120738432_removed index for Tag Name.Designer.cs">
       <DependentUpon>201610120738432_removed index for Tag Name.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610121200291_Added CasId, IsHrPerson IsActive IsSuperAdmin to Participant.cs" />
+    <Compile Include="Migrations\201610121200291_Added CasId, IsHrPerson IsActive IsSuperAdmin to Participant.Designer.cs">
+      <DependentUpon>201610121200291_Added CasId, IsHrPerson IsActive IsSuperAdmin to Participant.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
@@ -122,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610120738432_removed index for Tag Name.resx">
       <DependentUpon>201610120738432_removed index for Tag Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610121200291_Added CasId, IsHrPerson IsActive IsSuperAdmin to Participant.resx">
+      <DependentUpon>201610121200291_Added CasId, IsHrPerson IsActive IsSuperAdmin to Participant.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,7 +9,7 @@
 
 
     // TAGS
-    $(".js-add-tag-edit-session").on("click", function (e) {
+    $(".js-add-tag-edit-session").on("click", function () {
         var link = $(this);
         var addedTag = $("#tagsInput").val();
 

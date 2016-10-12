@@ -14,11 +14,14 @@
     <h3 class="m-b-30">Deltagare</h3>
 
     <div class="form-group">
-        <label for="participantDropdown">Lägg till fler deltagare</label>
+        <label for="nameOfParticipant">Lägg till fler deltagare</label>
         <div>
-            @Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>)ViewBag.AllSessionParticipants, new { @class = "form-control", id = "participantDropdown", name = "participantDropdown" })
+            @*@Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>)ViewBag.AllSessionParticipants, new { @class = "form-control", id = "participantDropdown", name = "participantDropdown" })
 
-            @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })*@
+            
+            <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control ui-autocomplete wide-textbox"
+                   data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")" />
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare
             </button>
@@ -34,7 +37,7 @@
             {
             <tr>
                 <td>
-                    @Html.ActionLink(participant.FullName, "Details", "Participant", new { id = participant.Id }, null)
+                    @Html.ActionLink(participant.FullNameWithCas, "Details", "Participant", new { id = participant.Id }, null)
                     <span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@Model.SessionId" data-personId="@participant.Id">Ta bort</span>
                 </td>
             </tr>

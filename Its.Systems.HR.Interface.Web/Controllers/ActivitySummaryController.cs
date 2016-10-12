@@ -29,7 +29,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult SessionForActivity(int id)
         {
-            var theSession = _sessionManager.GetSessionByIdWithIncludes(id);
+            var theSession = _sessionManager.GetSessionByIdWithIncludes(id); // Is this executed or just creating a expr.tree?
 
             if (theSession == null)
                 return View("Error");
@@ -56,11 +56,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Tags = allTagsForSession
             };
 
-            ViewBag.AllSessionParticipants = new SelectList(
-              _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
-              "Id",
-              "FullName",
-              _personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
+            //ViewBag.AllSessionParticipants = new SelectList(
+            //  _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
+            //  "Id",
+            //  "FullName",
+            //  _personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
 
             return View(result);
         }

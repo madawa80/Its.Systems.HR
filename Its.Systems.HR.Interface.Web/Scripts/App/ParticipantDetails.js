@@ -2,8 +2,8 @@
 $(document).ready(function () {
 
     // DELETE SESSION PARTICIPANT
-    $("body").on("click", ".js-delete-sessionParticipant", function (e) {
-        var link = $(e.target);
+    $("body").on("click", ".js-delete-sessionParticipant", function () {
+        var link = $(this);
 
         bootbox.confirm({
             title: "Vänligen bekräfta",
@@ -52,8 +52,8 @@ $(document).ready(function () {
     });
 
     // ADD SESSION PARTICIPANT
-    $(".js-add-sessionParticipant").click(function (e) {
-        var link = $(e.target);
+    $(".js-add-sessionParticipant").click(function () {
+        var link = $(this);
         var sessionId = $("#Id").val();
 
         $.ajax({
@@ -85,8 +85,8 @@ $(document).ready(function () {
     });
 
     // SAVE COMMENTS FOR PARTICIPANT
-    $(".js-save-participantComment").click(function (e) {
-        var link = $(e.target);
+    $(".js-save-participantComment").click(function () {
+        var link = $(this);
         var comments = $("#Comments").val();
 
         $.ajax({
@@ -103,8 +103,8 @@ $(document).ready(function () {
     });
 
     // SAVE WISHES FOR PARTICIPANT
-    $(".js-save-participantWish").click(function (e) {
-        var link = $(e.target);
+    $(".js-save-participantWish").click(function () {
+        var link = $(this);
         var wishes = $("#Wishes").val();
 
         $.ajax({

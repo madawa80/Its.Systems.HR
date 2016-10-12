@@ -18,7 +18,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private readonly IPersonManager _personManager;
         private readonly IUtilityManager _utilitiesManager;
 
-        public SessionController(IActivityManager activityManager, ISessionManager sessionManager, IPersonManager personManager, IUtilityManager utilityManager)
+        public SessionController(IActivityManager activityManager, ISessionManager sessionManager,
+            IPersonManager personManager, IUtilityManager utilityManager)
         {
             _activityManager = activityManager;
             _sessionManager = sessionManager;
@@ -64,7 +65,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         }
 
                         //TODO: Make a proper join, this is inefficient
-                        participantsToAddFromDb = _personManager.GetAllParticipants().Where(n => participantsId.Contains(n.Id)).ToList();
+                        participantsToAddFromDb =
+                            _personManager.GetAllParticipants().Where(n => participantsId.Contains(n.Id)).ToList();
                     }
 
 
@@ -112,7 +114,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     // Now add tags to the created session!...
                     _sessionManager.AddSessionTags(tagsToAdd, result.Id);
 
-                    return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = result.Id });
+                    return RedirectToAction("SessionForActivity", "ActivitySummary", new {id = result.Id});
                 }
             }
             catch (RetryLimitExceededException /* dex */)
@@ -128,7 +130,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
+            var session = _sessionManager.GetSessionByIdWithIncludes((int) id);
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -155,8 +157,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             ViewBag.NameOfLocation = viewModel.NameOfLocation;
 
-            ViewBag.AllHrPersons = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", session.HrPersonId);
-            ViewBag.AllActivities = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", session.ActivityId);
+            ViewBag.AllHrPersons = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id",
+                "FullName", session.HrPersonId);
+            ViewBag.AllActivities = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id",
+                "Name", session.ActivityId);
 
             return View(viewModel);
         }
@@ -173,7 +177,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             try
             {
-                if (sessionToUpdate.Name == inputVm.NameOfSession || !_sessionManager.GetAllSessions().Any(n => n.Name == inputVm.NameOfSession))
+                if (sessionToUpdate.Name == inputVm.NameOfSession ||
+                    !_sessionManager.GetAllSessions().Any(n => n.Name == inputVm.NameOfSession))
                 {
                     int? location = GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
 
@@ -188,18 +193,21 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                     _sessionManager.EditSession(sessionToUpdate);
 
-                    return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = sessionToUpdate.Id });
+                    return RedirectToAction("SessionForActivity", "ActivitySummary", new {id = sessionToUpdate.Id});
                 }
 
                 ModelState.AddModelError("NameOfSession", "Aktiviteten existerar redan.");
             }
             catch (RetryLimitExceededException /* dex */)
             {
-                ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
+                ModelState.AddModelError("",
+                    "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
             }
 
-            ViewBag.AllHrPersons = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", sessionToUpdate.HrPersonId);
-            ViewBag.AllActivities = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", sessionToUpdate.ActivityId);
+            ViewBag.AllHrPersons = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id",
+                "FullName", sessionToUpdate.HrPersonId);
+            ViewBag.AllActivities = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id",
+                "Name", sessionToUpdate.ActivityId);
 
             ViewBag.NameOfLocation = inputVm.NameOfLocation;
 
@@ -241,20 +249,37 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, int personId)
+        public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, string personName)
         {
-            var fullName = _personManager.GetParticipantById(personId).FullName;
+            string personCasLogin;
+            try
+            {
+                var firstParanthesis = personName.IndexOf('(') + 1;
+                var lastParanthesis = personName.IndexOf(')');
+                personCasLogin = personName.Substring(firstParanthesis, lastParanthesis - firstParanthesis);
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            
+            var participant = _personManager.GetParticipantByCas(personCasLogin);
+            //TODO:
+            if (participant == null)
+            {}//ERROR
+
 
             var result = new
             {
                 Success = true,
                 ErrorMessage = "",
-                PersonId = personId,
+                PersonId = participant.Id,
                 SessionId = sessionId,
-                PersonFullName = fullName
+                PersonFullName = participant.FullName + " (" + personCasLogin + ")",
             };
 
-            if (!_personManager.AddParticipantToSession(personId, sessionId))
+            if (!_personManager.AddParticipantToSession(participant.Id, sessionId))
                 result = new
                 {
                     Success = false,

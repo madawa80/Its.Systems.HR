@@ -9,6 +9,13 @@ namespace Its.Systems.HR.Domain.Model
     {
         [Key]
         public int Id { get; set; }
+
+        public string CasId { get; set; }
+
+        public bool IsHrPerson { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsSuperAdmin { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -21,6 +28,11 @@ namespace Its.Systems.HR.Domain.Model
         public string FullName
         {
             get { return FirstName + " " + LastName; }
+        }
+
+        public string FullNameWithCas
+        {
+            get { return FirstName + " " + LastName + " (" + CasId + ")"; }
         }
 
         public string GetParticipantFullName()
