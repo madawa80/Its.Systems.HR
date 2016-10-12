@@ -58,6 +58,8 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
                 var result = new List<Tag>();
                 foreach (var tag in sessionTags.Distinct())
                 {
+                    if (tag.Length < 1) continue;
+
                     result.Add(new Tag()
                     {
                         Name = tag.ToLower()

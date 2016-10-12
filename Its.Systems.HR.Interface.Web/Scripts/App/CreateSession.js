@@ -64,11 +64,15 @@ $(document).ready(function () {
     var listOfAddedTags = [];
 
     $(".js-add-tag-create-session").on("click", function (e) {
-        var link = $(e.target);
+        var link = $(this);
         var addedTag = $("#tagsInput").val();
 
         if ($.inArray(addedTag, listOfAddedTags) > -1) {
             hr_messageFadingOut(link, "Redan tillagd!", "danger");
+            return;
+        }
+        if (addedTag.length < 1) {
+            hr_messageFadingOut(link, "Kan ej vara tom!", "danger");
             return;
         }
 
@@ -81,7 +85,7 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".js-remove-tag-create-session", function (e) {
-        var link = $(e.target);
+        var link = $(this);
         var resultTagName = link.attr("data-tagName");
 
         var index = listOfAddedTags.indexOf(resultTagName);

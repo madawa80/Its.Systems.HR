@@ -293,6 +293,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult AddTagToSession(int sessionId, string tagName)
         {
             var result = new { Success = false, TagId = -1 };
+            if (tagName.Length < 1)
+                return Json(result);
 
             var tagIdFromDb = _sessionManager.AddTagToSession(sessionId, tagName);
             if (tagIdFromDb != -1)

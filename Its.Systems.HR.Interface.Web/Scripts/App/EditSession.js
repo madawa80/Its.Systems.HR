@@ -10,8 +10,13 @@
 
     // TAGS
     $(".js-add-tag-edit-session").on("click", function (e) {
-        var link = $(e.target);
+        var link = $(this);
         var addedTag = $("#tagsInput").val();
+
+        if (addedTag.length < 1) {
+            hr_messageFadingOut(link, "Kan ej vara tom!", "danger");
+            return;
+        }
 
         $.ajax({
             url: hr_urlPrefix + "/Session/AddTagToSession",
@@ -38,8 +43,8 @@
 
     });
 
-    $("body").on("click", ".js-remove-tag-edit-session", function (e) {
-        var link = $(e.target);
+    $("body").on("click", ".js-remove-tag-edit-session", function () {
+        var link = $(this);
 
         $.ajax({
             url: hr_urlPrefix + "/Session/RemoveTagFromSession",
