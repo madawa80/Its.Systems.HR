@@ -17,7 +17,7 @@
     <div class="form-group">
         <label for="Activity_Id" class="control-label">Tillfälle för aktivitet</label>
         <div>
-            @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>)ViewBag.ActivityId, new { @class = "form-control" })
+            @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>)ViewBag.AllActivities, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Activity.Id, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -68,7 +68,7 @@
     <div class="form-group">
         <label for="HrPerson_Id">Ansvarig HR</label>
         <div>
-            @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, "-- Ingen ansvarig HR --", new { @class = "form-control" })
+            @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.AllHrPersons, "-- Ingen ansvarig HR --", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.HrPerson, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -89,7 +89,7 @@
         <div class="form-group">
             <label for="Participant_Id">Lägg till deltagare</label>
             <div>
-                @Html.DropDownListFor(n => n.SessionParticipants.First().Participant.Id, (IEnumerable<SelectListItem>)ViewBag.SessionParticipantId, new { @class = "form-control" })
+                @Html.DropDownListFor(n => n.SessionParticipants.First().Participant.Id, (IEnumerable<SelectListItem>)ViewBag.AllSessionParticipants, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.SessionParticipants.First().Participant.Id, "", new { @class = "text-danger" })
                 <button type="button" class="btn btn-default js-add-participantBeforeSessionExists">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare

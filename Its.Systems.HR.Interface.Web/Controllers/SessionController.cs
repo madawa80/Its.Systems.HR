@@ -28,12 +28,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult CreateSession(int id = 0) //activityId
         {
-            //var viewModel = new CreateSessionViewModel()
-            //{
-            //    LocationList = new SelectList(_activityManager.GetAllLocations(), "Id", "Name", 1)
-            //};
-            //ViewBag.LocationId = new SelectList(_activityManager.GetAllLocations().OrderBy(n => n.Name), "Id", "Name", 1);
-
             var allActivities = _activityManager.GetAllActivities().OrderBy(n => n.Name).ToList();
             var allSessionParticipants = _personManager.GetAllParticipants().OrderBy(n => n.FirstName).ToList();
             var allHrPersons = _personManager.GetAllHrPersons().OrderBy(n => n.FirstName).ToList();
@@ -41,13 +35,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var selectedActivityId =
                 (id == 0) ? allActivities.First().Id : id;
 
-            ViewBag.ActivityId = new SelectList(allActivities, "Id", "Name", selectedActivityId);
-            ViewBag.SessionParticipantId = new SelectList(
+            ViewBag.AllActivities = new SelectList(allActivities, "Id", "Name", selectedActivityId);
+            ViewBag.AllSessionParticipants = new SelectList(
                 allSessionParticipants,
                 "Id",
                 "FullName",
                 allSessionParticipants.First().Id);
-            ViewBag.HrPersonId = new SelectList(allHrPersons, "Id", "FullName");
+            ViewBag.AllHrPersons = new SelectList(allHrPersons, "Id", "FullName");
             return View();
         }
 
@@ -161,8 +155,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             ViewBag.NameOfLocation = viewModel.NameOfLocation;
 
-            ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", session.HrPersonId);
-            ViewBag.ActivityId = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", session.ActivityId);
+            ViewBag.AllHrPersons = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", session.HrPersonId);
+            ViewBag.AllActivities = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", session.ActivityId);
 
             return View(viewModel);
         }
@@ -204,8 +198,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
             }
 
-            ViewBag.HrPersonId = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", sessionToUpdate.HrPersonId);
-            ViewBag.ActivityId = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", sessionToUpdate.ActivityId);
+            ViewBag.AllHrPersons = new SelectList(_personManager.GetAllHrPersons().OrderBy(n => n.FirstName), "Id", "FullName", sessionToUpdate.HrPersonId);
+            ViewBag.AllActivities = new SelectList(_activityManager.GetAllActivities().OrderBy(n => n.Name), "Id", "Name", sessionToUpdate.ActivityId);
 
             ViewBag.NameOfLocation = inputVm.NameOfLocation;
 

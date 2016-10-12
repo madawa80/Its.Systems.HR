@@ -19,7 +19,7 @@
     <div class="form-group">
         <label for="Activity_Id" class="control-label">Tillfälle för aktivitet</label>
         <div>
-            @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>)ViewBag.ActivityId, new { @class = "form-control" })
+            @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>)ViewBag.AllActivities, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Activity.Id, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -67,7 +67,7 @@
     <div class="form-group">
         <label for="HrPerson_Id">Ansvarig HR</label>
         <div>
-            @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.HrPersonId, "-- Ingen ansvarig HR --", new { @class = "form-control" })
+            @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.AllHrPersons, "-- Ingen ansvarig HR --", new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.HrPerson, "", new { @class = "text-danger" })
         </div>
     </div>

@@ -16,7 +16,7 @@
     <div class="form-group">
         <label for="participantDropdown">Lägg till fler deltagare</label>
         <div>
-            @Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>)ViewBag.SessionParticipantId, new { @class = "form-control", id = "participantDropdown", name = "participantDropdown" })
+            @Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>)ViewBag.AllSessionParticipants, new { @class = "form-control", id = "participantDropdown", name = "participantDropdown" })
 
             @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
@@ -62,7 +62,7 @@
                 @if (Model.Location != null)
                 {
                     <p>Plats: @Model.Location.Name</p>
-                    <p>Adress: @Model.Location.Address</p>
+                    @*<p>Adress: @Model.Location.Address</p>*@
                 }
                 <p>Startdatum: @Model.StartDate.ToString("dd MMM yyyy HH:mm")</p>
                 <p>Slutdatum: @Model.EndDate.ToString("dd MMM yyyy HH:mm")</p>

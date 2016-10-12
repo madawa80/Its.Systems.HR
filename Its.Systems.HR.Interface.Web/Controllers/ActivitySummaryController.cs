@@ -56,7 +56,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Tags = allTagsForSession
             };
 
-            ViewBag.SessionParticipantId = new SelectList(
+            ViewBag.AllSessionParticipants = new SelectList(
               _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
               "Id",
               "FullName",
