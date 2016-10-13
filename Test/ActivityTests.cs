@@ -88,7 +88,7 @@ namespace Its.Systems.HR.Test
 
             var result = impl.EditActivity(activityFromDb);
 
-            Assert.AreEqual("JavaOne", impl.GetActivityById(2).Name);
+            Assert.AreEqual("AirHack", impl.GetActivityById(2).Name);
         }
 
         [TestMethod]

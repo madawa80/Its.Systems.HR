@@ -40,9 +40,9 @@ namespace Its.Systems.HR.Interface.Web.App_Start
             // container.LoadConfiguration();
 
             // TODO: Register your types here
-            container.RegisterType<HRContext, HRContext>(new PerResolveLifetimeManager(), new InjectionConstructor());
-            container.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
-            container.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
+            container.RegisterType<HRContext, HRContext>(new PerRequestLifetimeManager(), new InjectionConstructor());
+            container.RegisterType<IDbRepository, DbRepository>();
+            container.RegisterType<IPersonManager, PersonManager>();
             container.RegisterType<IActivityManager, ActivityManager>(new PerResolveLifetimeManager());
             container.RegisterType<IUtilityManager, UtilityManager>(new PerResolveLifetimeManager());
             container.RegisterType<ISessionManager, SessionManager>(new PerResolveLifetimeManager());

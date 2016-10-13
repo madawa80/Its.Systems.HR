@@ -190,7 +190,7 @@ namespace Its.Systems.HR.Domain.Managers
 
             return tagId;
         }
-
+        ///<inheritDoc />
         public bool RemoveTagFromSession(int sessionId, int tagId)
         {
             var sessionTagtoDelete =

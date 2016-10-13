@@ -16,7 +16,7 @@ namespace Its.Systems.HR.Test
         {
             impl = Container().Resolve<IPersonManager>();
         }
-
+         
         [TestMethod]
         public void GetAllParticipants_ShouldReturnCountOf6()
         {

@@ -1,7 +1,7 @@
-﻿Id,FirstName,LastName
-1,"Madawa","Abeywickrama"
-2,"Sam","Thomsson"
-3,"Raad","Larsson"
-4,"Jan","Petersson"
-5,"Kim","Henriksson"
-6,"Linda","Bengtsson"
+﻿Id,FirstName,LastName,Comments,Wishes,CasId,IsHrPerson,IsActive,IsSuperAdmin
+1,"Madawa","Abeywickrama","","","",false,false,false
+2,"Sam","Thomsson","","","",false,false,false
+3,"Raad","Larsson","","","",false,false,false
+4,"Jan","Petersson","","","",false,false,false
+5,"Kim","Henriksson","","","",false,false,false
+6,"Linda","Bengtsson","","","",false,false,false

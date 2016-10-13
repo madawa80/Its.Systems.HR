@@ -251,6 +251,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, string personName)
         {
+            //TODO: ERROR HANDLING!
             string personCasLogin;
             try
             {
@@ -265,7 +266,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             
             var participant = _personManager.GetParticipantByCas(personCasLogin);
-            //TODO:
             if (participant == null)
             {}//ERROR
 
