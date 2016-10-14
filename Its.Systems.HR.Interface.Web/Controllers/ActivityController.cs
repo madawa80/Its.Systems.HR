@@ -28,6 +28,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _utilitiesManager = utilityManager;
         }
 
+        public ActionResult DatabaseDestroyer()
+        {
+            _personManager.AddItsPersonsToDb();
+            return RedirectToAction("Index");
+        }
+
         // find Activity 
         public ViewResult Index(string sortOrder, string searchString)
         {

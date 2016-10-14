@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Infrastructure.UmuApi;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 
@@ -196,6 +197,26 @@ namespace Its.Systems.HR.Domain.Managers
             }
             else
                 return false;
+
+            return true;
+        }
+
+        public bool AddItsPersonsToDb()
+        {
+            var umuApi = new Actions();
+            var result = umuApi.GetPersonFromUmuApi();
+
+            foreach (var person in result.Persons)
+            {
+                var personToAdd = new Participant()
+                {
+                    CasId = person.CasId,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+
+                };
+                _db.Add<Participant>(personToAdd);
+            }
 
             return true;
         }

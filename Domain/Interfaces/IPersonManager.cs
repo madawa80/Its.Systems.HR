@@ -81,5 +81,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         IQueryable<Participant> GetAllParticipantsForSession(int id);
 
         bool UpdateReviewForSessionParticipant(int sessionId, int participantId, int rating);
+
+        bool AddItsPersonsToDb();
     }
 }
