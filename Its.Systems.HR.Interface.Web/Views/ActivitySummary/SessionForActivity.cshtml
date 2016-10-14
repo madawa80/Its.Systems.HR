@@ -21,7 +21,7 @@
             @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })*@
             
             <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control ui-autocomplete wide-textbox"
-                   data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")" />
+                   data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")" autocomplete="on" autocompletemode="suggest"/>
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare
             </button>

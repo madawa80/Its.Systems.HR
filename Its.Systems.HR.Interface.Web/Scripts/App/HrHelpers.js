@@ -55,6 +55,7 @@ function createAutocompletes() {
     var $input = $(this); // the HTML element (Textbox)
 
     var options = {
+        
         // selecting the source by finding elements with the 'data-' attribute
         source: $input.attr("data-autocomplete") // Required
     };
@@ -63,6 +64,23 @@ function createAutocompletes() {
     $input.autocomplete(options);
 }
 
+
+//function createAutocompletes() {
+//    //var $input = $(this); // the HTML element (Textbox)
+
+//    var myTextField = document.getElementById("#nameOfParticipant");
+
+//    //var options = {
+
+//    //    // selecting the source by finding elements with the 'data-' attribute
+//    //    source: $input.attr("data-autocomplete")
+       
+//    //};
+
+//    //// apply options
+//    //$input.autocomplete(options);
+//    myTextField.autocomplete();
+//}
 
 // HANDLE ENTER-BUTTON WHEN ADDING TAGS
 function hr_addEventListenerForEnter(selector) {

@@ -11,11 +11,13 @@ namespace Its.Systems.HR.Domain.Managers
 {
     public class PersonManager : IPersonManager
     {
+        //private Catalogue.Interface.Service.Client.CatalogueRestClient client;
         private readonly IDbRepository _db;
 
         public PersonManager(IDbRepository repo)
         {
             _db = repo;
+            //client.
         }
 
         // TEMPLATE:
