@@ -176,6 +176,31 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
+        public IQueryable<Participant> GetAllParticipantsForSession(int id)
+        {
+            return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
+        }
+
+        public bool UpdateReviewForSessionParticipant(int sessionId, int participantIdTEMP, int rating)
+        {
+            var sessionParticipant = _db.Get<SessionParticipant>()
+                .SingleOrDefault(n => n.SessionId == sessionId && n.ParticipantId == participantIdTEMP);
+
+            if (sessionParticipant == null)
+                return false;
+
+            if (rating >= 1 && rating <= 5)
+            {
+                sessionParticipant.Rating = rating;
+                _db.SaveChanges();
+            }
+            else
+                return false;
+
+            return true;
+        }
+
+        // PRIVATE METHODS BELOW
         private bool CheckIfSessionExists(int sessionId)
         {
             var sessionFromDb = _db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
@@ -192,9 +217,5 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public IQueryable<Participant> GetAllParticipantsForSession(int id)
-        {
-            return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
-        }
     }
 }
