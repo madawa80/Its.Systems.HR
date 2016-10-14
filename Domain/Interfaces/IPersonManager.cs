@@ -35,7 +35,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <returns>The participant, if found.</returns>
         Participant GetParticipantById(int id);
 
-        Participant GetParticipantByCas(string cas); 
+        Participant GetParticipantByCas(string cas);
 
         bool DeletePaticipantById(int id);
 
@@ -79,5 +79,9 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <param name="id"></param>
         /// <returns></returns>
         IQueryable<Participant> GetAllParticipantsForSession(int id);
+
+        bool UpdateReviewForSessionParticipant(int sessionId, int participantId, int rating);
+
+        bool AddItsPersonsToDb();
     }
 }

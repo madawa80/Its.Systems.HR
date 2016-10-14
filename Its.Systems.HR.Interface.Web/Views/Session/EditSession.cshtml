@@ -76,7 +76,8 @@
         <label for="tagsInput">Etiketter</label>
         <div class="form-inline">
             <div class="form-group">
-                <input type="text" id="tagsInput" name="tagsInput" class="form-control" />
+                <input type="text" id="tagsInput" name="tagsInput" class="form-control" 
+                       data-autocomplete="@Url.Action("AutoCompleteTags", "Activity")"/>
             </div>
             <button type="button" class="btn btn-default js-add-tag-edit-session" data-sessionId="@Model.SessionId">Lägg till</button>
         </div>

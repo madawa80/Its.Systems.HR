@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Infrastructure.UmuApi;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 
@@ -178,6 +179,51 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
+        public IQueryable<Participant> GetAllParticipantsForSession(int id)
+        {
+            return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
+        }
+
+        public bool UpdateReviewForSessionParticipant(int sessionId, int participantIdTEMP, int rating)
+        {
+            var sessionParticipant = _db.Get<SessionParticipant>()
+                .SingleOrDefault(n => n.SessionId == sessionId && n.ParticipantId == participantIdTEMP);
+
+            if (sessionParticipant == null)
+                return false;
+
+            if (rating >= 1 && rating <= 5)
+            {
+                sessionParticipant.Rating = rating;
+                _db.SaveChanges();
+            }
+            else
+                return false;
+
+            return true;
+        }
+
+        public bool AddItsPersonsToDb()
+        {
+            var umuApi = new Actions();
+            var result = umuApi.GetPersonFromUmuApi();
+
+            foreach (var person in result.Persons)
+            {
+                var personToAdd = new Participant()
+                {
+                    CasId = person.CasId,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+
+                };
+                _db.Add<Participant>(personToAdd);
+            }
+
+            return true;
+        }
+
+        // PRIVATE METHODS BELOW
         private bool CheckIfSessionExists(int sessionId)
         {
             var sessionFromDb = _db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
@@ -194,9 +240,5 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public IQueryable<Participant> GetAllParticipantsForSession(int id)
-        {
-            return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
-        }
     }
 }

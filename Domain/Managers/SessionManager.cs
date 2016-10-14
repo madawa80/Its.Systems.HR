@@ -90,6 +90,7 @@ namespace Its.Systems.HR.Domain.Managers
                 .Include(n => n.Location)
                 .Include(n => n.HrPerson)
                 .Include(n => n.SessionTags)
+                .Include(n => n.SessionParticipants)
                 .SingleOrDefault(n => n.Id == sessionId);
         }
 
@@ -190,7 +191,7 @@ namespace Its.Systems.HR.Domain.Managers
 
             return tagId;
         }
-
+        ///<inheritDoc />
         public bool RemoveTagFromSession(int sessionId, int tagId)
         {
             var sessionTagtoDelete =

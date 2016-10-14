@@ -15,7 +15,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
-       
+
         public ParticipantController(ISessionManager sessionManager, IPersonManager personManager)
         {
             _sessionManager = sessionManager;
@@ -25,7 +25,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         // GET: Participant
         public ActionResult Index()
         {
-           return View(_personManager.GetAllParticipants().OrderBy(n => n.FirstName).ToList());
+            return View(_personManager.GetAllParticipants().OrderBy(n => n.FirstName).ToList());
         }
 
         // GET: Participant/Details/5
@@ -57,6 +57,46 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
+        public ActionResult ReviewSession(int? id = 3)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var loggedInUser = _personManager.GetParticipantById(1);
+            var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
+
+            if (session == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var currentRating =
+                session.SessionParticipants.SingleOrDefault(n => n.ParticipantId == loggedInUser.Id && n.SessionId == id).Rating;
+
+            var reviewSessionViewModel = new ReviewSessionViewModel()
+            {
+                ParticipantId = loggedInUser.Id,
+                ParticipantName = loggedInUser.FullNameWithCas,
+                SessionId = session.Id,
+                SessionName = session.Activity.Name + " " + session.Name,
+                Rating = currentRating
+            };
+
+            return View(reviewSessionViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult ReviewSession(ReviewSessionViewModel vm)
+        {
+            var loggedInUser = _personManager.GetParticipantById(1);
+
+            if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating))
+                return RedirectToAction("Index");
+
+            //ModelState.AddModelError("", "Något blev fel, prova gärna igen!");
+            return View(vm);
+        }
+
+
+        // AJAX AND PARTIALS BELOW
         [HttpPost]
         public ActionResult SaveComments(int personId, string comments)
         {

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Its.Systems.HR.Interface.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{5E054C4A-2D4E-4151-8F3F-3F62FD34DF48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.UmuApi", "Infrastructure.UmuApi\Infrastructure.UmuApi.csproj", "{8F76C3D5-C6A4-4478-996E-4FD4516955FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5E054C4A-2D4E-4151-8F3F-3F62FD34DF48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E054C4A-2D4E-4151-8F3F-3F62FD34DF48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E054C4A-2D4E-4151-8F3F-3F62FD34DF48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F76C3D5-C6A4-4478-996E-4FD4516955FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F76C3D5-C6A4-4478-996E-4FD4516955FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F76C3D5-C6A4-4478-996E-4FD4516955FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F76C3D5-C6A4-4478-996E-4FD4516955FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

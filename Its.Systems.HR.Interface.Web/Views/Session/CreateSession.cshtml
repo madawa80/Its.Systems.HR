@@ -5,7 +5,7 @@
 }
 
 <h2>Skapa tillfälle</h2>
-<h4>Skapa ett nytt tillfälle till en aktivitet. Deltagare kan också läggas till efter att tillfället är skapat!</h4>
+<h4>Skapa ett nytt tillfälle till en aktivitet. Deltagare kan också läggas till efter att tillfället är skapat.</h4>
 <hr />
 
 @using (Html.BeginForm())
@@ -77,7 +77,8 @@
         <label for="tagsInput">Etiketter</label>
         <div class="form-inline">
             <div class="form-group">
-                <input type="text" id="tagsInput" name="tagsInput" class="form-control" />
+                <input type="text" id="tagsInput" name="tagsInput" class="form-control"
+                       data-autocomplete="@Url.Action("AutoCompleteTags", "Activity")" />
             </div>
             <button type="button" class="btn btn-default js-add-tag-create-session">Lägg till</button>
         </div>

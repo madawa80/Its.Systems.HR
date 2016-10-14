@@ -77,6 +77,10 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -146,9 +150,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -194,6 +195,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ActivitySummary\AllSessionsForActivityViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityViewModel.cs" />
+    <Compile Include="ViewModels\Participant\ReviewSessionViewModel.cs" />
     <Compile Include="ViewModels\Session\CreateSessionViewModel.cs" />
     <Compile Include="ViewModels\Session\EditSessionViewModel.cs" />
     <Compile Include="ViewModels\ActivitySummary\FilterSessionsViewModel.cs" />
@@ -324,6 +326,7 @@
     <Content Include="Views\ActivitySummary\FilterSessions.cshtml" />
     <Content Include="Views\Session\EditSession.cshtml" />
     <Content Include="Views\ActivitySummary\AllSessionsForActivity.cshtml" />
+    <Content Include="Views\Participant\ReviewSession.cshtml" />
     <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
     <Content Include="Views\Statistic\YearlyStatistics.cshtml" />
   </ItemGroup>
