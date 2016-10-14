@@ -73,11 +73,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     // -> TAGS
                     var tagsToAdd = sessionVm.GenerateSessionTags;
 
-                    AddNewTagsToDb(tagsToAdd);
+                    _utilitiesManager.AddNewTagsToDb(tagsToAdd);
                     // <- END TAGS
 
 
-                    int? locationId = GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
+                    int? locationId = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
 
                     var result = new Session()
                     {
@@ -180,7 +180,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 if (sessionToUpdate.Name == inputVm.NameOfSession ||
                     !_sessionManager.GetAllSessions().Any(n => n.Name == inputVm.NameOfSession))
                 {
-                    int? location = GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
+                    int? location = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
 
                     int? hrPerson = inputVm.HrPerson;
 
@@ -338,49 +338,5 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result);
         }
 
-
-        // PRIVATE METHODS BELOW
-        private int? GetIdForLocationOrCreateIfNotExists(string location)
-        {
-            if (string.IsNullOrEmpty(location))
-                return null;
-
-            // TODO MOVE TO MANAGER!
-            int resultId = -1;
-
-            Location locationExisting =
-                _utilitiesManager.GetAllLocations().SingleOrDefault(n => n.Name.ToLower() == location.ToLower());
-
-            if (locationExisting == null)
-            {
-                resultId = _utilitiesManager.AddLocation(location);
-            }
-            else
-            {
-                resultId = locationExisting.Id;
-            }
-
-            return resultId;
-        }
-
-        private void AddNewTagsToDb(List<Tag> tagsToAdd)
-        {
-            // tagsToAdd is the incoming stuff, with all the tags to add to Tags in DB
-            // but the list needs to be filtered for any existing tags in db.Tags!!
-            var tagsToAddToDb = new List<Tag>(tagsToAdd);
-            var currentTags = _utilitiesManager.GetAllTags().ToList();
-
-
-            var result = new List<Tag>();
-            foreach (var tag in tagsToAddToDb.Where(n => currentTags.All(n2 => n2.Name != n.Name)))
-            {
-                result.Add(tag);
-            }
-
-            _utilitiesManager.AddTags(result);
-
-
-            // NOTICE! Have to savechanges later!
-        }
     }
 }

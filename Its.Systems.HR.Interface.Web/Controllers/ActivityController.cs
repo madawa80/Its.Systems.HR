@@ -184,12 +184,19 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(participants, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult AutoCompleteTags(string term)
+        {
+            var tags = GetTags(term);
+            return Json(tags, JsonRequestBehavior.AllowGet);
+        }
 
         // PRIVATE METHODS BELOW
         private IEnumerable<string> GetLocations(string searchString)
         {
             IEnumerable<string> locations =
-                _utilitiesManager.GetAllLocations().Where(n => n.Name.ToUpper().Contains(searchString.ToUpper())).Select(a => a.Name);
+                _utilitiesManager.GetAllLocations()
+                    .Where(n => n.Name.ToUpper().Contains(searchString.ToUpper()))
+                    .Select(a => a.Name);
 
             return locations;
         }
@@ -209,6 +216,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //    .Select(a => a.FirstName + " " + a.LastName + " (" + a.CasId + ")");
 
             return participants;
+        }
+
+        private IEnumerable<string> GetTags(string searchString)
+        {
+            IEnumerable<string> tags =
+                _utilitiesManager.GetAllTags()
+                    .Where(n => n.Name.ToUpper().Contains(searchString.ToUpper()))
+                    .Select(a => a.Name);
+
+            return tags;
         }
     }
 }
