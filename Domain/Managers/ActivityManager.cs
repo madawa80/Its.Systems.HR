@@ -45,10 +45,10 @@ namespace Its.Systems.HR.Domain.Managers
 
         public bool EditActivity(Activity activityToEdit)
         {
-            //var allActivities = db.Get<Activity>().ToList();
+            var allActivities = _db.Get<Activity>().ToList();
 
-            //if (allActivities.Any(n => n.Name == activityToEdit.Name))
-            //    return false;
+            if (allActivities.Any(n => n.Name == activityToEdit.Name))
+                return false;
 
             //TODO: Add error handling!?
             _db.Context().Entry(activityToEdit).State = EntityState.Modified;

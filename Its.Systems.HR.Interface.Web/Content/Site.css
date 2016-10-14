@@ -48,8 +48,9 @@ textarea {
             color: white;
             background-color: #00a0e6;
             list-style: none;
-            cursor: pointer;
+            cursor: default;
         }
+
 
 /* CUSTOM Utils */
 
@@ -161,10 +162,10 @@ ul.dropdown-menu {
     margin-right: 10px;
 }
 
-.js-remove-tag-create-session:hover, .js-remove-tag-edit-session:hover {
-    cursor: pointer;
-    background-color: red;
-}
+    .js-remove-tag-create-session:hover, .js-remove-tag-edit-session:hover {
+        cursor: pointer;
+        background-color: red;
+    }
 
 /*#selectedTags {
     width: 100px;
