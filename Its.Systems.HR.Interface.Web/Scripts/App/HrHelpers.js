@@ -2,8 +2,31 @@
 // Global namespace...
 
 // JAVASCRIPT TODOS:
-// TODO: Proper error handling
+//function hr_createAutocomplete() {
+//    $("#nameOfParticipant")
+//        .autocomplete({
+//            source: function(request, response) {
+//                $.ajax({
+//                    url: "/Activity/AutoCompleteParticipants",
+//                    type: "POST",
+//                    dataType: "json",
+//                    data: { Prefix: request.term },
+//                    success: function(data) {
+//                        response($.map(data,
+//                            function(item) {
+//                                return { label: item.Name, value: item.Name };
+//                            }));
 
+//                    }
+//                });
+//            },
+//            messages: {
+//                noResults: "",
+//                results: ""
+//            }
+//        });
+
+//}
 
 
 // CHECKS URL TO ADD PROPER URL-PREFIX
@@ -58,6 +81,8 @@ function createAutocompletes() {
         
         // selecting the source by finding elements with the 'data-' attribute
         source: $input.attr("data-autocomplete") // Required
+
+
     };
 
     // apply options
@@ -65,22 +90,7 @@ function createAutocompletes() {
 }
 
 
-//function createAutocompletes() {
-//    //var $input = $(this); // the HTML element (Textbox)
 
-//    var myTextField = document.getElementById("#nameOfParticipant");
-
-//    //var options = {
-
-//    //    // selecting the source by finding elements with the 'data-' attribute
-//    //    source: $input.attr("data-autocomplete")
-       
-//    //};
-
-//    //// apply options
-//    //$input.autocomplete(options);
-//    myTextField.autocomplete();
-//}
 
 // HANDLE ENTER-BUTTON WHEN ADDING TAGS
 function hr_addEventListenerForEnter(selector, inputField) {
