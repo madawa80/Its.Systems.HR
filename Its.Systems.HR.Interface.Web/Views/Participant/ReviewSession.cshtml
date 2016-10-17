@@ -21,7 +21,8 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Rating)
         <div>
-            @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", placeholder = "1-5" } })
+            @*@Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", placeholder = "1-5" } })*@
+            <input name="Rating" id="Rating" type="text" class="" value="" data-slider-min="1" data-slider-max="5" data-slider-step="1" data-slider-value="@Model.Rating" />
             @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -30,7 +31,7 @@
         @Html.LabelFor(model => model.Comments)
         <div>
             @Html.TextAreaFor(n => n.Comments, 10, 40, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Comments, "", new {@class = "text-danger"})
+            @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -41,4 +42,23 @@
             </button>
         </div>
     </div>
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/bootstrap-slider.min.js"></script>
+
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // INIT BOOTSTRAPSLIDER
+            $("#Rating").bootstrapSlider({
+                tooltip: "always"
+            });
+
+        });
+    </script>
 }

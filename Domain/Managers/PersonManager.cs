@@ -205,6 +205,8 @@ namespace Its.Systems.HR.Domain.Managers
 
         public bool AddItsPersonsToDb()
         {
+            // TODO: Mark the people missing as IsActive = false
+            // TODO: Add possible new people to our database
             var umuApi = new Actions();
             var result = umuApi.GetPersonFromUmuApi();
 
