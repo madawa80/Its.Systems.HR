@@ -93,8 +93,8 @@ function createAutocompletes() {
 
 
 // HANDLE ENTER-BUTTON WHEN ADDING TAGS
-function hr_addEventListenerForEnter(selector) {
-    $(document).on("keypress", "#tagsInput", function (event) {
+function hr_addEventListenerForEnter(selector, inputField) {
+    $(document).on("keypress", inputField, function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             $(selector).trigger("click");

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - HR-App kompetensutveckling</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jqueryuibase")
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
@@ -47,7 +48,7 @@
                             <li>@Html.ActionLink("Betygsätt tillfälle", "ReviewSession", "Participant")</li>
                         </ul>
                     </li>
-                    <li>@Html.ActionLink("DBDESTROYER", "DatabaseDestroyer", "Activity")</li>
+                    @*<li>@Html.ActionLink("SynkaAnvändare", "SyncUsersWithUmuApi", "Activity")</li>*@
 
                 </ul>
                 @Html.Partial("_LoginPartial")

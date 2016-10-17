@@ -59,7 +59,7 @@
         <label for="NameOfLocation">Plats</label>
         <div>
             @*@Html.TextBoxFor(n => n.NameOfLocation, new { @class = "form-control ui-autocomplete", @data-autocomplete = "@Url.Action("AutoCompleteLocations", "Home")" })*@
-            <input type="text" id="NameOfLocation" name="NameOfLocation" class="form-control ui-autocomplete"
+            <input type="text" id="NameOfLocation" name="NameOfLocation" class="form-control"
                    data-autocomplete="@Url.Action("AutoCompleteLocations", "Activity")" />
             @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
         </div>

@@ -8,6 +8,7 @@ namespace Its.Systems.HR.Interface.Web
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            // SCRIPTS
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -25,11 +26,16 @@ namespace Its.Systems.HR.Interface.Web
                       "~/Scripts/bootbox.min.js")
                       );
 
+
+            // STYLES
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datetimepicker.min.css",
                       "~/Content/bootstrap-slider/bootstrap-slider.min.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/jqueryuibase").Include(
+                      "~/Content/themes/base/jquery-ui.min.css"));
         }
     }
 }
