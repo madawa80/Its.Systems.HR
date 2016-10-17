@@ -28,8 +28,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _utilitiesManager = utilityManager;
         }
 
-        public ActionResult DatabaseDestroyer()
+        public ActionResult SyncUsersWithUmuApi()
         {
+            return View("Error");
+
+
+
             _personManager.AddItsPersonsToDb();
             return RedirectToAction("Index");
         }

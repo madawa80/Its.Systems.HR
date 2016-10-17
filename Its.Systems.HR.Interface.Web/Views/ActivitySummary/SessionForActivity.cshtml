@@ -20,7 +20,7 @@
 
             @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })*@
             
-            <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control ui-autocomplete wide-textbox"
+            <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control wide-textbox"
                    data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")" />
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare
@@ -108,8 +108,12 @@
 </div>
 
 @section scripts {
+    
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    @*<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">*@
+    @*<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>*@
 
     <script src="~/Scripts/App/HrHelpers.js"></script>
     <script src="~/Scripts/App/SessionForActivity.js"></script>

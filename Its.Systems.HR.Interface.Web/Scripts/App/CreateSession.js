@@ -6,7 +6,7 @@ $(document).ready(function () {
     // INIT AUTOCOMPLETE
     hr_createAutocomplete();
     // HANDLE ENTER-BUTTON WHEN ADDING TAGS
-    hr_addEventListenerForEnter(".js-add-tag-create-session");
+    hr_addEventListenerForEnter(".js-add-tag-create-session", "#tagsInput");
 
 
     // ADDING PARTICIPANTS "ON-THE-FLY"

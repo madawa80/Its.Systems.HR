@@ -64,23 +64,27 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             var loggedInUser = _personManager.GetParticipantById(1);
             var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
-
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            var currentSession = session.SessionParticipants.SingleOrDefault(n => n.ParticipantId == loggedInUser.Id && n.SessionId == id);
+            if (currentSession == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            
             var currentRating =
-                session.SessionParticipants.SingleOrDefault(n => n.ParticipantId == loggedInUser.Id && n.SessionId == id).Rating;
+                    currentSession.Rating;
 
-            var reviewSessionViewModel = new ReviewSessionViewModel()
-            {
-                ParticipantId = loggedInUser.Id,
-                ParticipantName = loggedInUser.FullNameWithCas,
-                SessionId = session.Id,
-                SessionName = session.Activity.Name + " " + session.Name,
-                Rating = currentRating
-            };
+                var reviewSessionViewModel = new ReviewSessionViewModel()
+                {
+                    ParticipantId = loggedInUser.Id,
+                    ParticipantName = loggedInUser.FullNameWithCas,
+                    SessionId = session.Id,
+                    SessionName = session.Activity.Name + " " + session.Name,
+                    Rating = currentRating
+                };
 
-            return View(reviewSessionViewModel);
+                return View(reviewSessionViewModel);
+            
         }
 
         [HttpPost]

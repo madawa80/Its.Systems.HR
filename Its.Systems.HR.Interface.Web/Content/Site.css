@@ -29,7 +29,7 @@ textarea {
     display: none;
 }
 
-.ui-widget-content {
+/*.ui-widget-content {
     background-color: white;
     color: #484848;
     width: 150px;
@@ -51,6 +51,12 @@ textarea {
             cursor: default;
         }
 
+
+    .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+        cursor: default;
+        background-color: red;
+        color: blue;
+    }*/
 
 /* CUSTOM Utils */
 

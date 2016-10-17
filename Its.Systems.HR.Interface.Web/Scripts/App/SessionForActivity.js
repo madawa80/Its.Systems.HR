@@ -5,6 +5,8 @@ $(document).ready(function () {
     paticipantCount();
     // INIT AUTOCOMPLETE
     hr_createAutocomplete();
+    // HANDLE ENTER-BUTTON WHEN ADDING PARTICIPANTS
+    hr_addEventListenerForEnter(".js-add-sessionParticipant", "#nameOfParticipant");
 
     // PARTICIPANT ADDING AND REMOVING
     $(".js-add-sessionParticipant").click(function () {
@@ -24,6 +26,7 @@ $(document).ready(function () {
                     $(html).hide().appendTo("#ParticipantsForSession").fadeIn(hr_fadeInSpeed);
 
                     paticipantCount();
+                    $("#nameOfParticipant").val("");
                 }
 
                 else {

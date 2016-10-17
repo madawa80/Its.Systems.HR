@@ -5,7 +5,7 @@
     // INIT AUTOCOMPLETE
     hr_createAutocomplete();
     // HANDLE ENTER-BUTTON WHEN ADDING TAGS
-    hr_addEventListenerForEnter(".js-add-tag-edit-session");
+    hr_addEventListenerForEnter(".js-add-tag-edit-session", "#tagsInput");
 
 
     // TAGS
