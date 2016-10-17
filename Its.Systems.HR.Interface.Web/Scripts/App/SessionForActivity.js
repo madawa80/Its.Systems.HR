@@ -5,6 +5,7 @@ $(document).ready(function () {
     paticipantCount();
     // INIT AUTOCOMPLETE
     hr_createAutocomplete();
+    //createAutocompletes();
 
     // PARTICIPANT ADDING AND REMOVING
     $(".js-add-sessionParticipant").click(function () {

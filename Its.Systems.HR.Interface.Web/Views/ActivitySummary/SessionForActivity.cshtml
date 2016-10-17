@@ -1,5 +1,7 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.SessionForActivityViewModel
 
+
+
 <div class="col-md-12">
     <h2>
         <strong>@Model.SessionNameWithActivity</strong>
@@ -9,6 +11,7 @@
 </div>
 
 
+
 <div class="col-md-6">
 
     <h3 class="m-b-30">Deltagare</h3>
@@ -16,12 +19,20 @@
     <div class="form-group">
         <label for="nameOfParticipant">Lägg till fler deltagare</label>
         <div>
-            @*@Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>)ViewBag.AllSessionParticipants, new { @class = "form-control", id = "participantDropdown", name = "participantDropdown" })
-
-            @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })*@
+            
             
             <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control ui-autocomplete wide-textbox"
                    data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")" autocomplete="on" autocompletemode="suggest"/>
+            
+
+            @*<input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control "class="form-control ui-autocomplete wide-textbox"
+                    autocomplete="on" autocompletemode="suggest" />*@
+            
+            
+           
+            @*<input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control"/>*@
+
+
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare
             </button>
@@ -113,4 +124,13 @@
 
     <script src="~/Scripts/App/HrHelpers.js"></script>
     <script src="~/Scripts/App/SessionForActivity.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> 
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    @*<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>*@
+
+
 }
