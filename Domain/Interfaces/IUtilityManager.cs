@@ -48,5 +48,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// </summary>
         /// <param name="tagsToAdd"></param>
         void AddNewTagsToDb(List<Tag> tagsToAdd);
+
+        double GetRatingForSessionById(int id);
     }
 }

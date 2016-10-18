@@ -43,7 +43,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var viewModel = new ParticipantSummaryViewModel()
             {
                 PersonId = participant.Id,
-                FullName = participant.FullName,
+                FullName = participant.FullNameWithCas,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
                 Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id).Include(n => n.Activity).ToList(),
@@ -57,7 +57,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
-        public ActionResult ReviewSession(int? id = 38)
+        public ActionResult ReviewSession(int? id = 7)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -67,24 +67,23 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var currentSession = session.SessionParticipants.SingleOrDefault(n => n.ParticipantId == loggedInUser.Id && n.SessionId == id);
-            if (currentSession == null)
+            var currentSessionParticipation = session.SessionParticipants.SingleOrDefault(n => n.ParticipantId == loggedInUser.Id && n.SessionId == id);
+            if (currentSessionParticipation == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
-            var currentRating =
-                    currentSession.Rating;
 
-                var reviewSessionViewModel = new ReviewSessionViewModel()
-                {
-                    ParticipantId = loggedInUser.Id,
-                    ParticipantName = loggedInUser.FullNameWithCas,
-                    SessionId = session.Id,
-                    SessionName = session.Activity.Name + " " + session.Name,
-                    Rating = currentRating
-                };
 
-                return View(reviewSessionViewModel);
-            
+            var reviewSessionViewModel = new ReviewSessionViewModel()
+            {
+                ParticipantId = loggedInUser.Id,
+                ParticipantName = loggedInUser.FullNameWithCas,
+                SessionId = session.Id,
+                SessionName = session.Activity.Name + " " + session.Name,
+                Rating = currentSessionParticipation.Rating,
+                Comments = currentSessionParticipation.Comments
+            };
+
+            return View(reviewSessionViewModel);
+
         }
 
         [HttpPost]
@@ -92,8 +91,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var loggedInUser = _personManager.GetParticipantById(237);
 
-            if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating))
-                return RedirectToAction("Index");
+            if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating, vm.Comments))
+                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = vm.SessionId});
 
             //ModelState.AddModelError("", "Något blev fel, prova gärna igen!");
             return View(vm);

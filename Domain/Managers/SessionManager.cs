@@ -100,8 +100,8 @@ namespace Its.Systems.HR.Domain.Managers
                 .Include(n => n.Activity)
                 .Include(n => n.Location)
                 .Include(n => n.HrPerson)
-                .Include(n => n.SessionTags);
-            //.Include(n => n.SessionParticipants)
+                .Include(n => n.SessionTags)
+                .Include(n => n.SessionParticipants);
         }
 
         public IQueryable<Session> GetAllSessionsForYear(int Year)

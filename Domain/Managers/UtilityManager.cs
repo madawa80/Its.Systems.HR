@@ -84,10 +84,23 @@ namespace Its.Systems.HR.Domain.Managers
                 result.Add(tag);
             }
 
+            // NOTICE! SaveChanges in the method below.
             AddTags(result);
+        }
 
+        public double GetRatingForSessionById(int id)
+        {
+            // get all the sessionparticipants with sessionId = id
+            // average the ratings
+            var sessionParticipations = _db.Get<SessionParticipant>().Where(n => n.SessionId == id).ToList();
 
-            // NOTICE! Have to savechanges later!
+            if (sessionParticipations.Count < 1)
+                return 0;
+
+            if (sessionParticipations.Count(n => n.Rating != 0) < 1)
+                return 0;
+
+            return sessionParticipations.Where(n => n.Rating != 0).Average(a => a.Rating);
         }
     }
 }

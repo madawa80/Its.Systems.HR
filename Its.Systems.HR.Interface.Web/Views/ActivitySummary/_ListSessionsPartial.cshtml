@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Its.Systems.HR.Domain.Model.Session>
+
+<table class="table">
+    <tr>
+        <th>Aktivitet och Namn</th>
+        <th>Start</th>
+        <th>Slut</th>
+        <th>Hr-Person</th>
+        <th>Plats</th>
+        <th>Deltagare</th>
+    </tr>
+
+    @foreach (var session in Model.OrderBy(n => n.NameWithActivity))
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.NameWithActivity</a>
+            </td>
+            <td>
+                @session.StartDate.ToString("dd MMM yyyy HH:mm")
+            </td>
+            <td>
+                @session.EndDate.ToString("dd MMM yyyy HH:mm")
+            </td>
+            <td>
+                @if (session.HrPerson != null)
+                {
+                    @session.HrPerson.FullName
+                }
+            </td>
+            <td>
+                @if (session.Location != null)
+                {
+                    @session.Location.Name
+                }
+            </td>
+            <td>
+                @session.SessionParticipants.Count
+            </td>
+        </tr>
+    }
+
+</table>

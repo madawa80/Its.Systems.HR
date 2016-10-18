@@ -18,12 +18,12 @@
         <div>
             @*@Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>)ViewBag.AllSessionParticipants, new { @class = "form-control", id = "participantDropdown", name = "participantDropdown" })
 
-            @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })*@
-            
+                @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })*@
+
             <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control wide-textbox"
                    data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")" />
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare [Enter]
             </button>
         </div>
     </div>
@@ -78,6 +78,14 @@
                         }
                     </p>
                 }
+                @if (Model.Rating != "0")
+                {
+                    <p>
+                        Betyg: <input type="hidden" name="Rating" id="Rating" class="rating" 
+                                      value="@Model.Rating" data-readonly data-fractions="2"
+                                      data-filled="glyphicon glyphicon-star" data-empty="glyphicon glyphicon-star-empty" />
+                    </p>
+                }
             </div>
         </div>
 
@@ -108,9 +116,10 @@
 </div>
 
 @section scripts {
-    
+
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/bootstrap-rating.min.js"></script>
 
     @*<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">*@
     @*<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>*@
