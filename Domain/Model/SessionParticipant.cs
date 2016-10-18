@@ -12,6 +12,7 @@ namespace Its.Systems.HR.Domain.Model
         [Key, Column(Order = 1)]
         public int ParticipantId { get; set; }
         public int Rating { get; set; }
+        public string Comments { get; set; }
 
         public virtual Session Session { get; set; }
         public virtual Participant Participant { get; set; }

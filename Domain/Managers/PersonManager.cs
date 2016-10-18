@@ -32,19 +32,20 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<Participant>();
         }
 
-        public IQueryable<HrPerson> GetAllHrPersons()
+        public IQueryable<Participant> GetAllHrPersons()
         {
-            return _db.Get<HrPerson>();
+            return _db.Get<Participant>().Where(n => n.IsHrPerson);
         }
 
-        public bool AddHrPerson(HrPerson hrPerson)
+        public bool MakeParticipantHrPerson(Participant hrPerson)
         {
-            var allHrPersons = _db.Get<HrPerson>().ToList();
+            var participantToHrPerson = _db.Get<Participant>().SingleOrDefault(n => n.Id == hrPerson.Id);
 
-            if (allHrPersons.Any(n => n.GetHrFullName() == hrPerson.GetHrFullName()))
+            if (participantToHrPerson == null)
                 return false;
 
-            _db.Add<HrPerson>(hrPerson);
+            participantToHrPerson.IsHrPerson = true;
+            _db.SaveChanges();
 
             return true;
         }
@@ -78,7 +79,7 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<Participant>().SingleOrDefault(n => n.CasId == cas);
         }
 
-        public HrPerson GetHrPersonById(int HrId)
+        public Participant GetHrPersonById(int hrPersonId)
         {
             //var query =
             //(
@@ -87,7 +88,8 @@ namespace Its.Systems.HR.Domain.Managers
             //        on eventUser.EventId equals @event.Id
             //    where eventUser.ProfileId == profileId
             //    select Name
-            return _db.Get<HrPerson>().SingleOrDefault(n => n.Id == HrId);
+            
+            return _db.Get<Participant>().SingleOrDefault(n => n.Id == hrPersonId && n.IsHrPerson);
         }
 
         public bool SaveCommentsForParticipant(int personId, string comments)
@@ -205,6 +207,8 @@ namespace Its.Systems.HR.Domain.Managers
 
         public bool AddItsPersonsToDb()
         {
+            // TODO: Mark the people missing as IsActive = false
+            // TODO: Add possible new people to our database
             var umuApi = new Actions();
             var result = umuApi.GetPersonFromUmuApi();
 

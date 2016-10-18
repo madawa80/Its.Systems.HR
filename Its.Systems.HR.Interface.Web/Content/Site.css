@@ -76,6 +76,10 @@ textarea {
     margin-bottom: 30px;
 }
 
+.increase-glyphicon-size {
+    font-size: 2em;
+}
+
 /* BOOTSTRAP OVERRIDES */
 
 body {

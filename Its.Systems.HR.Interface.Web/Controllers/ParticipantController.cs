@@ -57,12 +57,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
-        public ActionResult ReviewSession(int? id = 3)
+        public ActionResult ReviewSession(int? id = 38)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var loggedInUser = _personManager.GetParticipantById(1);
+            var loggedInUser = _personManager.GetParticipantById(237);
             var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -90,7 +90,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult ReviewSession(ReviewSessionViewModel vm)
         {
-            var loggedInUser = _personManager.GetParticipantById(1);
+            var loggedInUser = _personManager.GetParticipantById(237);
 
             if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating))
                 return RedirectToAction("Index");

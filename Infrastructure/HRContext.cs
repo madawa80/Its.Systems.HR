@@ -52,10 +52,12 @@ namespace Its.Systems.HR.Infrastructure
                 .HasRequired<Participant>(s => s.Participant)
                 .WithMany(n => n.SessionParticipants);
 
-            // Session HrPerson
+            // Session table
             modelBuilder.Entity<Session>()
-                        .HasOptional<HrPerson>(s => s.HrPerson) // Student entity requires Standard 
-                        .WithMany(s => s.Sessions); // Standard entity includes many Students entities
+                .HasOptional<Participant>(s => s.HrPerson);
+                //.WithMany(s => s.Sessions);
+
+           
 
             // TODO: Write all relations in fluent!
             // ( And make sure that SessionTags table gets renamed to SessionTag)
@@ -74,7 +76,7 @@ namespace Its.Systems.HR.Infrastructure
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
-        public virtual DbSet<HrPerson> HrPersons { get; set; }
+        //public virtual DbSet<HrPerson> HrPersons { get; set; }
         public virtual DbSet<Participant> Participants { get; set; }
         public virtual DbSet<SessionParticipant> SessionParticipants { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }

@@ -9,7 +9,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public List<Session> Sessions { get; set; }
         public IEnumerable<SelectListItem> HrPersons { get; set; }
 
-        public HrPerson HrPerson { get; set; }
+        public Participant HrPerson { get; set; }
         public string NameOfLocation { get; set; }
         public int YearStart { get; set; }
         public int YearEnd { get; set; }

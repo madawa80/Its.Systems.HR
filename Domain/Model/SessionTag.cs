@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Its.Systems.HR.Domain.Model
 {
     [Table("SessionTag")]
-    public class SessionTag //TODO: NOT USED YET
+    public class SessionTag
     {
         [Key, Column(Order = 0)]    
         public int SessionId { get; set; }
