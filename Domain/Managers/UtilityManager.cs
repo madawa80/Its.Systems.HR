@@ -84,10 +84,8 @@ namespace Its.Systems.HR.Domain.Managers
                 result.Add(tag);
             }
 
+            // NOTICE! SaveChanges in the method below.
             AddTags(result);
-
-
-            // NOTICE! Have to savechanges later!
         }
 
         public double GetRatingForSessionById(int id)
@@ -97,6 +95,9 @@ namespace Its.Systems.HR.Domain.Managers
             var sessionParticipations = _db.Get<SessionParticipant>().Where(n => n.SessionId == id).ToList();
 
             if (sessionParticipations.Count < 1)
+                return 0;
+
+            if (sessionParticipations.Count(n => n.Rating != 0) < 1)
                 return 0;
 
             return sessionParticipations.Where(n => n.Rating != 0).Average(a => a.Rating);
