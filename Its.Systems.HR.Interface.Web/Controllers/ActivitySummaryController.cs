@@ -143,9 +143,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
        public ActionResult AllSessionsForActivity(int id)
         {
             var allSessionsForActivity = _sessionManager
-                            .GetAllSessionsForActivity(id)
-                            .Include(n => n.HrPerson)
-                            .Include(n => n.Location)
+                            .GetAllSessionsWithIncludes()
+                            .Where(n => n.ActivityId == id)
                             .ToList();
             var activityName = _activityManager.GetActivityById(id).Name;
 

@@ -58,43 +58,8 @@
     </div>
 }
 
-<table class="table">
-    <tr>
-        <th>Aktivitet och Namn</th>
-        <th>Start</th>
-        <th>Slut</th>
-        <th>Hr-Person</th>
-        <th>Plats</th>
-    </tr>
+@Html.Partial("_ListSessionsPartial", Model.Sessions)
 
-    @foreach (var session in Model.Sessions.OrderBy(n => n.NameWithActivity))
-    {
-        <tr>
-            <td>
-                <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.NameWithActivity</a>
-            </td>
-            <td>
-                @session.StartDate.ToString("dd MMM yyyy HH:mm")
-            </td>
-            <td>
-                @session.EndDate.ToString("dd MMM yyyy HH:mm")
-            </td>
-            <td>
-                @if (session.HrPerson != null)
-                {
-                    @session.HrPerson.FullName
-                }
-            </td>
-            <td>
-                @if (session.Location != null)
-                {
-                    @session.Location.Name
-                }
-            </td>
-        </tr>
-    }
-
-</table>
 
 @section scripts {
 

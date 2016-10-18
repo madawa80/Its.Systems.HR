@@ -6,45 +6,8 @@
 
 <h2><strong>@Model.ActivityName</strong></h2>
 <h4>Listar alla tillfällen för aktiviteten.</h4>
-<a href="@Url.Action("CreateSession", "Session", new {id = Model.ActivityId})" class="btn btn-default">
+<a href="@Url.Action("CreateSession", "Session", new {id = Model.ActivityId})" class="btn btn-default m-b-30">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Skapa nytt tillfälle
 </a>
 
-
-<table class="table m-t-50">
-    <tr>
-        <th>Namn</th>
-        <th>Start</th>
-        <th>Slut</th>
-        <th>Hr-Person</th>
-        <th>Plats</th>
-    </tr>
-
-    @foreach (var session in Model.Sessions)
-    {
-        <tr>
-            <td>
-                <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.Name</a>
-            </td>
-            <td>
-                @session.StartDate.ToString("dd MMM yyyy HH:mm")
-            </td>
-            <td>
-                @session.EndDate.ToString("dd MMM yyyy HH:mm")
-            </td>
-            <td>
-                @if (session.HrPerson != null)
-                {
-                    @session.HrPerson.FullName
-                }
-            </td>
-            <td>
-                @if (session.Location != null)
-                {
-                    @session.Location.Name
-                }
-            </td>
-        </tr>
-    }
-
-</table>
+@Html.Partial("_ListSessionsPartial", Model.Sessions)
