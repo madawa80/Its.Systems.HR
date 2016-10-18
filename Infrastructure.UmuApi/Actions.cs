@@ -20,21 +20,34 @@ namespace Infrastructure.UmuApi
             try
             {
                 HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(url);
-
                 myReq.Method = "GET";
                 myReq.Credentials = new NetworkCredential("sape0014", "Pwd2Chang3");
-
                 HttpWebResponse myResponse = (HttpWebResponse)myReq.GetResponse();
-                Stream rebut = myResponse.GetResponseStream();
-                StreamReader readStream = new StreamReader(rebut, Encoding.UTF8); // Pipes the stream to a higher level stream reader with the required encoding format. 
-                string rawData = readStream.ReadToEnd();
+                
+                if (myResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    
+                    DateTime currentDate = DateTime.Now;
+                    // Uses the LastModified property to compare with today's date.
+                    if (DateTime.Compare(currentDate, myResponse.LastModified) > 1)
+                    { 
+                    Stream rebut = myResponse.GetResponseStream();
+                    StreamReader readStream = new StreamReader(rebut, Encoding.UTF8); // Pipes the stream to a higher level stream reader with the required encoding format. 
+                    string rawData = readStream.ReadToEnd();
 
 
-                result = JsonConvert.DeserializeObject<RootObject>(rawData);
+                    result = JsonConvert.DeserializeObject<RootObject>(rawData);
 
 
-                myResponse.Close();
-                readStream.Close();
+                    myResponse.Close();
+                    readStream.Close();
+
+                    }
+                }
+                
+
+
+
             }
             catch (WebException ex)
             {

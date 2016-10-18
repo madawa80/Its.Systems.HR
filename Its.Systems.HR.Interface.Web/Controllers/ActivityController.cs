@@ -12,6 +12,8 @@ using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Infrastructure;
 using Its.Systems.HR.Infrastructure.Repository;
 using Its.Systems.HR.Interface.Web.ViewModels;
+//using Quartz;
+//using Quartz.Impl;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
@@ -28,6 +30,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _utilitiesManager = utilityManager;
         }
 
+       
         public ActionResult SyncUsersWithUmuApi()
         {
             return View("Error");
