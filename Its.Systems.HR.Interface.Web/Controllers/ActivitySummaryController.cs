@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -40,6 +41,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var sessionTagIdsForSession = theSession.SessionTags.Select(n => n.TagId);
             var allTagsForSession =
                 _utilityManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
+            var sessionRating =
+                _utilityManager.GetRatingForSessionById(id);
 
             var result = new SessionForActivityViewModel()
             {
@@ -53,7 +56,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Participants = allParticipant,
                 SessionNameWithActivity = theSession.NameWithActivity,
                 SessionId = id,
-                Tags = allTagsForSession
+                Tags = allTagsForSession,
+                Rating = sessionRating.ToString(CultureInfo.CreateSpecificCulture("en-US"))
             };
 
             //ViewBag.AllSessionParticipants = new SelectList(

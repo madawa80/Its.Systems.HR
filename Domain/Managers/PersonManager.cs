@@ -186,7 +186,7 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
         }
 
-        public bool UpdateReviewForSessionParticipant(int sessionId, int participantIdTEMP, int rating)
+        public bool UpdateReviewForSessionParticipant(int sessionId, int participantIdTEMP, int rating, string comments)
         {
             var sessionParticipant = _db.Get<SessionParticipant>()
                 .SingleOrDefault(n => n.SessionId == sessionId && n.ParticipantId == participantIdTEMP);
@@ -197,6 +197,7 @@ namespace Its.Systems.HR.Domain.Managers
             if (rating >= 1 && rating <= 5)
             {
                 sessionParticipant.Rating = rating;
+                sessionParticipant.Comments = comments;
                 _db.SaveChanges();
             }
             else

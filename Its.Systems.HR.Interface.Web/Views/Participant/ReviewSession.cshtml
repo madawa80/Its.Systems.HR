@@ -8,7 +8,7 @@
 
 <div class="alert alert-info">Fejkinloggad som @Model.ParticipantName</div>
 
-<h4 class="m-b-30">Recensera tillfället: <strong>@Model.SessionName</strong></h4>
+<h4 class="m-b-30">Recensera tillfället: <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = Model.SessionId})">@Model.SessionName</a></h4>
 
 @using (Html.BeginForm("ReviewSession", "Participant", FormMethod.Post))
 {
@@ -51,9 +51,9 @@
 
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <script src="~/Scripts/bootstrap-slider.min.js"></script>
+    <script src="~/Scripts/bootstrap-rating.min.js"></script>
 
     <script src="~/Scripts/App/HrHelpers.js"></script>
-    <script src="~/Scripts/bootstrap-rating.min.js"></script>
 
     @*<script>
             $(document).ready(function () {

@@ -89,5 +89,17 @@ namespace Its.Systems.HR.Domain.Managers
 
             // NOTICE! Have to savechanges later!
         }
+
+        public double GetRatingForSessionById(int id)
+        {
+            // get all the sessionparticipants with sessionId = id
+            // average the ratings
+            var sessionParticipations = _db.Get<SessionParticipant>().Where(n => n.SessionId == id).ToList();
+
+            if (sessionParticipations.Count < 1)
+                return 0;
+
+            return sessionParticipations.Where(n => n.Rating != 0).Average(a => a.Rating);
+        }
     }
 }
