@@ -83,6 +83,6 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         bool UpdateReviewForSessionParticipant(int sessionId, int participantId, int rating);
 
-        bool AddItsPersonsToDb();
+        bool AddDeleteItsPersonsToDb();
     }
 }

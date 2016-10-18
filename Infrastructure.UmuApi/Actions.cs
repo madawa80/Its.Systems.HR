@@ -19,6 +19,7 @@ namespace Infrastructure.UmuApi
 
             try
             {
+                var length = 1266276;
                 HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(url);
                 myReq.Method = "GET";
                 myReq.Credentials = new NetworkCredential("sape0014", "Pwd2Chang3");
@@ -27,9 +28,8 @@ namespace Infrastructure.UmuApi
                 if (myResponse.StatusCode == HttpStatusCode.OK)
                 {
                     
-                    DateTime currentDate = DateTime.Now;
-                    // Uses the LastModified property to compare with today's date.
-                    if (DateTime.Compare(currentDate, myResponse.LastModified) > 1)
+                    
+                    if (myResponse.ContentLength != length)
                     { 
                     Stream rebut = myResponse.GetResponseStream();
                     StreamReader readStream = new StreamReader(rebut, Encoding.UTF8); // Pipes the stream to a higher level stream reader with the required encoding format. 
@@ -45,9 +45,6 @@ namespace Infrastructure.UmuApi
                     }
                 }
                 
-
-
-
             }
             catch (WebException ex)
             {

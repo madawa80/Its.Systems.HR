@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -88,7 +89,7 @@ namespace Its.Systems.HR.Domain.Managers
             //        on eventUser.EventId equals @event.Id
             //    where eventUser.ProfileId == profileId
             //    select Name
-            
+
             return _db.Get<Participant>().SingleOrDefault(n => n.Id == hrPersonId && n.IsHrPerson);
         }
 
@@ -205,7 +206,7 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public bool AddItsPersonsToDb()
+        public bool AddDeleteItsPersonsToDb()
         {
             // TODO: Mark the people missing as IsActive = false
             // TODO: Add possible new people to our database
@@ -214,17 +215,47 @@ namespace Its.Systems.HR.Domain.Managers
 
             foreach (var person in result.Persons)
             {
-                var personToAdd = new Participant()
-                {
-                    CasId = person.CasId,
-                    FirstName = person.FirstName,
-                    LastName = person.LastName,
 
-                };
-                _db.Add<Participant>(personToAdd);
+                if (!_db.Get<Participant>().Any(n => n.CasId == person.CasId && n.IsActive == true))
+                {
+
+                    var personToEdit = new Participant()
+                    {
+                        CasId = person.CasId,
+                        //FirstName = person.FirstName,
+                        //LastName = person.LastName,
+                        IsActive = false,
+
+                    };
+
+                    _db.Context().Entry(personToEdit).State = EntityState.Modified;
+                    _db.SaveChanges();
+
+                    return true;
+                }
+
+
+
+                if (!_db.Get<Participant>().Any(n => n.CasId == person.CasId))
+
+                {
+
+                    var personToAdd = new Participant()
+                    {
+                        CasId = person.CasId,
+                        FirstName = person.FirstName,
+                        LastName = person.LastName,
+                        IsActive = true,
+
+                    };
+                    _db.Add<Participant>(personToAdd);
+                }
+                return true;
+
             }
 
-            return true;
+
+            return false;
         }
 
         // PRIVATE METHODS BELOW

@@ -33,11 +33,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
        
         public ActionResult SyncUsersWithUmuApi()
         {
-            return View("Error");
+            //return View("Error");
 
 
 
-            _personManager.AddItsPersonsToDb();
+            _personManager.AddDeleteItsPersonsToDb();
             return RedirectToAction("Index");
         }
 
