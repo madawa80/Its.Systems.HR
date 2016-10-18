@@ -19,14 +19,15 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// Gets all the HrPersons.
         /// </summary>
         /// <returns>IQueryable of HrPerson.</returns>
-        IQueryable<HrPerson> GetAllHrPersons();
+        IQueryable<Participant> GetAllHrPersons();
 
         /// <summary>
-        /// Adds the HrPerson passed.
+        /// Makes the participant passed to a HrPerson,
+        /// by setting the IsHrPerson flag to true.
         /// </summary>
-        /// <param name="hrPerson"></param>
+        /// <param name="participant"></param>
         /// <returns>True if successfull.</returns>
-        bool AddHrPerson(HrPerson hrPerson);
+        bool MakeParticipantHrPerson(Participant participant);
 
         /// <summary>
         /// Gets a participant by participantId.
@@ -55,7 +56,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <returns>True if successfull.</returns>
         bool SaveWishesForParticipant(int personId, string wishes);
 
-        HrPerson GetHrPersonById(int sessionId);
+        Participant GetHrPersonById(int hrPersonId);
 
         /// <summary>
         /// Adds a participant by participantId to a session, by sessionId.

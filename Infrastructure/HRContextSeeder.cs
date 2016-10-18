@@ -63,22 +63,22 @@ namespace Its.Systems.HR.Infrastructure
             context.SaveChanges();
 
             //HR person
-            var HRS = new List<HrPerson>
-            {
-                new HrPerson() {FirstName = "Samme",LastName = "Petersson"},
-                new HrPerson() {FirstName = "Elina",LastName = "Eriksson"},
-                new HrPerson() {FirstName  = "Raad",LastName = "Larsson"},
-                new HrPerson() {FirstName  = "Jan",LastName = "Petersson"},
-                new HrPerson() {FirstName = "Kim",LastName = "Henriksson"},
-                new HrPerson() {FirstName = "Linda",LastName = "Bengtsson"},
-                new HrPerson() {FirstName = "Ingen",LastName = "ansvarig"},
+            //var HRS = new List<HrPerson>
+            //{
+            //    new HrPerson() {FirstName = "Samme",LastName = "Petersson"},
+            //    new HrPerson() {FirstName = "Elina",LastName = "Eriksson"},
+            //    new HrPerson() {FirstName  = "Raad",LastName = "Larsson"},
+            //    new HrPerson() {FirstName  = "Jan",LastName = "Petersson"},
+            //    new HrPerson() {FirstName = "Kim",LastName = "Henriksson"},
+            //    new HrPerson() {FirstName = "Linda",LastName = "Bengtsson"},
+            //    new HrPerson() {FirstName = "Ingen",LastName = "ansvarig"},
 
-            };
+            //};
 
-            foreach (var HR in HRS)
-                context.HrPersons.Add(HR);
+            //foreach (var HR in HRS)
+            //    context.HrPersons.Add(HR);
 
-            context.SaveChanges();
+            //context.SaveChanges();
 
             // Sessions
             var sessions = new List<Session>()
@@ -88,7 +88,7 @@ namespace Its.Systems.HR.Infrastructure
                     Name = "AirHack PowerHackathon 2017",
                     StartDate = GenerateRandomStartDate(),
                     EndDate = GenerateRandomEndDate(),
-                    HrPerson = context.HrPersons.SingleOrDefault(n => n.FirstName == "Elina"),
+                    HrPerson = null,
                     Location = context.Locations.SingleOrDefault(n => n.Name == "Stockholm"),
                     Activity = context.Activities.SingleOrDefault(n => n.Name == "AirHack"),
                 },
@@ -97,7 +97,7 @@ namespace Its.Systems.HR.Infrastructure
                     Name = "Lunchföreläsning Kompetensutveckling i arbetet",
                     StartDate = GenerateRandomStartDate(),
                     EndDate = GenerateRandomEndDate(),
-                    HrPerson = context.HrPersons.SingleOrDefault(n => n.FirstName == "Elina"),
+                    HrPerson = null,
                     Location = context.Locations.SingleOrDefault(n => n.Name == "Umeå"),
                     Activity = context.Activities.SingleOrDefault(n => n.Name == "Lunchföreläsning"),
                 },
@@ -106,7 +106,7 @@ namespace Its.Systems.HR.Infrastructure
                     Name = "JavaOne 2015",
                     StartDate = GenerateRandomStartDate(),
                     EndDate = GenerateRandomEndDate(),
-                    HrPerson = context.HrPersons.SingleOrDefault(n => n.FirstName == "Samme"),
+                    HrPerson = null,
                     Location = context.Locations.SingleOrDefault(n => n.Name == "Stockholm"),
                     Activity = context.Activities.SingleOrDefault(n => n.Name == "JavaOne"),
                 },
@@ -115,7 +115,7 @@ namespace Its.Systems.HR.Infrastructure
                     Name = "JavaOne 2016",
                     StartDate = GenerateRandomStartDate(),
                     EndDate = GenerateRandomEndDate(),
-                    HrPerson = context.HrPersons.SingleOrDefault(n => n.FirstName == "Elina"),
+                    HrPerson = null,
                     Location = context.Locations.SingleOrDefault(n => n.Name == "Umeå"),
                     Activity = context.Activities.SingleOrDefault(n => n.Name == "JavaOne"),
                 },
