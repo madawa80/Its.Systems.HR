@@ -92,7 +92,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var loggedInUser = _personManager.GetParticipantById(237);
 
             if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating, vm.Comments))
-                return RedirectToAction("Index");
+                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = vm.SessionId});
 
             //ModelState.AddModelError("", "Något blev fel, prova gärna igen!");
             return View(vm);
