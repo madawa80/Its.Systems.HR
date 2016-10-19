@@ -106,7 +106,7 @@ namespace Its.Systems.HR.Domain.Managers
 
         public IQueryable<Session> GetAllSessionsForYear(int Year)
         {
-            return _db.Get<Session>().Where(n => n.StartDate.Year == Year);
+            return _db.Get<Session>().Where(n => n.StartDate.Value.Year == Year);
         }
 
         public bool EditSession(Session sessionToUpdate)

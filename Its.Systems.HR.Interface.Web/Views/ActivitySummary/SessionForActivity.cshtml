@@ -67,8 +67,14 @@
                     <p>Plats: @Model.Location.Name</p>
                     @*<p>Adress: @Model.Location.Address</p>*@
                 }
-                <p>Startdatum: @Model.StartDate.ToString("dd MMM yyyy HH:mm")</p>
-                <p>Slutdatum: @Model.EndDate.ToString("dd MMM yyyy HH:mm")</p>
+                @if (Model.StartDate != null)
+                {
+                    <p>Startdatum: @Model.StartDate.Value.ToString("dd MMM yyyy HH:mm")</p>
+                }
+                @if (Model.EndDate != null)
+                {
+                    <p>Slutdatum: @Model.EndDate.Value.ToString("dd MMM yyyy HH:mm")</p>
+                }
                 @if (Model.Tags.Count > 0)
                 {
                     <p>
@@ -81,7 +87,7 @@
                 @if (Model.Rating != "0")
                 {
                     <p>
-                        Betyg: <input type="hidden" name="Rating" id="Rating" class="rating" 
+                        Betyg: <input type="hidden" name="Rating" id="Rating" class="rating"
                                       value="@Model.Rating" data-readonly data-fractions="2"
                                       data-filled="glyphicon glyphicon-star" data-empty="glyphicon glyphicon-star-empty" />
                     </p>

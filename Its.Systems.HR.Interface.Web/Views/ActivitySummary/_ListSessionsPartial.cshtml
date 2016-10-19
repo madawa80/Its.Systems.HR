@@ -17,10 +17,16 @@
                 <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.NameWithActivity</a>
             </td>
             <td>
-                @session.StartDate.ToString("dd MMM yyyy HH:mm")
+                @if (session.StartDate != null)
+                {
+                    @session.StartDate.Value.ToString("dd MMM yyyy HH:mm")
+                }
             </td>
             <td>
-                @session.EndDate.ToString("dd MMM yyyy HH:mm")
+                @if (session.EndDate != null)
+                {
+                    @session.EndDate.Value.ToString("dd MMM yyyy HH:mm")
+                }
             </td>
             <td>
                 @if (session.HrPerson != null)

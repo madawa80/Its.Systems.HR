@@ -228,7 +228,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 PersonId = personId,
                 SessionId = sessionId,
                 SessionName = session.NameWithActivity,
-                StartDate = session.StartDate.ToShortDateString(),
+                StartDate = session.StartDate.Value.ToShortDateString(),
                 //Year = session.StartDate.Year,
                 //Month = session.StartDate.Month,
                 //Day = session.StartDate.Day,

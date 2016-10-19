@@ -132,7 +132,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var result = new ParticipantStatisticSummaryViewModel()
             {
                 TotalCount = allParticipantSessions.Count,
-                CountThisYear = allParticipantSessions.Count(n => n.StartDate.Year == DateTime.Now.Year)
+                CountThisYear = allParticipantSessions.Count(n => n.StartDate.Value.Year == DateTime.Now.Year)
             };
 
             return PartialView("_ParticipantStatisticSummaryPartial", result);

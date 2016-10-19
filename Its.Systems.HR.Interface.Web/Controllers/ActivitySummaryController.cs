@@ -83,7 +83,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 yearStart = int.Parse(years[0]);
                 yearEnd = int.Parse(years[1]);
 
-                allSessions = allSessions.Where(n => n.StartDate.Year >= yearStart && n.StartDate.Year <= yearEnd);
+                allSessions = allSessions.Where(n => n.StartDate.Value.Year >= yearStart && n.StartDate.Value.Year <= yearEnd);
             }
 
             if (!string.IsNullOrEmpty(hrPerson))

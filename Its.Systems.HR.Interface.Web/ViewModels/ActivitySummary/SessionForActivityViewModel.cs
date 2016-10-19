@@ -9,9 +9,9 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public string Comments { get; set; }
         public string Evaluation { get; set; }
 
-        public DateTime StartDate{ get; set; }
+        public DateTime? StartDate{ get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public Participant HrPerson { get; set; }
         public string Rating { get; set; }
