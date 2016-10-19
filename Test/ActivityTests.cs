@@ -68,28 +68,19 @@ namespace Its.Systems.HR.Test
         [TestMethod]
         public void EditJavaOneNameToEditedName_ShouldGetJavaOneNameInDbUpdated()
         {
-            var activityFromDb = _activityManager.GetActivityById(2);
-
-            activityFromDb.Name = "EDITEDNAME";
-
-            var result = _activityManager.EditActivity(activityFromDb);
+            var result = _activityManager.EditActivity(2, "EDITEDNAME");
 
             Assert.AreEqual("EDITEDNAME", _activityManager.GetActivityById(2).Name);
         }
 
+        [TestMethod]
+        public void EditJavaOneToAirHack_ShouldNotUpdateInDb()
+        {
+            var result = _activityManager.EditActivity(2, "AirHack");
 
-        //TODO: FINISH SAD PATH FOR EDIT
-        //[TestMethod]
-        //public void EditJavaOneToAirHack_ShouldNotUpdateInDb()
-        //{
-        //    var activityFromDb = _activityManager.GetActivityById(2);
-
-        //    activityFromDb.Name = "AirHack";
-
-        //    var result = _activityManager.EditActivity(activityFromDb);
-
-        //    Assert.AreEqual("AirHack", _activityManager.GetActivityById(2).Name);
-        //}
+            Assert.AreEqual("JavaOne", _activityManager.GetActivityById(2).Name);
+            Assert.AreEqual(false, result);
+        }
 
         [TestMethod]
         public void DeleteJavaOne_ShouldReturnAllActivitiesCountOf4()

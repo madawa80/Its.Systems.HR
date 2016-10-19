@@ -57,7 +57,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
-        public ActionResult ReviewSession(int? id = 7)
+        public ActionResult ReviewSession(int? id = 44)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

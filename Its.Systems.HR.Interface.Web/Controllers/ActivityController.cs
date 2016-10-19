@@ -148,15 +148,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var activityToUpdate = _activityManager.GetActivityById(activityFromInput.Id);
 
             try
             {
-                if (!_activityManager.GetAllActivities().Any(n => n.Name == activityFromInput.Name))
+                if (_activityManager.EditActivity(activityFromInput.Id, activityFromInput.Name))
                 {
-                    activityToUpdate.Name = activityFromInput.Name;
-                    _activityManager.EditActivity(activityToUpdate);
-
                     return RedirectToAction("Index");
                 }
 
@@ -169,7 +165,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return View("EditActivity", new ActivityViewModel()
             {
-                Name = activityToUpdate.Name
+                Name = activityFromInput.Name
             });
         }
 
