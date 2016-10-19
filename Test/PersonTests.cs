@@ -10,29 +10,38 @@ namespace Its.Systems.HR.Test
     [TestClass]
     public class PersonTests : BaseTest
     {
-        private IPersonManager impl;
+        private readonly IPersonManager _personManager;
 
         public PersonTests() : base()
         {
-            impl = Container().Resolve<IPersonManager>();
+            _personManager = Container().Resolve<IPersonManager>();
         }
          
         [TestMethod]
-        public void GetAllParticipants_ShouldReturnCountOf6()
+        public void GetAllParticipants_ShouldReturnExpected()
         {
-            impl = Container().Resolve<IPersonManager>();
+            var allParticipants = _personManager.GetAllParticipants().ToList();
 
-            var p = impl.GetAllParticipants().ToList();
+            var expectedCount = 8;
 
-            Assert.AreEqual(6, p.Count);
+            Assert.AreEqual(expectedCount, allParticipants.Count);
         }
 
         [TestMethod]
-        public void GetAllParticipantsForSessionJavaOne2015_ShouldReturnCountOf3()
+        public void GetAllParticipantsForSessionJavaOne2015_ShouldReturnCountOf4()
         {
-            var result = impl.GetAllParticipantsForSession(1).Count();
+            var result = _personManager.GetAllParticipantsForSession(1).Count();
 
-            Assert.AreEqual(3, result);
+            Assert.AreEqual(4, result);
+        }
+
+        // UMU API SYNC WITH OUR PARTICIPANT-TABLE IN DB
+        [TestMethod]
+        public void SyncWithITS_ShouldReturnExpected()
+        {
+            _personManager.AddDeleteItsPersonsToDb();
+
+            //Assert.AreEqual(-1, _personManager.GetAllParticipants().Count());
         }
 
     }
