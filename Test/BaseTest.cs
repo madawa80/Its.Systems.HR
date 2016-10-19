@@ -67,9 +67,10 @@ namespace Its.Systems.HR.Test
                     new InjectionConstructor());
             }
             _ambientContainer.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
-            _ambientContainer.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
             _ambientContainer.RegisterType<IActivityManager, ActivityManager>(new PerResolveLifetimeManager());
+            _ambientContainer.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
             _ambientContainer.RegisterType<ISessionManager, SessionManager>(new PerResolveLifetimeManager());
+            _ambientContainer.RegisterType<IUtilityManager, UtilityManager>(new PerResolveLifetimeManager());
 
         }
     }

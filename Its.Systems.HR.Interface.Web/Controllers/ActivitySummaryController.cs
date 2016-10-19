@@ -30,17 +30,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult SessionForActivity(int id)
         {
-            var theSession = _sessionManager.GetSessionByIdWithIncludes(id); // Is this executed or just creating a expr.tree?
+            var theSession = _sessionManager.GetSessionByIdWithIncludes(id); // TODO: Is this executed or just creating a expr.tree?
 
             if (theSession == null)
                 return View("Error");
 
             var allParticipant = _personManager.GetAllParticipantsForSession(id).ToList();
-
-            // Get Tags for session
-            var sessionTagIdsForSession = theSession.SessionTags.Select(n => n.TagId);
             var allTagsForSession =
-                _utilityManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
+                _utilityManager.GetAllTagsForSessionById(id).ToList();
             var sessionRating =
                 _utilityManager.GetRatingForSessionById(id);
 

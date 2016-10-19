@@ -19,19 +19,6 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<Location>();
         }
 
-        public int AddLocation(string location)
-        {
-            var result = new Location()
-            {
-                Name = location
-            };
-
-            _db.Add<Location>(result);
-            _db.SaveChanges();
-
-            return result.Id;
-        }
-
         public int? GetIdForLocationOrCreateIfNotExists(string location)
         {
             if (string.IsNullOrEmpty(location))
@@ -55,12 +42,25 @@ namespace Its.Systems.HR.Domain.Managers
             return resultId;
         }
 
+        private int AddLocation(string location)
+        {
+            var result = new Location()
+            {
+                Name = location
+            };
+
+            _db.Add<Location>(result);
+            _db.SaveChanges();
+
+            return result.Id;
+        }
+
         public IQueryable<Tag> GetAllTags()
         {
             return _db.Get<Tag>();
         }
 
-        public void AddTags(IEnumerable<Tag> tags)
+        private void AddTags(IEnumerable<Tag> tags)
         {
             // TODO: this will result in one roundtrip for every new tag...
             foreach (var tag in tags)
@@ -74,15 +74,21 @@ namespace Its.Systems.HR.Domain.Managers
         {
             // tagsToAdd is the incoming stuff, with all the tags to add to Tags in DB
             // but the list needs to be filtered for any existing tags in db.Tags!!
-            var tagsToAddToDb = new List<Tag>(tagsToAdd);
+
+            // DOUBLE CHECK THAT NO DUPLICATES ARE ADDED
+            for (int index = 0; index < tagsToAdd.Count; index++)
+                tagsToAdd[index].Name = tagsToAdd[index].Name.ToLower();
+
+            List<Tag> tagsToAddToDb = new List<Tag>();
+            foreach (var tagName in tagsToAdd.Select(n => n.Name).Distinct())
+                tagsToAddToDb.Add(new Tag() {Name = tagName });
+            //
+
             var currentTags = GetAllTags().ToList();
-
-
+            
             var result = new List<Tag>();
             foreach (var tag in tagsToAddToDb.Where(n => currentTags.All(n2 => n2.Name != n.Name)))
-            {
                 result.Add(tag);
-            }
 
             // NOTICE! SaveChanges in the method below.
             AddTags(result);
@@ -101,6 +107,11 @@ namespace Its.Systems.HR.Domain.Managers
                 return 0;
 
             return sessionParticipations.Where(n => n.Rating != 0).Average(a => a.Rating);
+        }
+
+        public IQueryable<Tag> GetAllTagsForSessionById(int sessionId)
+        {
+            return _db.Get<SessionTag>().Where(n => n.SessionId == sessionId).Select(a => a.Tag);
         }
     }
 }

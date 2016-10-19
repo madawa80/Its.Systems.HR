@@ -51,25 +51,25 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public bool DeletePaticipantById(int id)
-        {
-            var paticipantFromDb = _db.Get<Participant>().SingleOrDefault(n => n.Id == id);
-            if (paticipantFromDb == null)
-                return false;
+        //public bool DeletePaticipantById(int id)
+        //{
+        //    var paticipantFromDb = _db.Get<Participant>().SingleOrDefault(n => n.Id == id);
+        //    if (paticipantFromDb == null)
+        //        return false;
 
-            _db.Delete(paticipantFromDb);
-            try
-            {
-                _db.SaveChanges();
-            }
-            catch (Exception)
-            {
+        //    _db.Delete(paticipantFromDb);
+        //    try
+        //    {
+        //        _db.SaveChanges();
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
+        //        throw;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public Participant GetParticipantById(int id)
         {

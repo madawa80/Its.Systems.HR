@@ -16,13 +16,6 @@ namespace Its.Systems.HR.Domain.Interfaces
         IQueryable<Location> GetAllLocations();
 
         /// <summary>
-        /// Adds an location.
-        /// </summary>
-        /// <param name="location"></param>
-        /// <returns>The id of the added location.</returns>
-        int AddLocation(string location);
-
-        /// <summary>
         /// Gets the Id for a location if it exists, otherwise creates it and 
         /// returns the Id of the newly created location.
         /// </summary>
@@ -37,12 +30,6 @@ namespace Its.Systems.HR.Domain.Interfaces
         IQueryable<Tag> GetAllTags();
 
         /// <summary>
-        /// Adds the list of tags passed.
-        /// </summary>
-        /// <param name="tags"></param>
-        void AddTags(IEnumerable<Tag> tags);
-
-        /// <summary>
         /// Filter the list of tags for tags not already in the database,
         /// and adds those.
         /// </summary>
@@ -50,5 +37,6 @@ namespace Its.Systems.HR.Domain.Interfaces
         void AddNewTagsToDb(List<Tag> tagsToAdd);
 
         double GetRatingForSessionById(int id);
+        IQueryable<Tag> GetAllTagsForSessionById(int sessionId);
     }
 }
