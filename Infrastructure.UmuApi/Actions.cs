@@ -12,44 +12,35 @@ namespace Infrastructure.UmuApi
     {
         public List<ItsPerson> GetPersonFromUmuApi()
         {
-            //var url = "https://websrv01.testad.umu.se/Catalogue/3.0/api/org/e841c73b5524c220b45690b8e1d841c87c454436/person";
+            var url = "https://websrv01.testad.umu.se/Catalogue/3.0/api/org/e841c73b5524c220b45690b8e1d841c87c454436/person";
 
-            var url = "http://localhost:54424/customers";
-
-            //RootObject result = new RootObject();
-            var result1 = new List<ItsPerson>();
+            var result = new RootObject();
 
             try
             {
-                var length = 202;
+                var length = -1000;
                 HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(url);
                 myReq.Method = "GET";
-                //myReq.Credentials = new NetworkCredential("sape0014", "Pwd2Chang3");
+                myReq.Credentials = new NetworkCredential("sape0014", "Pwd2Chang3");
                 HttpWebResponse myResponse = (HttpWebResponse)myReq.GetResponse();
-                
+
                 if (myResponse.StatusCode == HttpStatusCode.OK)
                 {
-                    
-                    
+
+
                     if (myResponse.ContentLength != length)
-                    { 
-                    Stream rebut = myResponse.GetResponseStream();
-                    StreamReader readStream = new StreamReader(rebut, Encoding.UTF8); // Pipes the stream to a higher level stream reader with the required encoding format. 
-                    string rawData = readStream.ReadToEnd();
+                    {
+                        Stream rebut = myResponse.GetResponseStream();
+                        StreamReader readStream = new StreamReader(rebut, Encoding.UTF8); // Pipes the stream to a higher level stream reader with the required encoding format. 
+                        string rawData = readStream.ReadToEnd();
 
-                        //JSONParser parser = new JSONParser();
-                        //JSONObject json = (JSONObject)parser.parse(stringToParse);
-                        //List<string> videogames = JsonConvert.DeserializeObject<List<string>>(rawData);
-                        
-                        result1 = JsonConvert.DeserializeObject<List<ItsPerson>>(rawData);
+                        result = JsonConvert.DeserializeObject<RootObject>(rawData);
 
-                       
                         myResponse.Close();
-                    readStream.Close();
-
+                        readStream.Close();
                     }
                 }
-                
+
             }
             catch (WebException ex)
             {
@@ -64,7 +55,7 @@ namespace Infrastructure.UmuApi
                 }
             }
 
-            return result1;
+            return result.Persons;
         }
     }
 }

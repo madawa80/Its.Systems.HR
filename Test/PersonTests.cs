@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Infrastructure.UmuApi;
 using Its.Systems.HR.Domain.Interfaces;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -37,9 +38,18 @@ namespace Its.Systems.HR.Test
         [TestMethod]
         public void SyncWithITS_ShouldReturnExpected()
         {
-            //_personManager();
+            // Assumes the following CasIds exists in UmuApi ITS Persons:
+            // sape0014, maku0029, elnjan96, jaru0002
 
-            //Assert.AreEqual(-1, _personManager.GetAllParticipants().Count());
+            var umuApi = new Actions();
+            var actualCountFromUmuWebApi = umuApi.GetPersonFromUmuApi().Count;
+             
+            var addedPersons = _personManager.AddItsPersons();
+            var inactivatedPersons = _personManager.InactivateItsPersons();
+
+            Assert.AreEqual(4, inactivatedPersons.Count);
+            Assert.AreEqual(actualCountFromUmuWebApi - 4, addedPersons.Count);
+            Assert.AreEqual(actualCountFromUmuWebApi, _personManager.GetAllParticipants().Count(n => n.IsActive));
         }
 
     }

@@ -206,63 +206,52 @@ namespace Its.Systems.HR.Domain.Managers
 
         public List<Participant> InactivateItsPersons()
         {
-            // TODO: Mark the people missing as IsActive = false
-           
+            // Mark the people missing as IsActive = false
+
             var umuApi = new Actions();
-            var result1 = new List<Participant>();
-            var result = new List<ItsPerson>();
-            result = umuApi.GetPersonFromUmuApi();
+            var result = new List<Participant>();
+            var personsFromUmuApi = umuApi.GetPersonFromUmuApi();
             var paticipants = GetAllParticipants().ToList();
 
             foreach (var person in paticipants)
             {
-
-                if(!result.Any(n => n.CasId == person.CasId))
-
+                if (!personsFromUmuApi.Any(n => n.CasId == person.CasId))
                 {
+                    person.IsActive = false;
+                    _db.Context().Entry(person).State = EntityState.Modified;
+                    _db.SaveChanges();
 
-
-                    
-                        person.IsActive = false;
-                        _db.Context().Entry(person).State = EntityState.Modified;
-                       
-                        _db.SaveChanges();
-                        
-                   
-                    result1.Add(person);
+                    result.Add(person);
                 }
-
             }
-                
-        return result1;
+
+            return result;
         }
-       public List<Participant> AddItsPersons()
-       {
-            // TODO: Add possible new people to our database
+        public List<Participant> AddItsPersons()
+        {
+            // Add possible new people to our database
+
             var umuApi = new Actions();
-            var result1 = new List<Participant>();
-            var result = new List<ItsPerson>();
-            result = umuApi.GetPersonFromUmuApi();
+            var result = new List<Participant>();
+            var personsFromUmuApi = umuApi.GetPersonFromUmuApi();
 
-            foreach (var person in result)
+            foreach (var person in personsFromUmuApi)
             {
-                if (!_db.Get<Participant>().Any(n => n.CasId == person.CasId))
+                if (!GetAllParticipants().Any(n => n.CasId == person.CasId))
                 {
-
                     var personToAdd = new Participant()
                     {
                         CasId = person.CasId,
                         FirstName = person.FirstName,
                         LastName = person.LastName,
                         IsActive = true,
-
                     };
-                    result1.Add(personToAdd);
+                    result.Add(personToAdd);
                     _db.Add<Participant>(personToAdd);
                 }
-
             }
-            return result1;
+
+            return result;
         }
 
         // PRIVATE METHODS BELOW
