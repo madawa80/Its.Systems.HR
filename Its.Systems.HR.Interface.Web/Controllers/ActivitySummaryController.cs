@@ -15,6 +15,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private readonly IPersonManager _personManager;
         private readonly IUtilityManager _utilityManager;
 
+        private const int MinYear = 2011;
+
         public ActivitySummaryController(IActivityManager manager, ISessionManager sessionManager, IPersonManager personManager, IUtilityManager utilityManager)
         {
             _activityManager = manager;
@@ -48,6 +50,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Participants = allParticipant,
                 SessionNameWithActivity = theSession.NameWithActivity,
                 SessionId = id,
+                ActivityName = theSession.Activity.Name,
+                ActivityId = theSession.ActivityId,
                 Tags = allTagsForSession,
                 Rating = sessionRating.ToString(CultureInfo.CreateSpecificCulture("en-US"))
             };
@@ -70,6 +74,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 allSessions = _sessionManager.GetAllSessionsWithIncludes().Where(n => n.Name.Contains(searchString) || n.Activity.Name.Contains(searchString));
             // TODO: Take 10?
 
+
+            // TODO: If yearSlider is min & max, then dont sort by startdate!!!
             int yearStart = 0;
             int yearEnd = 10000;
             if (!string.IsNullOrEmpty(yearSlider))
@@ -78,7 +84,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 yearStart = int.Parse(years[0]);
                 yearEnd = int.Parse(years[1]);
 
-                allSessions = allSessions.Where(n => n.StartDate.Value.Year >= yearStart && n.StartDate.Value.Year <= yearEnd);
+                if (yearStart != MinYear || yearEnd != DateTime.Now.AddYears(1).Year)
+                    allSessions = allSessions.Where(n => n.StartDate.Value.Year >= yearStart && n.StartDate.Value.Year <= yearEnd);
             }
 
             if (!string.IsNullOrEmpty(hrPerson))
@@ -101,7 +108,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 NameOfLocation = nameOfLocation,
                 YearStart = yearStart,
                 YearEnd = yearEnd,
-                MinYear = 2011,
+                MinYear = MinYear,
                 MaxYear = DateTime.Now.AddYears(1).Year,    // Maximum year set to this year + 1
             };
 

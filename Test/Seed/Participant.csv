@@ -1,9 +1,9 @@
 ﻿Id,FirstName,LastName,Comments,Wishes,CasId,IsHrPerson,IsActive,IsSuperAdmin
-1,"Madawa","Abeywickrama","","","",false,true,false
+1,"Madawa","Abeywickrama","","","maku0029",false,true,false
 2,"Samuel","Pettersson","","","sape0014",false,true,false
-3,"Timmy","Larsson","","","",false,true,false
-4,"Josefin","Göransson","","","",false,true,false
-5,"Camilla","Ågren","","","",false,true,false
-6,"Linda","Bengtsson","","","",false,true,false
-7,"Ellen","Jacobsson","","","",true,true,false
-8,"Jan","Rundström","","","",true,true,false
+3,"Timmy","Larsson","","","olde0001",false,true,false
+4,"Josefin","Göransson","","","olde0002",false,true,false
+5,"Camilla","Ågren","","","olde0003",false,true,false
+6,"Linda","Bengtsson","","","olde0004",false,true,false
+7,"Ellen","Jacobsson","","","elnjan96",true,true,false
+8,"Jan","Rundström","","","jaru0002",true,true,false

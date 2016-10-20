@@ -10,7 +10,7 @@ namespace Infrastructure.UmuApi
         [JsonProperty("Lastname")]
         public string LastName { get; set; }
 
-        [JsonProperty("CasId")]
+        [JsonProperty("NickName")]
         public string CasId { get; set; }
 
         public bool IsActive { get; set; }

@@ -20,6 +20,8 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public int SessionId { get; set; }
 
         public string SessionNameWithActivity { get; set; }
+        public int ActivityId { get; set; }
+        public string ActivityName { get; set; }
 
         public List<Participant> Participants { get; set; }
         public Location Location { get; set; }
