@@ -6,23 +6,28 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Runtime.Serialization;
+
 
 namespace Infrastructure.UmuApi
 {
     public class Actions
     {
-        public RootObject GetPersonFromUmuApi()
+        public List<ItsPerson> GetPersonFromUmuApi()
         {
-            var url = "https://websrv01.testad.umu.se/Catalogue/3.0/api/org/e841c73b5524c220b45690b8e1d841c87c454436/person";
+            //var url = "https://websrv01.testad.umu.se/Catalogue/3.0/api/org/e841c73b5524c220b45690b8e1d841c87c454436/person";
 
-            RootObject result = new RootObject();
+            var url = "http://localhost:54424/customers";
+
+            //RootObject result = new RootObject();
+            var result1 = new List<ItsPerson>();
 
             try
             {
-                var length = 1266276;
+                var length = 202;
                 HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(url);
                 myReq.Method = "GET";
-                myReq.Credentials = new NetworkCredential("sape0014", "Pwd2Chang3");
+                //myReq.Credentials = new NetworkCredential("sape0014", "Pwd2Chang3");
                 HttpWebResponse myResponse = (HttpWebResponse)myReq.GetResponse();
                 
                 if (myResponse.StatusCode == HttpStatusCode.OK)
@@ -35,11 +40,14 @@ namespace Infrastructure.UmuApi
                     StreamReader readStream = new StreamReader(rebut, Encoding.UTF8); // Pipes the stream to a higher level stream reader with the required encoding format. 
                     string rawData = readStream.ReadToEnd();
 
+                        //JSONParser parser = new JSONParser();
+                        //JSONObject json = (JSONObject)parser.parse(stringToParse);
+                        //List<string> videogames = JsonConvert.DeserializeObject<List<string>>(rawData);
+                        
+                        result1 = JsonConvert.DeserializeObject<List<ItsPerson>>(rawData);
 
-                    result = JsonConvert.DeserializeObject<RootObject>(rawData);
-
-
-                    myResponse.Close();
+                       
+                        myResponse.Close();
                     readStream.Close();
 
                     }
@@ -59,7 +67,7 @@ namespace Infrastructure.UmuApi
                 }
             }
 
-            return result;
+            return result1;
         }
     }
 }

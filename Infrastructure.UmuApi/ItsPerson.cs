@@ -10,7 +10,27 @@ namespace Infrastructure.UmuApi
         [JsonProperty("Lastname")]
         public string LastName { get; set; }
 
-        [JsonProperty("Nickname")]
+        [JsonProperty("CasId")]
         public string CasId { get; set; }
+
+        public bool IsActive { get; set; }
+
     }
+
+    //public class CustomerData
+    //{
+    //    [JsonProperty("CasId")]
+    //    public string CasId { get; set; }
+    //    [JsonProperty("Name")]
+    //    public string Name { get; set; }
+    //    [JsonProperty("Address")]
+    //    public string Address { get; set; }
+    //    [JsonProperty("Telephone")]
+    //    public string Telephone { get; set; }
+
+    //    public bool IsActive { get; set; }
+
+    //}
+
+
 }

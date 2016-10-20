@@ -207,38 +207,49 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public bool AddDeleteItsPersonsToDb()
+        public List<Participant> InactivateItsPersons()
         {
             // TODO: Mark the people missing as IsActive = false
-            // TODO: Add possible new people to our database
+           
             var umuApi = new Actions();
-            var result = umuApi.GetPersonFromUmuApi();
+            var result1 = new List<Participant>();
+            var result = new List<ItsPerson>();
+            result = umuApi.GetPersonFromUmuApi();
+            var paticipants = GetAllParticipants().ToList();
 
-            foreach (var person in result.Persons)
+            foreach (var person in paticipants)
             {
 
-                if (!_db.Get<Participant>().Any(n => n.CasId == person.CasId && n.IsActive == true))
+                if(!result.Any(n => n.CasId == person.CasId))
+
                 {
 
-                    var personToEdit = new Participant()
-                    {
-                        CasId = person.CasId,
-                        //FirstName = person.FirstName,
-                        //LastName = person.LastName,
-                        IsActive = false,
 
-                    };
-
-                    _db.Context().Entry(personToEdit).State = EntityState.Modified;
-                    _db.SaveChanges();
-
-                    return true;
+                    
+                        person.IsActive = false;
+                        _db.Context().Entry(person).State = EntityState.Modified;
+                       
+                        _db.SaveChanges();
+                        
+                   
+                    result1.Add(person);
                 }
 
+            }
+                
+        return result1;
+        }
+       public List<Participant> AddItsPersons()
+       {
+            // TODO: Add possible new people to our database
+            var umuApi = new Actions();
+            var result1 = new List<Participant>();
+            var result = new List<ItsPerson>();
+            result = umuApi.GetPersonFromUmuApi();
 
-
+            foreach (var person in result)
+            {
                 if (!_db.Get<Participant>().Any(n => n.CasId == person.CasId))
-
                 {
 
                     var personToAdd = new Participant()
@@ -249,14 +260,12 @@ namespace Its.Systems.HR.Domain.Managers
                         IsActive = true,
 
                     };
+                    result1.Add(personToAdd);
                     _db.Add<Participant>(personToAdd);
                 }
-                return true;
 
             }
-
-
-            return false;
+            return result1;
         }
 
         // PRIVATE METHODS BELOW

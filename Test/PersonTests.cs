@@ -71,5 +71,23 @@ namespace Its.Systems.HR.Test
             Assert.AreEqual(3, result);
         }
 
+        [TestMethod]
+        public void InactivateITSpersonal_ShouldReturnCountOf1()
+        {
+            var result = impl.InactivateItsPersons().Count();
+
+            Assert.AreEqual(1, result);
+        }
+
+        [TestMethod]
+        public void AddNewITSpersonal_ShouldReturnCountOf1()
+        {
+            var result = impl.AddItsPersons().Count();
+
+            Assert.AreEqual(1, result);
+        }
+
     }
 }
+
+

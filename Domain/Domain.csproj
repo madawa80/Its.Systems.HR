@@ -63,6 +63,7 @@
     <Compile Include="Managers\ActivityManager.cs" />
     <Compile Include="Managers\PersonManager.cs" />
     <Compile Include="Model\Activity.cs" />
+    <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\SessionTag.cs" />
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Model\HrPerson.cs" />

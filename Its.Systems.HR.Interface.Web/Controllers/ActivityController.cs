@@ -36,8 +36,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             //return View("Error");
 
 
+            _personManager.AddItsPersons();
+            _personManager.InactivateItsPersons();
 
-            _personManager.AddDeleteItsPersonsToDb();
+            
+
             return RedirectToAction("Index");
         }
 
