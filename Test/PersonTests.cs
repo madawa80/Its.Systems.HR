@@ -14,7 +14,7 @@ namespace Its.Systems.HR.Test
         {
             _personManager = Container().Resolve<IPersonManager>();
         }
-         
+
         [TestMethod]
         public void GetAllParticipants_ShouldReturnExpected()
         {
@@ -37,28 +37,10 @@ namespace Its.Systems.HR.Test
         [TestMethod]
         public void SyncWithITS_ShouldReturnExpected()
         {
-            _personManager.AddDeleteItsPersonsToDb();
+            //_personManager();
 
             //Assert.AreEqual(-1, _personManager.GetAllParticipants().Count());
         }
 
-        [TestMethod]
-        public void InactivateITSpersonal_ShouldReturnCountOf1()
-        {
-            var result = impl.InactivateItsPersons().Count();
-
-            Assert.AreEqual(1, result);
-        }
-
-        [TestMethod]
-        public void AddNewITSpersonal_ShouldReturnCountOf1()
-        {
-            var result = impl.AddItsPersons().Count();
-
-            Assert.AreEqual(1, result);
-        }
-
     }
 }
-
-

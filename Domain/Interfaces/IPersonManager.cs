@@ -39,7 +39,7 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         Participant GetParticipantByCas(string cas);
 
-        bool DeletePaticipantById(int id);
+        //bool DeletePaticipantById(int id);
 
         /// <summary>
         /// Saves the comments passed to the person by personId.
