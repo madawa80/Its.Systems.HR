@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Effort;
 using Effort.DataLoaders;
 using Its.Systems.HR.Domain.Interfaces;
@@ -67,9 +63,10 @@ namespace Its.Systems.HR.Test
                     new InjectionConstructor());
             }
             _ambientContainer.RegisterType<IDbRepository, DbRepository>(new PerResolveLifetimeManager());
-            _ambientContainer.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
             _ambientContainer.RegisterType<IActivityManager, ActivityManager>(new PerResolveLifetimeManager());
+            _ambientContainer.RegisterType<IPersonManager, PersonManager>(new PerResolveLifetimeManager());
             _ambientContainer.RegisterType<ISessionManager, SessionManager>(new PerResolveLifetimeManager());
+            _ambientContainer.RegisterType<IUtilityManager, UtilityManager>(new PerResolveLifetimeManager());
 
         }
     }

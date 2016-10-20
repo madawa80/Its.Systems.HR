@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Its.Systems.HR.Domain.Interfaces;
@@ -43,14 +42,16 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public bool EditActivity(Activity activityToEdit)
+        public bool EditActivity(int activityId, string newName)
         {
             var allActivities = _db.Get<Activity>().ToList();
 
-            if (allActivities.Any(n => n.Name == activityToEdit.Name))
+            if (allActivities.Any(n => n.Name == newName))
                 return false;
 
             //TODO: Add error handling!?
+            var activityToEdit = GetActivityById(activityId);
+            activityToEdit.Name = newName;
             _db.Context().Entry(activityToEdit).State = EntityState.Modified;
             _db.SaveChanges();
 

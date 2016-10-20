@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Domain.Interfaces
@@ -30,11 +28,12 @@ namespace Its.Systems.HR.Domain.Interfaces
         bool AddActivity(Activity activityToAdd);
 
         /// <summary>
-        /// Edits the activity passed.
+        /// Edits the activity name by activityId.
         /// </summary>
-        /// <param name="activityToEdit"></param>
-        /// <returns>True if successfull.</returns>
-        bool EditActivity(Activity activityToEdit);
+        /// <param name="id"></param>
+        /// <param name="newName"></param>
+        /// <returns></returns>
+        bool EditActivity(int id, string newName);
 
         /// <summary>
         /// Deletes an activity by activityId.

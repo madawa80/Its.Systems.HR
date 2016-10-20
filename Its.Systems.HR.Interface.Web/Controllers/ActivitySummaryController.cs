@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Its.Systems.HR.Interface.Web.ViewModels;
 using Its.Systems.HR.Domain.Interfaces;
@@ -30,17 +25,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult SessionForActivity(int id)
         {
-            var theSession = _sessionManager.GetSessionByIdWithIncludes(id); // Is this executed or just creating a expr.tree?
+            var theSession = _sessionManager.GetSessionByIdWithIncludes(id); // TODO: Is this executed or just creating a expr.tree?
 
             if (theSession == null)
                 return View("Error");
 
             var allParticipant = _personManager.GetAllParticipantsForSession(id).ToList();
-
-            // Get Tags for session
-            var sessionTagIdsForSession = theSession.SessionTags.Select(n => n.TagId);
             var allTagsForSession =
-                _utilityManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
+                _utilityManager.GetAllTagsForSessionById(id).ToList();
             var sessionRating =
                 _utilityManager.GetRatingForSessionById(id);
 
@@ -86,7 +78,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 yearStart = int.Parse(years[0]);
                 yearEnd = int.Parse(years[1]);
 
-                allSessions = allSessions.Where(n => n.StartDate.Year >= yearStart && n.StartDate.Year <= yearEnd);
+                allSessions = allSessions.Where(n => n.StartDate.Value.Year >= yearStart && n.StartDate.Value.Year <= yearEnd);
             }
 
             if (!string.IsNullOrEmpty(hrPerson))

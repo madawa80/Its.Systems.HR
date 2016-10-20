@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
@@ -228,7 +227,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 PersonId = personId,
                 SessionId = sessionId,
                 SessionName = session.NameWithActivity,
-                StartDate = session.StartDate.ToShortDateString(),
+                StartDate = session.StartDate?.ToShortDateString() ?? "",
                 //Year = session.StartDate.Year,
                 //Month = session.StartDate.Month,
                 //Day = session.StartDate.Day,
@@ -267,7 +266,17 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             
             var participant = _personManager.GetParticipantByCas(personCasLogin);
             if (participant == null)
-            {}//ERROR
+            {
+                var failResult = new
+                {
+                    Success = false,
+                    ErrorMessage = "",
+                    PersonId = 0,
+                    SessionId = sessionId,
+                    PersonFullName = "",
+                };
+                return Json(failResult);
+            }
 
 
             var result = new

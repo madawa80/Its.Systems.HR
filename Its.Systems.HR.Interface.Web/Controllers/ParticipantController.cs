@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -57,7 +55,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
-        public ActionResult ReviewSession(int? id = 7)
+        public ActionResult ReviewSession(int? id = 44)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -132,7 +130,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var result = new ParticipantStatisticSummaryViewModel()
             {
                 TotalCount = allParticipantSessions.Count,
-                CountThisYear = allParticipantSessions.Count(n => n.StartDate.Year == DateTime.Now.Year)
+                CountThisYear = allParticipantSessions.Count(n => n.StartDate != null && n.StartDate.Value.Year == DateTime.Now.Year) //TODO: null error
             };
 
             return PartialView("_ParticipantStatisticSummaryPartial", result);

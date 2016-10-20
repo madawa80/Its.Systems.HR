@@ -1,7 +1,5 @@
 ﻿using System.Data.Common;
 using System.Data.Entity;
-using System.Text;
-using System.Threading.Tasks;
 using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Infrastructure
