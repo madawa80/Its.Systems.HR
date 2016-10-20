@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
-using Its.Systems.HR.Infrastructure;
-using Its.Systems.HR.Infrastructure.Repository;
 using Its.Systems.HR.Interface.Web.ViewModels;
 //using Quartz;
 //using Quartz.Impl;

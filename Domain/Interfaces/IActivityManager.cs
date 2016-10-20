@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Domain.Interfaces
