@@ -58,9 +58,10 @@
 
         <div class="panel panel-default wide-textbox">
             <div class="panel-body">
+                <p>Aktivitet: <a href="@Url.Action("AllSessionsForActivity", "ActivitySummary", new { id = Model.ActivityId})">@Model.ActivityName</a></p>
                 @if (Model.HrPerson != null)
                 {
-                    <p>Ansvarig HR:  @Model.HrPerson.FullName</p>
+                    <p>Ansvarig HR: @Model.HrPerson.FullName</p>
                 }
                 @if (Model.Location != null)
                 {
@@ -79,9 +80,9 @@
                 {
                     <p>
                         Etiketter: @foreach (var tag in Model.Tags)
-                        {
-                            <span class="label label-primary">@tag.Name</span>
-                        }
+                                   {
+                                       <span class="label label-primary">@tag.Name</span>
+                                   }
                     </p>
                 }
                 @if (Model.Rating != "0")
@@ -89,7 +90,7 @@
                     <p>
                         Betyg: <input type="hidden" name="Rating" id="Rating" class="rating"
                                       value="@Model.Rating" data-readonly data-fractions="2"
-                                      data-filled="glyphicon glyphicon-star" data-empty="glyphicon glyphicon-star-empty" />
+                                      data-filled="glyphicon glyphicon-star" data-empty="glyphicon glyphicon-star-empty"/>
                     </p>
                 }
             </div>

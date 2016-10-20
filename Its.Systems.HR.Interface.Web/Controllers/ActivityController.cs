@@ -182,18 +182,18 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult AutoCompleteLocations(string term)
         {
             var locations = GetLocations(term);
-            return Json(locations, JsonRequestBehavior.AllowGet);
+            return Json(locations.OrderBy(n => n), JsonRequestBehavior.AllowGet);
         }
         public ActionResult AutoCompleteParticipants(string term)
         {
             var participants = GetParticipants(term);
-            return Json(participants, JsonRequestBehavior.AllowGet);
+            return Json(participants.OrderBy(n => n), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AutoCompleteTags(string term)
         {
             var tags = GetTags(term);
-            return Json(tags, JsonRequestBehavior.AllowGet);
+            return Json(tags.OrderBy(n => n), JsonRequestBehavior.AllowGet);
         }
 
         // PRIVATE METHODS BELOW
