@@ -30,7 +30,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View("Error");
 
 
+#pragma warning disable CS0162 // Unreachable code detected
             _personManager.AddItsPersons();
+#pragma warning restore CS0162 // Unreachable code detected
             _personManager.InactivateItsPersons();
 
             
