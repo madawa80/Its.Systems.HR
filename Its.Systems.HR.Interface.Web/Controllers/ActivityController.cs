@@ -30,40 +30,20 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View("Error");
 
 
-#pragma warning disable CS0162 // Unreachable code detected
             _personManager.AddItsPersons();
-#pragma warning restore CS0162 // Unreachable code detected
             _personManager.InactivateItsPersons();
-
-            
 
             return RedirectToAction("Index");
         }
 
         // find Activity 
-        public ViewResult Index(string sortOrder, string searchString)
+        public ViewResult Index(string searchString)
         {
-            //ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-
-            ViewBag.CurrentSearchString = searchString;
-
-
             var activities = _activityManager.GetAllActivities();
 
             if (!string.IsNullOrEmpty(searchString))
             {
                 activities = activities.Where(s => s.Name.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    activities = activities.OrderByDescending(s => s.Name);
-                    break;
-                default:  // Name ascending 
-                    activities = activities.OrderBy(s => s.Name);
-                    break;
             }
 
             var result = new List<ActivityViewModel>();

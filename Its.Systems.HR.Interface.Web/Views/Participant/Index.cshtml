@@ -6,7 +6,8 @@
 
 <h2>Listar personal <span class="label label-info">DEBUG</span></h2>
 
-<table class="table table-hover">
+<table id="listParticipantsTable" class="tablesorter table table-hover">
+    <thead>
     <tr>
         <th>
             Namn
@@ -15,16 +16,24 @@
             <span>CasId</span>
         </th>
     </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.FullName, "Details", new { id = item.Id })
-        </td>
-        <td>
-            @item.CasId
-        </td>
-    </tr>
-}
-
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.FullName, "Details", new { id = item.Id })
+                </td>
+                <td>
+                    @item.CasId
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+@section scripts {
+    <script src="~/Scripts/jquery.tablesorter.min.js"></script>
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script src="~/Scripts/App/ParticipantIndex.js"></script>
+}

@@ -15,11 +15,11 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         //[DataType(DataType.Date)]
         //2016-09-30 16:00
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         [Display(Name = "Startdatum")]
         public DateTime? StartDate { get; set; }
         //[DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         [Display(Name = "Slutdatum")]
         public DateTime? EndDate { get; set; }
 

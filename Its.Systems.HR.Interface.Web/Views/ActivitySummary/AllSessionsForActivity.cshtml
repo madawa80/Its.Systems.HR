@@ -11,3 +11,9 @@
 </a>
 
 @Html.Partial("_ListSessionsPartial", Model.Sessions)
+
+@section scripts {
+    <script src="~/Scripts/jquery.tablesorter.min.js"></script>
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script src="~/Scripts/App/AllSessionsForActivity.js"></script>
+}

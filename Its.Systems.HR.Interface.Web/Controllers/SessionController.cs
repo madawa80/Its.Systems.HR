@@ -113,7 +113,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     // Now add tags to the created session!...
                     _sessionManager.AddSessionTags(tagsToAdd, result.Id);
 
-                    return RedirectToAction("SessionForActivity", "ActivitySummary", new {id = result.Id});
+                    return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = result.Id });
                 }
             }
             catch (RetryLimitExceededException /* dex */)
@@ -129,16 +129,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var session = _sessionManager.GetSessionByIdWithIncludes((int) id);
+            var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var activity = _activityManager.GetActivityById(session.ActivityId);
 
             // Get Tags for session
-            var sessionTagIdsForSession = session.SessionTags.Select(n => n.TagId);
             var allTagsForSession =
-                _utilitiesManager.GetAllTags().Where(n => sessionTagIdsForSession.Contains(n.Id)).ToList();
+                _utilitiesManager.GetAllTagsForSessionById((int)id).ToList();
 
             var viewModel = new EditSessionViewModel()
             {
@@ -176,26 +175,21 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             try
             {
-                if (sessionToUpdate.Name == inputVm.NameOfSession ||
-                    !_sessionManager.GetAllSessions().Any(n => n.Name == inputVm.NameOfSession))
-                {
-                    int? location = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
+                int? location = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
+                int? hrPerson = inputVm.HrPerson;
 
-                    int? hrPerson = inputVm.HrPerson;
+                sessionToUpdate.Name = inputVm.NameOfSession;
+                sessionToUpdate.ActivityId = inputVm.Activity.Id;
+                sessionToUpdate.StartDate = inputVm.StartDate;
+                sessionToUpdate.EndDate = inputVm.EndDate;
+                sessionToUpdate.LocationId = location;
+                sessionToUpdate.HrPersonId = hrPerson;
 
-                    sessionToUpdate.Name = inputVm.NameOfSession;
-                    sessionToUpdate.ActivityId = inputVm.Activity.Id;
-                    sessionToUpdate.StartDate = inputVm.StartDate;
-                    sessionToUpdate.EndDate = inputVm.EndDate;
-                    sessionToUpdate.LocationId = location;
-                    sessionToUpdate.HrPersonId = hrPerson;
+                _sessionManager.EditSession(sessionToUpdate);
 
-                    _sessionManager.EditSession(sessionToUpdate);
+                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = sessionToUpdate.Id });
 
-                    return RedirectToAction("SessionForActivity", "ActivitySummary", new {id = sessionToUpdate.Id});
-                }
-
-                ModelState.AddModelError("NameOfSession", "Aktiviteten existerar redan.");
+                //ModelState.AddModelError("NameOfSession", "Aktiviteten existerar redan.");
             }
             catch (RetryLimitExceededException /* dex */)
             {
@@ -209,7 +203,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 "Name", sessionToUpdate.ActivityId);
 
             ViewBag.NameOfLocation = inputVm.NameOfLocation;
-
+            inputVm.AddedTags = _utilitiesManager.GetAllTagsForSessionById(inputVm.SessionId).ToList();
             return View("EditSession", inputVm);
         }
 
@@ -260,10 +254,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
-            
+
             var participant = _personManager.GetParticipantByCas(personCasLogin);
             if (participant == null)
             {

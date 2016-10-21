@@ -215,6 +215,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Extensions\ExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ActivitySummary\AllSessionsForActivityViewModel.cs" />
@@ -239,6 +240,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\tablesorter\asc.gif" />
+    <Content Include="Content\tablesorter\bg.gif" />
+    <Content Include="Content\tablesorter\desc.gif" />
     <Content Include="Content\textext.core.css" />
     <Content Include="Content\textext.plugin.autocomplete.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -287,6 +291,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\App\ActivityIndex.js" />
+    <Content Include="Scripts\App\ParticipantIndex.js" />
+    <Content Include="Scripts\App\AllSessionsForActivity.js" />
     <Content Include="Scripts\App\ParticipantDetails.js" />
     <Content Include="Scripts\App\SessionForActivity.js" />
     <Content Include="Scripts\App\FilterSessions.js" />
@@ -320,6 +326,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.tablesorter.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -367,7 +374,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

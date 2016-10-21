@@ -146,15 +146,6 @@ namespace Its.Systems.HR.Domain.Managers
                 return false;
 
             _db.Delete(sessionInDb);
-            try
-            {
-                _db.SaveChanges();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
 
             return true;
         }
