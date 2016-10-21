@@ -49,7 +49,7 @@ namespace Its.Systems.HR.Domain.Managers
             if (allActivities.Any(n => n.Name == newName))
                 return false;
 
-            //TODO: Add error handling!?
+            //TODO: Add error handling!
             var activityToEdit = GetActivityById(activityId);
             activityToEdit.Name = newName;
             _db.Context().Entry(activityToEdit).State = EntityState.Modified;
