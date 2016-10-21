@@ -202,5 +202,12 @@ namespace Its.Systems.HR.Domain.Managers
             _db.Delete(sessionTagtoDelete);
             return true;
         }
+
+        public IQueryable<Session> GetAllSessionsForTag(int id)
+        {
+            return _db.Get<SessionTag>().Where(n => n.TagId == id).Select(n => n.Session);
+        }
+
+        
     }
 }

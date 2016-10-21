@@ -1,47 +1,71 @@
-﻿@model Its.Systems.HR.Interface.Web.ViewModels.SessionSummaryStatisticsViewModel
+﻿@using System.Runtime.CompilerServices
+@model Its.Systems.HR.Interface.Web.ViewModels.SessionSummaryStatisticsViewModel
 @{
     ViewBag.Title = "SessionSummaryStatistics";
 
 }
 
 <div class="col-md-6">
-    
+
     @using (Html.BeginForm("YearlyStatistics", "Statistic", FormMethod.Post))
     {
         <div class="form-group">
             <h2 class="m-b-30"></h2>
             <label for="Activity">Aktiviteter</label>
-            @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2010, 140).ToList()), "-- Select Year --", new {name = "yearslist"})
+            
+            @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2011, DateTime.Now.AddYears(1).Year-2010).ToList()), "-- Select Year --", new { name = "yearslist" })
 
             <button type="submit" class="btn btn-default">Filtrera!</button>
         </div>
 
 
     }
-    
+
     @if (@Model.SessionStatisticsRows != null)
 
     {
 
-        <table class="table" id="sessionsinyear">
+        <table class="table table-hover" id="sessionsinyear">
+
+            <tr>
+                <th>
+                    Tillfällen
+                </th>
+                <th>
+                    <span>Antal Deltagare</span>
+                </th>
+            </tr>
+
             @foreach (var item in Model.SessionStatisticsRows)
             {
                 <tr>
                     <td>
-                        <p>@Html.ActionLink(@item.Session.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null) @item.NumberOfParticipants Deltagare</p>
+                        <p>@Html.ActionLink(@item.Session.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>
                     </td>
+                    <td>
+                        <p align="right">@item.NumberOfParticipants</p>
 
-
+                    </td>
                 </tr>
             }
         </table>
 
-        <em>Totalt antal deltagare: @Model.TotalPaticipants, Totalt antal activiteter: @Model.TotalSessions</em>
-
     }
 
 
-    
-    
+        </div>
 
-</div>
+        <div class="col-md-5" id="totDeltagare">
+            <p align="right" >
+                
+                <h3 class="m-b-30" >
+                    <em>Totalt antal deltagare: @Model.TotalPaticipants</em><br/>
+
+                    <em>Totalt antal activiteter: @Model.TotalSessions</em>
+
+                </h3>
+            </p>
+
+
+        </div>
+

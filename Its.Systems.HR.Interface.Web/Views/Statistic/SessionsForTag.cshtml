@@ -1,0 +1,64 @@
+﻿
+@model Its.Systems.HR.Interface.Web.ViewModels.Statistic.SessionTagsViewModel
+
+@{
+    ViewBag.Title = "TagsStatistics";
+
+}
+
+<div class="col-md-6">
+
+    @using (Html.BeginForm("FilterSessionsForTag", "Statistic", FormMethod.Post))
+    {
+        <div class="form-group">
+            <h2 class="m-b-30"></h2>
+            <label for="Tags">Etiketter</label>
+
+           @* @Html.DropDownList("Tag", new SelectList(Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList()), "-- Select Tag --", new { name = "Tag" })*@
+            @Html.DropDownListFor(n => n.HrPerson, Model.HrPersons, "-- Välj ev. ansvarig hr --", new { @class = "form-control" })
+            <button type="submit" class="btn btn-default">Filtrera!</button>
+        </div>
+
+
+    }
+
+    @if (@Model.Sessions != null)
+
+    {
+
+        <table class="table table-hover" id="sessionsinyear">
+
+            <tr>
+                <th>
+                    Aktivitet och Namn
+                </th>
+                <th>
+                   Start
+                </th>
+                <th>
+                   Slut
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Sessions)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(@item.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Id }, null)
+                    </td>
+                    <td>
+                        @item.StartDate
+                    </td>
+                    <td>
+                        @item.EndDate
+                    </td>
+                </tr>
+            }
+        </table>
+
+    }
+
+
+</div>
+
+

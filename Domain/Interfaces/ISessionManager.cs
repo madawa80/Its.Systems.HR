@@ -109,5 +109,8 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <param name="sessionId"></param>
         /// <param name="tagId"></param>
         bool RemoveTagFromSession(int sessionId, int tagId);
+
+
+        IQueryable<Session> GetAllSessionsForTag(int id);
     }
 }
