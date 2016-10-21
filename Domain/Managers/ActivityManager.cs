@@ -65,15 +65,6 @@ namespace Its.Systems.HR.Domain.Managers
                 return false;
 
             _db.Delete(activityFromDb);
-            try
-            {
-                _db.SaveChanges();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
 
             return true;
         }
