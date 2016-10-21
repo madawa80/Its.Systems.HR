@@ -8,4 +8,7 @@
         tooltip: "always"
     });
 
+    // INIT TABLESORTER
+    hr_createTableSorter("#listSessionsPartialTable");
+    
 });

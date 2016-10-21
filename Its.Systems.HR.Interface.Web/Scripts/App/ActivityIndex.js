@@ -1,6 +1,19 @@
 ﻿//ActivityIndex.js
 $(document).ready(function () {
 
+    // INIT TABLESORTER
+    $("#listActivitiesTable").tablesorter(
+    {
+        sortList: [[0, 0]],
+        headers: {
+            1: {
+                sorter: false
+            }
+        }
+    });
+
+
+    // DELETE A ACTIVITY, WARNING: CASCADE DELETES SESSIONS AND SESSIONPARTICIPANTS FOR THAT ACTIVITY
     $("body").on("click", ".js-delete-activity", function (e) {
         e.preventDefault();
         var link = $(this);

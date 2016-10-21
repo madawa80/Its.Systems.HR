@@ -88,7 +88,7 @@ function createAutocompletes() {
     var $input = $(this); // the HTML element (Textbox)
 
     var options = {
-        
+
         // selecting the source by finding elements with the 'data-' attribute
         source: $input.attr("data-autocomplete") // Required
 
@@ -99,6 +99,12 @@ function createAutocompletes() {
     $input.autocomplete(options);
 }
 
+function hr_createTableSorter(tableId) {
+    $(tableId).tablesorter(
+    {
+        sortList: [[0, 0]]
+    });
+}
 
 
 

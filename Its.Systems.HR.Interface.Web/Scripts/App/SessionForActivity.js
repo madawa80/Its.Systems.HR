@@ -8,6 +8,7 @@ $(document).ready(function () {
     // HANDLE ENTER-BUTTON WHEN ADDING PARTICIPANTS
     hr_addEventListenerForEnter(".js-add-sessionParticipant", "#nameOfParticipant");
 
+
     // PARTICIPANT ADDING AND REMOVING
     $(".js-add-sessionParticipant").click(function () {
         var link = $(this);
