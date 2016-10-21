@@ -57,6 +57,17 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
+        public void EditASession_ShouldReturnExpected()
+        {
+            var sessionToEdit = _sessionManager.GetSessionById(1);
+
+            sessionToEdit.Name = "EDITEDSESSIONNAME";
+            _sessionManager.EditSession(sessionToEdit);
+
+            Assert.AreEqual("EDITEDSESSIONNAME", _sessionManager.GetSessionById(1).Name);
+        }
+
+        [TestMethod]
         public void UseCase1_ShouldReturnExpected()
         {
             // 1. SKAPA AKTIVITET
