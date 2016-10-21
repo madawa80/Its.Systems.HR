@@ -70,11 +70,11 @@
                 }
                 @if (Model.StartDate != null)
                 {
-                    <p>Startdatum: @Model.StartDate.Value.ToString("dd MMM yyyy HH:mm")</p>
+                    <p>Startdatum: @Model.StartDate.Value.ToString("dd MMM yyyy")</p>
                 }
                 @if (Model.EndDate != null)
                 {
-                    <p>Slutdatum: @Model.EndDate.Value.ToString("dd MMM yyyy HH:mm")</p>
+                    <p>Slutdatum: @Model.EndDate.Value.ToString("dd MMM yyyy")</p>
                 }
                 @if (Model.Tags.Count > 0)
                 {

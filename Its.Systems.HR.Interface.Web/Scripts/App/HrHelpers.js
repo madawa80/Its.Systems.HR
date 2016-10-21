@@ -43,11 +43,21 @@ hr_fadeOutSpeed = 100;
 
 // INIT BOOTSTRAP 3 DATEPICKERS (ADDON)
 function hr_initBootstrap3DatePickers() {
-    $("#datetimepicker1").datetimepicker({
-        locale: "sv"
+    $("#datetimepicker1").datetimepicker(
+    {
+        locale: "sv",
+        format: "YYYY-MM-DD" //REMOVE IF YOU WANT TIME-PICKER AS WELL
     });
     $("#datetimepicker2").datetimepicker({
-        locale: "sv"
+        locale: "sv",
+        format: "YYYY-MM-DD", //REMOVE IF YOU WANT TIME-PICKER AS WELL
+        useCurrent: false //Important! See issue #1075
+    });
+    $("#datetimepicker1").on("dp.change", function (e) {
+        $("#datetimepicker2").data("DateTimePicker").minDate(e.date);
+    });
+    $("#datetimepicker2").on("dp.change", function (e) {
+        $("#datetimepicker1").data("DateTimePicker").maxDate(e.date);
     });
 };
 
