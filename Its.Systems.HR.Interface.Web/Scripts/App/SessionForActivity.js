@@ -20,10 +20,29 @@ $(document).ready(function () {
             data: { sessionId: link.attr("data-sessionId"), personName: personName },
             success: function (result) {
                 if (result.Success) {
+
+                    //var jQueryHtml = $("<tr />").append("<td />").append("<a />").attr("ahref", "/Participant/Details/")
+
+                    //<tr>
+                    //    <td>
+                    //        <a href="/HrKompetensutveckling/Participant/Details/50">Jan Rundström (jaru0002)</a>
+                    //    </td>
+                    //    <td>
+                    //        <button type="button" class="btn btn-warning btn-xs listedParticipantRemove js-delete-sessionParticipant" data-sessionid="44" data-personid="50">Ta bort</button>
+                    //    </td>
+                    //</tr>
+
+                    //var span = $("<span />")
+                    //            .addClass("alert")
+                    //            .addClass("alert-" + type)
+                    //            .attr("role", "alert")
+                    //            .html(message);
+
                     var html = '<tr><td><a href="' + hr_urlPrefix + '/Participant/Details/' +
                         result.PersonId + '">' + result.PersonFullName +
-                        '</a><span> </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionid="' +
-                        result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
+                        '</a></td><td><button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionid="' +
+                        result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</button></tr></td>';
+
                     $(html).hide().appendTo("#ParticipantsForSession").fadeIn(hr_fadeInSpeed);
 
                     paticipantCount();

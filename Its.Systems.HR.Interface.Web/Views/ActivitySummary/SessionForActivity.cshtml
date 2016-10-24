@@ -38,7 +38,9 @@
             <tr>
                 <td>
                     @Html.ActionLink(participant.FullNameWithCas, "Details", "Participant", new { id = participant.Id }, null)
-                    <span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@Model.SessionId" data-personId="@participant.Id">Ta bort</span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@Model.SessionId" data-personId="@participant.Id">Ta bort</button>
                 </td>
             </tr>
         }
