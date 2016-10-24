@@ -81,8 +81,9 @@
                     <p>
                         Etiketter: @foreach (var tag in Model.Tags)
                                    {
-                                       <span class="label label-primary">@tag.Name</span>
-                                   }
+                                       <span class="label-info">@Html.ActionLink(@tag.Name, "FilterSessionsForTag", "Statistic", new { id = @tag.Id}, null)</span>
+
+                        }
                     </p>
                 }
                 @if (Model.Rating != "0")

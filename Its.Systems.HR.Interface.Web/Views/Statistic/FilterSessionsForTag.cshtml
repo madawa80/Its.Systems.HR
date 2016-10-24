@@ -1,0 +1,68 @@
+﻿@using System.Runtime.CompilerServices
+@model Its.Systems.HR.Interface.Web.ViewModels.Statistic.SessionTagsViewModel
+
+@{
+    ViewBag.Title = "TagsStatistics";
+
+}
+
+<div class="col-md-6">
+
+    @using (Html.BeginForm("FilterSessionsForTag", "Statistic", FormMethod.Get))
+        {
+    <div class="form-group">
+        <h2 class="m-b-30"></h2>
+        <label for="Tags">Etiketter</label>
+
+        @* @Html.DropDownList("Tag", new SelectList(Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList()), "-- Select Tag --", new { name = "Tag" })*@
+        @*@Html.DropDownListFor(n=>n.tag.Id, Model.Tags, "-- Välj Etiketter--", new { name = "taglist" })*@
+        @Html.DropDownList("taglist", Model.Tags,Model.tagName, new { name = "taglist" })
+ @*     @Html.DropDownListFor(model => model.tag.Id, (IEnumerable<SelectListItem>)ViewBag.Tags, new { @class = "form-control" })*@
+        <button type="submit" class="btn btn-default">Filtrera!</button>
+    </div>
+
+
+    }
+
+    @if (@Model.Sessions != null)
+
+    {
+
+        <table class="table table-hover" id="sessionsinyear">
+
+            <tr>
+                <th>
+                    
+                    Tillfällen
+                </th>
+                <th>
+                    Start
+                </th>
+                <th>
+                    Slut
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Sessions)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(@item.Name, "SessionForActivity", "ActivitySummary", new { id = item.Id }, null)
+                    </td>
+                    <td>
+                        @item.StartDate.Value.ToString("dd MMM yyyy")
+                    </td>
+                    <td>
+                        @item.EndDate.Value.ToString("dd MMM yyyy")
+                    </td>
+                </tr>
+            }
+        </table>
+
+    }
+
+
+</div>
+
+
+

@@ -40,7 +40,7 @@
             {
                 <tr>
                     <td>
-                        <p>@Html.ActionLink(@item.Session.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>
+                        <p>@Html.ActionLink(@item.Session.Name, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>
                     </td>
                     <td>
                         <p align="right">@item.NumberOfParticipants</p>

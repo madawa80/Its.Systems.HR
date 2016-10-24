@@ -113,5 +113,12 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return _db.Get<SessionTag>().Where(n => n.SessionId == sessionId).Select(a => a.Tag);
         }
+
+        public Tag GetTag(int tagId)
+        {
+            return _db.Get<Tag>().SingleOrDefault(n => n.Id == tagId);
+
+            
+        }
     }
 }

@@ -35,5 +35,7 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         double GetRatingForSessionById(int id);
         IQueryable<Tag> GetAllTagsForSessionById(int sessionId);
+
+        Tag GetTag(int tagId);
     }
 }
