@@ -46,10 +46,10 @@ $(document).ready(function () {
             message: "Vill du verkligen ta bort denna person för detta tillfälle?",
             buttons: {
                 cancel: {
-                    label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
+                    label: "<i class=\"glyphicon glyphicon-remove\"></i> Avbryt"
                 },
                 confirm: {
-                    label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
+                    label: "<i class=\"glyphicon glyphicon-ok\"></i> Ta bort",
                     className: "btn-danger"
                 }
             },
@@ -124,10 +124,10 @@ $(document).ready(function () {
             message: "Vill du verkligen ta bort hela detta tillfälle?",
             buttons: {
                 cancel: {
-                    label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
+                    label: "<i class=\"glyphicon glyphicon-remove\"></i> Avbryt"
                 },
                 confirm: {
-                    label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
+                    label: "<i class=\"glyphicon glyphicon-ok\"></i> Ta bort",
                     className: "btn-danger"
                 }
             },

@@ -63,8 +63,15 @@ function hr_initBootstrap3DatePickers() {
 
 // MESSAGE TO THE USER IN ADDED IN A SPAN AFTER <source> THEN FADES OUT
 function hr_messageFadingOut(source, message, type) {
-    source.after(' <span class="alert alert-' + type + ' js-fadeOutThisMessage" role="alert">' + message + '</span>');
-    $(".js-fadeOutThisMessage").fadeOut(4000, function () {
+    var span = $("<span />")
+                .addClass("alert")
+                .addClass("alert-" + type)
+                .attr("role", "alert")
+                .html(message);
+
+    source.after(span);
+
+    span.fadeOut(4000, function () {
         $(this).remove();
     });
 };

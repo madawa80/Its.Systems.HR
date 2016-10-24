@@ -10,10 +10,10 @@ $(document).ready(function () {
             message: "Vill du verkligen ta bort detta tillfälle för personen?",
             buttons: {
                 cancel: {
-                    label: '<i class="glyphicon glyphicon-remove"></i> Avbryt'
+                    label: "<i class=\"glyphicon glyphicon-remove\"></i> Avbryt"
                 },
                 confirm: {
-                    label: '<i class="glyphicon glyphicon-ok"></i> Ta bort',
+                    label: "<i class=\"glyphicon glyphicon-ok\"></i> Ta bort",
                     className: "btn-danger"
                 }
             },
