@@ -194,11 +194,12 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public IQueryable<Session> GetAllSessionsForTag(int id)
+        public IQueryable<Session> GetAllSessionsForTag(int tagId)
         {
-            return _db.Get<SessionTag>().Where(n => n.TagId == id).Select(n => n.Session);
+            return _db.Get<SessionTag>().Where(n => n.TagId==tagId).Select(a => a.Session);
         }
 
-        
+
+
     }
 }

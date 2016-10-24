@@ -9,7 +9,10 @@ namespace Its.Systems.HR.Interface.Web.ViewModels.Statistic
 {
     public class SessionTagsViewModel
     {
+        public String tagName { get; set; }
         public List<Session> Sessions { get; set; }
+
+        //public Tag tag { get; set; }
 
         public IEnumerable<SelectListItem> Tags { get; set; }
 

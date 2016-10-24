@@ -22,6 +22,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private int selectedyear;
         private int selectedTag;
         private List<Session> sessionsForTag;
+        private string tagDisplay;
 
         public StatisticController(ISessionManager sessionManager, IPersonManager personManager, IUtilityManager utilityManager)
         {
@@ -29,7 +30,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
             _utilityManager = utilityManager;
         }
-        
+
         public ActionResult YearlyStatistics()
         {
 
@@ -94,42 +95,108 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
+        //[HttpGet]
+        //public ActionResult FilterSessionsForTag()
+        //{
+        //    var viewModel1 = new SessionTagsViewModel()
+        //    {
 
-        public ViewResult FilterSessionsForTag(string TagId)
-          
+        //    };
+
+        //    return View(viewModel1);
+
+        //}
+
+        [HttpGet]
+        public ViewResult FilterSessionsForTag(string taglist, string id)
         {
+
+
             int Tag;
-            
+            int Id;
+            tagDisplay = "-- Välj Etiketter--";
 
-            if (string.IsNullOrEmpty(TagId))
+
+            if (int.TryParse(taglist, out Tag) == true)
             {
-                return View(new SessionTagsViewModel());
-
-            }
-            var allTags = _utilityManager.GetAllTags().OrderBy(n => n.Name).ToList();
-
-            if (int.TryParse(Request.Form["yearslist"], out Tag) == true)
-            {
-                selectedTag = Int32.Parse(Request.Form["yearslist"]);
+                    selectedTag = Tag;
                 //years = Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList();
-                sessionsForTag = _sessionManager.GetAllSessionsForTag(selectedTag).Include(n => n.Activity).ToList().OrderBy(n => n.Id).ToList();
+
+
                
+                sessionsForTag = _sessionManager.GetAllSessionsForTag(selectedTag).OrderBy(n => n.Id).ToList();
+                tagDisplay = "-- Välj Etiketter--";
+                id = null;
+
+            }
+
+            if (int.TryParse(id, out Id) == true)
+            {
+                selectedTag = Id;
+                sessionsForTag = _sessionManager.GetAllSessionsForTag(selectedTag).OrderBy(n => n.Id).ToList();
+                tagDisplay = _utilityManager.GetTag(selectedTag).Name;
+
+
             }
 
 
+            var allTags = _utilityManager.GetAllTags().OrderBy(n => n.Name).ToList();
             var viewModel = new SessionTagsViewModel()
-            {
-                Tags = new SelectList(allTags, "Id", "Name"),
-                Sessions = sessionsForTag,
-              
-            };
+                {   tagName = tagDisplay,
+                    Tags = new SelectList(allTags, "Id", "Name"),
+                    Sessions = sessionsForTag,
 
-            return View(viewModel);
+                };
+
+                return View(viewModel);
+           
+            
+           
+
         }
 
     }
 
 }
 
+
+
+
+//public ActionResult FilterSessionsForTag(string tag)
+
+//{
+//    int Tag;
+
+
+//    if (string.IsNullOrEmpty(tag))
+//    {
+//        return View(new SessionTagsViewModel());
+
+//    }
+
+//    var allTags = _utilityManager.GetAllTags().OrderBy(n => n.Name).ToList();
+
+//    if (int.TryParse(Request.Form["taglist"], out Tag) == true)
+//    {
+//        selectedTag = Int32.Parse(Request.Form["taglist"]);
+//        //years = Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList();
+//        sessionsForTag = _sessionManager.GetAllSessionsForTag(selectedTag).Include(n => n.Activity).ToList().OrderBy(n => n.Id).ToList();
+
+//    }
+
+
+//    var viewModel = new SessionTagsViewModel()
+//    {
+//        Tags = new SelectList(allTags, "Id", "Name"),
+//        Sessions = sessionsForTag,
+
+//    };
+
+//    return View(viewModel);
+//}
+
+//    }
+
+//}
 
 
