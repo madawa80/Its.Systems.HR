@@ -186,8 +186,7 @@ namespace Its.Systems.HR.Domain.Managers
 
         public bool UpdateReviewForSessionParticipant(int sessionId, int participantIdTEMP, int rating, string comments)
         {
-            var sessionParticipant = _db.Get<SessionParticipant>()
-                .SingleOrDefault(n => n.SessionId == sessionId && n.ParticipantId == participantIdTEMP);
+            SessionParticipant sessionParticipant = GetASessionParticipant(sessionId, participantIdTEMP);
 
             if (sessionParticipant == null)
                 return false;
@@ -202,6 +201,23 @@ namespace Its.Systems.HR.Domain.Managers
                 return false;
 
             return true;
+        }
+
+        public SessionParticipant GetASessionParticipant(int sessionId, int participantId)
+        {
+            return GetAllSessionParticipants()
+                .SingleOrDefault(n => n.SessionId == sessionId && n.ParticipantId == participantId);
+        }
+
+        public IQueryable<SessionParticipant> GetAllSessionParticipationsForSessionById(int sessionId)
+        {
+            return GetAllSessionParticipants()
+                .Where(n => n.SessionId == sessionId);
+        }
+
+        public IQueryable<SessionParticipant> GetAllSessionParticipants()
+        {
+            return _db.Get<SessionParticipant>();
         }
 
         public List<Participant> InactivateItsPersons()

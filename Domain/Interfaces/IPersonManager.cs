@@ -83,5 +83,11 @@ namespace Its.Systems.HR.Domain.Interfaces
         List<Participant> AddItsPersons();
 
         List<Participant> InactivateItsPersons();
+
+        SessionParticipant GetASessionParticipant(int sessionId, int participantId);
+
+        IQueryable<SessionParticipant> GetAllSessionParticipationsForSessionById(int sessionId);
+
+        IQueryable<SessionParticipant> GetAllSessionParticipants();
     }
 }

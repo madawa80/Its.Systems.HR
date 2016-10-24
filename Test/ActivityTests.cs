@@ -12,11 +12,13 @@ namespace Its.Systems.HR.Test
     {
         private readonly IActivityManager _activityManager;
         private readonly ISessionManager _sessionManager;
+        private readonly IPersonManager _personManager;
 
         public ActivityTests() : base()
         {
             _activityManager = Container().Resolve<IActivityManager>();
             _sessionManager = Container().Resolve<ISessionManager>();
+            _personManager = Container().Resolve<IPersonManager>();
         }
 
 
@@ -99,6 +101,26 @@ namespace Its.Systems.HR.Test
             Assert.AreEqual(false, result);
             Assert.AreEqual(null, _activityManager.GetActivityById(2));
         }
+
+        [TestMethod]
+        public void DeleteJavaOne_ShouldDeleteAllSessionsAndSessionParticipations()
+        {
+            var activityCount = _activityManager.GetAllActivities().Count();
+            var sessionCount = _sessionManager.GetAllSessions().Count();
+            var sessionParticipantCount = _personManager.GetAllSessionParticipants().Count();
+
+
+            var result = _activityManager.DeleteActivityById(2);
+
+            Assert.AreEqual(null, _activityManager.GetActivityById(2));
+            Assert.AreEqual(0, _sessionManager.GetAllSessionsForActivity(2).Count());
+            Assert.AreEqual(0, _personManager.GetAllSessionParticipationsForSessionById(2).Count());
+            
+            Assert.AreEqual(activityCount - 1, _activityManager.GetAllActivities().Count());
+            Assert.AreEqual(sessionCount - 2, _sessionManager.GetAllSessions().Count());
+            Assert.AreEqual(sessionParticipantCount - 6, _personManager.GetAllSessionParticipants().Count());
+        }
+
 
         [TestMethod]
         public void ListAllActivities_ShouldReturnCountOf5()
