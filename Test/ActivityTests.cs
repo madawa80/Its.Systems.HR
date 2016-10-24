@@ -12,11 +12,13 @@ namespace Its.Systems.HR.Test
     {
         private readonly IActivityManager _activityManager;
         private readonly ISessionManager _sessionManager;
+        private readonly IPersonManager _personManager;
 
         public ActivityTests() : base()
         {
             _activityManager = Container().Resolve<IActivityManager>();
             _sessionManager = Container().Resolve<ISessionManager>();
+            _personManager = Container().Resolve<IPersonManager>();
         }
 
 
@@ -29,7 +31,7 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
-        public void GetActivityById999_ShouldReturnNull()
+        public void GetActivityByInvalidId_ShouldReturnNull()
         {
             var result = _activityManager.GetActivityById(999);
 
@@ -37,7 +39,7 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
-        public void AddNewActivity_ShouldMakeAllActivitesCountTo6()
+        public void AddNewActivity_ShouldAddThatToDb()
         {
             var newActivity = new Activity()
             {
@@ -46,7 +48,8 @@ namespace Its.Systems.HR.Test
 
             var result = _activityManager.AddActivity(newActivity);
 
-            Assert.AreEqual(6, _activityManager.GetAllActivities().Count());
+            Assert.AreEqual(true, result);
+            Assert.AreEqual("NewActivity", _activityManager.GetAllActivities().SingleOrDefault(n => n.Name == "NewActivity").Name);
         }
 
         [TestMethod]
@@ -63,39 +66,61 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
-        public void EditJavaOneNameToEditedName_ShouldGetJavaOneNameInDbUpdated()
+        public void EditJavaOneNameToEditedName_ShouldUpdateNameInDB()
         {
             var result = _activityManager.EditActivity(2, "EDITEDNAME");
 
+            Assert.AreEqual(true, result);
             Assert.AreEqual("EDITEDNAME", _activityManager.GetActivityById(2).Name);
         }
 
         [TestMethod]
-        public void EditJavaOneToAirHack_ShouldNotUpdateInDb()
+        public void EditActivityToExistingName_ShouldNotUpdateInDB()
         {
             var result = _activityManager.EditActivity(2, "AirHack");
 
-            Assert.AreEqual("JavaOne", _activityManager.GetActivityById(2).Name);
             Assert.AreEqual(false, result);
+            Assert.AreEqual("JavaOne", _activityManager.GetActivityById(2).Name);
         }
 
         [TestMethod]
-        public void DeleteJavaOne_ShouldReturnAllActivitiesCountOf4()
+        public void DeleteJavaOne_ShouldNotExistInDb()
         {
             var result = _activityManager.DeleteActivityById(2);
 
-            Assert.AreEqual(4, _activityManager.GetAllActivities().Count());
+            Assert.AreEqual(true, result);
+            Assert.AreEqual(null, _activityManager.GetActivityById(2));
         }
 
         [TestMethod]
-        public void DeleteJavaOneTwice_ShouldReturnFalseAndAllActivitesCountOf4()
+        public void DeleteJavaOneTwice_ShouldReturnFalseAndJavaOneDeletedFromDB()
         {
             _activityManager.DeleteActivityById(2);
             var result = _activityManager.DeleteActivityById(2);
 
             Assert.AreEqual(false, result);
-            Assert.AreEqual(4, _activityManager.GetAllActivities().Count());
+            Assert.AreEqual(null, _activityManager.GetActivityById(2));
         }
+
+        [TestMethod]
+        public void DeleteJavaOne_ShouldDeleteAllSessionsAndSessionParticipations()
+        {
+            var activityCount = _activityManager.GetAllActivities().Count();
+            var sessionCount = _sessionManager.GetAllSessions().Count();
+            var sessionParticipantCount = _personManager.GetAllSessionParticipants().Count();
+
+
+            var result = _activityManager.DeleteActivityById(2);
+
+            Assert.AreEqual(null, _activityManager.GetActivityById(2));
+            Assert.AreEqual(0, _sessionManager.GetAllSessionsForActivity(2).Count());
+            Assert.AreEqual(0, _personManager.GetAllSessionParticipationsForSessionById(2).Count());
+            
+            Assert.AreEqual(activityCount - 1, _activityManager.GetAllActivities().Count());
+            Assert.AreEqual(sessionCount - 2, _sessionManager.GetAllSessions().Count());
+            Assert.AreEqual(sessionParticipantCount - 6, _personManager.GetAllSessionParticipants().Count());
+        }
+
 
         [TestMethod]
         public void ListAllActivities_ShouldReturnCountOf5()
@@ -103,34 +128,6 @@ namespace Its.Systems.HR.Test
             var result = _activityManager.GetAllActivities().Count();
 
             Assert.AreEqual(5, result);
-        }
-
-        [TestMethod]
-        public void ListSessionsForJavaOne_ShouldReturnCountOf2()
-        {
-            var result = _sessionManager.GetAllSessionsForActivity(2).Count();
-
-            Assert.AreEqual(2, result);
-        }
-
-        // ADD SESSIONS
-        [TestMethod]
-        public void AddANewSessionToJavaOne_ShouldBeAddedToDb()
-        {
-            var result = new Session()
-            {
-                Name = "JavaOne 2017",
-                StartDate = DateTime.Now.AddDays(2),
-                EndDate = DateTime.Now.AddDays(4),
-                HrPersonId = 1,
-                LocationId = 5,
-                ActivityId = 2,
-                SessionParticipants = null
-            };
-
-            _sessionManager.AddSession(result);
-
-            Assert.AreEqual("JavaOne 2017", _sessionManager.GetSessionById(result.Id).Name);
         }
 
         //[TestMethod]

@@ -102,7 +102,8 @@ function createAutocompletes() {
 function hr_createTableSorter(tableId) {
     $(tableId).tablesorter(
     {
-        sortList: [[0, 0]]
+        sortList: [[0, 0]],
+        emptyTo: "bottom"
     });
 }
 

@@ -13,11 +13,13 @@ namespace Its.Systems.HR.Test
     {
         private readonly IUtilityManager _utilityManager;
         private readonly IPersonManager _personManager;
+        private readonly ISessionManager _sessionManager;
 
         public UtilitiesTests() : base()
         {
             _utilityManager = Container().Resolve<IUtilityManager>();
             _personManager = Container().Resolve<IPersonManager>();
+            _sessionManager = Container().Resolve<ISessionManager>();
         }
 
         // RATINGS
@@ -45,15 +47,23 @@ namespace Its.Systems.HR.Test
         [TestMethod]
         public void AddNewRating_ShouldUpdateTotalRating()
         {
-            var newSessionParticipant = _personManager.AddParticipantToSession(5, 1);
-            var newReview = _personManager.UpdateReviewForSessionParticipant(1, 5, 1, "New");
+            var sessionId = 1;
+            var participantId = 5;
+
+            var newSessionParticipant = _personManager.AddParticipantToSession(participantId, sessionId);
+            var newReview = _personManager.UpdateReviewForSessionParticipant(sessionId, participantId, 1, "New");
 
             var expected = 3;
 
             var result = _utilityManager.GetRatingForSessionById(1);
 
+            var session = _sessionManager.GetSessionByIdWithIncludes(1);
+            var currentSessionParticipation = session.SessionParticipants.SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
+
+            Assert.AreEqual(true, newSessionParticipant);
+            Assert.AreEqual(true, newReview);
             Assert.AreEqual(expected, result);
-            // TODO: Check if the comment is also added...
+            Assert.AreEqual("New", currentSessionParticipation.Comments);
         }
 
         // LOCATIONS
@@ -81,7 +91,7 @@ namespace Its.Systems.HR.Test
             var resultCount = _utilityManager.GetAllLocations().Count();
 
             Assert.AreEqual(expectedCount, resultCount);
-            Assert.AreEqual(6, newLocationNotAlreadyExisting);
+            Assert.AreEqual("Tokyo", _utilityManager.GetAllLocations().SingleOrDefault(n => n.Name == "Tokyo").Name);
             Assert.AreEqual(1, newLocationAlreadyExisting);
         }
 
@@ -96,7 +106,7 @@ namespace Its.Systems.HR.Test
                 new Tag() {Name = "sql"}, // existing
                 new Tag() {Name = "newtag"},
                 new Tag() {Name = "UNIQUETag"},
-                new Tag() {Name = "uniquetag"},
+                new Tag() {Name = "uniquetag"}, // duplicate
             };
 
             _utilityManager.AddNewTagsToDb(tagsToAdd);
@@ -107,6 +117,8 @@ namespace Its.Systems.HR.Test
             var resultCount = _utilityManager.GetAllTags().Count();
 
             Assert.AreEqual(expectedCount, resultCount);
+            Assert.AreEqual("uniquetag", _utilityManager.GetAllTags().SingleOrDefault(n => n.Name == "uniquetag").Name);
+            Assert.AreNotEqual(1, _utilityManager.GetAllTags().Count(n => n.Name == "UNIQUETag"));
         }
 
         [TestMethod]

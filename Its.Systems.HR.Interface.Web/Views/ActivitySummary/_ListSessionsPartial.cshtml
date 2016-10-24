@@ -23,25 +23,26 @@
                 </td>
                 <td>
                     @if (session.StartDate != null)
-                {
-                        @session.StartDate.Value.ToString("dd MMM yyyy")
+                    {
+                        @session.StartDate.Value.ToString("yyyy-MM-dd")
                     }
                 </td>
                 <td>
                     @if (session.EndDate != null)
-                {
-                        @session.EndDate.Value.ToString("dd MMM yyyy")
+                    {
+                        @session.EndDate.Value.ToString("yyyy-MM-dd")
+                        @*@session.EndDate.Value.ToString("dd MMM yyyy")*@
                     }
                 </td>
                 <td>
                     @if (session.HrPerson != null)
-                {
+                    {
                         @session.HrPerson.FullName
                     }
                 </td>
                 <td>
                     @if (session.Location != null)
-                {
+                    {
                         @session.Location.Name
                     }
                 </td>

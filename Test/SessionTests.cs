@@ -36,6 +36,33 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
+        public void ListSessionsForJavaOne_ShouldReturnCountOf2()
+        {
+            var result = _sessionManager.GetAllSessionsForActivity(2).Count();
+
+            Assert.AreEqual(2, result);
+        }
+
+        [TestMethod]
+        public void AddANewSessionToJavaOne_ShouldBeAddedToDb()
+        {
+            var result = new Session()
+            {
+                Name = "JavaOne 2017",
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(4),
+                HrPersonId = 1,
+                LocationId = 5,
+                ActivityId = 2,
+                SessionParticipants = null
+            };
+
+            _sessionManager.AddSession(result);
+
+            Assert.AreEqual("JavaOne 2017", _sessionManager.GetSessionById(result.Id).Name);
+        }
+
+        [TestMethod]
         public void CreateASession_ShouldReturnCountPlusOne()
         {
             var sessionToAdd = new Session()
