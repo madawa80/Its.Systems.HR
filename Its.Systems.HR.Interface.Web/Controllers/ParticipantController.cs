@@ -44,7 +44,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 FullName = participant.FullNameWithCas,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
-                Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id).Include(n => n.Activity).ToList(),
+                Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
+                            .Include(n => n.Activity)
+                            .OrderByDescending(n => n.StartDate)
+                            .ToList(),
                 AllSessions = new SelectList(
                                             allSessions,
                                             "Id",
