@@ -1,4 +1,4 @@
-﻿// AllSessionsForActivity.js
+﻿// FilterSessionsForActivity.js
 $(document)
     .ready(function () {
 
