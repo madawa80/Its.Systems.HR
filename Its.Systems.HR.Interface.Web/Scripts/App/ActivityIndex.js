@@ -12,9 +12,11 @@ $(document).ready(function () {
         }
     });
 
-
     // DELETE A ACTIVITY, WARNING: CASCADE DELETES SESSIONS AND SESSIONPARTICIPANTS FOR THAT ACTIVITY
-    $("body").on("click", ".js-delete-activity", function (e) {
+    $(".js-delete-activity").click(deleteActivityCallback);
+
+
+    function deleteActivityCallback(e) {
         e.preventDefault();
         var link = $(this);
 
@@ -30,23 +32,26 @@ $(document).ready(function () {
                     className: "btn-danger"
                 }
             },
-            callback: function (result) {
-                if (result) {
-                    $.ajax({
-                        url: hr_urlPrefix + "/Activity/DeleteActivity/",
-                        type: "POST",
-                        data: { activityId: link.attr("data-activityId") },
-                        success: function () {
-                            hr_fadeOutObject(link.parents("tr"));
-                        },
-                        error: function () {
-                            alert("Anropet misslyckades, prova gärna igen.");
-                        }
-                    });
-                }
-            }
+            callback: deleteActivityConfirmedCallback // TODO: Hur lyckas jag skicka med link om callbackfunktionen låg utanför?
         });
 
-    });
+        function deleteActivityConfirmedCallback(result) {
+            if (result) {
+                $.ajax({
+                    url: hr_urlPrefix + "/Activity/DeleteActivity/",
+                    type: "POST",
+                    data: { activityId: link.attr("data-activityId") },
+                    success: function () {
+                        hr_fadeOutObject(link.parents("tr"));
+                    },
+                    error: function () {
+                        alert("Anropet misslyckades, prova gärna igen.");
+                    }
+                });
+            }
+        }
+
+    }
+
 
 });

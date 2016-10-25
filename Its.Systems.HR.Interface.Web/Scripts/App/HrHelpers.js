@@ -1,32 +1,5 @@
-﻿//HrHelpers.js
+﻿//HRHelpers.js
 // Global namespace...
-
-// JAVASCRIPT TODOS:
-//function hr_createAutocomplete() {
-//    $("#nameOfParticipant")
-//        .autocomplete({
-//            source: function(request, response) {
-//                $.ajax({
-//                    url: "/Activity/AutoCompleteParticipants",
-//                    type: "POST",
-//                    dataType: "json",
-//                    data: { Prefix: request.term },
-//                    success: function(data) {
-//                        response($.map(data,
-//                            function(item) {
-//                                return { label: item.Name, value: item.Name };
-//                            }));
-
-//                    }
-//                });
-//            },
-//            messages: {
-//                noResults: "",
-//                results: ""
-//            }
-//        });
-
-//}
 
 
 // CHECKS URL TO ADD PROPER URL-PREFIX
@@ -37,9 +10,10 @@ if (window.location.href.indexOf("localhost") > -1) {
     hr_urlPrefix = "/HrKompetensutveckling";
 }
 
-// FADEIN/OUT-SPEEDS, NOTE: hr_messageFadingOut speed hardcoded in this file.
+// FADEIN/OUT-SPEEDS
 hr_fadeInSpeed = 100;
 hr_fadeOutSpeed = 100;
+hr_messageFadingOutSpeed = 4000;
 
 // INIT BOOTSTRAP 3 DATEPICKERS (ADDON)
 function hr_initBootstrap3DatePickers() {
@@ -71,7 +45,7 @@ function hr_messageFadingOut(source, message, type) {
 
     source.after(span);
 
-    span.fadeOut(4000, function () {
+    span.fadeOut(hr_messageFadingOutSpeed, function () {
         $(this).remove();
     });
 };
@@ -90,22 +64,19 @@ function hr_fadeOutObject(source) {
 function hr_createAutocomplete() {
     $("input[data-autocomplete]").each(createAutocompletes);
 };
-
 function createAutocompletes() {
     var $input = $(this); // the HTML element (Textbox)
 
     var options = {
-
         // selecting the source by finding elements with the 'data-' attribute
         source: $input.attr("data-autocomplete") // Required
-
-
     };
 
     // apply options
     $input.autocomplete(options);
 }
 
+// Init the TableSorter plugin with initial sorting on the first column.
 function hr_createTableSorter(tableId) {
     $(tableId).tablesorter(
     {
@@ -114,11 +85,9 @@ function hr_createTableSorter(tableId) {
     });
 }
 
-
-
 // HANDLE ENTER-BUTTON WHEN ADDING TAGS
 function hr_addEventListenerForEnter(selector, inputField) {
-    $(document).on("keypress", inputField, function (event) {
+    $(document).keypress(inputField, function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             $(selector).trigger("click");

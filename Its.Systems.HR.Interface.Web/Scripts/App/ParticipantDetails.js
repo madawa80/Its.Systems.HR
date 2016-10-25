@@ -23,24 +23,7 @@ $(document).ready(function () {
                         url: hr_urlPrefix + "/Session/RemovePersonFromSession/",
                         type: "POST",
                         data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
-                        success: function () {
-                            link.parents("tr")
-                                .fadeOut(hr_fadeOutSpeed, function () {
-                                    $(this).remove();
-
-                                    $.ajax({
-                                        url: hr_urlPrefix + "/Participant/ParticipantStatisticSummary/",
-                                        type: "GET",
-                                        data: { personId: link.attr("data-personId") },
-                                        success: function (result2) {
-                                            $("#statisticsSummary").html(result2);
-                                        },
-                                        error: function () {
-                                            alert("Anropet misslyckades, prova gärna igen.");
-                                        }
-                                    });
-                                });
-                        },
+                        success: handleRemoveResult,
                         error: function () {
                             alert("Anropet misslyckades, prova gärna igen.");
                         }
@@ -49,21 +32,10 @@ $(document).ready(function () {
             }
         });
 
-    });
-
-    // ADD SESSION PARTICIPANT
-    $(".js-add-sessionParticipant").click(function () {
-        var link = $(this);
-        var sessionId = $("#Id").val();
-
-        $.ajax({
-            url: hr_urlPrefix + "/Session/AddPersonToSession",
-            type: "POST",
-            data: { sessionId: sessionId, personId: link.attr("data-personId") },
-            success: function (result) {
-                if (result.Success) {
-                    var html = '<tr><td><a href="' + hr_urlPrefix + '/ActivitySummary/SessionForActivity/' + sessionId + '">' + result.SessionName + '</a><span> (' + result.StartDate + ') </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</span></tr></td>';
-                    $(html).hide().appendTo("#allSessionsForParticipant").fadeIn(hr_fadeInSpeed);
+        function handleRemoveResult() {
+            link.parents("tr")
+                .fadeOut(hr_fadeOutSpeed, function () {
+                    $(this).remove();
 
                     $.ajax({
                         url: hr_urlPrefix + "/Participant/ParticipantStatisticSummary/",
@@ -76,12 +48,44 @@ $(document).ready(function () {
                             alert("Anropet misslyckades, prova gärna igen.");
                         }
                     });
+                });
+        }
 
-                } else {
-                    hr_messageFadingOut(link, "Tillfället redan tillagt!", "danger");
-                }
-            }
+    });
+
+    // ADD SESSION PARTICIPANT
+    $(".js-add-sessionParticipant").click(function () {
+        var link = $(this);
+        var sessionId = $("#Id").val();
+
+        $.ajax({
+            url: hr_urlPrefix + "/Session/AddPersonToSession",
+            type: "POST",
+            data: { sessionId: sessionId, personId: link.attr("data-personId") },
+            success: handleAddResult
         });
+
+        function handleAddResult(response) {
+            if (response.Success) {
+                var html = '<tr><td><a href="' + hr_urlPrefix + '/ActivitySummary/SessionForActivity/' + sessionId + '">' + response.SessionName + '</a><span> (' + response.StartDate + ') </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + response.SessionId + '" data-personId="' + response.PersonId + '">Ta bort</span></tr></td>';
+                $(html).hide().appendTo("#allSessionsForParticipant").fadeIn(hr_fadeInSpeed);
+
+                $.ajax({
+                    url: hr_urlPrefix + "/Participant/ParticipantStatisticSummary/",
+                    type: "GET",
+                    data: { personId: link.attr("data-personId") },
+                    success: function (result2) {
+                        $("#statisticsSummary").html(result2);
+                    },
+                    error: function () {
+                        alert("Anropet misslyckades, prova gärna igen.");
+                    }
+                });
+
+            } else {
+                hr_messageFadingOut(link, "Tillfället redan tillagt!", "danger");
+            }
+        }
     });
 
     // SAVE COMMENTS FOR PARTICIPANT

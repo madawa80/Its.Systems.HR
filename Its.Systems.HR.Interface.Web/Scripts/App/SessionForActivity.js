@@ -58,8 +58,7 @@ $(document).ready(function () {
 
     $("body").on("click", ".js-delete-sessionParticipant", function () {
         var link = $(this);
-
-
+        
         bootbox.confirm({
             title: "Vänligen bekräfta",
             message: "Vill du verkligen ta bort denna person för detta tillfälle?",
@@ -98,7 +97,7 @@ $(document).ready(function () {
 
 
     // SAVE SESSION COMMENTS AND EVALUATION
-    $("body").on("click", ".js-save-sessionComment", function () {
+    $(".js-save-sessionComment").click(function () {
         var link = $(this);
         var comments = $("#Comments").val();
 
@@ -114,9 +113,8 @@ $(document).ready(function () {
             }
         });
     });
-
-
-    $("body").on("click", ".js-save-sessionEvaluation", function () {
+    
+    $(".js-save-sessionEvaluation").click(function () {
         var link = $(this);
         var evaluation = $("#Evaluation").val();
 
@@ -132,10 +130,9 @@ $(document).ready(function () {
             }
         });
     });
-
-
+    
     // DELETE THE WHOLE SESSION
-    $("body").on("click", ".js-delete-session", function () {
+    $(".js-delete-session").click(function () {
         var link = $(this);
 
         bootbox.confirm({
