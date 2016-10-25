@@ -1,14 +1,16 @@
-﻿$(document).ready(function () {
+﻿$(document)
+    .ready(function() {
 
-    // INIT AUTOCOMPLETE
-    hr_createAutocomplete();
+        // INIT AUTOCOMPLETE
+        hr_createAutocomplete();
 
-    // INIT BOOTSTRAPSLIDER
-    $("#yearSlider").bootstrapSlider({
-        tooltip: "always"
+        // INIT BOOTSTRAPSLIDER
+        $("#yearSlider")
+            .bootstrapSlider({
+                tooltip: "always"
+            });
+
+        // INIT TABLESORTER
+        hr_createTableSorter("#listSessionsPartialTable");
+
     });
-
-    // INIT TABLESORTER
-    hr_createTableSorter("#listSessionsPartialTable");
-    
-});

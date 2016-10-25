@@ -4,7 +4,9 @@
     ViewBag.Title = "Alla tillfällen för aktivitet";
 }
 
-<h2><strong>@Model.ActivityName</strong></h2>
+<h2>
+    <strong>@Model.ActivityName</strong>
+</h2>
 <h4>Listar alla tillfällen för aktiviteten.</h4>
 <a href="@Url.Action("CreateSession", "Session", new {id = Model.ActivityId})" class="btn btn-default m-b-30">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Skapa nytt tillfälle

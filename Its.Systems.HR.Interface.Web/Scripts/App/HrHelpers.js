@@ -43,37 +43,46 @@ hr_fadeOutSpeed = 100;
 
 // INIT BOOTSTRAP 3 DATEPICKERS (ADDON)
 function hr_initBootstrap3DatePickers() {
-    $("#datetimepicker1").datetimepicker(
-    {
-        locale: "sv",
-        format: "YYYY-MM-DD" //REMOVE IF YOU WANT TIME-PICKER AS WELL
-    });
-    $("#datetimepicker2").datetimepicker({
-        locale: "sv",
-        format: "YYYY-MM-DD", //REMOVE IF YOU WANT TIME-PICKER AS WELL
-        useCurrent: false //Important! See issue #1075
-    });
-    $("#datetimepicker1").on("dp.change", function (e) {
-        $("#datetimepicker2").data("DateTimePicker").minDate(e.date);
-    });
-    $("#datetimepicker2").on("dp.change", function (e) {
-        $("#datetimepicker1").data("DateTimePicker").maxDate(e.date);
-    });
+    $("#datetimepicker1")
+        .datetimepicker(
+        {
+            locale: "sv",
+            format: "YYYY-MM-DD" //REMOVE IF YOU WANT TIME-PICKER AS WELL
+        });
+    $("#datetimepicker2")
+        .datetimepicker({
+            locale: "sv",
+            format: "YYYY-MM-DD", //REMOVE IF YOU WANT TIME-PICKER AS WELL
+            useCurrent: false //Important! See issue #1075
+        });
+    $("#datetimepicker1")
+        .on("dp.change",
+            function(e) {
+                $("#datetimepicker2").data("DateTimePicker").minDate(e.date);
+            });
+    $("#datetimepicker2")
+        .on("dp.change",
+            function(e) {
+                $("#datetimepicker1").data("DateTimePicker").maxDate(e.date);
+            });
 };
 
 // MESSAGE TO THE USER IN ADDED IN A SPAN AFTER <source> THEN FADES OUT
 function hr_messageFadingOut(source, message, type) {
-    source.after(' <span class="alert alert-' + type + ' js-fadeOutThisMessage" role="alert">' + message + '</span>');
-    $(".js-fadeOutThisMessage").fadeOut(4000, function () {
-        $(this).remove();
-    });
+    source.after(' <span class="alert alert-' + type + ' js-fadeOutThisMessage" role="alert">' + message + "</span>");
+    $(".js-fadeOutThisMessage")
+        .fadeOut(4000,
+            function() {
+                $(this).remove();
+            });
 };
 
 // FADE OUT AN OBJECT
 function hr_fadeOutObject(source) {
-    source.fadeOut(hr_fadeOutSpeed, function () {
-        $(this).remove();
-    });
+    source.fadeOut(hr_fadeOutSpeed,
+        function() {
+            $(this).remove();
+        });
 }
 
 
@@ -100,21 +109,24 @@ function createAutocompletes() {
 }
 
 function hr_createTableSorter(tableId) {
-    $(tableId).tablesorter(
-    {
-        sortList: [[0, 0]],
-        emptyTo: "bottom"
-    });
+    $(tableId)
+        .tablesorter(
+        {
+            sortList: [[0, 0]],
+            emptyTo: "bottom"
+        });
 }
-
 
 
 // HANDLE ENTER-BUTTON WHEN ADDING TAGS
 function hr_addEventListenerForEnter(selector, inputField) {
-    $(document).on("keypress", inputField, function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            $(selector).trigger("click");
-        }
-    });
+    $(document)
+        .on("keypress",
+            inputField,
+            function(event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    $(selector).trigger("click");
+                }
+            });
 }

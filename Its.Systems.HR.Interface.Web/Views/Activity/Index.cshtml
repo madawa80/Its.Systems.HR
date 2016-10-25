@@ -17,7 +17,7 @@
         <label for="searchString">Filtrera aktiviteter på namn:</label>
         <div class="form-inline">
             <div class="form-group">
-                @Html.TextBox("searchString", null, new { @class = "form-control" })
+                @Html.TextBox("searchString", null, new {@class = "form-control"})
             </div>
             <button type="submit" class="btn btn-default">Filtrera!</button>
         </div>
@@ -27,28 +27,28 @@
 }
 <table id="listActivitiesTable" class="tablesorter table table-hover">
     <thead>
-        <tr>
-            <th>
-                Namn
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            Namn
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @*@Html.ActionLink(@item.Name, "FilterSessions", "ActivitySummary", new { SearchString = item.Name }, null)*@
-                    @Html.ActionLink(@item.Name, "AllSessionsForActivity", "ActivitySummary", new { id = item.Id }, null)
-                </td>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @*@Html.ActionLink(@item.Name, "FilterSessions", "ActivitySummary", new { SearchString = item.Name }, null)*@
+                @Html.ActionLink(item.Name, "AllSessionsForActivity", "ActivitySummary", new {id = item.Id}, null)
+            </td>
 
-                <td>
-                    <a href="@Url.Action("EditActivity", new {id = item.Id})">Ändra aktivitet</a>&nbsp;|
-                    <a href="#" class="js-delete-activity" data-activityId="@item.Id">Ta bort</a>
-                </td>
-            </tr>
-        }
+            <td>
+                <a href="@Url.Action("EditActivity", new {id = item.Id})">Ändra aktivitet</a>&nbsp;|
+                <a href="#" class="js-delete-activity" data-activityId="@item.Id">Ta bort</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
 

@@ -12,7 +12,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public string ParticipantName { get; set; }
 
-        [Range(minimum:1, maximum:5)]
+        [Range(1, 5)]
         [Display(Name = "Betyg")]
         public int Rating { get; set; }
 

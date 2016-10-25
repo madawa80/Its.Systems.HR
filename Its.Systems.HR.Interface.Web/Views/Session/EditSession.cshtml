@@ -5,8 +5,10 @@
 }
 
 <h2>Ändra tillfälle</h2>
-<h4><em>@Model.NameOfSessionWithActivity</em></h4>
-<hr />
+<h4>
+    <em>@Model.NameOfSessionWithActivity</em>
+</h4>
+<hr/>
 
 @using (Html.BeginForm("EditSession", "Session", FormMethod.Post))
 {
@@ -14,44 +16,44 @@
 
     @Html.HiddenFor(n => n.SessionId)
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
 
     <div class="form-group">
         <label for="Activity_Id" class="control-label">Tillfälle för aktivitet</label>
         <div>
-            @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>)ViewBag.AllActivities, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Activity.Id, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(n => n.Activity.Id, (IEnumerable<SelectListItem>) ViewBag.AllActivities, new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.Activity.Id, "", new {@class = "text-danger"})
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.NameOfSession)
         <div>
-            @Html.EditorFor(model => model.NameOfSession, new { htmlAttributes = new { @class = "form-control", placeholder = "Exempel: 2017" } })
-            @Html.ValidationMessageFor(model => model.NameOfSession, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.NameOfSession, new {htmlAttributes = new {@class = "form-control", placeholder = "Exempel: 2017"}})
+            @Html.ValidationMessageFor(model => model.NameOfSession, "", new {@class = "text-danger"})
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.StartDate)
         <div class='input-group date' id='datetimepicker1'>
-            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control"}})
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
         </div>
-        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.StartDate, "", new {@class = "text-danger"})
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.EndDate)
         <div class='input-group date' id='datetimepicker2'>
-            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
         </div>
-        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+        @Html.ValidationMessageFor(model => model.EndDate, "", new {@class = "text-danger"})
     </div>
 
 
@@ -59,7 +61,7 @@
         <label for="NameOfLocation">Plats</label>
         <div>
             <input type="text" id="NameOfLocation" name="NameOfLocation" value="@ViewBag.NameOfLocation" class="form-control"
-                   data-autocomplete="@Url.Action("AutoCompleteLocations", "Activity")" />
+                   data-autocomplete="@Url.Action("AutoCompleteLocations", "Activity")"/>
             @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
         </div>
     </div>
@@ -67,8 +69,8 @@
     <div class="form-group">
         <label for="HrPerson_Id">Ansvarig HR</label>
         <div>
-            @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>)ViewBag.AllHrPersons, "-- Ingen ansvarig HR --", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.HrPerson, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(n => n.HrPerson, (IEnumerable<SelectListItem>) ViewBag.AllHrPersons, "-- Ingen ansvarig HR --", new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.HrPerson, "", new {@class = "text-danger"})
         </div>
     </div>
 
@@ -76,7 +78,7 @@
         <label for="tagsInput">Etiketter</label>
         <div class="form-inline">
             <div class="form-group">
-                <input type="text" id="tagsInput" name="tagsInput" class="form-control" 
+                <input type="text" id="tagsInput" name="tagsInput" class="form-control"
                        data-autocomplete="@Url.Action("AutoCompleteTags", "Activity")"/>
             </div>
             <button type="button" class="btn btn-default js-add-tag-edit-session" data-sessionId="@Model.SessionId">Lägg till [Enter]</button>
@@ -111,7 +113,7 @@
     @*<script src="~/Scripts/moment.min.js"></script>*@
     <script src="~/Scripts/moment-with-locales.min.js"></script>
     <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
-    
+
     <script src="~/Scripts/App/HrHelpers.js"></script>
     <script src="~/Scripts/App/EditSession.js"></script>
 }

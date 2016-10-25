@@ -17,23 +17,23 @@
     @Html.HiddenFor(n => n.SessionId)
     @Html.HiddenFor(n => n.SessionName)
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
     <div class="form-group">
         @Html.LabelFor(model => model.Rating)
         <div>
             @*@Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", placeholder = "1-5" } })*@
             @*<input name="Rating" id="Rating" type="text" class="" value="" data-slider-min="1" data-slider-max="5" data-slider-step="1" data-slider-value="@Model.Rating" />*@
-            <input type="hidden" name="Rating" id="Rating" class="rating" value="@Model.Rating" 
-                   data-filled="glyphicon glyphicon-star increase-glyphicon-size" data-empty="glyphicon glyphicon-star-empty increase-glyphicon-size" />
-            @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+            <input type="hidden" name="Rating" id="Rating" class="rating" value="@Model.Rating"
+                   data-filled="glyphicon glyphicon-star increase-glyphicon-size" data-empty="glyphicon glyphicon-star-empty increase-glyphicon-size"/>
+            @Html.ValidationMessageFor(model => model.Rating, "", new {@class = "text-danger"})
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Comments)
         <div>
-            @Html.TextAreaFor(n => n.Comments, 10, 40, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+            @Html.TextAreaFor(n => n.Comments, 10, 40, new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.Comments, "", new {@class = "text-danger"})
         </div>
     </div>
 

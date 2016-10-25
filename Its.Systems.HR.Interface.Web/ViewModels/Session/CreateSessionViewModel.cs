@@ -18,6 +18,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         [Display(Name = "Startdatum")]
         public DateTime? StartDate { get; set; }
+
         //[DataType(DataType.Date)]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         [Display(Name = "Slutdatum")]
@@ -25,6 +26,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public string NameOfLocation { get; set; }
         public int? HrPerson { get; set; }
+
         [Required]
         public Activity Activity { get; set; }
 
@@ -47,17 +49,15 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
 
                 var sessionTags = AddedTags.Split(',');
-                for (int i = 0; i < sessionTags.Length; i++)
-                {
+                for (var i = 0; i < sessionTags.Length; i++)
                     sessionTags[i] = sessionTags[i].Trim().ToLower();
-                }
 
                 var result = new List<Tag>();
                 foreach (var tag in sessionTags.Distinct())
                 {
                     if (tag.Length < 1) continue;
 
-                    result.Add(new Tag()
+                    result.Add(new Tag
                     {
                         Name = tag.ToLower()
                     });

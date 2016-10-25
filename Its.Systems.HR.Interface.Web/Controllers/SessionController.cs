@@ -13,8 +13,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     public class SessionController : Controller
     {
         private readonly IActivityManager _activityManager;
-        private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
+        private readonly ISessionManager _sessionManager;
         private readonly IUtilityManager _utilitiesManager;
 
         public SessionController(IActivityManager activityManager, ISessionManager sessionManager,
@@ -33,7 +33,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var allHrPersons = _personManager.GetAllHrPersons().OrderBy(n => n.FirstName).ToList();
 
             var selectedActivityId =
-                (id == 0) ? allActivities.First().Id : id;
+                id == 0 ? allActivities.First().Id : id;
 
             ViewBag.AllActivities = new SelectList(allActivities, "Id", "Name", selectedActivityId);
             ViewBag.AllSessionParticipants = new SelectList(
@@ -53,15 +53,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    List<Participant> participantsToAddFromDb = new List<Participant>();
+                    var participantsToAddFromDb = new List<Participant>();
                     if (sessionVm.AddedParticipants != null)
                     {
-                        string[] participants = sessionVm.AddedParticipants.Split(',');
-                        List<int> participantsId = new List<int>();
+                        var participants = sessionVm.AddedParticipants.Split(',');
+                        var participantsId = new List<int>();
                         foreach (var participant in participants)
-                        {
                             participantsId.Add(int.Parse(participant));
-                        }
 
                         //TODO: Make a proper join, this is inefficient
                         participantsToAddFromDb =
@@ -76,9 +74,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     // <- END TAGS
 
 
-                    int? locationId = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
+                    var locationId = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
 
-                    var result = new Session()
+                    var result = new Session
                     {
                         Name = sessionVm.Name,
                         ActivityId = sessionVm.Activity.Id,
@@ -92,18 +90,17 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                     if (sessionVm.AddedParticipants != null)
                     {
-                        List<SessionParticipant> final = new List<SessionParticipant>();
+                        var final = new List<SessionParticipant>();
                         foreach (var participant in participantsToAddFromDb)
                         {
-                            final.Add(new SessionParticipant()
+                            final.Add(new SessionParticipant
                             {
                                 ParticipantId = participant.Id,
                                 Session = result,
-                                Rating = 0,
+                                Rating = 0
                             });
                             result.SessionParticipants = final;
                         }
-
                     }
 
                     // Save session in db
@@ -113,7 +110,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     // Now add tags to the created session!...
                     _sessionManager.AddSessionTags(tagsToAdd, result.Id);
 
-                    return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = result.Id });
+                    return RedirectToAction("SessionForActivity", "ActivitySummary", new {id = result.Id});
                 }
             }
             catch (RetryLimitExceededException /* dex */)
@@ -129,7 +126,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
+            var session = _sessionManager.GetSessionByIdWithIncludes((int) id);
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -137,9 +134,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             // Get Tags for session
             var allTagsForSession =
-                _utilitiesManager.GetAllTagsForSessionById((int)id).ToList();
+                _utilitiesManager.GetAllTagsForSessionById((int) id).ToList();
 
-            var viewModel = new EditSessionViewModel()
+            var viewModel = new EditSessionViewModel
             {
                 SessionId = session.Id,
                 NameOfSessionWithActivity = session.NameWithActivity,
@@ -149,7 +146,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 EndDate = session.EndDate,
                 HrPerson = session.HrPersonId,
                 //this.ModelControl as CreerEtablissementModel ??
-                NameOfLocation = (session.Location == null) ? string.Empty : session.Location.Name,
+                NameOfLocation = session.Location == null ? string.Empty : session.Location.Name,
                 AddedTags = allTagsForSession
             };
 
@@ -175,8 +172,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             try
             {
-                int? location = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
-                int? hrPerson = inputVm.HrPerson;
+                var location = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(inputVm.NameOfLocation);
+                var hrPerson = inputVm.HrPerson;
 
                 sessionToUpdate.Name = inputVm.NameOfSession;
                 sessionToUpdate.ActivityId = inputVm.Activity.Id;
@@ -187,7 +184,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                 _sessionManager.EditSession(sessionToUpdate);
 
-                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = sessionToUpdate.Id });
+                return RedirectToAction("SessionForActivity", "ActivitySummary", new {id = sessionToUpdate.Id});
 
                 //ModelState.AddModelError("NameOfSession", "Aktiviteten existerar redan.");
             }
@@ -221,7 +218,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 PersonId = personId,
                 SessionId = sessionId,
                 SessionName = session.NameWithActivity,
-                StartDate = session.StartDate?.ToShortDateString() ?? "",
+                StartDate = session.StartDate?.ToShortDateString() ?? ""
                 //Year = session.StartDate.Year,
                 //Month = session.StartDate.Month,
                 //Day = session.StartDate.Day,
@@ -254,7 +251,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
 
@@ -267,7 +263,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     ErrorMessage = "",
                     PersonId = 0,
                     SessionId = sessionId,
-                    PersonFullName = "",
+                    PersonFullName = ""
                 };
                 return Json(failResult);
             }
@@ -279,7 +275,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ErrorMessage = "",
                 PersonId = participant.Id,
                 SessionId = sessionId,
-                PersonFullName = participant.FullName + " (" + personCasLogin + ")",
+                PersonFullName = participant.FullName + " (" + personCasLogin + ")"
             };
 
             if (!_personManager.AddParticipantToSession(participant.Id, sessionId))
@@ -289,7 +285,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     ErrorMessage = "Personen är redan registrerad på tillfället.",
                     PersonId = 0,
                     SessionId = 0,
-                    PersonFullName = "",
+                    PersonFullName = ""
                 };
 
             return Json(result);
@@ -297,49 +293,48 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult RemovePersonFromSession(int sessionId, int personId)
         {
-            var result = new { Success = true };
+            var result = new {Success = true};
 
             //if (_personManager.GetParticipantById(personId) == null || _activityManager.GetSessionById(sessionId) == null)
             //    result = new { Success = "Fail" };
 
             if (!_personManager.RemoveParticipantFromSession(personId, sessionId))
-                result = new { Success = false };
+                result = new {Success = false};
 
             return Json(result);
         }
 
         public ActionResult RemoveSession(int id)
         {
-            var result = new { Success = true };
+            var result = new {Success = true};
 
             if (!_sessionManager.DeleteSessionById(id))
-                result = new { Success = false };
+                result = new {Success = false};
 
             return Json(result);
         }
 
         public ActionResult AddTagToSession(int sessionId, string tagName)
         {
-            var result = new { Success = false, TagId = -1 };
+            var result = new {Success = false, TagId = -1};
             if (tagName.Length < 1)
                 return Json(result);
 
             var tagIdFromDb = _sessionManager.AddTagToSession(sessionId, tagName);
             if (tagIdFromDb != -1)
-                result = new { Success = true, TagId = tagIdFromDb };
+                result = new {Success = true, TagId = tagIdFromDb};
 
             return Json(result);
         }
 
         public ActionResult RemoveTagFromSession(int sessionId, int tagId)
         {
-            var result = new { Success = false };
+            var result = new {Success = false};
 
             if (_sessionManager.RemoveTagFromSession(sessionId, tagId))
-                result = new { Success = true };
+                result = new {Success = true};
 
             return Json(result);
         }
-
     }
 }

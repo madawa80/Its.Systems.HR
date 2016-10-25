@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.ViewModels;
+
 //using Quartz;
 //using Quartz.Impl;
 
@@ -17,14 +18,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private readonly IPersonManager _personManager;
         private readonly IUtilityManager _utilitiesManager;
 
-        public ActivityController(IActivityManager activityManager, IPersonManager personManager, IUtilityManager utilityManager)
+        public ActivityController(IActivityManager activityManager, IPersonManager personManager,
+            IUtilityManager utilityManager)
         {
             _activityManager = activityManager;
             _personManager = personManager;
             _utilitiesManager = utilityManager;
         }
 
-       
+
         public ActionResult SyncUsersWithUmuApi()
         {
             return View("Error");
@@ -42,20 +44,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var activities = _activityManager.GetAllActivities();
 
             if (!string.IsNullOrEmpty(searchString))
-            {
                 activities = activities.Where(s => s.Name.Contains(searchString));
-            }
 
             var result = new List<ActivityViewModel>();
 
             foreach (var activity in activities)
-            {
-                result.Add(new ActivityViewModel()
+                result.Add(new ActivityViewModel
                 {
                     Id = activity.Id,
-                    Name = activity.Name,
+                    Name = activity.Name
                 });
-            }
 
 
             return View(result);
@@ -74,29 +72,27 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             try
             {
                 if (ModelState.IsValid)
-                {
                     if (!_activityManager.GetAllActivities().Any(n => n.Name == activity.Name))
                     {
-                        var result = new Activity()
+                        var result = new Activity
                         {
-                            Name = activity.Name,
+                            Name = activity.Name
                         };
 
                         _activityManager.AddActivity(result);
 
-                        return RedirectToAction("AllSessionsForActivity", "ActivitySummary", new { id = result.Id });
+                        return RedirectToAction("AllSessionsForActivity", "ActivitySummary", new {id = result.Id});
                     }
                     else
                     {
                         ModelState.AddModelError("", "En aktivitet med samma namn existerar redan.");
                         return View(activity);
                     }
-
-                }
             }
             catch (RetryLimitExceededException /* dex */)
             {
-                ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
+                ModelState.AddModelError("",
+                    "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
             }
             return View(activity);
         }
@@ -106,15 +102,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult EditActivity(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             var activity = _activityManager.GetActivityById(id.Value);
             if (activity == null)
-            {
                 return HttpNotFound();
-            }
-            var result = new ActivityViewModel { Name = activity.Name };
+            var result = new ActivityViewModel {Name = activity.Name};
             return View(result);
         }
 
@@ -124,25 +116,22 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult EditActivityPost(ActivityViewModel activityFromInput)
         {
             if (activityFromInput == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
             try
             {
                 if (_activityManager.EditActivity(activityFromInput.Id, activityFromInput.Name))
-                {
                     return RedirectToAction("Index");
-                }
 
                 ModelState.AddModelError("Name", "Aktiviteten existerar redan.");
             }
             catch (RetryLimitExceededException /* dex */)
             {
-                ModelState.AddModelError("", "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
+                ModelState.AddModelError("",
+                    "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
             }
 
-            return View("EditActivity", new ActivityViewModel()
+            return View("EditActivity", new ActivityViewModel
             {
                 Name = activityFromInput.Name
             });
@@ -154,10 +143,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (!_activityManager.DeleteActivityById(activityId))
                 return new HttpNotFoundResult();
 
-            var result = new { Success = "True" };
+            var result = new {Success = "True"};
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
 
 
         //AJAX AUTOCOMPLETE
@@ -166,6 +154,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var locations = GetLocations(term);
             return Json(locations.OrderBy(n => n), JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult AutoCompleteParticipants(string term)
         {
             var participants = GetParticipants(term);
@@ -192,9 +181,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private IEnumerable<string> GetParticipants(string searchString)
         {
             var participants = from element in _personManager.GetAllParticipants()
-                         let fullNameWithCas = element.FirstName + " " + element.LastName + " " + element.CasId
-                         where fullNameWithCas.Contains(searchString.ToUpper())
-                         select element.FirstName + " " + element.LastName + " (" + element.CasId + ")";
+                let fullNameWithCas = element.FirstName + " " + element.LastName + " " + element.CasId
+                where fullNameWithCas.Contains(searchString.ToUpper())
+                select element.FirstName + " " + element.LastName + " (" + element.CasId + ")";
 
             //IEnumerable<string> participants =
             //    _personManager.GetAllParticipants()
@@ -217,4 +206,3 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
     }
 }
-

@@ -8,8 +8,8 @@ namespace Its.Systems.HR.Interface.Web
 {
     public partial class Startup
     {
-        private static string realm = ConfigurationManager.AppSettings["ida:Wtrealm"];
-        private static string adfsMetadata = ConfigurationManager.AppSettings["ida:ADFSMetadata"];
+        private static readonly string realm = ConfigurationManager.AppSettings["ida:Wtrealm"];
+        private static readonly string adfsMetadata = ConfigurationManager.AppSettings["ida:ADFSMetadata"];
 
         public void ConfigureAuth(IAppBuilder app)
         {

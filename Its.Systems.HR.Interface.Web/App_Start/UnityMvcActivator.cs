@@ -1,9 +1,11 @@
 using System.Linq;
 using System.Web.Mvc;
+using Its.Systems.HR.Interface.Web.App_Start;
 using Microsoft.Practices.Unity.Mvc;
+using WebActivatorEx;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Its.Systems.HR.Interface.Web.App_Start.UnityWebActivator), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(Its.Systems.HR.Interface.Web.App_Start.UnityWebActivator), "Shutdown")]
+[assembly: PreApplicationStartMethod(typeof(UnityWebActivator), "Start")]
+[assembly: ApplicationShutdownMethod(typeof(UnityWebActivator), "Shutdown")]
 
 namespace Its.Systems.HR.Interface.Web.App_Start
 {
@@ -11,7 +13,7 @@ namespace Its.Systems.HR.Interface.Web.App_Start
     public static class UnityWebActivator
     {
         /// <summary>Integrates Unity when the application starts.</summary>
-        public static void Start() 
+        public static void Start()
         {
             var container = UnityConfig.GetConfiguredContainer();
 

@@ -1,8 +1,6 @@
-﻿@using System.Runtime.CompilerServices
-@model Its.Systems.HR.Interface.Web.ViewModels.SessionSummaryStatisticsViewModel
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.SessionSummaryStatisticsViewModel
 @{
     ViewBag.Title = "SessionSummaryStatistics";
-
 }
 
 <div class="col-md-6">
@@ -12,60 +10,65 @@
         <div class="form-group">
             <h2 class="m-b-30"></h2>
             <label for="Activity">Aktiviteter</label>
-            
-            @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2011, DateTime.Now.AddYears(1).Year-2010).ToList()), "-- Select Year --", new { name = "yearslist" })
+
+            @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList()), "-- Select Year --", new {name = "yearslist"})
 
             <button type="submit" class="btn btn-default">Filtrera!</button>
         </div>
-
-
     }
 
-    @if (@Model.SessionStatisticsRows != null)
+    @if (Model.SessionStatisticsRows != null)
 
     {
-
-        <table class="table table-hover" id="sessionsinyear">
-
-            <tr>
-                <th>
-                    Tillfällen
-                </th>
-                <th>
-                    <span>Antal Deltagare</span>
-                </th>
-            </tr>
-
-            @foreach (var item in Model.SessionStatisticsRows)
-            {
+        
+            <table class="tablesorter table table-hover" id="listSessionsPartialTable">
+                <thead>
                 <tr>
-                    <td>
-                        <p>@Html.ActionLink(@item.Session.Name, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>
-                    </td>
-                    <td>
-                        <p align="right">@item.NumberOfParticipants</p>
-
-                    </td>
+                    <th>
+                        Aktivitet och Namn
+                    </th>
+                    <th>
+                        <span>Antal Deltagare</span>
+                    </th>
                 </tr>
-            }
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SessionStatisticsRows)
+                    {
+                        <tr>
+                            <td>
+                                <p>@Html.ActionLink(item.Session.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>
+                            </td>
+                            <td>
+                                <p align="right">@item.NumberOfParticipants</p>
 
+                            </td>
+                        </tr>
+                    }
+                <tbody>
+     </table>
     }
 
 
-        </div>
+</div>
 
-        <div class="col-md-5" id="totDeltagare">
-            <p align="right" >
-                
-                <h3 class="m-b-30" >
-                    <em>Totalt antal deltagare: @Model.TotalPaticipants</em><br/>
+<div class="col-md-5" id="totDeltagare">
+    <p align="right">
 
-                    <em>Totalt antal activiteter: @Model.TotalSessions</em>
+        <h3 class="m-b-30">
+            <em>Totalt antal deltagare: @Model.TotalPaticipants</em><br/>
 
-                </h3>
-            </p>
+            <em>Totalt antal activiteter: @Model.TotalSessions</em>
+
+        </h3>
+    </p>
 
 
-        </div>
+</div>
 
+@section scripts {
+
+    <script src="~/Scripts/jquery.tablesorter.min.js"></script>
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script src="~/Scripts/App/AllSessionsForActivity.js"></script>
+}

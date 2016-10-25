@@ -3,53 +3,53 @@
 
 <table id="listSessionsPartialTable" class="tablesorter table table-hover">
     <thead>
-        <tr>
-            <th>Aktivitet och Namn</th>
-            <th>Start</th>
-            <th>Slut</th>
-            <th>Hr-Person</th>
-            <th>Plats</th>
-            <th>Deltagare</th>
-        </tr>
+    <tr>
+        <th>Aktivitet och Namn</th>
+        <th>Start</th>
+        <th>Slut</th>
+        <th>Hr-Person</th>
+        <th>Plats</th>
+        <th>Deltagare</th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var session in Model)
-        {
-            <tr>
-                <td>
-                    <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})" title="@session.NameWithActivity">
-                        @session.NameWithActivity.Truncate(42)
-                    </a>
-                </td>
-                <td>
-                    @if (session.StartDate != null)
-                    {
-                        @session.StartDate.Value.ToString("yyyy-MM-dd")
-                    }
-                </td>
-                <td>
-                    @if (session.EndDate != null)
-                    {
-                        @session.EndDate.Value.ToString("yyyy-MM-dd")
+    @foreach (var session in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})" title="@session.NameWithActivity">
+                    @session.NameWithActivity.Truncate(42)
+                </a>
+            </td>
+            <td>
+                @if (session.StartDate != null)
+                {
+                    @session.StartDate.Value.ToString("yyyy-MM-dd")
+                }
+            </td>
+            <td>
+                @if (session.EndDate != null)
+                {
+                    @session.EndDate.Value.ToString("yyyy-MM-dd")
                         @*@session.EndDate.Value.ToString("dd MMM yyyy")*@
-                    }
-                </td>
-                <td>
-                    @if (session.HrPerson != null)
-                    {
-                        @session.HrPerson.FullName
-                    }
-                </td>
-                <td>
-                    @if (session.Location != null)
-                    {
-                        @session.Location.Name
-                    }
-                </td>
-                <td>
-                    @session.SessionParticipants.Count
-                </td>
-            </tr>
-        }
+                }
+            </td>
+            <td>
+                @if (session.HrPerson != null)
+                {
+                    @session.HrPerson.FullName
+                }
+            </td>
+            <td>
+                @if (session.Location != null)
+                {
+                    @session.Location.Name
+                }
+            </td>
+            <td>
+                @session.SessionParticipants.Count
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Its.Systems.HR.Interface.Web.Helpers.Extensions
+﻿namespace Its.Systems.HR.Interface.Web.Helpers.Extensions
 {
     public static class StringExt
     {
@@ -14,5 +8,4 @@ namespace Its.Systems.HR.Interface.Web.Helpers.Extensions
             return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
         }
     }
-
 }
