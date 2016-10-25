@@ -48,16 +48,7 @@ namespace Its.Systems.HR.Domain.Managers
                 return false;
 
             session.Comments = comments;
-            try
-            {
-                _db.SaveChanges();
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            _db.SaveChanges();
 
             return true;
         }
@@ -69,16 +60,7 @@ namespace Its.Systems.HR.Domain.Managers
                 return false;
 
             session.Evaluation = evaluation;
-            try
-            {
-                _db.SaveChanges();
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            _db.SaveChanges();
 
             return true;
         }
@@ -150,13 +132,13 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        public int AddTagToSession(int sessionId, string tagName)
+        public int? AddTagToSession(int sessionId, string tagName)
         {
             tagName = tagName.ToLower();
 
             // 0. Check if the tag is already in the SessionTag table!
             if (_db.Get<SessionTag>().Any(n => n.SessionId == sessionId && n.Tag.Name == tagName))
-                return -1;
+                return null;
 
             int tagId;
             // 1. check if the tagName already exists
@@ -196,7 +178,7 @@ namespace Its.Systems.HR.Domain.Managers
 
         public IQueryable<Session> GetAllSessionsForTag(int tagId)
         {
-            return _db.Get<SessionTag>().Where(n => n.TagId==tagId).Select(a => a.Session);
+            return _db.Get<SessionTag>().Where(n => n.TagId == tagId).Select(a => a.Session);
         }
 
 

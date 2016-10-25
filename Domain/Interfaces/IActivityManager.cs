@@ -11,13 +11,17 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <returns></returns>
         IQueryable<Activity> GetAllActivities();
 
+        /// <summary>
+        /// Gets all the activities and includes their sessions.
+        /// </summary>
+        /// <returns></returns>
         IQueryable<Activity> GetAllActivitiesWithSessions();
 
         /// <summary>
         /// Gets an activity by Id.
         /// </summary>
         /// <param name="id">Id for the activity</param>
-        /// <returns>Activity if found.</returns>
+        /// <returns>Activity if found, else null.</returns>
         Activity GetActivityById(int id);
 
         /// <summary>
@@ -30,8 +34,8 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <summary>
         /// Edits the activity name by activityId.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="newName"></param>
+        /// <param name="id">Id of activity</param>
+        /// <param name="newName">The new name for the activity.</param>
         /// <returns></returns>
         bool EditActivity(int id, string newName);
 

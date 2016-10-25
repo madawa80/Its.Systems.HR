@@ -19,12 +19,6 @@ namespace Its.Systems.HR.Domain.Managers
             //client.
         }
 
-        // TEMPLATE:
-        //public IQueryable<Person> GetPersons()
-        //{
-        //    db.Get<Person>().Include().Where().
-        //}
-
         public IQueryable<Participant> GetAllParticipants()
         {
             return _db.Get<Participant>();
@@ -48,26 +42,6 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
-        //public bool DeletePaticipantById(int id)
-        //{
-        //    var paticipantFromDb = _db.Get<Participant>().SingleOrDefault(n => n.Id == id);
-        //    if (paticipantFromDb == null)
-        //        return false;
-
-        //    _db.Delete(paticipantFromDb);
-        //    try
-        //    {
-        //        _db.SaveChanges();
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-
-        //    return true;
-        //}
-
         public Participant GetParticipantById(int id)
         {
             return _db.Get<Participant>().SingleOrDefault(n => n.Id == id);
@@ -79,14 +53,6 @@ namespace Its.Systems.HR.Domain.Managers
 
         public Participant GetHrPersonById(int hrPersonId)
         {
-            //var query =
-            //(
-            //    from HR in db.Get<>()
-            //    join @event in _db.Events
-            //        on eventUser.EventId equals @event.Id
-            //    where eventUser.ProfileId == profileId
-            //    select Name
-
             return _db.Get<Participant>().SingleOrDefault(n => n.Id == hrPersonId && n.IsHrPerson);
         }
 
@@ -97,16 +63,7 @@ namespace Its.Systems.HR.Domain.Managers
                 return false;
 
             participant.Comments = comments;
-            try
-            {
-                _db.SaveChanges();
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            _db.SaveChanges();
 
             return true;
         }
@@ -118,34 +75,19 @@ namespace Its.Systems.HR.Domain.Managers
                 return false;
 
             participant.Wishes = wishes;
-            try
-            {
-                _db.SaveChanges();
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            _db.SaveChanges();
 
             return true;
         }
 
         public bool AddParticipantToSession(int participantId, int sessionId)
         {
-            // Test participantId for null
-            if (!CheckIfParticipantExists(participantId)) return false;
-            // Test sessionId for null
-            if (!CheckIfSessionExists(sessionId)) return false;
-            // Make sure no SessionParticipant exists
-            var sessionParticipantFromDb = _db.Get<SessionParticipant>()
-                .SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
-
-            if (sessionParticipantFromDb != null)
+            if (!CheckIfParticipantExists(participantId) || !CheckIfSessionExists(sessionId) ||
+                CheckIfSessionParticipantAlreadyExists(participantId, sessionId))
+            {
                 return false;
+            }
 
-            // Create a new SessionParticipant
             var result = new SessionParticipant()
             {
                 ParticipantId = participantId,
@@ -161,11 +103,10 @@ namespace Its.Systems.HR.Domain.Managers
 
         public bool RemoveParticipantFromSession(int participantId, int sessionId)
         {
-            // Test participantId for null
             if (!CheckIfParticipantExists(participantId)) return false;
-            // Test sessionId for null
+
             if (!CheckIfSessionExists(sessionId)) return false;
-            // Make sure SessionParticipant exists!
+
             var sessionParticipantFromDb = _db.Get<SessionParticipant>()
                 .SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
 
@@ -191,14 +132,9 @@ namespace Its.Systems.HR.Domain.Managers
             if (sessionParticipant == null)
                 return false;
 
-            if (rating >= 1 && rating <= 5)
-            {
-                sessionParticipant.Rating = rating;
-                sessionParticipant.Comments = comments;
-                _db.SaveChanges();
-            }
-            else
-                return false;
+            sessionParticipant.Rating = rating;
+            sessionParticipant.Comments = comments;
+            _db.SaveChanges();
 
             return true;
         }
@@ -274,18 +210,24 @@ namespace Its.Systems.HR.Domain.Managers
         private bool CheckIfSessionExists(int sessionId)
         {
             var sessionFromDb = _db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
-            if (sessionFromDb == null)
-                return false;
-            return true;
+
+            return sessionFromDb != null;
         }
 
         private bool CheckIfParticipantExists(int participantId)
         {
             var participantFromDb = _db.Get<Participant>().SingleOrDefault(n => n.Id == participantId);
-            if (participantFromDb == null)
-                return false;
-            return true;
+
+            return participantFromDb != null;
         }
 
+        private bool CheckIfSessionParticipantAlreadyExists(int participantId, int sessionId)
+        {
+            var sessionParticipantFromDb =
+                _db.Get<SessionParticipant>()
+                .SingleOrDefault(n => n.ParticipantId == participantId && n.SessionId == sessionId);
+
+            return sessionParticipantFromDb != null;
+        }
     }
 }

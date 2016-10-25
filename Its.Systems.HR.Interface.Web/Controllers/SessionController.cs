@@ -148,7 +148,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 StartDate = session.StartDate,
                 EndDate = session.EndDate,
                 HrPerson = session.HrPersonId,
-                //this.ModelControl as CreerEtablissementModel ??
                 NameOfLocation = (session.Location == null) ? string.Empty : session.Location.Name,
                 AddedTags = allTagsForSession
             };
@@ -325,8 +324,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return Json(result);
 
             var tagIdFromDb = _sessionManager.AddTagToSession(sessionId, tagName);
-            if (tagIdFromDb != -1)
-                result = new { Success = true, TagId = tagIdFromDb };
+            if (tagIdFromDb != null)
+                result = new { Success = true, TagId = (int)tagIdFromDb };
 
             return Json(result);
         }

@@ -10,14 +10,14 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// Gets all the sessions for an activity by activityId.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>IQueryable of Session if found.</returns>
         IQueryable<Session> GetAllSessionsForActivity(int id);
 
         /// <summary>
         /// Gets all the sessions for a participant by participantId.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>IQueryable<Session> if found.</Session></returns>
+        /// <returns>IQueryable of Session if found.</returns>
         IQueryable<Session> GetAllSessionsForParticipantById(int id);
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <summary>
         /// Gets all the sessions.
         /// </summary>
-        /// <returns>IQueryable of Session.</returns>
+        /// <returns>IQueryable of Session if found.</returns>
         IQueryable<Session> GetAllSessions();
 
         /// <summary>
@@ -93,6 +93,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// Deletes a session by sessionId.
         /// </summary>
         /// <param name="sessionId"></param>
+        /// <returns>True if successfull.</returns>
         bool DeleteSessionById(int sessionId);
 
         /// <summary>
@@ -100,8 +101,8 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// </summary>
         /// <param name="sessionId"></param>
         /// <param name="tagName"></param>
-        /// <returns>The id of the created tag, or -1 if it already exists.</returns>
-        int AddTagToSession(int sessionId, string tagName);
+        /// <returns>The id of the created tag, or null it already exists.</returns>
+        int? AddTagToSession(int sessionId, string tagName);
 
         /// <summary>
         /// Removes a tag by tagId from a session, by sessionId.

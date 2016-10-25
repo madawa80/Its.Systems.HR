@@ -22,7 +22,7 @@ namespace Its.Systems.HR.Domain.Managers
 
         public IQueryable<Activity> GetAllActivitiesWithSessions()
         {
-            return _db.Get<Activity>().Include(n => n.Sessions); //.Where(s => s.Activity == n)
+            return _db.Get<Activity>().Include(n => n.Sessions);
         }
 
         public Activity GetActivityById(int id)
@@ -49,8 +49,11 @@ namespace Its.Systems.HR.Domain.Managers
             if (allActivities.Any(n => n.Name == newName))
                 return false;
 
-            //TODO: Add error handling!
             var activityToEdit = GetActivityById(activityId);
+
+            if (activityToEdit == null)
+                return false;
+
             activityToEdit.Name = newName;
             _db.Context().Entry(activityToEdit).State = EntityState.Modified;
             _db.SaveChanges();

@@ -35,8 +35,6 @@ namespace Its.Systems.HR.Domain.Interfaces
 
         Participant GetParticipantByCas(string cas);
 
-        //bool DeletePaticipantById(int id);
-
         /// <summary>
         /// Saves the comments passed to the person by personId.
         /// </summary>
@@ -53,6 +51,11 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <returns>True if successfull.</returns>
         bool SaveWishesForParticipant(int personId, string wishes);
 
+        /// <summary>
+        /// Gets a specific Participant that is also a HRPerson.
+        /// </summary>
+        /// <param name="hrPersonId"></param>
+        /// <returns>Participant or null</returns>
         Participant GetHrPersonById(int hrPersonId);
 
         /// <summary>
@@ -78,16 +81,49 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <returns></returns>
         IQueryable<Participant> GetAllParticipantsForSession(int id);
 
+        /// <summary>
+        /// Updates a review for a Session Participant, with the rating and optional comments.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="participantId"></param>
+        /// <param name="rating"></param>
+        /// <param name="comments"></param>
+        /// <returns>True if successfull.</returns>
         bool UpdateReviewForSessionParticipant(int sessionId, int participantId, int rating, string comments);
 
+        /// <summary>
+        /// Adds one or many Employees from the UmU Web Api for the ITS-section to 
+        /// the database Participant table.
+        /// </summary>
+        /// <returns>The added participants, if any.</returns>
         List<Participant> AddItsPersons();
 
+        /// <summary>
+        /// Sets the flag "IsActive" to false in the database Participant table for one or many employers that 
+        /// is no longer existing in the UmU Web Apu for the ITS-section.
+        /// </summary>
+        /// <returns>The inactivated participants, if any.</returns>
         List<Participant> InactivateItsPersons();
 
+        /// <summary>
+        /// Gets a Session Participant, by sessionId & participantId.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="participantId"></param>
+        /// <returns>The SessionParticipation, or null.</returns>
         SessionParticipant GetASessionParticipant(int sessionId, int participantId);
 
+        /// <summary>
+        /// Gets all the Session Participations by a sessionId.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <returns>IQueryable of Session Participant or null if none is found.</returns>
         IQueryable<SessionParticipant> GetAllSessionParticipationsForSessionById(int sessionId);
 
+        /// <summary>
+        /// Gets all the Session Participatants.
+        /// </summary>
+        /// <returns>IQueryable of SessionParticipant, or null if there are none in the database.</returns>
         IQueryable<SessionParticipant> GetAllSessionParticipants();
     }
 }

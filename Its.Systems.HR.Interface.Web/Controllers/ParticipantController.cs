@@ -36,7 +36,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (participant == null)
                 return HttpNotFound();
 
-            var allSessions = _sessionManager.GetAllSessions().Include(n => n.Activity).OrderBy(n => n.Activity.Name).ThenBy(n => n.Name);
+            var allSessions = _sessionManager.GetAllSessions().Include(n => n.Activity).OrderBy(n => n.Activity.Name).ThenBy(n => n.Name).ToList();
 
             var viewModel = new ParticipantSummaryViewModel()
             {
