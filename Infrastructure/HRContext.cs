@@ -16,6 +16,7 @@ namespace Its.Systems.HR.Infrastructure
 
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<HRContext, Infrastructure.Migrations.Configuration>(ConnString));
 
+            // TODO: remove logging SQL to debug.write for release
             Database.Log = sql => Debug.Write(sql);
             //Database.SetInitializer(new HRContextSeeder());
         }
