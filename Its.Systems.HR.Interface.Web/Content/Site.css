@@ -1,10 +1,9 @@
 ﻿body {
-    padding-bottom: 20px;
     padding-top: 50px;
+    padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
-
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -13,18 +12,22 @@
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
-
-.dl-horizontal dt { white-space: normal; }
+.dl-horizontal dt {
+    white-space: normal;
+}
 
 /* Set width on the form input elements since they're 100% wide by default */
-
 input,
 select,
-textarea { max-width: 280px; }
+textarea {
+    max-width: 280px;
+}
 
 /* jQuery UI styles */
 
-.ui-helper-hidden-accessible { display: none; }
+.ui-helper-hidden-accessible {
+    display: none;
+}
 
 /*.ui-widget-content {
     background-color: white;
@@ -58,43 +61,57 @@ textarea { max-width: 280px; }
 /* TABLE SORTER */
 
 table.tablesorter thead tr .header {
-    background-image: url(tablesorter/bg.gif);
-    background-position: center right;
-    background-repeat: no-repeat;
-    cursor: pointer;
+	background-image: url(tablesorter/bg.gif);
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
 }
 
-table.tablesorter thead tr .headerSortUp { background-image: url(tablesorter/asc.gif); }
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(tablesorter/asc.gif);
+}
 
-table.tablesorter thead tr .headerSortDown { background-image: url(tablesorter/desc.gif); }
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(tablesorter/desc.gif);
+}
 
 /* CUSTOM Utils */
 
-.m-t-50 { margin-top: 50px; }
+.m-t-50 {
+    margin-top: 50px;
+}
 
-.m-b-50 { margin-bottom: 50px; }
+.m-b-50 {
+    margin-bottom: 50px;
+}
 
-.m-t-30 { margin-top: 30px; }
+.m-t-30 {
+    margin-top: 30px;
+}
 
-.m-b-30 { margin-bottom: 30px; }
+.m-b-30 {
+    margin-bottom: 30px;
+}
 
-.increase-glyphicon-size { font-size: 2em; }
+.increase-glyphicon-size {
+    font-size: 2em;
+}
 
 /* BOOTSTRAP OVERRIDES */
 
 body {
-    font-family: Verdana, sans-serif;
     font-size: 16px;
+    font-family: Verdana, sans-serif;
 }
 
 .form-control {
-    font-family: Verdana, sans-serif;
     font-size: 16px;
+    font-family: Verdana, sans-serif;
 }
 
 .btn {
-    font-family: Verdana, sans-serif;
     font-size: 16px;
+    font-family: Verdana, sans-serif;
 }
 
 .navbar-inverse {
@@ -102,72 +119,80 @@ body {
     border-color: #444;
 }
 
-.navbar-inverse .navbar-nav > li > a {
-    color: white;
-    font-size: 18px;
-}
+    .navbar-inverse .navbar-nav > li > a {
+        color: white;
+        font-size: 18px;
+    }
 
-.navbar-inverse .navbar-nav > li > a:hover { background-color: #00a0e6; }
+        .navbar-inverse .navbar-nav > li > a:hover {
+            background-color: #00a0e6;
+        }
 
-.navbar-inverse .navbar-brand {
-    color: white;
-    font-size: 20px;
-}
+    .navbar-inverse .navbar-brand {
+        color: white;
+        font-size: 20px;
+    }
 
-.navbar-inverse .navbar-nav > .dropdown > a .caret {
-    border-bottom-color: white;
-    border-top-color: white;
-}
+    .navbar-inverse .navbar-nav > .dropdown > a .caret {
+        border-top-color: white;
+        border-bottom-color: white;
+    }
 
-.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus { background-color: #00a0e6; }
+    .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+        background-color: #00a0e6;
+    }
 
 
 ul.dropdown-menu {
-    -ms-border-radius: 0;
     background-color: #00a0e6;
+    -ms-border-radius: 0;
     border-radius: 0;
     box-shadow: none;
 }
 
-ul.dropdown-menu > li > a {
-    color: white;
-    font-size: 16px;
-    line-height: 1;
-    padding: 10px 20px;
-}
+    ul.dropdown-menu > li > a {
+        padding: 10px 20px;
+        color: white;
+        font-size: 16px;
+        line-height: 1;
+    }
 
-ul.dropdown-menu > li > a:hover {
-    /*padding: 3px 20px;*/
-    background-color: #444;
-    color: white;
-}
+        ul.dropdown-menu > li > a:hover {
+            /*padding: 3px 20px;*/
+            background-color: #444;
+            color: white;
+        }
 
-ul.dropdown-menu .divider {
-    background-color: #51b8e5;
-    margin: 0;
-}
+    ul.dropdown-menu .divider {
+        margin: 0;
+        background-color: #51b8e5;
+    }
 
 .navbar-nav > li > .dropdown-menu {
-    border: 0;
     margin: 0;
     padding: 0;
+    border: 0;
 }
 
 /* CUSTOM ADDED */
 
 .listedParticipantLink {
-    cursor: pointer;
     text-decoration: underline;
-}
-
-.listedParticipantRemove { cursor: pointer; }
-
-.js-remove-tag-create-session, .js-remove-tag-edit-session { margin-right: 10px; }
-
-.js-remove-tag-create-session:hover, .js-remove-tag-edit-session:hover {
-    background-color: red;
     cursor: pointer;
 }
+
+.listedParticipantRemove {
+    cursor: pointer;
+}
+
+.js-remove-tag-create-session, .js-remove-tag-edit-session {
+    margin-right: 10px;
+}
+
+    .js-remove-tag-create-session:hover, .js-remove-tag-edit-session:hover {
+        cursor: pointer;
+        background-color: red;
+    }
 
 /*#selectedTags {
     width: 100px;
@@ -187,22 +212,24 @@ footer {
     left: 0;*/
 }
 
-/*.js-fadeOutThisMessage {
-    display: 
-}*/
+textarea.commentsWishes {
+    max-width: 450px;
+}
 
-textarea.commentsWishes { max-width: 450px; }
+.wide-textbox {
+    max-width: 450px;
+}
 
-.wide-textbox { max-width: 450px; }
-
-.input-group { max-width: 280px; }
+.input-group {
+    max-width: 280px;
+}
 
 
 .h3 {
     font-family: "Cantarell";
     font-size: 16px;
     font-weight: 400;
-    text-align: justify;
-    top: 20%;
     width: 650px;
+    top: 20%;
+    text-align: justify;
 }

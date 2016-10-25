@@ -26,6 +26,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <param name="input">Domain Object</param>
         /// <returns>Domain Object</returns>
         T Add<T>(T input) where T : class;
+
         /// <summary>
         /// Function to delete some object from repository
         /// </summary>
@@ -33,6 +34,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <param name="input">Domain Object</param>
         /// <returns>Boolean</returns>
         bool Delete<T>(T input) where T : class;
+
         /// <summary>
         /// Function to commit changes to Repository
         /// </summary>

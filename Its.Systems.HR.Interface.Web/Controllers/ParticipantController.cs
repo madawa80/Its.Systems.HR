@@ -4,14 +4,15 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
+using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
     public class ParticipantController : Controller
     {
-        private readonly IPersonManager _personManager;
         private readonly ISessionManager _sessionManager;
+        private readonly IPersonManager _personManager;
 
         public ParticipantController(ISessionManager sessionManager, IPersonManager personManager)
         {
@@ -31,31 +32,27 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var participant = _personManager.GetAllParticipants().SingleOrDefault(n => n.Id == id);
+            Participant participant = _personManager.GetAllParticipants().SingleOrDefault(n => n.Id == id);
             if (participant == null)
                 return HttpNotFound();
 
-            var allSessions =
-                _sessionManager.GetAllSessions()
-                    .Include(n => n.Activity)
-                    .OrderBy(n => n.Activity.Name)
-                    .ThenBy(n => n.Name);
+            var allSessions = _sessionManager.GetAllSessions().Include(n => n.Activity).OrderBy(n => n.Activity.Name).ThenBy(n => n.Name).ToList();
 
-            var viewModel = new ParticipantSummaryViewModel
+            var viewModel = new ParticipantSummaryViewModel()
             {
                 PersonId = participant.Id,
                 FullName = participant.FullNameWithCas,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
                 Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
-                    .Include(n => n.Activity)
-                    .OrderByDescending(n => n.StartDate)
-                    .ToList(),
+                            .Include(n => n.Activity)
+                            .OrderByDescending(n => n.StartDate)
+                            .ToList(),
                 AllSessions = new SelectList(
-                    allSessions,
-                    "Id",
-                    "NameWithActivity",
-                    allSessions.First().Id)
+                                            allSessions,
+                                            "Id",
+                                            "NameWithActivity",
+                                            allSessions.First().Id)
             };
 
             return View(viewModel);
@@ -67,18 +64,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var loggedInUser = _personManager.GetParticipantById(237);
-            var session = _sessionManager.GetSessionByIdWithIncludes((int) id);
+            var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var currentSessionParticipation =
-                session.SessionParticipants.SingleOrDefault(
-                    n => (n.ParticipantId == loggedInUser.Id) && (n.SessionId == id));
+            var currentSessionParticipation = session.SessionParticipants.SingleOrDefault(n => n.ParticipantId == loggedInUser.Id && n.SessionId == id);
             if (currentSessionParticipation == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
 
-            var reviewSessionViewModel = new ReviewSessionViewModel
+            var reviewSessionViewModel = new ReviewSessionViewModel()
             {
                 ParticipantId = loggedInUser.Id,
                 ParticipantName = loggedInUser.FullNameWithCas,
@@ -89,6 +84,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             };
 
             return View(reviewSessionViewModel);
+
         }
 
         [HttpPost]
@@ -97,7 +93,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var loggedInUser = _personManager.GetParticipantById(237);
 
             if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating, vm.Comments))
-                return RedirectToAction("SessionForActivity", "ActivitySummary", new {id = vm.SessionId});
+                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = vm.SessionId});
 
             //ModelState.AddModelError("", "Något blev fel, prova gärna igen!");
             return View(vm);
@@ -108,13 +104,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult SaveComments(int personId, string comments)
         {
-            var result = new {Success = true};
+            var result = new { Success = true };
 
             if (_personManager.SaveCommentsForParticipant(personId, comments))
                 return Json(result);
 
             // TODO: ErrorMessage
-            result = new {Success = false};
+            result = new { Success = false };
             return Json(result);
             //return RedirectToAction("Details", new { id = personId });
         }
@@ -122,24 +118,22 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult SaveWishes(int personId, string wishes)
         {
-            var result = new {Success = true};
+            var result = new { Success = true };
 
             if (_personManager.SaveWishesForParticipant(personId, wishes))
                 return Json(result);
 
-            result = new {Success = false};
+            result = new { Success = false };
             return Json(result);
         }
 
         public ActionResult ParticipantStatisticSummary(int personid)
         {
             var allParticipantSessions = _sessionManager.GetAllSessionsForParticipantById(personid).ToList();
-            var result = new ParticipantStatisticSummaryViewModel
+            var result = new ParticipantStatisticSummaryViewModel()
             {
                 TotalCount = allParticipantSessions.Count,
-                CountThisYear =
-                    allParticipantSessions.Count(
-                        n => (n.StartDate != null) && (n.StartDate.Value.Year == DateTime.Now.Year)) //TODO: null error
+                CountThisYear = allParticipantSessions.Count(n => n.StartDate != null && n.StartDate.Value.Year == DateTime.Now.Year) //TODO: null error
             };
 
             return PartialView("_ParticipantStatisticSummaryPartial", result);

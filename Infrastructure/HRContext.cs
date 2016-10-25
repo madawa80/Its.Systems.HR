@@ -1,5 +1,6 @@
 ﻿using System.Data.Common;
 using System.Data.Entity;
+using System.Diagnostics;
 using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Infrastructure
@@ -14,6 +15,9 @@ namespace Its.Systems.HR.Infrastructure
             this.Configuration.LazyLoadingEnabled = false;
 
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<HRContext, Infrastructure.Migrations.Configuration>(ConnString));
+
+            // TODO: remove logging SQL to debug.write for release
+            Database.Log = sql => Debug.Write(sql);
             //Database.SetInitializer(new HRContextSeeder());
         }
 
