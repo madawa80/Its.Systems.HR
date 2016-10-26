@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Model;
+using Its.Systems.HR.Interface.Web.ViewModels.Participant;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
 {
@@ -16,6 +17,10 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public List<Session> Sessions { get; set; }
 
+        public Session Session { get; set; }
+
         public IEnumerable<SelectListItem> AllSessions { get; set; }
+
+        public List<ParticipantSessionRow> ParticipantSessionRows { get; set; }
     }
 }

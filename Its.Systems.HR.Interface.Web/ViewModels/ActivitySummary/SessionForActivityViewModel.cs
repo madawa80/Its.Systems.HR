@@ -13,7 +13,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public DateTime? EndDate { get; set; }
 
-        public Participant HrPerson { get; set; }
+        public Its.Systems.HR.Domain.Model.Participant HrPerson { get; set; }
         public string Rating { get; set; }
 
         public int TotalPaticipants { get; set; }
@@ -23,7 +23,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public int ActivityId { get; set; }
         public string ActivityName { get; set; }
 
-        public List<Participant> Participants { get; set; }
+        public List<Its.Systems.HR.Domain.Model.Participant> Participants { get; set; }
         public Location Location { get; set; }
         public List<Tag> Tags { get; set; }
     }

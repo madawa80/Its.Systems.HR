@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HrContext.cs" />
+    <Compile Include="HRContext.Views.cs" />
     <Compile Include="HRContextSeeder.cs" />
     <Compile Include="Migrations\201609300654597_InitialCreate.cs" />
     <Compile Include="Migrations\201609300654597_InitialCreate.Designer.cs">
@@ -106,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
