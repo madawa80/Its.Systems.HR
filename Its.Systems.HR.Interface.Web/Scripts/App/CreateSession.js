@@ -1,6 +1,6 @@
 ﻿//CreateSession.js
 $(document)
-    .ready(function() {
+    .ready(function () {
 
         // INIT BOOTSTRAP 3 DATEPICKERS
         hr_initBootstrap3DatePickers();
@@ -8,15 +8,15 @@ $(document)
         hr_createAutocomplete();
         // HANDLE ENTER-BUTTON WHEN ADDING TAGS
         hr_addEventListenerForEnter(".js-add-tag-create-session", "#tagsInput");
+        // ADD CLICK EVENT HANDLER FOR remove-particpantBeforeSessionExists
+        $(".js-remove-participantBeforeSessionExists").click(removeParticipant); //TODO click event 2.0
 
 
         // ADDING PARTICIPANTS "ON-THE-FLY"
         // Array holding participants
         var listOfParticiantsThatParticipated = [];
 
-        $(".js-add-participantBeforeSessionExists")
-            .on("click",
-                function() {
+        $(".js-add-participantBeforeSessionExists").on("click", function () {
                     var link = $(this);
                     var resultName = $("#Participant_Id :selected").text();
                     var resultId = $("#Participant_Id").val();
@@ -30,34 +30,21 @@ $(document)
                     $("#AddedParticipants").val(listOfParticiantsThatParticipated);
 
                     addParticipantLi(resultId, resultName);
-                });
+        });
 
-        $("body")
-            .on("click",
-                ".js-remove-participantBeforeSessionExists",
-                function() {
-                    var link = $(this);
-                    var resultId = link.parents("li").attr("data-personId");
+        // TODO click event handler 2.0
+        function removeParticipant() {
+            var link = $(this);
+            var resultId = link.parents("li").attr("data-personId");
 
-                    var index = listOfParticiantsThatParticipated.indexOf(resultId);
-                    if (index > -1) {
-                        listOfParticiantsThatParticipated.splice(index, 1);
-                        $("#AddedParticipants").val(listOfParticiantsThatParticipated);
+            var index = listOfParticiantsThatParticipated.indexOf(resultId);
+            if (index > -1) {
+                listOfParticiantsThatParticipated.splice(index, 1);
+                $("#AddedParticipants").val(listOfParticiantsThatParticipated);
 
-                        hr_fadeOutObject(link.parents("li"));
-                    }
-                });
-
-        $("body")
-            .on("click",
-                ".listedParticipantLink",
-                function() {
-                    var link = $(this);
-                    var resultId = link.parents("li").attr("data-personId");
-
-                    var url = hr_urlPrefix + "/Participant/Details/" + resultId;
-                    window.open(url, "_blank");
-                });
+                hr_fadeOutObject(link.parents("li"));
+            }
+        }
 
         function addParticipantLi(resultId, resultName) {
             var html = '<li data-personId="' +
@@ -66,15 +53,23 @@ $(document)
                 resultName +
                 '</span><span> </span><span class="badge js-remove-participantBeforeSessionExists listedParticipantRemove"> x </span></li>';
             $(html).hide().appendTo("#selectedParticipants").fadeIn(hr_fadeInSpeed);
+            $(".js-remove-participantBeforeSessionExists").click(removeParticipant); //TODO  click event 2.0
         }
+
+        $("body").on("click", ".listedParticipantLink", function () {
+                    var link = $(this);
+                    var resultId = link.parents("li").attr("data-personId");
+
+                    var url = hr_urlPrefix + "/Participant/Details/" + resultId;
+                    window.open(url, "_blank");
+        });
+
 
         // ADDING TAGS
         // Array holding tags
         var listOfAddedTags = [];
 
-        $(".js-add-tag-create-session")
-            .on("click",
-                function() {
+        $(".js-add-tag-create-session").on("click", function () {
                     var link = $(this);
                     var addedTag = $("#tagsInput").val();
 
@@ -93,12 +88,9 @@ $(document)
                     addTagSpan(addedTag);
 
                     $("#tagsInput").val("");
-                });
+        });
 
-        $("body")
-            .on("click",
-                ".js-remove-tag-create-session",
-                function() {
+        $("body").on("click", ".js-remove-tag-create-session", function () {
                     var link = $(this);
                     var resultTagName = link.attr("data-tagName");
 
@@ -109,7 +101,7 @@ $(document)
 
                         hr_fadeOutObject(link);
                     }
-                });
+        });
 
         function addTagSpan(addedTag) {
             var html = '<span data-tagName="' +

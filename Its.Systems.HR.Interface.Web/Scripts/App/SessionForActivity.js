@@ -41,7 +41,16 @@ $(document).ready(function () {
                     var html = '<tr><td><a href="' + hr_urlPrefix + '/Participant/Details/' +
                         result.PersonId + '">' + result.PersonFullName +
                         '</a></td><td><button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionid="' +
-                        result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</button></tr></td>';
+                        result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</button></td></tr>';
+
+                    // TODO: STRATEGI FÖR ATT BYGGA HTML MED JQUERY INTERFACET
+                    // BÖRJA INIFRÅN och ut
+                    // bryt ut a-taggen
+                    // bryt ut button-taggen
+                    // wrappa i varsin td
+                    // wrappa i TR
+
+
 
                     $(html).hide().appendTo("#ParticipantsForSession").fadeIn(hr_fadeInSpeed);
 

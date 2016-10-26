@@ -32,10 +32,12 @@ $(document).ready(function () {
                     className: "btn-danger"
                 }
             },
-            callback: deleteActivityConfirmedCallback // TODO: Hur lyckas jag skicka med link om callbackfunktionen låg utanför?
+            callback: deleteActivityConfirmedCallback(link) // TODO: Läs på closures för att förstå hur denna funkar
         });
+    }
 
-        function deleteActivityConfirmedCallback(result) {
+    function deleteActivityConfirmedCallback(link) {
+        return function wrapped(result) {
             if (result) {
                 $.ajax({
                     url: hr_urlPrefix + "/Activity/DeleteActivity/",
@@ -50,8 +52,8 @@ $(document).ready(function () {
                 });
             }
         }
-
     }
+    
 
 
 });

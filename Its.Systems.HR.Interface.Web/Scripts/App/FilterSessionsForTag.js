@@ -3,6 +3,6 @@ $(document)
     .ready(function () {
 
         // INIT TABLE SORTER
-        hr_createTableSorter("#listSessionsTag");
+        hr_createTableSorter("#sessionsTag");
 
     });
