@@ -1,6 +1,5 @@
 ﻿//CreateSession.js
-$(document)
-    .ready(function () {
+$(document).ready(function () {
 
         // INIT BOOTSTRAP 3 DATEPICKERS
         hr_initBootstrap3DatePickers();
@@ -8,8 +7,6 @@ $(document)
         hr_createAutocomplete();
         // HANDLE ENTER-BUTTON WHEN ADDING TAGS
         hr_addEventListenerForEnter(".js-add-tag-create-session", "#tagsInput");
-        // ADD CLICK EVENT HANDLER FOR remove-particpantBeforeSessionExists
-        $(".js-remove-participantBeforeSessionExists").click(removeParticipant); //TODO click event 2.0
 
 
         // ADDING PARTICIPANTS "ON-THE-FLY"
@@ -32,7 +29,6 @@ $(document)
                     addParticipantLi(resultId, resultName);
         });
 
-        // TODO click event handler 2.0
         function removeParticipant() {
             var link = $(this);
             var resultId = link.parents("li").attr("data-personId");
@@ -47,22 +43,33 @@ $(document)
         }
 
         function addParticipantLi(resultId, resultName) {
-            var html = '<li data-personId="' +
-                resultId +
-                '"><span class="listedParticipantLink">' +
-                resultName +
-                '</span><span> </span><span class="badge js-remove-participantBeforeSessionExists listedParticipantRemove"> x </span></li>';
-            $(html).hide().appendTo("#selectedParticipants").fadeIn(hr_fadeInSpeed);
-            $(".js-remove-participantBeforeSessionExists").click(removeParticipant); //TODO  click event 2.0
+
+            var $newLi = $("<li>")
+                            .attr("data-personId", resultId);
+
+
+            var $newSpanName = $("<span>")
+                                .addClass("listedParticipantLink")
+                                .text(resultName);
+
+            var $newSpanDelete = $("<span>")
+                                .addClass("badge js-remove-participantBeforeSessionExists listedParticipantRemove")
+                                .text(" X ");
+
+            var $html = $newLi.append($newSpanName).append($newSpanDelete);
+
+            $($html).hide().appendTo("#selectedParticipants").fadeIn(hr_fadeInSpeed);
+            $newSpanDelete.click(removeParticipant);
+            $newSpanName.click(openClickedParticipantInNewTab);
         }
 
-        $("body").on("click", ".listedParticipantLink", function () {
+        function openClickedParticipantInNewTab() {
                     var link = $(this);
                     var resultId = link.parents("li").attr("data-personId");
 
                     var url = hr_urlPrefix + "/Participant/Details/" + resultId;
                     window.open(url, "_blank");
-        });
+        }
 
 
         // ADDING TAGS
@@ -89,27 +96,34 @@ $(document)
 
                     $("#tagsInput").val("");
         });
-
-        $("body").on("click", ".js-remove-tag-create-session", function () {
-                    var link = $(this);
-                    var resultTagName = link.attr("data-tagName");
-
-                    var index = listOfAddedTags.indexOf(resultTagName);
-                    if (index > -1) {
-                        listOfAddedTags.splice(index, 1);
-                        $("#AddedTags").val(listOfAddedTags);
-
-                        hr_fadeOutObject(link);
-                    }
-        });
-
+        
         function addTagSpan(addedTag) {
+
+            //var $firstSpan = $("<span>")
+            //    .attr("data-tagName", addedTag)
+            //    .addClass("label label-primary js-remove-tag-create-session");
+
             var html = '<span data-tagName="' +
                 addedTag +
                 '" class="label label-primary js-remove-tag-create-session">' +
                 addedTag +
-                '&nbsp;<span class="glyphicon glyphicon-remove"></span></span>';
-            $(html).hide().appendTo("#selectedTags").fadeIn(hr_fadeInSpeed);
+                '<span class="glyphicon glyphicon-remove"></span></span>';
+            $(html).hide().appendTo("#selectedTags").fadeIn(hr_fadeInSpeed, function() {
+                $(this).click(removeTag); // TODO FIX BUG AFTER JQUERY HTML
+            });
         }
 
-    });
+        function removeTag() {
+            var link = $(this);
+            var resultTagName = link.attr("data-tagName");
+
+            var index = listOfAddedTags.indexOf(resultTagName);
+            if (index > -1) {
+                listOfAddedTags.splice(index, 1);
+                $("#AddedTags").val(listOfAddedTags);
+
+                hr_fadeOutObject(link);
+            }
+        }
+
+});

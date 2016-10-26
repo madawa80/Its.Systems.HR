@@ -11,7 +11,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public void SignIn()
         {
             if (!Request.IsAuthenticated)
-                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties {RedirectUri = "/"},
+                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties {RedirectUri = "/HrKompetensutveckling/Activity"},
                     WsFederationAuthenticationDefaults.AuthenticationType);
         }
 

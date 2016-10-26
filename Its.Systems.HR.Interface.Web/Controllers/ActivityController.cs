@@ -2,6 +2,7 @@
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
@@ -42,6 +43,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ViewResult Index(string searchString)
         {
             var activities = _activityManager.GetAllActivities();
+            var identity = (ClaimsIdentity) HttpContext.User.Identity;
 
             if (!string.IsNullOrEmpty(searchString))
                 activities = activities.Where(s => s.Name.Contains(searchString));

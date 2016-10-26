@@ -182,6 +182,7 @@ ul.dropdown-menu {
 }
 
 .listedParticipantRemove {
+    margin-left: 10px;
     cursor: pointer;
 }
 
@@ -193,6 +194,10 @@ ul.dropdown-menu {
         cursor: pointer;
         background-color: red;
     }
+
+#selectedTags .glyphicon-remove {
+    margin-left: 5px;
+}
 
 /*#selectedTags {
     width: 100px;
