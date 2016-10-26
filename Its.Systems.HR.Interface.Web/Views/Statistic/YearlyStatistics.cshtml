@@ -11,7 +11,7 @@
             <h2 class="m-b-30"></h2>
             <label for="Activity">Aktiviteter</label>
 
-            @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList()), "-- Select Year --", new {name = "yearslist"})
+            @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2011, DateTime.Now.Year - 2010)), "-- Välj år --", new {@class="form-control", name = "yearslist"})
 
             <button type="submit" class="btn btn-default">Filtrera!</button>
         </div>
@@ -70,5 +70,5 @@
 
     <script src="~/Scripts/jquery.tablesorter.min.js"></script>
     <script src="~/Scripts/App/HrHelpers.js"></script>
-    <script src="~/Scripts/App/SessionsForYear.js"></script>
+    <script src="~/Scripts/App/YearlyStatistics.js"></script>
 }

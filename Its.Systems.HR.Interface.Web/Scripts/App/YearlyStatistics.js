@@ -1,4 +1,4 @@
-﻿// AllSessionsForActivity.js
+﻿// YearlyStatistics.js
 $(document)
     .ready(function () {
 

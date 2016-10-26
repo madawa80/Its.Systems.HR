@@ -307,7 +307,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\App\ActivityIndex.js" />
-    <Content Include="Scripts\App\AllSessionsForTag.js" />
+    <Content Include="Scripts\App\FilterSessionsForTag.js" />
     <Content Include="Scripts\App\ParticipantIndex.js" />
     <Content Include="Scripts\App\AllSessionsForActivity.js" />
     <Content Include="Scripts\App\ParticipantDetails.js" />
@@ -316,7 +316,7 @@
     <Content Include="Scripts\App\EditSession.js" />
     <Content Include="Scripts\App\HRHelpers.js" />
     <Content Include="Scripts\App\CreateSession.js" />
-    <Content Include="Scripts\App\SessionsForYear.js" />
+    <Content Include="Scripts\App\YearlyStatistics.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />

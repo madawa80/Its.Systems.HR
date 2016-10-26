@@ -14,7 +14,7 @@
 
             @* @Html.DropDownList("Tag", new SelectList(Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList()), "-- Select Tag --", new { name = "Tag" })*@
             @*@Html.DropDownListFor(n=>n.tag.Id, Model.Tags, "-- Välj Etiketter--", new { name = "taglist" })*@
-            @Html.DropDownList("taglist", Model.Tags, Model.tagName, new {name = "taglist"})
+            @Html.DropDownList("taglist", Model.Tags, Model.tagName, new { @class = "form-control", name = "taglist" })
             @*     @Html.DropDownListFor(model => model.tag.Id, (IEnumerable<SelectListItem>)ViewBag.Tags, new { @class = "form-control" })*@
             <button type="submit" class="btn btn-default">Filtrera!</button>
         </div>
@@ -23,39 +23,42 @@
     @if (Model.Sessions != null)
 
     {
-        <table class="tablesorter table table-hover" id="SessionsTag">
+        <table class="tablesorter table table-hover" id="sessionsTag">
             <thead>
-
-
-            <tr>
-                <th>
-
-                    Aktivitet och Namn
-                </th>
-                <th>
-                    Start
-                </th>
-                <th>
-                    Slut
-                </th>
-            </tr>
+                <tr>
+                    <th>
+                        Aktivitet och Namn
+                    </th>
+                    <th>
+                        Start
+                    </th>
+                    <th>
+                        Slut
+                    </th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.Sessions)
-            {
-                <tr>
-                    <td>
-                        @Html.ActionLink(item.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Id }, null)
-                       @* <p>@Html.ActionLink(item.Session.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>*@
-                    </td>
-                    <td>
-                        @item.StartDate.Value.ToString("dd MMM yyyy")
-                    </td>
-                    <td>
-                        @item.EndDate.Value.ToString("dd MMM yyyy")
-                    </td>
-                </tr>
-            }
+                @foreach (var item in Model.Sessions)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(item.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Id }, null)
+                            @* <p>@Html.ActionLink(item.Session.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>*@
+                        </td>
+                        <td>
+                            @if (item.StartDate != null)
+                            {
+                                @item.StartDate.Value.ToString("yyyy-MM-dd")
+                            }
+                        </td>
+                        <td>
+                            @if (item.EndDate != null)
+                            {
+                                @item.EndDate.Value.ToString("yyyy-MM-dd")
+                            }
+                        </td>
+                    </tr>
+                }
             <tbody>
         </table>
     }
@@ -68,5 +71,5 @@
 
     <script src="~/Scripts/jquery.tablesorter.min.js"></script>
     <script src="~/Scripts/App/HrHelpers.js"></script>
-    <script src="~/Scripts/App/AllSessionsForTag.js"></script>
+    <script src="~/Scripts/App/FilterSessionsForTag.js"></script>
 }

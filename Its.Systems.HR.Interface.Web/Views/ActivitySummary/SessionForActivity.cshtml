@@ -82,9 +82,8 @@
                 {
                     <p>
                         Etiketter: @foreach (var tag in Model.Tags)
-                                   {
-                                       <span class="label-info">@Html.ActionLink(@tag.Name, "FilterSessionsForTag", "Statistic", new { id = @tag.Id}, null)</span>
-
+                        {
+                            <a href="@Url.Action("FilterSessionsForTag", "Statistic", new { id = tag.Id})" class="label label-info">@tag.Name</a>
                         }
                     </p>
                 }
@@ -93,7 +92,7 @@
                     <p>
                         Betyg: <input type="hidden" name="Rating" id="Rating" class="rating"
                                       value="@Model.Rating" data-readonly data-fractions="2"
-                                      data-filled="glyphicon glyphicon-star" data-empty="glyphicon glyphicon-star-empty"/>
+                                      data-filled="glyphicon glyphicon-star" data-empty="glyphicon glyphicon-star-empty" />
                     </p>
                 }
             </div>
