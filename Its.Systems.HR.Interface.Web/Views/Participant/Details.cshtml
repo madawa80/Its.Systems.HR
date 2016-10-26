@@ -9,18 +9,13 @@
 <div class="row">
     <div class="col-md-7">
         <h3 class="m-b-30">Deltagit på följande tillfällen</h3>
-        @*<ul id="allSessionsForParticipant">
+     
+  <table class="table" id="allSessionsForParticipant">
+            
+     @foreach (var year in Model.ParticipantSessionRows)
+     {
+         <tr> @year </tr>
 
-                @foreach (var session in Model.Sessions)
-                {
-                    <li>
-                        <a href="@Url.Action("Index", "Home")">@session.Name</a>
-                        <span> (@session.StartDate.ToShortDateString())</span>
-                        <span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort</span>
-                    </li>
-                }
-            </ul>*@
-        <table class="table" id="allSessionsForParticipant">
             @foreach (var session in Model.Sessions)
             {
                 <tr>
@@ -35,7 +30,10 @@
                 </tr>
             }
 
-        </table>
+         
+         
+     }
+  </table>
 
 
         <div id="statisticsSummary">

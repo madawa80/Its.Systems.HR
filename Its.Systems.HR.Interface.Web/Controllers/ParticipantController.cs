@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.ViewModels;
+using System.Collections.Generic;
+using Its.Systems.HR.Interface.Web.ViewModels.Participant;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
@@ -13,6 +15,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
+        private List<Session> SessionsPerPerson;
 
         public ParticipantController(ISessionManager sessionManager, IPersonManager personManager)
         {
@@ -29,6 +32,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         // GET: Participant/Details/5
         public ActionResult Details(int? id)
         {
+            var ParticipantSessionsRowsList = new List<ParticipantSessionRow>();
+
+
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -38,12 +44,41 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             var allSessions = _sessionManager.GetAllSessions().Include(n => n.Activity).OrderBy(n => n.Activity.Name).ThenBy(n => n.Name).ToList();
 
+      
+            SessionsPerPerson = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
+                .Include(n => n.Activity)
+                .OrderByDescending(n => n.StartDate)
+               .ToList();
+
+
+        //    var q =
+        //from a in SessionsPerPerson
+        //select Distinct a.StartDate.Value.Year;
+
+
+            var YearsList = SessionsPerPerson.GroupBy(n => n.StartDate.Value.Year)
+            .Select(grp => grp.First());
+
+            //foreach (var year in YearsList)
+            //{
+                
+            //          ParticipantSessionsRowsList.Add(new ParticipantSessionRow
+            //          {
+            //            Year = session.StartDate.Value.Year,
+            //            Session = session
+            //        });
+
+            //}
+
+          
+
             var viewModel = new ParticipantSummaryViewModel()
             {
                 PersonId = participant.Id,
                 FullName = participant.FullNameWithCas,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
+                ParticipantSessionRows = ParticipantSessionsRowsList,
                 Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
                             .Include(n => n.Activity)
                             .OrderByDescending(n => n.StartDate)
