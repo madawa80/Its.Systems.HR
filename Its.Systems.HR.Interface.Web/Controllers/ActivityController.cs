@@ -13,6 +13,7 @@ using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
+    [Authorize]
     public class ActivityController : Controller
     {
         private readonly IActivityManager _activityManager;
@@ -28,18 +29,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
 
-        public ActionResult SyncUsersWithUmuApi()
-        {
-            return View("Error");
-
-
-            _personManager.AddItsPersons();
-            _personManager.InactivateItsPersons();
-
-            return RedirectToAction("Index");
-        }
-
-        // find Activity 
         public ViewResult Index(string searchString)
         {
             var activities = _activityManager.GetAllActivities();
@@ -149,6 +138,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult SyncUsersWithUmuApi()
+        {
+            return View("Error");
+
+
+            _personManager.AddItsPersons();
+            _personManager.InactivateItsPersons();
+
+            return RedirectToAction("Index");
+        }
 
         //AJAX AUTOCOMPLETE
         public ActionResult AutoCompleteLocations(string term)
