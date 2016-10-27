@@ -9,7 +9,7 @@
 
 @using (Html.BeginForm("EditActivity", "Activity", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
+    @*@Html.AntiForgeryToken()*@
 
 
     <h4>Ändra namn på aktiviteten <strong>@Model.Name</strong></h4>

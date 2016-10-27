@@ -11,7 +11,7 @@
 
 @using (Html.BeginForm("CreateActivity", "Activity", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
+    @*@Html.AntiForgeryToken()*@
 
     @Html.ValidationSummary(true, "", new {@class = "text-danger"})
     <div class="form-group">

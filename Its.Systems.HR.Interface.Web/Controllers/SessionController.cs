@@ -46,7 +46,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult CreateSession(CreateSessionViewModel sessionVm)
         {
             try
@@ -163,7 +163,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [ActionName("EditSession")]
         public ActionResult EditSessionPost(EditSessionViewModel inputVm)
         {

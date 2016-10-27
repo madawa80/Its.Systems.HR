@@ -99,18 +99,18 @@ $(document).ready(function () {
         
         function addTagSpan(addedTag) {
 
-            //var $firstSpan = $("<span>")
-            //    .attr("data-tagName", addedTag)
-            //    .addClass("label label-primary js-remove-tag-create-session");
+            var $tagSpan = $("<span>")
+                .attr("data-tagName", addedTag)
+                .addClass("label label-primary js-remove-tag-create-session")
+                .text(addedTag);
 
-            var html = '<span data-tagName="' +
-                addedTag +
-                '" class="label label-primary js-remove-tag-create-session">' +
-                addedTag +
-                '<span class="glyphicon glyphicon-remove"></span></span>';
-            $(html).hide().appendTo("#selectedTags").fadeIn(hr_fadeInSpeed, function() {
-                $(this).click(removeTag); // TODO FIX BUG AFTER JQUERY HTML
-            });
+            var $removeGlyph = $("<span>")
+                .addClass("glyphicon glyphicon-remove");
+
+            var $html = $tagSpan.append($removeGlyph);
+
+            $($html).hide().appendTo("#selectedTags").fadeIn(hr_fadeInSpeed);
+            $html.click(removeTag);
         }
 
         function removeTag() {

@@ -10,7 +10,7 @@
 
 @using (Html.BeginForm("EditSession", "Session", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
+    @*@Html.AntiForgeryToken()*@
 
     @Html.HiddenFor(n => n.SessionId)
 

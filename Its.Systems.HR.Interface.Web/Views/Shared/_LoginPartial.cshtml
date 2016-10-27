@@ -1,26 +1,30 @@
-﻿@if (Request.IsAuthenticated)
+﻿@using System.Security.Claims
+@if (Request.IsAuthenticated)
 {
+    var user = (ClaimsIdentity)User.Identity;
+    var userClaims = user.Claims.ToArray();
+    var upn = userClaims.SingleOrDefault(n => n.Type.Contains("upn"));
     <text>
         <ul class="nav navbar-nav navbar-right">
-            <li class="navbar-text">
-                @if (User.Identity.Name != null)
-                {
-                    <text>Välkommen, @User.Identity.Name!</text>
-                }
-                else
-                {
-                    <text>Välkommen</text>
-                }
-            </li>
-            <li>
-                @Html.ActionLink("Logga ut", "SignOut", "Account")
-            </li>
-        </ul>
+    <li class="navbar-text">
+        @if (upn != null)
+        {
+            @upn.Value
+        }
+        else
+        {
+            <text>Välkommen</text>
+        }
+    </li>
+    <li>
+        @Html.ActionLink("Logga ut", "SignOut", "Account")
+    </li>
+</ul>
     </text>
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Logga in", "SignIn", "Account", null, new {id = "loginLink"})</li>
+        <li>@Html.ActionLink("Logga in", "SignIn", "Account", null, new { id = "loginLink" })</li>
     </ul>
 }

@@ -13,7 +13,7 @@ using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ActivityController : Controller
     {
         private readonly IActivityManager _activityManager;
@@ -57,7 +57,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult CreateActivity(ActivityViewModel activity)
         {
             try
@@ -102,7 +102,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [ActionName("EditActivity")]
         public ActionResult EditActivityPost(ActivityViewModel activityFromInput)
         {
