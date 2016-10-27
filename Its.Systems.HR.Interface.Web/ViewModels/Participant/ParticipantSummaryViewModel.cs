@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Model;
-using Its.Systems.HR.Interface.Web.ViewModels.Participant;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
 {
@@ -21,6 +20,8 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public IEnumerable<SelectListItem> AllSessions { get; set; }
 
-        public List<ParticipantSessionRow> ParticipantSessionRows { get; set; }
+        public List<int> Years { get; set; }
+
+        //public List<ParticipantSessionRow> ParticipantSessionRows { get; set; }
     }
 }

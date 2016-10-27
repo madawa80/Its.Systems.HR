@@ -7,7 +7,7 @@ using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.ViewModels;
 using System.Collections.Generic;
-using Its.Systems.HR.Interface.Web.ViewModels.Participant;
+using Microsoft.Ajax.Utilities;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
@@ -32,7 +32,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         // GET: Participant/Details/5
         public ActionResult Details(int? id)
         {
-            var ParticipantSessionsRowsList = new List<ParticipantSessionRow>();
+            //var YearsCollection = new List<int>();
 
 
             if (id == null)
@@ -44,33 +44,29 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             var allSessions = _sessionManager.GetAllSessions().Include(n => n.Activity).OrderBy(n => n.Activity.Name).ThenBy(n => n.Name).ToList();
 
-      
-            SessionsPerPerson = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
+
+            var yearslist = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
                 .Include(n => n.Activity)
-                .OrderByDescending(n => n.StartDate)
-               .ToList();
+                .OrderBy(n => n.StartDate.Value.Year)
+                .Where(n => n.StartDate != null)
+                //.Select(n => n.StartDate.Value.Year).Distinct().ToList();
+                .Select(n => n.StartDate.Value.Year).Distinct();
+
+            //var yearslist = from y in _sessionManager.GetAllSessionsForParticipantById(participant.Id)
+            //        select new
+            //        {
+
+            //            y.StartDate.Value.Year == null ? "" :0
+            //        };
 
 
-        //    var q =
-        //from a in SessionsPerPerson
-        //select Distinct a.StartDate.Value.Year;
 
 
-            var YearsList = SessionsPerPerson.GroupBy(n => n.StartDate.Value.Year)
-            .Select(grp => grp.First());
 
-            //foreach (var year in YearsList)
-            //{
-                
-            //          ParticipantSessionsRowsList.Add(new ParticipantSessionRow
-            //          {
-            //            Year = session.StartDate.Value.Year,
-            //            Session = session
-            //        });
 
-            //}
-
-          
+            var yearslisting = from element in yearslist
+                         orderby element descending
+                         select element;
 
             var viewModel = new ParticipantSummaryViewModel()
             {
@@ -78,10 +74,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 FullName = participant.FullNameWithCas,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
-                ParticipantSessionRows = ParticipantSessionsRowsList,
+                Years = yearslisting.ToList(),
                 Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
                             .Include(n => n.Activity)
-                            .OrderByDescending(n => n.StartDate)
+                            .OrderBy(n => n.StartDate)
                             .ToList(),
                 AllSessions = new SelectList(
                                             allSessions,
