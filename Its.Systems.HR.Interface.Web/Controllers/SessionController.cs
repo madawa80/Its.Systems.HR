@@ -206,40 +206,18 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View("EditSession", inputVm);
         }
 
-
-        // AJAX METHODS BELOW
         [HttpPost]
-        public ActionResult AddPersonToSession(int sessionId, int personId)
+        public ActionResult AddPersonToSession(int personId, int id) //id = sessionId
         {
-            var session = _sessionManager.GetSessionByIdWithIncludes(sessionId);
-
-            var result = new
+            if (!_personManager.AddParticipantToSession(personId, id))
             {
-                Success = true,
-                ErrorMessage = "",
-                PersonId = personId,
-                SessionId = sessionId,
-                SessionName = session.NameWithActivity,
-                StartDate = session.StartDate?.ToShortDateString() ?? "",
-                //Year = session.StartDate.Year,
-                //Month = session.StartDate.Month,
-                //Day = session.StartDate.Day,
-            };
+                return RedirectToAction("Details", "Participant", new { id = personId, error = "Personen är redan tillagd på tillfället." });
+            }
 
-            if (!_personManager.AddParticipantToSession(personId, sessionId))
-                result = new
-                {
-                    Success = false,
-                    ErrorMessage = "Personen är redan registrerad på tillfället.",
-                    PersonId = 0,
-                    SessionId = 0,
-                    SessionName = "",
-                    StartDate = ""
-                };
-            //, Year = 0, Month = 0, Day = 0
-            return Json(result);
+            return RedirectToAction("Details", "Participant", new { id= personId });
         }
 
+        // AJAX METHODS BELOW
         [HttpPost]
         public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, string personName)
         {

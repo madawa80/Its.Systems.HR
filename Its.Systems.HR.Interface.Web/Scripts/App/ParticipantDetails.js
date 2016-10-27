@@ -1,6 +1,11 @@
 ﻿//ParticipantDetails.js
 $(document).ready(function () {
 
+    // FADEOUT ERROR MESSAGE IF EXISTING
+    if ($("#errorMessage").length) {
+        $("#errorMessage").fadeOut(hr_messageFadingOutSpeed);
+    }
+
     // ADD CLICK EVENT HANDLER FOR delete-sessionParticipant
     $(".js-delete-sessionParticipant").click(deleteSessionParticipant);
 
@@ -58,42 +63,7 @@ $(document).ready(function () {
     }
 
     // ADD SESSION PARTICIPANT
-    $(".js-add-sessionParticipant").click(function () {
-        var link = $(this);
-        var sessionId = $("#Id").val();
-
-        $.ajax({
-            url: hr_urlPrefix + "/Session/AddPersonToSession",
-            type: "POST",
-            data: { sessionId: sessionId, personId: link.attr("data-personId") },
-            success: handleAddResult
-        });
-
-        function handleAddResult(response) {
-            if (response.Success) {
-                var html = '<tr><td><a href="' + hr_urlPrefix + '/ActivitySummary/SessionForActivity/' + sessionId + '">' + response.SessionName + '</a><span> (' + response.StartDate + ') </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + response.SessionId + '" data-personId="' + response.PersonId + '">Ta bort</span></tr></td>';
-                $(html).hide().appendTo("#allSessionsForParticipant").fadeIn(hr_fadeInSpeed, function() {
-                    //$(".js-delete-sessionParticipant").click(deleteSessionParticipant); // TODO FIX BUG AFTER JQUERY HTML
-                    $(this).click(deleteSessionParticipant); // TODO FIX BUG AFTER JQUERY HTML
-                });//.click(deleteSessionParticipant);
-
-                $.ajax({
-                    url: hr_urlPrefix + "/Participant/ParticipantStatisticSummary/",
-                    type: "GET",
-                    data: { personId: link.attr("data-personId") },
-                    success: function (result2) {
-                        $("#statisticsSummary").html(result2);
-                    },
-                    error: function () {
-                        alert("Anropet misslyckades, prova gärna igen.");
-                    }
-                });
-
-            } else {
-                hr_messageFadingOut(link, "Tillfället redan tillagt!", "danger");
-            }
-        }
-    });
+    // Handled by a form postback to the controller
 
     // SAVE COMMENTS FOR PARTICIPANT
     $(".js-save-participantComment").click(function () {

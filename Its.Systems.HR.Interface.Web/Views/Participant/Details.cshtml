@@ -19,7 +19,6 @@
 
                 foreach (var session in Model.Sessions.Where(n => n.StartDate != null))
                 {
-
                     if (session.StartDate?.Year == year)
                     {
 
@@ -35,12 +34,12 @@
                         </tr>
                     }
                 }
-                
+
             }
-            
+
             @if (Model.Sessions.Count(n => n.StartDate == null) > 0)
             {
-                <tr><td>NULL GROUP</td></tr>
+                <tr><td>Utan datum</td></tr>
             }
             @foreach (var sessionWithNullStartYear in Model.Sessions.Where(n => n.StartDate == null))
             {
@@ -63,14 +62,21 @@
             @Html.Action("ParticipantStatisticSummary", new { personId = Model.PersonId })
         </div>
 
-        <div class="m-t-30">
-            @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control wide-textbox" })
-            @Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })
-            <button type="button" class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till tillfälle för person
-            </button>
-        </div>
-
+        @using (Html.BeginForm("AddPersonToSession", "Session"))
+        {
+            @Html.HiddenFor(n => n.PersonId)
+            <div class="m-t-30">
+                @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control wide-textbox" })
+                @*@Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })*@
+                <button class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till tillfälle för person
+                </button>
+                @if (!string.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <span class="alert alert-danger" id="errorMessage">@ViewBag.Error</span>
+                }
+            </div>
+        }
     </div>
     <div class="col-md-5">
         <h3 class="m-b-30">Allmän information</h3>
