@@ -49,20 +49,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 .Include(n => n.Activity)
                 .OrderBy(n => n.StartDate.Value.Year)
                 .Where(n => n.StartDate != null)
-                //.Select(n => n.StartDate.Value.Year).Distinct().ToList();
                 .Select(n => n.StartDate.Value.Year).Distinct();
-
-            //var yearslist = from y in _sessionManager.GetAllSessionsForParticipantById(participant.Id)
-            //        select new
-            //        {
-
-            //            y.StartDate.Value.Year == null ? "" :0
-            //        };
-
-
-
-
-
 
             var yearslisting = from element in yearslist
                          orderby element descending
