@@ -2,6 +2,7 @@
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
@@ -12,6 +13,7 @@ using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
+    [Authorize]
     public class ActivityController : Controller
     {
         private readonly IActivityManager _activityManager;
@@ -27,21 +29,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
 
-        public ActionResult SyncUsersWithUmuApi()
-        {
-            return View("Error");
-
-
-            _personManager.AddItsPersons();
-            _personManager.InactivateItsPersons();
-
-            return RedirectToAction("Index");
-        }
-
-        // find Activity 
         public ViewResult Index(string searchString)
         {
             var activities = _activityManager.GetAllActivities();
+            var identity = (ClaimsIdentity) HttpContext.User.Identity;
 
             if (!string.IsNullOrEmpty(searchString))
                 activities = activities.Where(s => s.Name.Contains(searchString));
@@ -147,6 +138,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult SyncUsersWithUmuApi()
+        {
+            return View("Error");
+
+
+            _personManager.AddItsPersons();
+            _personManager.InactivateItsPersons();
+
+            return RedirectToAction("Index");
+        }
 
         //AJAX AUTOCOMPLETE
         public ActionResult AutoCompleteLocations(string term)

@@ -7,6 +7,9 @@ $(document).ready(function () {
     hr_createAutocomplete();
     // HANDLE ENTER-BUTTON WHEN ADDING PARTICIPANTS
     hr_addEventListenerForEnter(".js-add-sessionParticipant", "#nameOfParticipant");
+    // ADD CLICK EVENT HANDLER FOR delete-sessionParticipant
+    $(".js-delete-sessionParticipant").click(deleteSessionParticipant);
+
 
 
     // PARTICIPANT ADDING AND REMOVING
@@ -21,28 +24,6 @@ $(document).ready(function () {
             success: function (result) {
                 if (result.Success) {
 
-                    //var jQueryHtml = $("<tr />").append("<td />").append("<a />").attr("ahref", "/Participant/Details/")
-
-                    //<tr>
-                    //    <td>
-                    //        <a href="/HrKompetensutveckling/Participant/Details/50">Jan Rundström (jaru0002)</a>
-                    //    </td>
-                    //    <td>
-                    //        <button type="button" class="btn btn-warning btn-xs listedParticipantRemove js-delete-sessionParticipant" data-sessionid="44" data-personid="50">Ta bort</button>
-                    //    </td>
-                    //</tr>
-
-                    //var span = $("<span />")
-                    //            .addClass("alert")
-                    //            .addClass("alert-" + type)
-                    //            .attr("role", "alert")
-                    //            .html(message);
-
-                    var html = '<tr><td><a href="' + hr_urlPrefix + '/Participant/Details/' +
-                        result.PersonId + '">' + result.PersonFullName +
-                        '</a></td><td><button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionid="' +
-                        result.SessionId + '" data-personId="' + result.PersonId + '">Ta bort</button></td></tr>';
-
                     // TODO: STRATEGI FÖR ATT BYGGA HTML MED JQUERY INTERFACET
                     // BÖRJA INIFRÅN och ut
                     // bryt ut a-taggen
@@ -50,9 +31,21 @@ $(document).ready(function () {
                     // wrappa i varsin td
                     // wrappa i TR
 
+                    var $newA = $("<a>")
+                                    .attr("href", hr_urlPrefix + "/Participant/Details/" + result.PersonId)
+                                    .text(result.PersonFullName);
 
+                    var $newButton = $("<button>")
+                                        .attr("type", "button")
+                                        .addClass("btn btn-warning btn-xs js-delete-sessionParticipant")
+                                        .attr("data-sessionid", result.SessionId)
+                                        .attr("data-personid", result.PersonId)
+                                        .text("Ta bort");
 
-                    $(html).hide().appendTo("#ParticipantsForSession").fadeIn(hr_fadeInSpeed);
+                    var $html = $("<tr>").append($("<td>").append($newA)).append($("<td>").append($newButton));
+                    
+                    $($html).hide().appendTo("#ParticipantsForSession").fadeIn(hr_fadeInSpeed);
+                    $newButton.click(deleteSessionParticipant);
 
                     paticipantCount();
                     $("#nameOfParticipant").val("");
@@ -65,7 +58,7 @@ $(document).ready(function () {
         });
     });
 
-    $("body").on("click", ".js-delete-sessionParticipant", function () {
+    function deleteSessionParticipant() {
         var link = $(this);
         
         bootbox.confirm({
@@ -95,14 +88,14 @@ $(document).ready(function () {
                                 });
                         },
                         error: function () {
+                            alert(link.attr("data-sessionId"));
                             alert("Anropet misslyckades, prova gärna igen.");
                         }
                     });
                 }
             }
         });
-
-    });
+    }
 
 
     // SAVE SESSION COMMENTS AND EVALUATION

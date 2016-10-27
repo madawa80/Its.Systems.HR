@@ -1,8 +1,12 @@
 ﻿//ParticipantDetails.js
 $(document).ready(function () {
 
+    // ADD CLICK EVENT HANDLER FOR delete-sessionParticipant
+    $(".js-delete-sessionParticipant").click(deleteSessionParticipant);
+
     // DELETE SESSION PARTICIPANT
-    $("body").on("click", ".js-delete-sessionParticipant", function () {
+    //$("body").on("click", ".js-delete-sessionParticipant", function () {
+    function deleteSessionParticipant() {
         var link = $(this);
 
         bootbox.confirm({
@@ -51,7 +55,7 @@ $(document).ready(function () {
                 });
         }
 
-    });
+    }
 
     // ADD SESSION PARTICIPANT
     $(".js-add-sessionParticipant").click(function () {
@@ -68,7 +72,10 @@ $(document).ready(function () {
         function handleAddResult(response) {
             if (response.Success) {
                 var html = '<tr><td><a href="' + hr_urlPrefix + '/ActivitySummary/SessionForActivity/' + sessionId + '">' + response.SessionName + '</a><span> (' + response.StartDate + ') </span><span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="' + response.SessionId + '" data-personId="' + response.PersonId + '">Ta bort</span></tr></td>';
-                $(html).hide().appendTo("#allSessionsForParticipant").fadeIn(hr_fadeInSpeed);
+                $(html).hide().appendTo("#allSessionsForParticipant").fadeIn(hr_fadeInSpeed, function() {
+                    //$(".js-delete-sessionParticipant").click(deleteSessionParticipant); // TODO FIX BUG AFTER JQUERY HTML
+                    $(this).click(deleteSessionParticipant); // TODO FIX BUG AFTER JQUERY HTML
+                });//.click(deleteSessionParticipant);
 
                 $.ajax({
                     url: hr_urlPrefix + "/Participant/ParticipantStatisticSummary/",
