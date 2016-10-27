@@ -30,7 +30,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         // GET: Participant/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, string error)
         {
             //var YearsCollection = new List<int>();
 
@@ -85,6 +85,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                                             "NameWithActivity",
                                             allSessions.First().Id)
             };
+
+            if (!string.IsNullOrEmpty(error))
+            {
+                ViewBag.Error = error;
+            }
 
             return View(viewModel);
         }
