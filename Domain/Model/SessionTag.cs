@@ -14,6 +14,5 @@ namespace Its.Systems.HR.Domain.Model
         // NAV PROPS
         public Session Session { get; set; }
         public Tag Tag { get; set; }
-
     }
 }

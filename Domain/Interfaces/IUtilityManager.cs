@@ -33,9 +33,25 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <param name="tagsToAdd"></param>
         void AddNewTagsToDb(List<Tag> tagsToAdd);
 
+        /// <summary>
+        /// Gets the average rating for a session.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>The avg. rating.</returns>
         double GetRatingForSessionById(int id);
+
+        /// <summary>
+        /// Gets all the tags currently assigned to a session.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <returns>IQueryable of Tag, null if not found.</returns>
         IQueryable<Tag> GetAllTagsForSessionById(int sessionId);
 
+        /// <summary>
+        /// Gets a single Tag.
+        /// </summary>
+        /// <param name="tagId"></param>
+        /// <returns>A Tag or null if not found.</returns>
         Tag GetTag(int tagId);
     }
 }

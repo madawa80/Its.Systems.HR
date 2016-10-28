@@ -34,7 +34,7 @@ namespace Its.Systems.HR.Domain.Managers
         {
             var allActivities = _db.Get<Activity>().ToList();
 
-            if (allActivities.Any(n => n.Name == activityToAdd.Name))
+            if (allActivities.Any(n => n.Name.ToLower() == activityToAdd.Name.ToLower()))
                 return false;
 
             _db.Add<Activity>(activityToAdd);

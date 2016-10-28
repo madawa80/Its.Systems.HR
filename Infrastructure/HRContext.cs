@@ -8,7 +8,6 @@ namespace Its.Systems.HR.Infrastructure
     public class HRContext : DbContext
     {
         private const string ConnString = "HRContext";
-        //private const string connString = "name=HRContext";
 
         public HRContext() : base(ConnString)
         {
@@ -78,7 +77,6 @@ namespace Its.Systems.HR.Infrastructure
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
-        //public virtual DbSet<HrPerson> HrPersons { get; set; }
         public virtual DbSet<Participant> Participants { get; set; }
         public virtual DbSet<SessionParticipant> SessionParticipants { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }

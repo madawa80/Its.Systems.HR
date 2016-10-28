@@ -3,8 +3,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
-using System.Runtime.Serialization;
-
 
 namespace Infrastructure.UmuApi
 {
@@ -18,7 +16,6 @@ namespace Infrastructure.UmuApi
 
             try
             {
-                var length = -1000;
                 HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(url);
                 myReq.Method = "GET";
                 myReq.Credentials = new NetworkCredential("sape0014", "Pwd2Chang3");
@@ -26,19 +23,14 @@ namespace Infrastructure.UmuApi
 
                 if (myResponse.StatusCode == HttpStatusCode.OK)
                 {
+                    Stream rebut = myResponse.GetResponseStream();
+                    StreamReader readStream = new StreamReader(rebut, Encoding.UTF8); // Pipes the stream to a higher level stream reader with the required encoding format. 
+                    string rawData = readStream.ReadToEnd();
 
+                    result = JsonConvert.DeserializeObject<RootObject>(rawData);
 
-                    if (myResponse.ContentLength != length)
-                    {
-                        Stream rebut = myResponse.GetResponseStream();
-                        StreamReader readStream = new StreamReader(rebut, Encoding.UTF8); // Pipes the stream to a higher level stream reader with the required encoding format. 
-                        string rawData = readStream.ReadToEnd();
-
-                        result = JsonConvert.DeserializeObject<RootObject>(rawData);
-
-                        myResponse.Close();
-                        readStream.Close();
-                    }
+                    myResponse.Close();
+                    readStream.Close();
                 }
 
             }
