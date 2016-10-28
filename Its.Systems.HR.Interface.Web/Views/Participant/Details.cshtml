@@ -39,7 +39,7 @@
 
             @if (Model.Sessions.Count(n => n.StartDate == null) > 0)
             {
-                <tr><td>Utan datum</td></tr>
+                <tr><td>Ospecificerat år</td></tr>
             }
             @foreach (var sessionWithNullStartYear in Model.Sessions.Where(n => n.StartDate == null))
             {

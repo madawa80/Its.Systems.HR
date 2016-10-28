@@ -57,12 +57,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Rating = sessionRating.ToString(CultureInfo.CreateSpecificCulture("en-US"))
             };
 
-            //ViewBag.AllSessionParticipants = new SelectList(
-            //  _personManager.GetAllParticipants().OrderBy(n => n.FirstName),
-            //  "Id",
-            //  "FullName",
-            //  _personManager.GetAllParticipants().OrderBy(n => n.FirstName).First().Id);
-
             return View(result);
         }
 

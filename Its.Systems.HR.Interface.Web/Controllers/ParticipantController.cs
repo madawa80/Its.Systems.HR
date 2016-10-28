@@ -15,7 +15,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
-        private List<Session> SessionsPerPerson;
+
 
         public ParticipantController(ISessionManager sessionManager, IPersonManager personManager)
         {
@@ -23,18 +23,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
         }
 
-        // GET: Participant
         public ActionResult Index()
         {
             return View(_personManager.GetAllParticipants().OrderBy(n => n.FirstName).ToList());
         }
 
-        // GET: Participant/Details/5
         public ActionResult Details(int? id, string error)
         {
-            //var YearsCollection = new List<int>();
-
-
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -135,7 +130,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             // TODO: ErrorMessage
             result = new { Success = false };
             return Json(result);
-            //return RedirectToAction("Details", new { id = personId });
         }
 
         [HttpPost]

@@ -6,7 +6,7 @@ $(document).ready(function () {
     {
         sortList: [[0, 0]],
         headers: {
-            1: {
+            2: {
                 sorter: false
             }
         }

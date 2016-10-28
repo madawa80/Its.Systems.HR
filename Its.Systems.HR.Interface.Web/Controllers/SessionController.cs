@@ -109,14 +109,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     // Save session in db
                     _sessionManager.AddSession(result);
 
-
                     // Now add tags to the created session!...
                     _sessionManager.AddSessionTags(tagsToAdd, result.Id);
 
                     return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = result.Id });
                 }
             }
-            catch (RetryLimitExceededException /* dex */)
+            catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("", "Aktiviteten existerar redan.");
             }
@@ -275,9 +274,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult RemovePersonFromSession(int sessionId, int personId)
         {
             var result = new { Success = true };
-
-            //if (_personManager.GetParticipantById(personId) == null || _activityManager.GetSessionById(sessionId) == null)
-            //    result = new { Success = "Fail" };
 
             if (!_personManager.RemoveParticipantFromSession(personId, sessionId))
                 result = new { Success = false };
