@@ -95,7 +95,7 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
-        public void UseCase1_ShouldReturnExpected()
+        public void UseCase1_AddingActivityWithEverything_ShouldReturnExpected()
         {
             // 1. SKAPA AKTIVITET
             var activityToAdd = new Activity()
@@ -137,6 +137,40 @@ namespace Its.Systems.HR.Test
             Assert.AreEqual("New Eval", _sessionManager.GetSessionById(sessionToAdd.Id).Evaluation);
         }
 
+        [TestMethod]
+        public void UseCase2_RemoveAllActivities_ShouldDeleteAllSessionParticipants()
+        {
+            // 1. DELETE ALL ACTIVITIES
+            _activityManager.DeleteActivityById(1);
+            _activityManager.DeleteActivityById(2);
+            _activityManager.DeleteActivityById(3);
+            _activityManager.DeleteActivityById(4);
+            _activityManager.DeleteActivityById(5);
+
+            // 2. GET THE COUNT FOR SESSIONPARTICIPANTS
+            var resultCount = _personManager.GetAllSessionParticipants().Count();
+
+            var expectedCount = 0;
+
+            Assert.AreEqual(expectedCount, resultCount);
+        }
+
+        [TestMethod]
+        public void UseCase3_RemoveAllSessions_ShouldDeleteAllSessionParticipants()
+        {
+            // 1. DELETE ALL SESSIONS
+            _sessionManager.DeleteSessionById(1);
+            _sessionManager.DeleteSessionById(2);
+            _sessionManager.DeleteSessionById(3);
+            _sessionManager.DeleteSessionById(4);
+            
+            // 2. GET THE COUNT FOR SESSIONPARTICIPANTS
+            var resultCount = _personManager.GetAllSessionParticipants().Count();
+
+            var expectedCount = 0;
+
+            Assert.AreEqual(expectedCount, resultCount);
+        }
 
     }
 }
