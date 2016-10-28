@@ -50,7 +50,7 @@ namespace Its.Systems.HR.Test
                     count++;
             }
 
-            Assert.AreEqual(1, 0);
+            Assert.AreEqual(0, count);
         }
 
         // UMU API SYNC WITH OUR PARTICIPANT-TABLE IN DB

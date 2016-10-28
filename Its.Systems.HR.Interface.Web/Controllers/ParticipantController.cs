@@ -23,6 +23,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
         }
 
+        // TODO: REMOVE THIS WHEN WE ARE SURE THERE ARE NO BUGS WITH SESSIONPARTICIPATIONS
         public ActionResult Debug()
         {
             var allSessionParticipations = _personManager.GetAllSessionParticipants();
