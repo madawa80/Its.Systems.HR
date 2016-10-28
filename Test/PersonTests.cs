@@ -10,10 +10,12 @@ namespace Its.Systems.HR.Test
     public class PersonTests : BaseTest
     {
         private readonly IPersonManager _personManager;
+        private readonly ISessionManager _sessionManager;
 
         public PersonTests() : base()
         {
             _personManager = Container().Resolve<IPersonManager>();
+            _sessionManager = Container().Resolve<ISessionManager>();
         }
 
         [TestMethod]
@@ -32,6 +34,23 @@ namespace Its.Systems.HR.Test
             var result = _personManager.GetAllParticipantsForSession(1).Count();
 
             Assert.AreEqual(4, result);
+        }
+
+        [TestMethod]
+        public void GetAllSessionParticipations_ShouldNotContainSessionsDeleted()
+        {
+            var allSessionParticipations = _personManager.GetAllSessionParticipants();
+            var allSessions = _sessionManager.GetAllSessions();
+
+            var count = 0;
+
+            foreach (var sessionParticipant in allSessionParticipations)
+            {
+                if (!allSessions.Any(n => n.Id == sessionParticipant.SessionId))
+                    count++;
+            }
+
+            Assert.AreEqual(1, 0);
         }
 
         // UMU API SYNC WITH OUR PARTICIPANT-TABLE IN DB

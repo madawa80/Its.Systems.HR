@@ -23,9 +23,49 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
         }
 
+        public ActionResult Debug()
+        {
+            var allSessionParticipations = _personManager.GetAllSessionParticipants();
+            var allSessions = _sessionManager.GetAllSessions();
+
+            var count = 0;
+            var sessionParticipantsWithoutAnSession = new List<SessionParticipant>();
+
+            foreach (var sessionParticipant in allSessionParticipations)
+            {
+                if (!allSessions.Any(n => n.Id == sessionParticipant.SessionId))
+                {
+                    count++;
+                    sessionParticipantsWithoutAnSession.Add(sessionParticipant);
+                }
+            }
+
+            var group = sessionParticipantsWithoutAnSession.GroupBy(n => n.ParticipantId);
+
+            return View();
+        }
+
         public ActionResult Index()
         {
-            return View(_personManager.GetAllParticipants().OrderBy(n => n.FirstName).ToList());
+            var allParticipants = _personManager.GetAllParticipants()
+                                    .Include(n => n.SessionParticipants)
+                                    .OrderBy(n => n.FirstName)
+                                    .ToList();
+
+            var result = new IndexParticipantViewModel() {Participants = new List<ParticipantWithCountOfSessions>()};
+
+            foreach (var participant in allParticipants)
+            {
+                result.Participants.Add(new ParticipantWithCountOfSessions()
+                {
+                    ParticipantId = participant.Id,
+                    FullName = participant.FullName,
+                    CasID = participant.CasId,
+                    CountOfSessions = participant.SessionParticipants.Count
+                });
+            }
+
+            return View(result);
         }
 
         public ActionResult Details(int? id, string error)
