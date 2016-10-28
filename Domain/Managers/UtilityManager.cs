@@ -72,17 +72,13 @@ namespace Its.Systems.HR.Domain.Managers
 
         public void AddNewTagsToDb(List<Tag> tagsToAdd)
         {
-            // tagsToAdd is the incoming stuff, with all the tags to add to Tags in DB
-            // but the list needs to be filtered for any existing tags in db.Tags!!
-
-            // DOUBLE CHECK THAT NO DUPLICATES ARE ADDED
+            // Make sure only new tags are inserted
             for (int index = 0; index < tagsToAdd.Count; index++)
                 tagsToAdd[index].Name = tagsToAdd[index].Name.ToLower();
 
             List<Tag> tagsToAddToDb = new List<Tag>();
             foreach (var tagName in tagsToAdd.Select(n => n.Name).Distinct())
                 tagsToAddToDb.Add(new Tag() {Name = tagName });
-            //
 
             var currentTags = GetAllTags().ToList();
             
@@ -96,8 +92,6 @@ namespace Its.Systems.HR.Domain.Managers
 
         public double GetRatingForSessionById(int id)
         {
-            // get all the sessionparticipants with sessionId = id
-            // average the ratings
             var sessionParticipations = _db.Get<SessionParticipant>().Where(n => n.SessionId == id).ToList();
 
             if (sessionParticipations.Count < 1)
@@ -117,8 +111,6 @@ namespace Its.Systems.HR.Domain.Managers
         public Tag GetTag(int tagId)
         {
             return _db.Get<Tag>().SingleOrDefault(n => n.Id == tagId);
-
-            
         }
     }
 }

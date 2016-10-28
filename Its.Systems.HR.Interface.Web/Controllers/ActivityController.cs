@@ -8,9 +8,6 @@ using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.ViewModels;
 
-//using Quartz;
-//using Quartz.Impl;
-
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
     //[Authorize]
@@ -31,8 +28,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ViewResult Index(string searchString)
         {
-            var activities = _activityManager.GetAllActivities();
+            //TODO: ClaimsIdentity debug
             var identity = (ClaimsIdentity) HttpContext.User.Identity;
+
+
+            var activities = _activityManager.GetAllActivities();
 
             if (!string.IsNullOrEmpty(searchString))
                 activities = activities.Where(s => s.Name.Contains(searchString));
@@ -50,7 +50,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
-        // GET: Create activity
         public ActionResult CreateActivity()
         {
             return View();
@@ -60,35 +59,23 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult CreateActivity(ActivityViewModel activity)
         {
-            try
+            var result = new Activity()
             {
-                if (ModelState.IsValid)
-                    if (!_activityManager.GetAllActivities().Any(n => n.Name == activity.Name))
-                    {
-                        var result = new Activity
-                        {
-                            Name = activity.Name
-                        };
+                Name = activity.Name,
+            };
 
-                        _activityManager.AddActivity(result);
-
-                        return RedirectToAction("AllSessionsForActivity", "ActivitySummary", new {id = result.Id});
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "En aktivitet med samma namn existerar redan.");
-                        return View(activity);
-                    }
-            }
-            catch (RetryLimitExceededException /* dex */)
+            var activityWasInserted = _activityManager.AddActivity(result);
+            if (activityWasInserted)
             {
-                ModelState.AddModelError("",
-                    "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
+                return RedirectToAction("AllSessionsForActivity", "ActivitySummary", new { id = result.Id });
             }
-            return View(activity);
+            else
+            {
+                ModelState.AddModelError("", "En aktivitet med samma namn existerar redan.");
+                return View(activity);
+            }
         }
 
-        //Edit an activity
         [HttpGet]
         public ActionResult EditActivity(int? id)
         {
@@ -116,7 +103,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                 ModelState.AddModelError("Name", "Aktiviteten existerar redan.");
             }
-            catch (RetryLimitExceededException /* dex */)
+            catch (RetryLimitExceededException)
             {
                 ModelState.AddModelError("",
                     "Det går inte att spara ändringarna. Försök igen, och om problemet kvarstår se systemadministratören .");
@@ -185,14 +172,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 let fullNameWithCas = element.FirstName + " " + element.LastName + " " + element.CasId
                 where fullNameWithCas.Contains(searchString.ToUpper())
                 select element.FirstName + " " + element.LastName + " (" + element.CasId + ")";
-
-            //IEnumerable<string> participants =
-            //    _personManager.GetAllParticipants()
-            //    .Where(n => sb.Append(n.FirstName.ToUpper() + n.LastName.ToUpper() + n.CasId.ToUpper(). sb.Contains(searchString.ToUpper())
-            //    || n.LastName.ToUpper().Contains(searchString.ToUpper())
-            //    || n.CasId.ToUpper().Contains(searchString.ToUpper()))
-            //    .Select(a => a.FirstName + " " + a.LastName + " (" + a.CasId + ")");
-
+            
             return participants;
         }
 

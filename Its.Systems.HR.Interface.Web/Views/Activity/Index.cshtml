@@ -31,6 +31,9 @@
         <th>
             Namn
         </th>
+        <th>
+            Tillfällen
+        </th>
         <th></th>
     </tr>
     </thead>
@@ -46,6 +49,9 @@
             <td>
                 <a href="@Url.Action("EditActivity", new {id = item.Id})">Ändra aktivitet</a>&nbsp;|
                 <a href="#" class="js-delete-activity" data-activityId="@item.Id">Ta bort</a>
+            </td>
+            <td>
+                @item.
             </td>
         </tr>
     }

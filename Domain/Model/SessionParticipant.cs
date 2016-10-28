@@ -15,7 +15,5 @@ namespace Its.Systems.HR.Domain.Model
 
         public virtual Session Session { get; set; }
         public virtual Participant Participant { get; set; }
-
-      
     }
 }
