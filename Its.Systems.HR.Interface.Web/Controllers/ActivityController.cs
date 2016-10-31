@@ -32,18 +32,19 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var identity = (ClaimsIdentity) HttpContext.User.Identity;
 
 
-            var activities = _activityManager.GetAllActivities();
+            var activities = _activityManager.GetAllActivitiesWithSessions();
 
             if (!string.IsNullOrEmpty(searchString))
-                activities = activities.Where(s => s.Name.Contains(searchString));
+                activities = activities.Where(s => s.Name.ToLower().Contains(searchString.ToLower()));
 
-            var result = new List<ActivityViewModel>();
+            var result = new IndexActivityViewModel() {Activities = new List<ActivityWithCountOfSessions>()};
 
             foreach (var activity in activities)
-                result.Add(new ActivityViewModel
+                result.Activities.Add(new ActivityWithCountOfSessions
                 {
-                    Id = activity.Id,
-                    Name = activity.Name
+                    ActivityId = activity.Id,
+                    Name = activity.Name,
+                    SessionCount = activity.Sessions.Count
                 });
 
 

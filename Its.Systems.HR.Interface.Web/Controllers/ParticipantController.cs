@@ -15,7 +15,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     {
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
-        private List<Session> SessionsPerPerson;
+
 
         public ParticipantController(ISessionManager sessionManager, IPersonManager personManager)
         {
@@ -23,18 +23,54 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
         }
 
-        // GET: Participant
-        public ActionResult Index()
+        // TODO: REMOVE THIS WHEN WE ARE SURE THERE ARE NO BUGS WITH SESSIONPARTICIPATIONS
+        public ActionResult Debug()
         {
-            return View(_personManager.GetAllParticipants().OrderBy(n => n.FirstName).ToList());
+            var allSessionParticipations = _personManager.GetAllSessionParticipants();
+            var allSessions = _sessionManager.GetAllSessions();
+
+            var count = 0;
+            var sessionParticipantsWithoutAnSession = new List<SessionParticipant>();
+
+            foreach (var sessionParticipant in allSessionParticipations)
+            {
+                if (!allSessions.Any(n => n.Id == sessionParticipant.SessionId))
+                {
+                    count++;
+                    sessionParticipantsWithoutAnSession.Add(sessionParticipant);
+                }
+            }
+
+            var group = sessionParticipantsWithoutAnSession.GroupBy(n => n.ParticipantId);
+
+            return View();
         }
 
-        // GET: Participant/Details/5
+        public ActionResult Index()
+        {
+            var allParticipants = _personManager.GetAllParticipants()
+                                    .Include(n => n.SessionParticipants)
+                                    .OrderBy(n => n.FirstName)
+                                    .ToList();
+
+            var result = new IndexParticipantViewModel() {Participants = new List<ParticipantWithCountOfSessions>()};
+
+            foreach (var participant in allParticipants)
+            {
+                result.Participants.Add(new ParticipantWithCountOfSessions()
+                {
+                    ParticipantId = participant.Id,
+                    FullName = participant.FullName,
+                    CasID = participant.CasId,
+                    CountOfSessions = participant.SessionParticipants.Count
+                });
+            }
+
+            return View(result);
+        }
+
         public ActionResult Details(int? id, string error)
         {
-            //var YearsCollection = new List<int>();
-
-
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -135,7 +171,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             // TODO: ErrorMessage
             result = new { Success = false };
             return Json(result);
-            //return RedirectToAction("Details", new { id = personId });
         }
 
         [HttpPost]
