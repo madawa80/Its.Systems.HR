@@ -19,7 +19,7 @@
             @*@Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>)ViewBag.AllSessionParticipants, new { @class = "form-control", id = "participantDropdown", name = "participantDropdown" })
 
                 @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })*@
-
+            
             <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control wide-textbox"
                    data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")" />
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">

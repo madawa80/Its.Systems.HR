@@ -80,35 +80,35 @@ namespace Its.Systems.HR.Test
             // 1. Lista Personal
            
 
-            _personManager.GetAllParticipants();    //shoud returns 237
+            _personManager.GetAllParticipants();    //shoud returns 8
 
             // 2. Visa Alla tillfälle för en person
           
-            _sessionManager.GetAllSessionsForParticipantById(240);   //should return ....!!
+            var x = _sessionManager.GetAllSessionsForParticipantById(1).Count();   //should return 3!!
 
             // 3. LÄGG TILL tillfälle
 
         
-            _personManager.AddParticipantToSession(240, 62);
-            _personManager.AddParticipantToSession(240, 109);
+            _personManager.AddParticipantToSession(1, 3);
+            _personManager.AddParticipantToSession(1, 4);
 
             // 4. SPARA KOMMENTAR OCH UTVÄRDERING
-            _personManager.SaveCommentsForParticipant(240, "New Comment");
-            _personManager.SaveWishesForParticipant(240, "new wish");
+            _personManager.SaveCommentsForParticipant(1, "New Comment");
+            _personManager.SaveWishesForParticipant(1, "New Wish");
 
 
             // 5. TA BORT DELTAGARE
-            _personManager.RemoveParticipantFromSession(240, 109);
+            _personManager.RemoveParticipantFromSession(1, 4);
+            //_personManager.RemoveParticipantFromSession(240, 62);
 
             // TEST RESULTS
-            //var expectedParticipantsCount = 2;
+            var expectedSessionCount = 3;
 
-            //Assert.AreEqual(expectedParticipantsCount, _personManager.GetAllParticipantsForSession(sessionToAdd.Id).Count());
-            //Assert.AreEqual("New Comment", _personManager.SaveCommentsForParticipant(240,);
-            //Assert.AreEqual("new wish", _personManager.SaveWishesForParticipant(240,);
+            Assert.AreEqual(expectedSessionCount, _sessionManager.GetAllSessionsForParticipantById(1).Count());
+            Assert.AreEqual("New Comment", _personManager.GetParticipantById(1).Comments);
+            Assert.AreEqual("New Wish", _personManager.GetParticipantById(1).Wishes);
 
-     
-        }
+           }
 
     }
 }

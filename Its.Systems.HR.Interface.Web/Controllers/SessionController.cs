@@ -16,6 +16,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
         private readonly IUtilityManager _utilitiesManager;
+        private string personCasLogin;
 
         public SessionController(IActivityManager activityManager, ISessionManager sessionManager,
             IPersonManager personManager, IUtilityManager utilityManager)
@@ -221,54 +222,96 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, string personName)
         {
             //TODO: ERROR HANDLING!
-            string personCasLogin;
+            
+            var participant = new Participant();
             try
             {
                 var firstParanthesis = personName.IndexOf('(') + 1;
                 var lastParanthesis = personName.IndexOf(')');
                 personCasLogin = personName.Substring(firstParanthesis, lastParanthesis - firstParanthesis);
+                
+
+
             }
             catch (Exception)
             {
 
-                throw;
+                
+                if (personName == "")
+                {
+                    var failResult = new
+                    {
+                        Success = false,
+                        ErrorMessage = "Du måste välja en person från listan ",
+                        PersonId = 0,
+                        SessionId = sessionId,
+                        PersonFullName = "",
+                    };
+
+                    return Json(failResult);
+                }
+
+                else
+                {
+
+                    var failResult = new
+                   {
+                    Success = false,
+                    ErrorMessage = "Ogiltig Person namn",
+                    PersonId = 0,
+                    SessionId = sessionId,
+                    PersonFullName = "",
+                   };
+
+                   return Json(failResult);
+                }
+
+                //ModelState.AddModelError("", "Du måste välja en person från listan");
+
             }
 
-            var participant = _personManager.GetParticipantByCas(personCasLogin);
+
+           
+            participant = _personManager.GetParticipantByCas(personCasLogin);
             if (participant == null)
             {
+
                 var failResult = new
                 {
                     Success = false,
-                    ErrorMessage = "",
+                    ErrorMessage = "Ogiltig CAS Id",
                     PersonId = 0,
                     SessionId = sessionId,
                     PersonFullName = "",
                 };
+
                 return Json(failResult);
             }
 
-
             var result = new
-            {
-                Success = true,
-                ErrorMessage = "",
-                PersonId = participant.Id,
-                SessionId = sessionId,
-                PersonFullName = participant.FullName + " (" + personCasLogin + ")",
-            };
+                {
+                    Success = true,
+                    ErrorMessage = "",
+                    PersonId = participant.Id,
+                    SessionId = sessionId,
+                    PersonFullName = participant.FullName + " (" + personCasLogin + ")",
+                };
+
+
+       
 
             if (!_personManager.AddParticipantToSession(participant.Id, sessionId))
                 result = new
                 {
                     Success = false,
-                    ErrorMessage = "Personen är redan registrerad på tillfället.",
+                    ErrorMessage = "Personen är redan registrerad",
                     PersonId = 0,
                     SessionId = 0,
                     PersonFullName = "",
                 };
 
             return Json(result);
+
         }
 
         public ActionResult RemovePersonFromSession(int sessionId, int personId)
