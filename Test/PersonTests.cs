@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Infrastructure.UmuApi;
 using Its.Systems.HR.Domain.Interfaces;
+using Its.Systems.HR.Domain.Model;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,7 +11,7 @@ namespace Its.Systems.HR.Test
     public class PersonTests : BaseTest
     {
         private readonly IPersonManager _personManager;
-
+        private readonly ISessionManager _sessionManager;
         public PersonTests() : base()
         {
             _personManager = Container().Resolve<IPersonManager>();
@@ -50,6 +51,44 @@ namespace Its.Systems.HR.Test
             Assert.AreEqual(4, inactivatedPersons.Count);
             Assert.AreEqual(actualCountFromUmuWebApi - 4, addedPersons.Count);
             Assert.AreEqual(actualCountFromUmuWebApi, _personManager.GetAllParticipants().Count(n => n.IsActive));
+        }
+
+
+
+        [TestMethod]
+        public void UseCase1_ShouldReturnExpected()
+        {
+            // 1. Lista Personal
+           
+
+            _personManager.GetAllParticipants();    //shoud returns 237
+
+            // 2. Visa Alla tillfälle för en person
+          
+            _sessionManager.GetAllSessionsForParticipantById(240);   //should return ....!!
+
+            // 3. LÄGG TILL tillfälle
+
+        
+            _personManager.AddParticipantToSession(240, 62);
+            _personManager.AddParticipantToSession(240, 109);
+
+            // 4. SPARA KOMMENTAR OCH UTVÄRDERING
+            _personManager.SaveCommentsForParticipant(240, "New Comment");
+            _personManager.SaveWishesForParticipant(240, "new wish");
+
+
+            // 5. TA BORT DELTAGARE
+            _personManager.RemoveParticipantFromSession(240, 109);
+
+            // TEST RESULTS
+            //var expectedParticipantsCount = 2;
+
+            //Assert.AreEqual(expectedParticipantsCount, _personManager.GetAllParticipantsForSession(sessionToAdd.Id).Count());
+            //Assert.AreEqual("New Comment", _personManager.SaveCommentsForParticipant(240,);
+            //Assert.AreEqual("new wish", _personManager.SaveWishesForParticipant(240,);
+
+     
         }
 
     }

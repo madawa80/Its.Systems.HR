@@ -50,9 +50,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return View(new SessionSummaryStatisticsViewModel());
 
 
-            if (int.TryParse(Request.Form["yearslist"], out yearInInt))
+            if (int.TryParse(yearsList, out yearInInt))
             {
-                selectedyear = int.Parse(Request.Form["yearslist"]);
+                selectedyear = int.Parse(yearsList);
                 //years = Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList();
                 var sessionsForYear =
                     _sessionManager.GetAllSessionsForYear(selectedyear)
@@ -111,10 +111,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (int.TryParse(taglist, out Tag))
             {
                 selectedTag = Tag;
-                //years = Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList();
-
-
-                //sessionsForTag = _sessionManager.GetAllSessionsForTag(selectedTag).ToList();
+         
 
                 sessionsForTag =
                   _sessionManager.GetAllSessionsForTag(selectedTag)

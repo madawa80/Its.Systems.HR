@@ -276,13 +276,17 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var result = new { Success = true };
 
-            //if (_personManager.GetParticipantById(personId) == null || _activityManager.GetSessionById(sessionId) == null)
-            //    result = new { Success = "Fail" };
-
+         
             if (!_personManager.RemoveParticipantFromSession(personId, sessionId))
                 result = new { Success = false };
+            else
+            {
+                return Json(result);
+            }
 
-            return Json(result);
+            
+
+            return RedirectToAction("Details", "Participant", new { id = personId });
         }
 
         public ActionResult RemoveSession(int id)
