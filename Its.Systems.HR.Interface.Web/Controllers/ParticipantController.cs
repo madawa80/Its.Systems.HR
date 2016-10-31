@@ -46,12 +46,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View();
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
             var allParticipants = _personManager.GetAllParticipants()
-                                    .Include(n => n.SessionParticipants)
-                                    .OrderBy(n => n.FirstName)
-                                    .ToList();
+                .Include(n => n.SessionParticipants);
+
+            if (!string.IsNullOrEmpty(searchString))
+                allParticipants = allParticipants.Where(s => s.FirstName.ToLower().Contains(searchString.ToLower()) || 
+                                                                s.LastName.ToLower().Contains(searchString.ToLower()));
 
             var result = new IndexParticipantViewModel() {Participants = new List<ParticipantWithCountOfSessions>()};
 

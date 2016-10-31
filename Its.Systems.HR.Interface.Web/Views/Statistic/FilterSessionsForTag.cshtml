@@ -1,39 +1,39 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.Statistic.SessionTagsViewModel
 
 @{
-    ViewBag.Title = "TagsStatistics";
+    ViewBag.Title = "Statistik per etikett";
 }
+<h2>Statistik per etikett</h2>
+<h4>Välj en etikett i listan för att se sammanfattande statistik för tillfällen med den etiketten.</h4>
+<hr />
 
-<div class="col-md-6">
-
-    @using (Html.BeginForm("FilterSessionsForTag", "Statistic", FormMethod.Get))
-    {
-        <div class="form-group">
-            <h2 class="m-b-30"></h2>
-            <label for="Tags">Etiketter</label>
-
-            @* @Html.DropDownList("Tag", new SelectList(Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList()), "-- Select Tag --", new { name = "Tag" })*@
-            @*@Html.DropDownListFor(n=>n.tag.Id, Model.Tags, "-- Välj Etiketter--", new { name = "taglist" })*@
-            @Html.DropDownList("taglist", Model.Tags, Model.tagName, new { @class = "form-control", name = "taglist" })
-            @*     @Html.DropDownListFor(model => model.tag.Id, (IEnumerable<SelectListItem>)ViewBag.Tags, new { @class = "form-control" })*@
+@using (Html.BeginForm("FilterSessionsForTag", "Statistic", FormMethod.Get))
+{
+    <div class="form-group well">
+        <label for="Tags">Etikett</label>
+        <div class="form-inline">
+            <div class="form-group">
+                @Html.DropDownList("taglist", Model.Tags, Model.tagName, new { @class = "form-control", name = "taglist" })
+            </div>
             <button type="submit" class="btn btn-default">Filtrera!</button>
         </div>
-    }
+    </div>
+}
 
-    @if (Model.Sessions != null)
-
-    {
+@if (Model.Sessions != null)
+{
+    <div class="col-md-6">
         <table class="tablesorter table table-hover" id="sessionsTag">
             <thead>
                 <tr>
                     <th>
-                        Aktivitet och Namn
+                        Namn på aktivitet och tillfälle
                     </th>
                     <th>
-                        Start
+                        Startar
                     </th>
                     <th>
-                        Slut
+                        Slutar
                     </th>
                 </tr>
             </thead>
@@ -61,11 +61,19 @@
                 }
             <tbody>
         </table>
-    }
-
-
-</div>
-
+    </div>
+    <div clasS="col-md-6">
+        <h3>
+            Sammanställning för <span class="label label-info">@Model.tagName</span>
+        </h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4>Totalt antal tillfällen: @Model.TotalSessions</h4>
+                <h4>Totalt antal deltagare: @Model.TotalParticipants</h4>
+            </div>
+        </div>
+    </div>
+}
 
 @section scripts {
 

@@ -1,69 +1,74 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.SessionSummaryStatisticsViewModel
 @{
-    ViewBag.Title = "SessionSummaryStatistics";
+    ViewBag.Title = "Statistik per år";
 }
-
-<div class="col-md-6">
-
-    @using (Html.BeginForm("YearlyStatistics", "Statistic", FormMethod.Post))
-    {
-        <div class="form-group">
-            <h2 class="m-b-30"></h2>
-            <label for="Activity">Aktiviteter</label>
-
-            @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2011, DateTime.Now.Year - 2010)), "-- Välj år --", new {@class="form-control", name = "yearslist"})
-
+<h2>Statistik per år</h2>
+<h4>Välj ett år i listan för att se sammanfattande statistik för det årets tillfällen.</h4>
+<hr />
+@using (Html.BeginForm("YearlyStatistics", "Statistic", FormMethod.Post))
+{
+    <div class="form-group well">
+        <label for="yearslist">År</label>
+        <div class="form-inline">
+            <div class="form-group">
+                @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2011, DateTime.Now.Year - 2010)), "-- Alla år --", new { @class = "form-control", name = "yearslist" })
+            </div>
             <button type="submit" class="btn btn-default">Filtrera!</button>
         </div>
-    }
+    </div>
+}
+<div class="col-md-6">
 
     @if (Model.SessionStatisticsRows != null)
-
     {
-        
-            <table class="tablesorter table table-hover" id="SessionsForYear">
-                <thead>
+        <table class="tablesorter table table-hover" id="SessionsForYear">
+            <thead>
                 <tr>
                     <th>
-                        Aktivitet och Namn
+                        Namn på aktivitet och tillfälle
                     </th>
                     <th>
-                        <span>Antal Deltagare</span>
+                        Antal Deltagare
                     </th>
                 </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.SessionStatisticsRows)
-                    {
-                        <tr>
-                            <td>
-                                <p>@Html.ActionLink(item.Session.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>
-                            </td>
-                            <td>
-                                <p align="right">@item.NumberOfParticipants</p>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SessionStatisticsRows)
+                {
+                    <tr>
+                        <td>
+                            <p>@Html.ActionLink(item.Session.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>
+                        </td>
+                        <td>
+                            <p align="right">@item.NumberOfParticipants</p>
 
-                            </td>
-                        </tr>
-                    }
-                <tbody>
-     </table>
+                        </td>
+                    </tr>
+                }
+            <tbody>
+        </table>
     }
-
-
 </div>
 
-<div class="col-md-5" id="totDeltagare">
-    <p align="right">
-
-        <h3 class="m-b-30">
-            <em>Totalt antal deltagare: @Model.TotalPaticipants</em><br/>
-
-            <em>Totalt antal activiteter: @Model.TotalSessions</em>
-
-        </h3>
-    </p>
-
-
+<div class="col-md-6" id="totDeltagare">
+    <h3>
+        Sammanställning för <strong>
+            @if (Model.SelectedYear == 0)
+            {
+                <text>alla år</text>
+            }
+            else
+            {
+                @Model.SelectedYear
+            }
+        </strong>
+    </h3>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h4>Totalt antal tillfällen: @Model.TotalSessions</h4>
+            <h4>Totalt antal deltagare: @Model.TotalPaticipants</h4>
+        </div>
+    </div>
 </div>
 
 @section scripts {

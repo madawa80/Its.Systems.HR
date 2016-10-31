@@ -26,28 +26,28 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Skapa<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Skapa tillfälle", "CreateSession", "Session")</li>
+                        <li>@Html.ActionLink("Aktivitet", "CreateActivity", "Activity")</li>
                         <li role="separator" class="divider"></li>
-                        <li>@Html.ActionLink("Skapa aktivitet", "CreateActivity", "Activity")</li>
+                        <li>@Html.ActionLink("Tillfälle", "CreateSession", "Session")</li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Visa<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Lista tillfällen", "FilterSessions", "ActivitySummary")</li>
+                        <li>@Html.ActionLink("Aktiviteter", "Index", "Activity")</li>
                         <li role="separator" class="divider"></li>
-                        <li>@Html.ActionLink("Lista aktiviteter", "Index", "Activity")</li>
+                        <li>@Html.ActionLink("Tillfällen", "FilterSessions", "ActivitySummary")</li>
                         <li role="separator" class="divider"></li>
-                        <li>@Html.ActionLink("Översikt personal", "Index", "Participant")</li>
+                        <li>@Html.ActionLink("Personal", "Index", "Participant")</li>
                     </ul>
                 </li>
 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Statistik<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Aktiviteter", "YearlyStatistics", "Statistic")</li>
+                        <li>@Html.ActionLink("Per år", "YearlyStatistics", "Statistic")</li>
                         <li role="separator" class="divider"></li>
-                        <li>@Html.ActionLink("Etiketter", "FilterSessionsForTag", "Statistic")</li>
+                        <li>@Html.ActionLink("Per etikett", "FilterSessionsForTag", "Statistic")</li>
 
                     </ul>
                 </li>

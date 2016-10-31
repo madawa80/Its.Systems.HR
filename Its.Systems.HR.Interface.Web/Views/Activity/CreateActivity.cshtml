@@ -5,7 +5,7 @@
 }
 
 <h2 class="test">Skapa aktivitet</h2>
-<h4>Skapar en ny aktivitet, som sedan kan innehålla tillfällen.</h4>
+<h4>Aktiviteter samlar tillfällen under sig. Exempelvis är JavaOne en aktivitet som har tillfällen för åren 2014, 2015 osv.</h4>
 <hr/>
 
 
@@ -17,7 +17,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Name)
         <div>
-            @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control"}})
+            @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control", placeholder="Exempel: JavaOne"}})
             @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
         </div>
     </div>
@@ -27,9 +27,9 @@
             <button class="btn btn-default">
                 <i class="glyphicon glyphicon-ok"></i> Skapa aktivitet
             </button>
-            <a href="@Url.Action("Index")" class="btn btn-danger">
+            @*<a href="@Url.Action("Index")" class="btn btn-danger">
                 <i class="glyphicon glyphicon-remove"></i> Avbryt
-            </a>
+            </a>*@
         </div>
     </div>
 }

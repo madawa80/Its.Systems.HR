@@ -8,5 +8,6 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public int TotalSessions;
         //public List<int> Years { get; set; }
         public List<SessionStatisticsRow> SessionStatisticsRows { get; set; }
+        public int SelectedYear { get; set; }
     }
 }

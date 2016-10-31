@@ -19,7 +19,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private int PaticipantCount;
         private int selectedTag;
         private int selectedyear;
-        private string tagDisplay;
         private List<int> years;
         private IQueryable<Session> sessionsForTag;
 
@@ -33,13 +32,41 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult YearlyStatistics()
         {
-            var viewModel = new SessionSummaryStatisticsViewModel();
+            var participantsPerYearCount = 0;
+
+            var sessionsForYear = _sessionManager.GetAllSessions()
+                                    .Include(n => n.Activity)
+                                    .OrderBy(n => n.Id)
+                                    .ToList();
+
+            var totalSessionCount = sessionsForYear.Count;
+            var sessionStatisticsRowsList = new List<SessionStatisticsRow>();
+
+            foreach (var session in sessionsForYear)
+            {
+                var participantCount = _personManager.GetAllParticipantsForSession(session.Id).ToList().Count;
+                sessionStatisticsRowsList.Add(new SessionStatisticsRow
+                {
+                    NumberOfParticipants = participantCount,
+                    Session = session
+                });
+
+                participantsPerYearCount += participantCount; 
+            }
+
+            var viewModel = new SessionSummaryStatisticsViewModel
+            {
+                SessionStatisticsRows = sessionStatisticsRowsList,
+                TotalPaticipants = participantsPerYearCount,
+                TotalSessions = totalSessionCount,
+                SelectedYear = 0,
+            };
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public ViewResult YearlyStatistics(string yearsList)
+        public ActionResult YearlyStatistics(string yearsList)
         {
             int yearInInt;
             var sessionStatisticsRowsList = new List<SessionStatisticsRow>();
@@ -47,7 +74,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var sessionscount = 0;
 
             if (string.IsNullOrEmpty(yearsList))
-                return View(new SessionSummaryStatisticsViewModel());
+                return RedirectToAction("YearlyStatistics");
 
 
             if (int.TryParse(Request.Form["yearslist"], out yearInInt))
@@ -82,75 +109,67 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 //Years = years,
                 SessionStatisticsRows = sessionStatisticsRowsList,
                 TotalPaticipants = PaticipantsPerYear,
-                TotalSessions = sessionscount
+                TotalSessions = sessionscount,
+                SelectedYear = selectedyear,
             };
 
             return View(viewModel);
         }
 
-        //[HttpGet]
-        //public ActionResult FilterSessionsForTag()
-        //{
-        //    var viewModel1 = new SessionTagsViewModel()
-        //    {
-
-        //    };
-
-        //    return View(viewModel1);
-
-        //}
-
         [HttpGet]
         public ViewResult FilterSessionsForTag(string taglist, string id)
         {
             int Tag;
-            int Id;
-            tagDisplay = "-- Välj Etiketter--";
+            int totalParticipantCount = 0;
+            int totalSessionCount = 0;
+            string tagDisplay = "-- Välj etikett --";
 
-            
+            if (id != null && taglist == null)
+                taglist = id;
+
             if (int.TryParse(taglist, out Tag))
             {
                 selectedTag = Tag;
-                //years = Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList();
-
-
-                //sessionsForTag = _sessionManager.GetAllSessionsForTag(selectedTag).ToList();
 
                 sessionsForTag =
                   _sessionManager.GetAllSessionsForTag(selectedTag)
                       .Include(n => n.Activity)
+                      .Include(n => n.SessionParticipants)
                       .OrderBy(n => n.Id);
 
-
-                tagDisplay = "-- Välj Etiketter--";
-                id = null;
-            }
-
-            if (int.TryParse(id, out Id))
-            {
-                selectedTag = Id;
-                sessionsForTag =
-                  _sessionManager.GetAllSessionsForTag(selectedTag)
-                      .Include(n => n.Activity)
-                      .OrderBy(n => n.Id);
-
-
+                totalSessionCount = sessionsForTag.Count();
                 tagDisplay = _utilityManager.GetTag(selectedTag).Name;
 
-                // IEnumerable<string> tagName =
-                //_utilityManager.GetAllTags()
-                //    .Where(n => n.Id == Id)
-                //    .Select(a => a.Name);
+                foreach (var session in sessionsForTag)
+                {
+                    totalParticipantCount += session.SessionParticipants.Count;
+                }
+                //id = null;
             }
 
+            //if (int.TryParse(id, out Id))
+            //{
+            //    selectedTag = Id;
+            //    sessionsForTag =
+            //      _sessionManager.GetAllSessionsForTag(selectedTag)
+            //          .Include(n => n.Activity)
+            //          .OrderBy(n => n.Id);
+
+
+            //    tagDisplay = _utilityManager.GetTag(selectedTag).Name;
+
+            //    totalSessionCount = sessionsForTag.Count();
+            //}
 
             var allTags = _utilityManager.GetAllTags().OrderBy(n => n.Name).ToList();
+
             var viewModel = new SessionTagsViewModel
             {
                 tagName = tagDisplay,
                 Tags = new SelectList(allTags, "Id", "Name"),
-                Sessions = sessionsForTag
-               
+                Sessions = sessionsForTag,
+                TotalParticipants = totalParticipantCount,
+                TotalSessions = totalSessionCount,
             };
 
             return View(viewModel);

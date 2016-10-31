@@ -4,8 +4,22 @@
     ViewBag.Title = "Lista personal";
 }
 
-<h2>Listar personal</h2>
-
+<h2>Visa personal</h2>
+<h4>Klicka på ett namn för att se en sammanfattning för personen.</h4>
+<hr />
+@using (Html.BeginForm("Index", "Participant", FormMethod.Get))
+{
+    <div class="well">
+        <label for="searchString">Filtrera personal:</label>
+        <div class="form-inline">
+            <div class="form-group">
+                @Html.TextBox("searchString", null, new { @class = "form-control" })
+            </div>
+            <button type="submit" class="btn btn-default">Filtrera!</button>
+        </div>
+        @*<a href="@Url.Action("Index")" class="btn btn-danger">Återställ</a>*@
+    </div>
+}
 <table id="listParticipantsTable" class="tablesorter table table-hover">
     <thead>
     <tr>

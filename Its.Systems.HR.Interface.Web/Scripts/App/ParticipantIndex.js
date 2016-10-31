@@ -1,8 +1,10 @@
-﻿// AllSessionsForActivity.js
-$(document)
-    .ready(function() {
+﻿//ParticipantIndex.js
+$(document).ready(function () {
 
-        // INIT TABLE SORTER
-        hr_createTableSorter("#listParticipantsTable");
-
+    // INIT TABLE SORTER
+    $("#listParticipantsTable").tablesorter(
+    {
+        sortList: [[0, 0]]
     });
+
+});

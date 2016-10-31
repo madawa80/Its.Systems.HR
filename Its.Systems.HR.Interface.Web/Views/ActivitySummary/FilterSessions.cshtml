@@ -6,29 +6,28 @@
 
 <h2>Lista tillfällen</h2>
 <h4>Låter dig filtrera bland samtliga skapade tillfällen. Om årsväljaren är inställd på maxvärdena så visas även tillfällen utan startdatum!</h4>
-
-@using (Html.BeginForm("FilterSessions", "ActivitySummary", FormMethod.Get))
-{
-    <div class="well-lg">
-
+<hr />
+<div class="well">
+    @using (Html.BeginForm("FilterSessions", "ActivitySummary", FormMethod.Get))
+    {
         <div class="form-group">
             <label for="SearchString">Fullständigt namn innehåller</label>
             <div>
-                @Html.TextBox("SearchString", null, new {@class = "form-control"})
+                @Html.TextBox("SearchString", null, new { @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
             <label>År</label>
             <div>
-                <input name="yearSlider" id="yearSlider" type="text" class="" value="" data-slider-min="@Model.MinYear" data-slider-max="@Model.MaxYear" data-slider-step="1" data-slider-value="[@Model.YearStart,@Model.YearEnd]"/>
+                <input name="yearSlider" id="yearSlider" type="text" class="" value="" data-slider-min="@Model.MinYear" data-slider-max="@Model.MaxYear" data-slider-step="1" data-slider-value="[@Model.YearStart,@Model.YearEnd]" />
             </div>
         </div>
 
         <div class="form-group">
             <label for="HrPerson">Ansvarig HR</label>
             <div>
-                @Html.DropDownListFor(n => n.HrPerson, Model.HrPersons, "-- Välj ev. ansvarig hr --", new {@class = "form-control"})
+                @Html.DropDownListFor(n => n.HrPerson, Model.HrPersons, "-- Välj ev. ansvarig hr --", new { @class = "form-control" })
                 @*@Html.DropDownListFor(n => n.Activities, Model.Activities, new { @class = "form-control wide-textbox", onchange = "javascript:getSessions(this.value);", id = "activityDropdown" })*@
             </div>
         </div>
@@ -38,7 +37,7 @@
             <div>
                 @*@Html.TextBoxFor(n => n.NameOfLocation, new { @class = "form-control ui-autocomplete", @data-autocomplete = "@Url.Action("AutoCompleteLocations", "Home")" })*@
                 <input type="text" id="NameOfLocation" name="NameOfLocation" value="@Model.NameOfLocation" class="form-control"
-                       data-autocomplete="@Url.Action("AutoCompleteLocations", "Activity")"/>
+                       data-autocomplete="@Url.Action("AutoCompleteLocations", "Activity")" />
                 @*@Html.ValidationMessageFor(model => model.NameOfLocation.Id, "", new { @class = "text-danger" })*@
             </div>
         </div>
@@ -47,17 +46,15 @@
 
         @*<a href="@Url.Action("Index")" class="btn btn-danger">Återställ</a>*@
 
-        <div class="form-group">
-            <button class="btn btn-default">
-                <i class="glyphicon glyphicon-search"></i> Filtrera
-            </button>
+
+        <button class="btn btn-default">
+            <i class="glyphicon glyphicon-search"></i> Filtrera
+        </button>
             @*<a href="@Url.Action("Index")" class="btn btn-danger">
                     <i class="glyphicon glyphicon-remove"></i> Avbryt
                 </a>*@
-        </div>
-    </div>
-}
-
+    }
+</div>
 @Html.Partial("_ListSessionsPartial", Model.Sessions)
 
 

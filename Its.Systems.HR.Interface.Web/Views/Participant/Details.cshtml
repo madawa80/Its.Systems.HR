@@ -4,7 +4,10 @@
     ViewBag.Title = "Översikt person";
 }
 
-<h2>@Model.FullName</h2>
+<h2>
+    Detaljerad information för person<br />
+    <strong>@Model.FullName</strong>
+</h2>
 
 <div class="row">
     <div class="col-md-7">
@@ -66,10 +69,11 @@
         {
             @Html.HiddenFor(n => n.PersonId)
             <div class="m-t-30">
-                @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control wide-textbox" })
+                <label for="Id">Lägg till tillfälle för @Model.FullName</label>
+                @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new {@class = "form-control wide-textbox"})
                 @*@Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })*@
                 <button class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till tillfälle för person
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till tillfälle
                 </button>
                 @if (!string.IsNullOrEmpty(ViewBag.Error))
                 {

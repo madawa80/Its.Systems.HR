@@ -4,11 +4,12 @@
 }
 
 <h2>Lista aktiviteter</h2>
-<h4>Listar alla skapade aktiviteter, klicka på en aktivitet för att visa dess tillfällen.</h4>
+<h4>Aktiviteter samlar tillfällen under sig. Exempelvis är JavaOne en aktivitet som har tillfällen för åren 2014, 2015 osv. Klicka på en aktivitet för att visa dess tillfällen.</h4>
+<hr />
 @using (Html.BeginForm("Index", "Activity", FormMethod.Get))
 {
-    <div class="well-lg">
-        <label for="searchString">Filtrera aktiviteter på namn:</label>
+    <div class="well">
+        <label for="searchString">Filtrera aktiviteter:</label>
         <div class="form-inline">
             <div class="form-group">
                 @Html.TextBox("searchString", null, new {@class = "form-control"})
@@ -25,7 +26,7 @@
             Namn
         </th>
         <th>
-            Tillfällen
+            Antal tillfällen
         </th>
         <th></th>
     </tr>

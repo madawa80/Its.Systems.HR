@@ -1,8 +1,8 @@
 ﻿// YearlyStatistics.js
-$(document)
-    .ready(function () {
+$(document).ready(function () {
 
-        // INIT TABLE SORTER
-        hr_createTableSorter("#SessionsForYear");
-
+    // INIT TABLE SORTER
+    $("#SessionsForYear").tablesorter({
+        sortList: [[1, 1]]
     });
+});

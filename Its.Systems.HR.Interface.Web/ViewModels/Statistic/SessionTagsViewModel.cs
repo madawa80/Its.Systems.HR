@@ -13,5 +13,8 @@ namespace Its.Systems.HR.Interface.Web.ViewModels.Statistic
         //public Tag tag { get; set; }
 
         public IEnumerable<SelectListItem> Tags { get; set; }
+
+        public int TotalParticipants { get; set; }
+        public int TotalSessions { get; set; }
     }
 }
