@@ -52,7 +52,7 @@ $(document).ready(function () {
                 }
 
                 else {
-                    hr_messageFadingOut(link, "Personen redan tillagd!", "danger");
+                    hr_messageFadingOut(link, result.ErrorMessage, "danger");
                 }
             }
         });

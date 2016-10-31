@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Infrastructure.UmuApi;
 using Its.Systems.HR.Domain.Interfaces;
+using Its.Systems.HR.Domain.Model;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -70,6 +71,44 @@ namespace Its.Systems.HR.Test
             Assert.AreEqual(actualCountFromUmuWebApi - 4, addedPersons.Count);
             Assert.AreEqual(actualCountFromUmuWebApi, _personManager.GetAllParticipants().Count(n => n.IsActive));
         }
+
+
+
+        [TestMethod]
+        public void UseCase1_ShouldReturnExpected()
+        {
+            // 1. Lista Personal
+           
+
+            _personManager.GetAllParticipants();    //shoud returns 8
+
+            // 2. Visa Alla tillfälle för en person
+          
+            var x = _sessionManager.GetAllSessionsForParticipantById(1).Count();   //should return 3!!
+
+            // 3. LÄGG TILL tillfälle
+
+        
+            _personManager.AddParticipantToSession(1, 3);
+            _personManager.AddParticipantToSession(1, 4);
+
+            // 4. SPARA KOMMENTAR OCH UTVÄRDERING
+            _personManager.SaveCommentsForParticipant(1, "New Comment");
+            _personManager.SaveWishesForParticipant(1, "New Wish");
+
+
+            // 5. TA BORT DELTAGARE
+            _personManager.RemoveParticipantFromSession(1, 4);
+            //_personManager.RemoveParticipantFromSession(240, 62);
+
+            // TEST RESULTS
+            var expectedSessionCount = 3;
+
+            Assert.AreEqual(expectedSessionCount, _sessionManager.GetAllSessionsForParticipantById(1).Count());
+            Assert.AreEqual("New Comment", _personManager.GetParticipantById(1).Comments);
+            Assert.AreEqual("New Wish", _personManager.GetParticipantById(1).Wishes);
+
+           }
 
     }
 }
