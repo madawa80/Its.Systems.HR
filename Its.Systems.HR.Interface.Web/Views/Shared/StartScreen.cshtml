@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Startsida";
+}
+
+<div class="jumbotron">
+    <h1>HR-Appen Kompetensutveckling</h1>
+    <p class="lead">Välkommen till HR-appen som samlar all data kring kompetensutveckling på samma ställe.</p>
+    <p><a href="@Url.Action("Index", "Activity")" class="btn btn-primary btn-lg">Visa alla aktiviteter &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Kom igång</h2>
+        <p>
+            Applikationen organiserar datat enligt informationen här till höger.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Aktiviteter</h2>
+        <p>
+            Aktiviteter samlar tillfällen under sig. Exempelvis är JavaOne en aktivitet som har tillfällen för åren 2014, 2015 osv.
+        </p>
+        <p><a class="btn btn-default" href="@Url.Action("Index", "Activity")">Visa alla aktiviteter &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Tillfällen</h2>
+        <p>
+            Tillfällen läggs alltid under en aktivitet. Till dessa läggs de personer som deltog för det specifika tillfället in. Vidare kan man spara en kommentar och utvärdering för varje tillfälle.
+        </p>
+        <p><a class="btn btn-default" href="@Url.Action("FilterSessions", "ActivitySummary")">Visa alla tillfällen &raquo;</a></p>
+    </div>
+</div>

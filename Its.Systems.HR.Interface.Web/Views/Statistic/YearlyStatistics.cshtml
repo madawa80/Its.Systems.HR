@@ -13,7 +13,9 @@
             <div class="form-group">
                 @Html.DropDownList("yearslist", new SelectList(Enumerable.Range(2011, DateTime.Now.Year - 2010)), "-- Alla år --", new { @class = "form-control", name = "yearslist" })
             </div>
-            <button type="submit" class="btn btn-default">Filtrera!</button>
+            <button class="btn btn-default">
+                <i class="glyphicon glyphicon-search"></i> Filtrera
+            </button>
         </div>
     </div>
 }
@@ -55,7 +57,7 @@
         Sammanställning för <strong>
             @if (Model.SelectedYear == 0)
             {
-                <text>alla år</text>
+                <text>samtliga år</text>
             }
             else
             {

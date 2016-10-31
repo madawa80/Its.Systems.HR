@@ -1,7 +1,7 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.IndexParticipantViewModel
 
 @{
-    ViewBag.Title = "Lista personal";
+    ViewBag.Title = "Visa personal";
 }
 
 <h2>Visa personal</h2>
@@ -15,7 +15,9 @@
             <div class="form-group">
                 @Html.TextBox("searchString", null, new { @class = "form-control" })
             </div>
-            <button type="submit" class="btn btn-default">Filtrera!</button>
+            <button class="btn btn-default">
+                <i class="glyphicon glyphicon-search"></i> Filtrera
+            </button>
         </div>
         @*<a href="@Url.Action("Index")" class="btn btn-danger">Återställ</a>*@
     </div>

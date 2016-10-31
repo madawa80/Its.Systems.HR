@@ -16,7 +16,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
         private readonly IUtilityManager _utilitiesManager;
-        private string personCasLogin;
 
         public SessionController(IActivityManager activityManager, ISessionManager sessionManager,
             IPersonManager personManager, IUtilityManager utilityManager)
@@ -214,35 +213,33 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return RedirectToAction("Details", "Participant", new { id = personId, error = "Personen är redan tillagd på tillfället." });
             }
 
-            return RedirectToAction("Details", "Participant", new { id= personId });
+            return RedirectToAction("Details", "Participant", new { id = personId });
         }
 
         // AJAX METHODS BELOW
         [HttpPost]
         public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, string personName)
         {
+            string personCasLogin;
+
             //TODO: ERROR HANDLING!
-            
-            var participant = new Participant();
+
+
             try
             {
-                var firstParanthesis = personName.IndexOf('(') + 1;
-                var lastParanthesis = personName.IndexOf(')');
-                personCasLogin = personName.Substring(firstParanthesis, lastParanthesis - firstParanthesis);
-                
-
-
+                personCasLogin = personName.Split('(')[1].Split(')')[0];
+                //var firstParanthesis = personName.IndexOf('(') + 1;
+                //var lastParanthesis = personName.IndexOf(')');
+                //personCasLogin = personName.Substring(firstParanthesis, lastParanthesis - firstParanthesis);
             }
             catch (Exception)
             {
-
-                
                 if (personName == "")
                 {
                     var failResult = new
                     {
                         Success = false,
-                        ErrorMessage = "Du måste välja en person från listan ",
+                        ErrorMessage = "Ogiltig inmatning",
                         PersonId = 0,
                         SessionId = sessionId,
                         PersonFullName = "",
@@ -250,36 +247,30 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                     return Json(failResult);
                 }
-
                 else
                 {
-
                     var failResult = new
-                   {
-                    Success = false,
-                    ErrorMessage = "Ogiltig Person namn",
-                    PersonId = 0,
-                    SessionId = sessionId,
-                    PersonFullName = "",
-                   };
+                    {
+                        Success = false,
+                        ErrorMessage = "Välj person ur listan",
+                        PersonId = 0,
+                        SessionId = sessionId,
+                        PersonFullName = "",
+                    };
 
-                   return Json(failResult);
+                    return Json(failResult);
                 }
-
                 //ModelState.AddModelError("", "Du måste välja en person från listan");
-
             }
 
-
-           
-            participant = _personManager.GetParticipantByCas(personCasLogin);
+            var participant = _personManager.GetParticipantByCas(personCasLogin);
             if (participant == null)
             {
 
                 var failResult = new
                 {
                     Success = false,
-                    ErrorMessage = "Ogiltig CAS Id",
+                    ErrorMessage = "Ogiltigt CAS Id",
                     PersonId = 0,
                     SessionId = sessionId,
                     PersonFullName = "",
@@ -288,20 +279,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return Json(failResult);
             }
 
-            var result = new
-                {
-                    Success = true,
-                    ErrorMessage = "",
-                    PersonId = participant.Id,
-                    SessionId = sessionId,
-                    PersonFullName = participant.FullName + " (" + personCasLogin + ")",
-                };
-
-
-       
-
             if (!_personManager.AddParticipantToSession(participant.Id, sessionId))
-                result = new
+            {
+                var failResult = new
                 {
                     Success = false,
                     ErrorMessage = "Personen är redan registrerad",
@@ -310,8 +290,20 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     PersonFullName = "",
                 };
 
-            return Json(result);
+                return Json(failResult);
+            }
 
+
+            var succesResult = new
+            {
+                Success = true,
+                ErrorMessage = "",
+                PersonId = participant.Id,
+                SessionId = sessionId,
+                PersonFullName = participant.FullName + " (" + personCasLogin + ")",
+            };
+
+            return Json(succesResult);
         }
 
         public ActionResult RemovePersonFromSession(int sessionId, int personId)

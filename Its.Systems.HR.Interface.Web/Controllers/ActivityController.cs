@@ -24,7 +24,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
             _utilitiesManager = utilityManager;
         }
-
+       
 
         public ViewResult Index(string searchString)
         {
@@ -49,6 +49,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
 
             return View(result);
+        }
+
+        public ViewResult StartScreen()
+        {
+            return View("StartScreen");
         }
 
         public ActionResult CreateActivity()

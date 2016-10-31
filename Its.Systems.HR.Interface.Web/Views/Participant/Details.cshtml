@@ -13,18 +13,20 @@
     <div class="col-md-7">
         <h3 class="m-b-30">Deltagit på följande tillfällen</h3>
 
-        <table class="table" id="allSessionsForParticipant">
+        <table class="table table-hover" id="allSessionsForParticipant">
 
             @foreach (var year in Model.Years)
             {
 
-                <tr><td>@year</td></tr>
+                <tr class="tr-grey-bg">
+                    <td>@year</td>
+                    <td></td>
+                </tr>
 
                 foreach (var session in Model.Sessions.Where(n => n.StartDate != null))
                 {
                     if (session.StartDate?.Year == year)
                     {
-
                         <tr>
                             <td>
                                 <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = session.Id})">@session.NameWithActivity</a>
@@ -32,7 +34,9 @@
                                 {
                                     <span> (@session.StartDate.Value.ToShortDateString())</span>
                                 }
-                                <span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort</span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort deltagande</button>
                             </td>
                         </tr>
                     }
@@ -42,7 +46,10 @@
 
             @if (Model.Sessions.Count(n => n.StartDate == null) > 0)
             {
-                <tr><td>Ospecificerat år</td></tr>
+                <tr class="tr-grey-bg">
+                    <td>Ospecificerat år</td>
+                    <td></td>
+                </tr>
             }
             @foreach (var sessionWithNullStartYear in Model.Sessions.Where(n => n.StartDate == null))
             {
@@ -53,10 +60,11 @@
                         {
                             <span> (@sessionWithNullStartYear.StartDate.Value.ToShortDateString())</span>
                         }
-                        <span class="label label-warning listedParticipantRemove js-delete-sessionParticipant" data-sessionId="@sessionWithNullStartYear.Id" data-personId="@Model.PersonId">Ta bort</span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@sessionWithNullStartYear.Id" data-personId="@Model.PersonId">Ta bort deltagande</button>
                     </td>
                 </tr>
-
             }
         </table>
 

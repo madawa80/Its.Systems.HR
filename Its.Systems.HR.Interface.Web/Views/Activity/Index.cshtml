@@ -1,9 +1,9 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.IndexActivityViewModel
 @{
-    ViewBag.Title = "Aktiviteter";
+    ViewBag.Title = "Visa aktiviteter";
 }
 
-<h2>Lista aktiviteter</h2>
+<h2>Visa aktiviteter</h2>
 <h4>Aktiviteter samlar tillfällen under sig. Exempelvis är JavaOne en aktivitet som har tillfällen för åren 2014, 2015 osv. Klicka på en aktivitet för att visa dess tillfällen.</h4>
 <hr />
 @using (Html.BeginForm("Index", "Activity", FormMethod.Get))
@@ -14,7 +14,9 @@
             <div class="form-group">
                 @Html.TextBox("searchString", null, new {@class = "form-control"})
             </div>
-            <button type="submit" class="btn btn-default">Filtrera!</button>
+            <button class="btn btn-default">
+                <i class="glyphicon glyphicon-search"></i> Filtrera
+            </button>
         </div>
         @*<a href="@Url.Action("Index")" class="btn btn-danger">Återställ</a>*@
     </div>

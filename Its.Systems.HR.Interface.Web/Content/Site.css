@@ -198,6 +198,10 @@ ul.dropdown-menu {
         background-color: red;
     }
 
+.tr-grey-bg {
+    background-color: #f5f5f5;
+}
+
 #selectedTags .glyphicon-remove {
     margin-left: 5px;
 }

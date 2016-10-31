@@ -1,10 +1,10 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.FilterSessionsViewModel
 
 @{
-    ViewBag.Title = "Lista tillfällen";
+    ViewBag.Title = "Visa tillfällen";
 }
 
-<h2>Lista tillfällen</h2>
+<h2>Visa tillfällen</h2>
 <h4>Låter dig filtrera bland samtliga skapade tillfällen. Om årsväljaren är inställd på maxvärdena så visas även tillfällen utan startdatum!</h4>
 <hr />
 <div class="well">
@@ -50,9 +50,9 @@
         <button class="btn btn-default">
             <i class="glyphicon glyphicon-search"></i> Filtrera
         </button>
-            @*<a href="@Url.Action("Index")" class="btn btn-danger">
-                    <i class="glyphicon glyphicon-remove"></i> Avbryt
-                </a>*@
+            <a href="@Url.Action("FilterSessions")" class="btn btn-default">
+            <i class="glyphicon glyphicon-remove"></i> Nollställ
+            </a>
     }
 </div>
 @Html.Partial("_ListSessionsPartial", Model.Sessions)

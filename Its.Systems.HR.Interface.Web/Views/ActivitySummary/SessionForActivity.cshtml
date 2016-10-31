@@ -21,7 +21,7 @@
 
                 @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })*@
             
-            <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control wide-textbox"
+            <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control wide-textbox" placeholder="Sök på förnamn, efternamn eller CAS"
                    data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")" />
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till deltagare [Enter]
@@ -33,7 +33,7 @@
 
     </div>
 
-    <table class="table" id="ParticipantsForSession">
+    <table class="table table-hover" id="ParticipantsForSession">
         @foreach (var participant in Model.Participants)
             {
             <tr>
@@ -45,7 +45,6 @@
                 </td>
             </tr>
         }
-
     </table>
 
 
@@ -73,11 +72,11 @@
                 }
                 @if (Model.StartDate != null)
                 {
-                    <p>Startdatum: @Model.StartDate.Value.ToString("dd MMM yyyy")</p>
+                    <p>Startdatum: @Model.StartDate.Value.ToString("dd MMMM yyyy")</p>
                 }
                 @if (Model.EndDate != null)
                 {
-                    <p>Slutdatum: @Model.EndDate.Value.ToString("dd MMM yyyy")</p>
+                    <p>Slutdatum: @Model.EndDate.Value.ToString("dd MMMM yyyy")</p>
                 }
                 @if (Model.Tags.Count > 0)
                 {

@@ -77,9 +77,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 return RedirectToAction("YearlyStatistics");
 
 
-            if (int.TryParse(Request.Form["yearslist"], out yearInInt))
+            if (int.TryParse(yearsList, out yearInInt))
             {
-                selectedyear = int.Parse(Request.Form["yearslist"]);
+                selectedyear = yearInInt;
                 //years = Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList();
                 var sessionsForYear =
                     _sessionManager.GetAllSessionsForYear(selectedyear)
@@ -119,7 +119,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpGet]
         public ViewResult FilterSessionsForTag(string taglist, string id)
         {
-            int Tag;
+            int tag;
             int totalParticipantCount = 0;
             int totalSessionCount = 0;
             string tagDisplay = "-- Välj etikett --";
@@ -127,9 +127,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (id != null && taglist == null)
                 taglist = id;
 
-            if (int.TryParse(taglist, out Tag))
+            if (int.TryParse(taglist, out tag))
             {
-                selectedTag = Tag;
+                selectedTag = tag;
 
                 sessionsForTag =
                   _sessionManager.GetAllSessionsForTag(selectedTag)
@@ -144,22 +144,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 {
                     totalParticipantCount += session.SessionParticipants.Count;
                 }
-                //id = null;
             }
-
-            //if (int.TryParse(id, out Id))
-            //{
-            //    selectedTag = Id;
-            //    sessionsForTag =
-            //      _sessionManager.GetAllSessionsForTag(selectedTag)
-            //          .Include(n => n.Activity)
-            //          .OrderBy(n => n.Id);
-
-
-            //    tagDisplay = _utilityManager.GetTag(selectedTag).Name;
-
-            //    totalSessionCount = sessionsForTag.Count();
-            //}
 
             var allTags = _utilityManager.GetAllTags().OrderBy(n => n.Name).ToList();
 

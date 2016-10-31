@@ -33,7 +33,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (theSession == null)
                 return View("Error");
 
-            var allParticipant = _personManager.GetAllParticipantsForSession(id).ToList();
+            var allParticipant = 
+                _personManager.GetAllParticipantsForSession(id).OrderBy(n => n.FirstName).ToList();
             var allTagsForSession =
                 _utilityManager.GetAllTagsForSessionById(id).ToList();
             var sessionRating =
