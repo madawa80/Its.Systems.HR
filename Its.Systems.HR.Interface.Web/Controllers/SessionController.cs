@@ -40,7 +40,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 allSessionParticipants,
                 "Id",
                 "FullName",
-                allSessionParticipants.First().Id);
+                allSessionParticipants.Skip(1).First().Id); // TODO: TAKE AWAY SKIP
             ViewBag.AllHrPersons = new SelectList(allHrPersons, "Id", "FullName");
             return View();
         }
