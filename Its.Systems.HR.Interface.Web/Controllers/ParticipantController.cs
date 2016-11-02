@@ -73,8 +73,22 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult Details(int? id, string error)
         {
+            bool permissionToShowParticipantDetails = false;
+
             if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            {
+                var loggedInUserAsParticipant = _personManager.GetParticipantByCas(User.Identity.Name.Split('@')[0]);
+                if (loggedInUserAsParticipant == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                
+                id = loggedInUserAsParticipant.Id;
+
+                permissionToShowParticipantDetails = true;
+            }
+
+            if (!User.IsInRole("Admin") && !permissionToShowParticipantDetails)
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+
 
             Participant participant = _personManager.GetAllParticipants().SingleOrDefault(n => n.Id == id);
             if (participant == null)
@@ -96,7 +110,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var viewModel = new ParticipantSummaryViewModel()
             {
                 PersonId = participant.Id,
-                FullName = participant.FullNameWithCas,
+                FullNameWithCas = participant.FullNameWithCas,
+                FullName = participant.FullName,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
                 Years = yearslisting.ToList(),

@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - HR-App kompetensutveckling</title>
     @Styles.Render("~/Content/css")
@@ -10,72 +10,36 @@
 
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            @Html.ActionLink("HR Kompetens", "StartScreen", "Activity", new {area = ""}, new {@class = "navbar-brand"})
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Skapa<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Aktivitet", "CreateActivity", "Activity")</li>
-                        <li role="separator" class="divider"></li>
-                        <li>@Html.ActionLink("Tillfälle", "CreateSession", "Session")</li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Visa<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Aktiviteter", "Index", "Activity")</li>
-                        <li role="separator" class="divider"></li>
-                        <li>@Html.ActionLink("Tillfällen", "FilterSessions", "ActivitySummary")</li>
-                        <li role="separator" class="divider"></li>
-                        <li>@Html.ActionLink("Personal", "Index", "Participant")</li>
-                    </ul>
-                </li>
-
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Statistik<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Per år", "YearlyStatistics", "Statistic")</li>
-                        <li role="separator" class="divider"></li>
-                        <li>@Html.ActionLink("Per etikett", "FilterSessionsForTag", "Statistic")</li>
-
-                    </ul>
-                </li>
-
-                @*<li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Inloggad deltagare<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Betygsätt tillfälle", "ReviewSession", "Participant")</li>
-                    </ul>
-                </li>*@
-
-            </ul>
-            @Html.Partial("_LoginPartial")
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("HR Kompetens", "StartScreen", "Activity", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @Html.Partial("_MenuPartial")
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
         </div>
     </div>
-</div>
-<div class="container body-content">
-    @RenderBody()
-</div>
-<footer>
     <div class="container body-content">
-        <hr/>
-        <p>&copy; @DateTime.Now.Year - ITS UmU</p>
+        @RenderBody()
     </div>
-</footer>
+    <footer>
+        <div class="container body-content">
+            <hr />
+            <p>&copy; @DateTime.Now.Year - ITS UmU</p>
+        </div>
+    </footer>
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@RenderSection("scripts", false)
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", false)
 </body>
 </html>

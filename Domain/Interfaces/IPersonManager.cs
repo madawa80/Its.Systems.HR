@@ -33,6 +33,11 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <returns>The participant, if found.</returns>
         Participant GetParticipantById(int id);
 
+        /// <summary>
+        /// Gets a participant by CAS-ID.
+        /// </summary>
+        /// <param name="cas"></param>
+        /// <returns>The participant, if found.</returns>
         Participant GetParticipantByCas(string cas);
 
         /// <summary>

@@ -38,6 +38,7 @@ namespace Its.Systems.HR.Interface.Web
                 IQueryable<string> adminCasIds;
                 using (HRContext db = new HRContext())
                 {
+                    var isHrPerson = false;
                     adminCasIds = db.Participants.Where(n => n.IsHrPerson).Select(n => n.CasId);
 
                     foreach (var adminCasId in adminCasIds)
@@ -45,9 +46,13 @@ namespace Its.Systems.HR.Interface.Web
                         if (adminCasId == loggedInCasId)
                         {
                             userIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+                            isHrPerson = true;
                             break;
                         }
                     }
+
+                    if (!isHrPerson)
+                        userIdentity.AddClaim(new Claim(ClaimTypes.Role, "User"));
                 }
             }
         }

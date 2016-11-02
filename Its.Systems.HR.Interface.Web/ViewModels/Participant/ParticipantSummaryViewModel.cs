@@ -8,7 +8,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
     {
         public int PersonId { get; set; }
 
-        public string FullName { get; set; }
+        public string FullNameWithCas { get; set; }
 
         public string Comments { get; set; }
 
@@ -21,6 +21,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public IEnumerable<SelectListItem> AllSessions { get; set; }
 
         public List<int> Years { get; set; }
+        public string FullName { get; set; }
 
         //public List<ParticipantSessionRow> ParticipantSessionRows { get; set; }
     }
