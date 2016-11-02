@@ -7,13 +7,13 @@ namespace Its.Systems.HR.Infrastructure.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Addedrelationshipfortagsandremovedrequiredonhrperson : IMigrationMetadata
+    public sealed partial class Reset : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Addedrelationshipfortagsandremovedrequiredonhrperson));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Reset));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610030650540_Added relationship for tags and removed required on hr-person"; }
+            get { return "201611021419473_Reset"; }
         }
         
         string IMigrationMetadata.Source

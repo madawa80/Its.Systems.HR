@@ -18,7 +18,7 @@ namespace Its.Systems.HR.Domain.Model
         public string Comments { get; set; }
         public string Wishes { get; set; }
 
-        public virtual List<SessionParticipant> SessionParticipants { get; set; }
+        public List<SessionParticipant> SessionParticipants { get; set; }
 
         public string FullName => FirstName + " " + LastName;
         public string FullNameWithCas => FirstName + " " + LastName + " (" + CasId + ")";

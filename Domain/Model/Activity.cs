@@ -11,6 +11,6 @@ namespace Its.Systems.HR.Domain.Model
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual List<Session> Sessions { get; set; }
+        public List<Session> Sessions { get; set; }
     }
 }

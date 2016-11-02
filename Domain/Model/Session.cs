@@ -20,14 +20,14 @@ namespace Its.Systems.HR.Domain.Model
 
         // nav props
         public int? LocationId { get; set; }
-        public virtual Location Location { get; set; }
+        public Location Location { get; set; }
         public int? HrPersonId { get; set; }
-        public virtual Participant HrPerson { get; set; }
+        public Participant HrPerson { get; set; }
         [Required]
         public int ActivityId { get; set; }
-        public virtual Activity Activity { get; set; }
+        public Activity Activity { get; set; }
 
-        public virtual List<SessionParticipant> SessionParticipants { get; set; }
-        public virtual List<SessionTag> SessionTags { get; set; }
+        public List<SessionParticipant> SessionParticipants { get; set; }
+        public List<SessionTag> SessionTags { get; set; }
     }
 }
