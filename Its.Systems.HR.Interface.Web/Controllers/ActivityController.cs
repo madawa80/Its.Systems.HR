@@ -51,11 +51,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
+        [Authorize]
         public ViewResult StartScreen()
         {
             return View("StartScreen");
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateActivity()
         {
             return View();
