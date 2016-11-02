@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -30,6 +31,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             //TODO: ClaimsIdentity debug
             var identity = (ClaimsIdentity) HttpContext.User.Identity;
+            if (User.IsInRole("Admin"))
+                Debug.WriteLine("ADMIN!!");
+            else
+                Debug.WriteLine("NO.....");
+
 
 
             var activities = _activityManager.GetAllActivitiesWithSessions();
@@ -46,7 +52,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     Name = activity.Name,
                     SessionCount = activity.Sessions.Count
                 });
-
 
             return View(result);
         }

@@ -2,6 +2,16 @@
 {
     <text>
         <ul class="nav navbar-nav navbar-right">
+            <li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <span class="label label-success">admin</span>
+                }
+                else
+                {
+                    <span class="label label-default">user</span>
+                }
+            </li>
             <li class="navbar-text">
                 @User.Identity.Name
             </li>
@@ -9,6 +19,7 @@
                 @Html.ActionLink("Logga ut", "SignOut", "Account")
             </li>
         </ul>
+
     </text>
 }
 else
