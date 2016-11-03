@@ -20,5 +20,13 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public List<Participant> Participants { get; set; }
         public Location Location { get; set; }
         public List<Tag> Tags { get; set; }
+        public List<Review> Reviews { get; set; }
+    }
+
+    public class Review
+    {
+        public string Name { get; set; }
+        public int Rating { get; set; }
+        public string Comments { get; set; }
     }
 }

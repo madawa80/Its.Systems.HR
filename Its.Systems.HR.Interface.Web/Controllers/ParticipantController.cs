@@ -169,7 +169,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult ReviewSession(ReviewSessionViewModel vm)
         {
-            var loggedInUser = _personManager.GetParticipantById(237);
+            var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
 
             if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating, vm.Comments))
                 return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = vm.SessionId});

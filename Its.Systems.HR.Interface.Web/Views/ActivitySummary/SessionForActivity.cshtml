@@ -2,7 +2,7 @@
 
 <div class="col-md-12">
     <h2>
-        Detaljerad information för tillfälle<br/>
+        Detaljerad information för tillfälle<br />
         <strong>@Model.SessionNameWithActivity</strong>
         <a href="@Url.Action("EditSession", "Session", new {id = Model.SessionId})" class="btn btn-warning">Ändra tillfälle</a>
         <button class="btn btn-danger js-delete-session" data-sessionId="@Model.SessionId">Ta bort tillfälle</button>
@@ -20,7 +20,7 @@
             @*@Html.DropDownListFor(model => model.Participants.First().Id, (IEnumerable<SelectListItem>)ViewBag.AllSessionParticipants, new { @class = "form-control", id = "participantDropdown", name = "participantDropdown" })
 
                 @Html.ValidationMessageFor(model => model.Participants.First().Id, "", new { @class = "text-danger" })*@
-            
+
             <input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control wide-textbox" placeholder="Sök på förnamn, efternamn eller CAS"
                    data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")" />
             <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
@@ -49,6 +49,22 @@
 
 
     <em>Totalt antal deltagare:&nbsp;</em><em id="totDeltagare"></em>
+
+    @if (Model.Reviews.Count > 0)
+    {
+        <hr/>
+        <h3 class="m-b-30">Recensioner</h3>
+        foreach (var review in Model.Reviews)
+        {
+            <div class="">
+                <input type="hidden" name="Rating" id="Rating" class="rating"
+                       value="@review.Rating" data-readonly data-fractions="2"
+                       data-filled="glyphicon glyphicon-star" data-empty="glyphicon glyphicon-star-empty" />
+                <p>Av: @review.Name</p>
+                <p>@review.Comments</p>
+            </div>
+        }
+    }
 
 
 </div>

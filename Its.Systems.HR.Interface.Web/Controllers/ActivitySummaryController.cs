@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
@@ -40,6 +41,18 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var sessionRating =
                 _utilityManager.GetRatingForSessionById(id);
 
+            var rawReviews = theSession.SessionParticipants.Where(n => n.Rating != 0);
+            var reviews = new List<Review>();
+            foreach (var rawReview in rawReviews)
+            {
+                reviews.Add(new Review()
+                {
+                    Rating = rawReview.Rating,
+                    Name = _personManager.GetParticipantById(rawReview.ParticipantId).FullName,
+                    Comments = rawReview.Comments
+                });
+            }
+
             var result = new SessionForActivityViewModel
             {
                 Comments = theSession.Comments,
@@ -55,7 +68,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ActivityName = theSession.Activity.Name,
                 ActivityId = theSession.ActivityId,
                 Tags = allTagsForSession,
-                Rating = sessionRating.ToString(CultureInfo.CreateSpecificCulture("en-US"))
+                Rating = sessionRating.ToString(CultureInfo.CreateSpecificCulture("en-US")),
+                Reviews = reviews
             };
 
             return View(result);

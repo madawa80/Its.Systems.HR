@@ -125,9 +125,9 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
         }
 
-        public bool UpdateReviewForSessionParticipant(int sessionId, int participantIdTEMP, int rating, string comments)
+        public bool UpdateReviewForSessionParticipant(int sessionId, int participantId, int rating, string comments)
         {
-            SessionParticipant sessionParticipant = GetASessionParticipant(sessionId, participantIdTEMP);
+            SessionParticipant sessionParticipant = GetASessionParticipant(sessionId, participantId);
 
             if (sessionParticipant == null)
                 return false;
