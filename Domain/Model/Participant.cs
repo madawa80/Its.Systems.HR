@@ -12,7 +12,7 @@ namespace Its.Systems.HR.Domain.Model
         public string CasId { get; set; }
         public bool IsHrPerson { get; set; }
         public bool IsActive { get; set; }
-        public bool IsSuperAdmin { get; set; }
+        public bool IsDeleted { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Comments { get; set; }
