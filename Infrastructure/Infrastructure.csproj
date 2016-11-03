@@ -51,9 +51,9 @@
   <ItemGroup>
     <Compile Include="HrContext.cs" />
     <Compile Include="HRContextSeeder.cs" />
-    <Compile Include="Migrations\201611021419473_Reset.cs" />
-    <Compile Include="Migrations\201611021419473_Reset.Designer.cs">
-      <DependentUpon>201611021419473_Reset.cs</DependentUpon>
+    <Compile Include="Migrations\201611031057562_reset.cs" />
+    <Compile Include="Migrations\201611031057562_reset.Designer.cs">
+      <DependentUpon>201611031057562_reset.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,8 +71,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201611021419473_Reset.resx">
-      <DependentUpon>201611021419473_Reset.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201611031057562_reset.resx">
+      <DependentUpon>201611031057562_reset.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

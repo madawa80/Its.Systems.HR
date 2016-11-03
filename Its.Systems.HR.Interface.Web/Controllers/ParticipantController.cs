@@ -7,6 +7,7 @@ using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.ViewModels;
 using System.Collections.Generic;
+using Its.Systems.HR.Interface.Web.Helpers.Extensions;
 using Microsoft.Ajax.Utilities;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
@@ -77,7 +78,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             if (id == null)
             {
-                var loggedInUserAsParticipant = _personManager.GetParticipantByCas(User.Identity.Name.Split('@')[0]);
+                var loggedInUserAsParticipant = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
                 if (loggedInUserAsParticipant == null)
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 
@@ -124,7 +125,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                                             "Id",
                                             "NameWithActivity",
                                             allSessions.First().Id),
-                IsAdmin = User.IsInRole("Admin")
+                IsAdmin = User.IsInRole("Admin"),
+                ParticipantCasId = participant.CasId
             };
 
             if (!string.IsNullOrEmpty(error))
@@ -135,19 +137,19 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
-        public ActionResult ReviewSession(int? id = 44)
+        public ActionResult ReviewSession(int? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var loggedInUser = _personManager.GetParticipantById(237);
+            var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
             var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var currentSessionParticipation = session.SessionParticipants.SingleOrDefault(n => n.ParticipantId == loggedInUser.Id && n.SessionId == id);
             if (currentSessionParticipation == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
 
 
             var reviewSessionViewModel = new ReviewSessionViewModel()
@@ -155,7 +157,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ParticipantId = loggedInUser.Id,
                 ParticipantName = loggedInUser.FullNameWithCas,
                 SessionId = session.Id,
-                SessionName = session.Activity.Name + " " + session.Name,
+                SessionName = session.NameWithActivity,
                 Rating = currentSessionParticipation.Rating,
                 Comments = currentSessionParticipation.Comments
             };

@@ -1,4 +1,5 @@
-﻿@model Its.Systems.HR.Interface.Web.ViewModels.ParticipantSummaryViewModel
+﻿@using Its.Systems.HR.Interface.Web.Helpers.Extensions
+@model Its.Systems.HR.Interface.Web.ViewModels.ParticipantSummaryViewModel
 
 @{
     ViewBag.Title = "Översikt person";
@@ -37,9 +38,9 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort deltagande</button>
-                                @if (!Model.IsAdmin)
+                                @if (Model.ParticipantCasId == User.Identity.Name.ToCasId())
                                 {
-                                    <a href="@Url.Action("ReviewSession")" class="btn btn-success btn-xs" data-sessionId="@session.Id" data-personId="@Model.PersonId">Recensera</a>
+                                    <a href="@Url.Action("ReviewSession", new { id = session.Id})" class="btn btn-success btn-xs">Recensera</a>
                                 }
                             </td>
                         </tr>
@@ -67,9 +68,9 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@sessionWithNullStartYear.Id" data-personId="@Model.PersonId">Ta bort deltagande</button>
-                        @if (!Model.IsAdmin)
+                        @if (Model.ParticipantCasId == User.Identity.Name.ToCasId())
                         {
-                            <a href="@Url.Action("ReviewSession")" class="btn btn-success btn-xs" data-sessionId="@sessionWithNullStartYear.Id" data-personId="@Model.PersonId">Recensera</a>
+                            <a href="@Url.Action("ReviewSession", new { id = sessionWithNullStartYear.Id})" class="btn btn-success btn-xs">Recensera</a>
                         }
                     </td>
                 </tr>
