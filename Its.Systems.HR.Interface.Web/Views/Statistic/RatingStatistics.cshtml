@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Its.Systems.HR.Interface.Web.ViewModels.RatingStatisticsViewModel>
+
+@{
+    ViewBag.Title = "Statistik per omdömen";
+}
+
+<h2>Statistik per omdömen</h2>
+<h4>Visar tillfällen sorterade utifrån omdömen från deltagarna.</h4>
+<hr />
+
+<table class="tablesorter table table-hover" id="ratingStatisticsTable">
+    <thead>
+    <tr>
+        <th>
+            Namn på aktivitet och tillfälle
+        </th>
+        <th>
+            Startdatum
+        </th>
+        <th>
+            Betyg
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <p>@Html.ActionLink(item.Session.NameWithActivity, "SessionForActivity", "ActivitySummary", new { id = item.Session.Id }, null)</p>
+            </td>
+            <td>
+                @if (item.Session.StartDate != null)
+                {
+                    @item.Session.StartDate.Value.ToString("yyyy-MM-dd")
+                }
+            </td>
+            <td>
+                <p>@item.Rating</p>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section scripts {
+
+    <script src="~/Scripts/jquery.tablesorter.min.js"></script>
+    <script src="~/Scripts/App/HrHelpers.js"></script>
+    <script src="~/Scripts/App/RatingStatistics.js"></script>
+}

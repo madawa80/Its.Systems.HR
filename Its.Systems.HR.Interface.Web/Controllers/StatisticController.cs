@@ -7,7 +7,6 @@ using System.Windows.Documents;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.ViewModels;
-using Its.Systems.HR.Interface.Web.ViewModels.Statistic;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
@@ -114,7 +113,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
         public ViewResult FilterSessionsForTag(string taglist, string id)
         {
             int tag;
@@ -158,6 +156,23 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public ViewResult RatingStatistics()
+        {
+            var allSessionsWithReviews = _sessionManager.GetAllSessionsWithReviews().ToList();
+
+            var result = new List<RatingStatisticsViewModel>();
+            foreach (var session in allSessionsWithReviews)
+            {
+                result.Add(new RatingStatisticsViewModel()
+                {
+                    Session = session,
+                    Rating = _utilityManager.GetRatingForSessionById(session.Id)
+                });
+            }
+
+            return View(result);
         }
     }
 }

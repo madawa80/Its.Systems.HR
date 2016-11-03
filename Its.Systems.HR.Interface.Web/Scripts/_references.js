@@ -9,6 +9,7 @@
 /// <reference path="app/hrhelpers.js" />
 /// <reference path="app/participantdetails.js" />
 /// <reference path="app/participantindex.js" />
+/// <reference path="app/ratingstatistics.js" />
 /// <reference path="app/sessionforactivity.js" />
 /// <reference path="app/yearlystatistics.js" />
 /// <reference path="bootbox.min.js" />

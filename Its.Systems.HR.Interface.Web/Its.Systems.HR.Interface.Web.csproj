@@ -233,6 +233,7 @@
     <Compile Include="ViewModels\ActivitySummary\SessionForActivityViewModel.cs" />
     <Compile Include="ViewModels\Statistic\SessionStatisticsRow.cs" />
     <Compile Include="ViewModels\Statistic\SessionSummaryStatisticsViewModel.cs" />
+    <Compile Include="ViewModels\Statistic\RatingStatisticsViewModel.cs" />
     <Compile Include="ViewModels\Statistic\SessionTagsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -305,6 +306,7 @@
     <Content Include="Scripts\App\EditSession.js" />
     <Content Include="Scripts\App\HRHelpers.js" />
     <Content Include="Scripts\App\CreateSession.js" />
+    <Content Include="Scripts\App\RatingStatistics.js" />
     <Content Include="Scripts\App\YearlyStatistics.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
@@ -380,6 +382,7 @@
     <Content Include="Views\Statistic\YearlyStatistics.cshtml" />
     <Content Include="Views\Statistic\FilterSessionsForTag.cshtml" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
+    <Content Include="Views\Statistic\RatingStatistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

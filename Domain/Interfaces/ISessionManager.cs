@@ -112,5 +112,12 @@ namespace Its.Systems.HR.Domain.Interfaces
         bool RemoveTagFromSession(int sessionId, int tagId);
         
         IQueryable<Session> GetAllSessionsForTag(int tagId);
+
+        /// <summary>
+        /// Gets all the sessions with reviews and includes everything
+        /// related to reviews.
+        /// </summary>
+        /// <returns>IQueryable of Session.</returns>
+        IQueryable<Session> GetAllSessionsWithReviews();
     }
 }

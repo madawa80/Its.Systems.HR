@@ -1,4 +1,4 @@
-﻿Id,FirstName,LastName,Comments,Wishes,CasId,IsHrPerson,IsActive,IsSuperAdmin
+﻿Id,FirstName,LastName,Comments,Wishes,CasId,IsHrPerson,IsActive,IsDeleted
 1,"Madawa","Abeywickrama","","","maku0029",false,true,false
 2,"Samuel","Pettersson","","","sape0014",false,true,false
 3,"Timmy","Larsson","","","olde0001",false,true,false

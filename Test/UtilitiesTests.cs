@@ -26,10 +26,9 @@ namespace Its.Systems.HR.Test
         [TestMethod]
         public void GetRatingForSession_ShouldReturnExpected()
         {
-            var expected = 3.667;
+            var expected = 3.7;
 
             var result = _utilityManager.GetRatingForSessionById(1);
-            result = Math.Round(result, 3);
 
             Assert.AreEqual(expected, result);
         }
