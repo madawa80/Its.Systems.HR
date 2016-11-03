@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Security.Claims;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
@@ -11,7 +9,6 @@ using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
-    //[Authorize]
     public class ActivityController : Controller
     {
         private readonly IActivityManager _activityManager;
@@ -29,15 +26,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ViewResult Index(string searchString)
         {
-            //TODO: ClaimsIdentity debug
-            var identity = (ClaimsIdentity) HttpContext.User.Identity;
-            if (User.IsInRole("Admin"))
-                Debug.WriteLine("ADMIN!!");
-            else
-                Debug.WriteLine("NO.....");
-
-
-
             var activities = _activityManager.GetAllActivitiesWithSessions();
 
             if (!string.IsNullOrEmpty(searchString))
@@ -56,7 +44,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
-        [Authorize]
         public ViewResult StartScreen()
         {
             return View("StartScreen");
@@ -68,6 +55,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public ActionResult CreateActivity(ActivityViewModel activity)
@@ -89,6 +77,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult EditActivity(int? id)
         {
@@ -101,6 +90,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         //[ValidateAntiForgeryToken]
         [ActionName("EditActivity")]
@@ -128,6 +118,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult DeleteActivity(int activityId)
         {

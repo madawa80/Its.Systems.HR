@@ -26,6 +26,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _utilitiesManager = utilityManager;
         }
 
+
         public ActionResult CreateSession(int id = 0) //activityId
         {
             var allActivities = _activityManager.GetAllActivities().OrderBy(n => n.Name).ToList();
@@ -223,14 +224,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             string personCasLogin;
 
             //TODO: ERROR HANDLING!
-
-
             try
             {
                 personCasLogin = personName.Split('(')[1].Split(')')[0];
-                //var firstParanthesis = personName.IndexOf('(') + 1;
-                //var lastParanthesis = personName.IndexOf(')');
-                //personCasLogin = personName.Substring(firstParanthesis, lastParanthesis - firstParanthesis);
             }
             catch (Exception)
             {
@@ -260,7 +256,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                     return Json(failResult);
                 }
-                //ModelState.AddModelError("", "Du måste välja en person från listan");
             }
 
             var participant = _personManager.GetParticipantByCas(personCasLogin);

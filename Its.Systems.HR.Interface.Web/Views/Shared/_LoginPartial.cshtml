@@ -12,8 +12,8 @@
                     <span class="label label-default">user</span>
                 }
             </li>
-            <li class="navbar-text">
-                @User.Identity.Name
+            <li>
+                <a id="casid-link" href="@Url.Action("Details", "Participant")">@User.Identity.Name</a>
             </li>
             <li>
                 @Html.ActionLink("Logga ut", "SignOut", "Account")

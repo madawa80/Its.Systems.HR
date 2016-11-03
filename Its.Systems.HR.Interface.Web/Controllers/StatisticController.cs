@@ -16,11 +16,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private readonly IPersonManager _personManager;
         private readonly ISessionManager _sessionManager;
         private readonly IUtilityManager _utilityManager;
-        private int PaticipantCount;
-        private int selectedTag;
-        private int selectedyear;
-        private List<int> years;
-        private IQueryable<Session> sessionsForTag;
 
         public StatisticController(ISessionManager sessionManager, IPersonManager personManager,
             IUtilityManager utilityManager)
@@ -29,6 +24,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
             _utilityManager = utilityManager;
         }
+
 
         public ActionResult YearlyStatistics()
         {
@@ -51,7 +47,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     Session = session
                 });
 
-                participantsPerYearCount += participantCount; 
+                participantsPerYearCount += participantCount;
             }
 
             var viewModel = new SessionSummaryStatisticsViewModel
@@ -69,9 +65,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult YearlyStatistics(string yearsList)
         {
             int yearInInt;
-            var sessionStatisticsRowsList = new List<SessionStatisticsRow>();
-            var PaticipantsPerYear = 0;
+            var participantsPerYear = 0;
             var sessionscount = 0;
+            var selectedyear = 0;
+            var sessionStatisticsRowsList = new List<SessionStatisticsRow>();
+
 
             if (string.IsNullOrEmpty(yearsList))
                 return RedirectToAction("YearlyStatistics");
@@ -92,14 +90,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                 foreach (var session in sessionsForYear)
                 {
-                    PaticipantCount = _personManager.GetAllParticipantsForSession(session.Id).ToList().Count;
+                    var participantCount = _personManager.GetAllParticipantsForSession(session.Id).ToList().Count;
                     sessionStatisticsRowsList.Add(new SessionStatisticsRow
                     {
-                        NumberOfParticipants = PaticipantCount,
+                        NumberOfParticipants = participantCount,
                         Session = session
                     });
 
-                    PaticipantsPerYear = PaticipantsPerYear + PaticipantCount;
+                    participantsPerYear = participantsPerYear + participantCount;
                 }
             }
 
@@ -108,7 +106,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 //Years = years,
                 SessionStatisticsRows = sessionStatisticsRowsList,
-                TotalPaticipants = PaticipantsPerYear,
+                TotalPaticipants = participantsPerYear,
                 TotalSessions = sessionscount,
                 SelectedYear = selectedyear,
             };
@@ -120,22 +118,24 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ViewResult FilterSessionsForTag(string taglist, string id)
         {
             int tag;
-            int totalParticipantCount = 0;
-            int totalSessionCount = 0;
-            string tagDisplay = "-- Välj etikett --";
+            var totalParticipantCount = 0;
+            var totalSessionCount = 0;
+            var tagDisplay = "-- Välj etikett --";
+            var sessionsForTag = new List<Session>();
 
             if (id != null && taglist == null)
                 taglist = id;
 
             if (int.TryParse(taglist, out tag))
             {
-                selectedTag = tag;
+                var selectedTag = tag;
 
                 sessionsForTag =
                   _sessionManager.GetAllSessionsForTag(selectedTag)
                       .Include(n => n.Activity)
                       .Include(n => n.SessionParticipants)
-                      .OrderBy(n => n.Id);
+                      .OrderBy(n => n.Id)
+                      .ToList();
 
                 totalSessionCount = sessionsForTag.Count();
                 tagDisplay = _utilityManager.GetTag(selectedTag).Name;

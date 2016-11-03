@@ -17,35 +17,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
 
-
         public ParticipantController(ISessionManager sessionManager, IPersonManager personManager)
         {
             _sessionManager = sessionManager;
             _personManager = personManager;
         }
 
-        // TODO: REMOVE THIS WHEN WE ARE SURE THERE ARE NO BUGS WITH SESSIONPARTICIPATIONS
-        public ActionResult Debug()
-        {
-            var allSessionParticipations = _personManager.GetAllSessionParticipants();
-            var allSessions = _sessionManager.GetAllSessions();
-
-            var count = 0;
-            var sessionParticipantsWithoutAnSession = new List<SessionParticipant>();
-
-            foreach (var sessionParticipant in allSessionParticipations)
-            {
-                if (!allSessions.Any(n => n.Id == sessionParticipant.SessionId))
-                {
-                    count++;
-                    sessionParticipantsWithoutAnSession.Add(sessionParticipant);
-                }
-            }
-
-            var group = sessionParticipantsWithoutAnSession.GroupBy(n => n.ParticipantId);
-
-            return View();
-        }
 
         public ActionResult Index(string searchString)
         {

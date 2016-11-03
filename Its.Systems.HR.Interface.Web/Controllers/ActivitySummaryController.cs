@@ -26,10 +26,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _utilityManager = utilityManager;
         }
 
+
         public ActionResult SessionForActivity(int id)
         {
             var theSession = _sessionManager.GetSessionByIdWithIncludes(id);
-                // TODO: Is this executed or just creating a expr.tree?
 
             if (theSession == null)
                 return View("Error");
@@ -87,7 +87,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             // TODO: Take 10?
 
 
-            // TODO: If yearSlider is min & max, then dont sort by startdate!!!
+            // If yearSlider is min & max, then dont sort by startdate!
             var yearStart = 0;
             var yearEnd = 10000;
             if (!string.IsNullOrEmpty(yearSlider))
