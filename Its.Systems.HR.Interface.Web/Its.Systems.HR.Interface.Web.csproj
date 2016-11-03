@@ -295,6 +295,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\App\ActivityIndex.js" />
+    <Content Include="Scripts\App\FilterUpcomingSessions.js" />
     <Content Include="Scripts\App\FilterSessionsForTag.js" />
     <Content Include="Scripts\App\ParticipantIndex.js" />
     <Content Include="Scripts\App\AllSessionsForActivity.js" />
@@ -377,6 +378,7 @@
     <Content Include="Views\ActivitySummary\_ListSessionsPartial.cshtml" />
     <Content Include="Views\Shared\StartScreen.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\ActivitySummary\FilterUpcomingSessions.cshtml" />
     <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
     <Content Include="Views\Statistic\YearlyStatistics.cshtml" />
     <Content Include="Views\Statistic\FilterSessionsForTag.cshtml" />

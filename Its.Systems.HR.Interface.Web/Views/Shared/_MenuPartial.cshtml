@@ -38,7 +38,7 @@ else if (User.IsInRole("User"))
         <ul class="dropdown-menu">
             <li>@Html.ActionLink("Min sida", "Details", "Participant")</li>
             <li role="separator" class="divider"></li>
-            <li>@Html.ActionLink("Kommande tillfällen", "", "")</li>
+            <li>@Html.ActionLink("Kommande tillfällen", "FilterUpcomingSessions", "ActivitySummary")</li>
         </ul>
     </li>
 
@@ -54,5 +54,4 @@ else if (User.IsInRole("User"))
 }
 else
 {
-    <text><li><a href="#">[DENNA SIDA GÅR INTE ATT NÅ UTAN ATT VARA INLOGGAD]</a><li></text>
 }

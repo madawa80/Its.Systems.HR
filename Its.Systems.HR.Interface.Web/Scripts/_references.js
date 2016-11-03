@@ -5,6 +5,7 @@
 /// <reference path="app/editsession.js" />
 /// <reference path="app/filtersessions.js" />
 /// <reference path="app/filtersessionsfortag.js" />
+/// <reference path="app/filterupcomingsessions.js" />
 /// <reference path="app/hrhelpers.js" />
 /// <reference path="app/participantdetails.js" />
 /// <reference path="app/participantindex.js" />

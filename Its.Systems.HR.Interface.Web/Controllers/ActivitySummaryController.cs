@@ -113,6 +113,38 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
+        public ViewResult FilterUpcomingSessions()
+        {
+            var upcomingSessions = _sessionManager.GetAllSessionsWithIncludes()
+                                    .Where(n => n.StartDate > DateTime.Now)
+                                    .ToList();
+
+            var result = new FilterSessionsViewModel
+            {
+                Sessions = upcomingSessions
+            };
+
+            return View(result);
+        }
+
+        public ActionResult AllSessionsForActivity(int id)
+        {
+            var allSessionsForActivity = _sessionManager
+                .GetAllSessionsWithIncludes()
+                .Where(n => n.ActivityId == id)
+                .ToList();
+            var activityName = _activityManager.GetActivityById(id).Name;
+
+            var viewModel = new AllSessionsForActivityViewModel
+            {
+                ActivityId = id,
+                ActivityName = activityName,
+                Sessions = allSessionsForActivity
+            };
+            return View(viewModel);
+        }
+
+        // AJAX METHODS BELOW
         [HttpPost]
         public ActionResult SaveSessionComments(int sessionId, string comments)
         {
@@ -137,21 +169,5 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result);
         }
 
-        public ActionResult AllSessionsForActivity(int id)
-        {
-            var allSessionsForActivity = _sessionManager
-                .GetAllSessionsWithIncludes()
-                .Where(n => n.ActivityId == id)
-                .ToList();
-            var activityName = _activityManager.GetActivityById(id).Name;
-
-            var viewModel = new AllSessionsForActivityViewModel
-            {
-                ActivityId = id,
-                ActivityName = activityName,
-                Sessions = allSessionsForActivity
-            };
-            return View(viewModel);
-        }
     }
 }

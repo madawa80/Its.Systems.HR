@@ -123,7 +123,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                                             allSessions,
                                             "Id",
                                             "NameWithActivity",
-                                            allSessions.First().Id)
+                                            allSessions.First().Id),
+                IsAdmin = User.IsInRole("Admin")
             };
 
             if (!string.IsNullOrEmpty(error))

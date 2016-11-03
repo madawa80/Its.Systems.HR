@@ -37,6 +37,10 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort deltagande</button>
+                                @if (!Model.IsAdmin)
+                                {
+                                    <a href="@Url.Action("ReviewSession")" class="btn btn-success btn-xs" data-sessionId="@session.Id" data-personId="@Model.PersonId">Recensera</a>
+                                }
                             </td>
                         </tr>
                     }
@@ -63,6 +67,10 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@sessionWithNullStartYear.Id" data-personId="@Model.PersonId">Ta bort deltagande</button>
+                        @if (!Model.IsAdmin)
+                        {
+                            <a href="@Url.Action("ReviewSession")" class="btn btn-success btn-xs" data-sessionId="@sessionWithNullStartYear.Id" data-personId="@Model.PersonId">Recensera</a>
+                        }
                     </td>
                 </tr>
             }
