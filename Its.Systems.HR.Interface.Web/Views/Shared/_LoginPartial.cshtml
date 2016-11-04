@@ -13,7 +13,7 @@
                 }
             </li>
             <li>
-                <a id="casid-link" href="@Url.Action("Details", "Participant")">@User.Identity.Name</a>
+                <a id="casid-link" href="@Url.Action("Details", "Participant", new {id = ""})">@User.Identity.Name</a>
             </li>
             <li>
                 @Html.ActionLink("Logga ut", "SignOut", "Account")

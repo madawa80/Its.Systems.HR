@@ -113,5 +113,10 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return _db.Get<Tag>().SingleOrDefault(n => n.Id == tagId);
         }
+
+        public int GetNoOfRatingsForSessionById(int sessionId)
+        {
+            return _db.Get<SessionParticipant>().Count(n => n.SessionId == sessionId && n.Rating != 0);
+        }
     }
 }

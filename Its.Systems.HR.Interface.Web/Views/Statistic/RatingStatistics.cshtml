@@ -18,7 +18,13 @@
             Startdatum
         </th>
         <th>
-            Betyg
+            Antal deltagare
+        </th>
+        <th>
+            Antal omdömen
+        </th>
+        <th>
+            Totalt Betyg
         </th>
     </tr>
     </thead>
@@ -34,6 +40,12 @@
                 {
                     @item.Session.StartDate.Value.ToString("yyyy-MM-dd")
                 }
+            </td>
+            <td>
+                <p>@item.Session.SessionParticipants.Count</p>
+            </td>
+            <td>
+                <p>@item.NoOfRatings</p>
             </td>
             <td>
                 <p>@item.Rating</p>

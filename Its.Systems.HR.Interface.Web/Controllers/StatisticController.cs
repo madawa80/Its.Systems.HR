@@ -168,7 +168,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 result.Add(new RatingStatisticsViewModel()
                 {
                     Session = session,
-                    Rating = _utilityManager.GetRatingForSessionById(session.Id)
+                    Rating = _utilityManager.GetRatingForSessionById(session.Id),
+                    NoOfRatings = _utilityManager.GetNoOfRatingsForSessionById(session.Id)
                 });
             }
 

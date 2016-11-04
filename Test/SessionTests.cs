@@ -14,6 +14,7 @@ namespace Its.Systems.HR.Test
         private readonly IActivityManager _activityManager;
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
+        private readonly IUtilityManager _utilityManager;
 
         private const int Totalsessionsineffortdb = 4;
 
@@ -22,6 +23,7 @@ namespace Its.Systems.HR.Test
             _activityManager = Container().Resolve<IActivityManager>();
             _sessionManager = Container().Resolve<ISessionManager>();
             _personManager = Container().Resolve<IPersonManager>();
+            _utilityManager = Container().Resolve<IUtilityManager>();
         }
 
         [TestMethod]
@@ -63,7 +65,7 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
-        public void CreateASession_ShouldReturnCountPlusOne()
+        public void CreateASession_ShouldCreateSessionInDb()
         {
             var sessionToAdd = new Session()
             {
@@ -72,15 +74,12 @@ namespace Its.Systems.HR.Test
                 EndDate = null,
                 HrPersonId = null,
                 LocationId = null,
+                Name = "NewSession"
             };
 
             _sessionManager.AddSession(sessionToAdd);
 
-            var resultCount = _sessionManager.GetAllSessions().Count();
-
-            var expected = Totalsessionsineffortdb + 1;
-
-            Assert.AreEqual(expected, resultCount);
+            Assert.IsNotNull(_sessionManager.GetAllSessions().SingleOrDefault(n => n.Name == "NewSession"));
         }
 
         [TestMethod]
@@ -172,5 +171,18 @@ namespace Its.Systems.HR.Test
             Assert.AreEqual(expectedCount, resultCount);
         }
 
+        [TestMethod]
+        public void UseCase4_RemoveSessionJavaOne2015_ShouldDeleteAllSessionTagsForJavaOne2015()
+        {
+            // 1. DELETE ALL SESSIONS
+            _sessionManager.DeleteSessionById(1);
+
+            // 2. GET THE COUNT FOR SESSIONTAGS
+            var resultCount = _utilityManager.GetAllTagsForSessionById(1).Count();
+
+            var expectedCount = 0;
+
+            Assert.AreEqual(expectedCount, resultCount);
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
     {
         public Session Session { get; set; }
         public double Rating { get; set; }
+        public int NoOfRatings { get; set; }
     }
 }
