@@ -169,7 +169,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 {
                     Session = session,
                     Rating = _utilityManager.GetRatingForSessionById(session.Id),
-                    NoOfRatings = _utilityManager.GetNoOfRatingsForSessionById(session.Id)
+                    NoOfRatings = session.SessionParticipants.Count(n => n.SessionId == session.Id && n.Rating != 0)
                 });
             }
 

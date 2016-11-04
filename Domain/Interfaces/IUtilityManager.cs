@@ -53,12 +53,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <param name="tagId"></param>
         /// <returns>A Tag or null if not found.</returns>
         Tag GetTag(int tagId);
-        
-        /// <summary>
-        /// Gets the number of ratings given to a session, by sessionId.
-        /// </summary>
-        /// <param name="sessionId"></param>
-        /// <returns></returns>
-        int GetNoOfRatingsForSessionById(int sessionId);
+
+        //int GetNoOfRatingsForSessionById(int sessionId);
     }
 }
