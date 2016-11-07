@@ -5,17 +5,50 @@
         $("#errorMessage").fadeOut(hr_messageFadingOutSpeed);
     }
 
-    // ADD CLICK EVENT HANDLER FOR delete-sessionParticipant
+    // ADD CLICK EVENT HANDLERS
     $(".js-delete-sessionParticipant").click(deleteSessionParticipant);
+    $(".js-remove-expressionOfInterest").click(removeExpressionOfInterest);
+
+    // REMOVE EXPRESSION OF INTEREST
+    function removeExpressionOfInterest() {
+        var link = $(this);
+
+        bootbox.confirm({
+            title: "Vänligen bekräfta",
+            message: "Vill du verkligen ta bort intresseanmälan för detta tillfälle?",
+            buttons: {
+                cancel: {
+                    label: "<i class=\"glyphicon glyphicon-remove\"></i> Avbryt"
+                },
+                confirm: {
+                    label: "<i class=\"glyphicon glyphicon-ok\"></i> Ta bort",
+                    className: "btn-danger"
+                }
+            },
+            callback: function(result) {
+                if (result) {
+                    alert("TODO...");
+                    //$.ajax({
+                    //    url: hr_urlPrefix + "/Session/RemoveExpressionOfInterest/",
+                    //    type: "POST",
+                    //    data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
+                    //    success: handleRemoveExpressionOfInterestResult,
+                    //    error: function () {
+                    //        alert("Anropet misslyckades, prova gärna igen.");
+                    //    }
+                    //});
+                }
+            }
+        });
+    }
 
     // DELETE SESSION PARTICIPANT
-    //$("body").on("click", ".js-delete-sessionParticipant", function () {
     function deleteSessionParticipant() {
         var link = $(this);
 
         bootbox.confirm({
             title: "Vänligen bekräfta",
-            message: "Vill du verkligen ta bort detta tillfälle för personen?",
+            message: "Vill du verkligen ta bort medverkan på detta tillfälle?",
             buttons: {
                 cancel: {
                     label: "<i class=\"glyphicon glyphicon-remove\"></i> Avbryt"

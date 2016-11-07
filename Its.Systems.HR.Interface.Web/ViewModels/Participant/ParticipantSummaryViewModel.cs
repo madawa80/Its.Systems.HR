@@ -14,7 +14,8 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         public string Wishes { get; set; }
 
-        public List<Session> Sessions { get; set; }
+        public IEnumerable<Session> Sessions { get; set; }
+        public IEnumerable<Session> UpcomingSessions { get; set; }
 
         public Session Session { get; set; }
 

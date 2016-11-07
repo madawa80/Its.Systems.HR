@@ -72,18 +72,29 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (participant == null)
                 return HttpNotFound();
 
-            var allSessions = _sessionManager.GetAllSessions().Include(n => n.Activity).OrderBy(n => n.Activity.Name).ThenBy(n => n.Name).ToList();
+            var allSessions = 
+                _sessionManager.GetAllSessions()
+                .Include(n => n.Activity)
+                .OrderBy(n => n.Activity.Name)
+                .ThenBy(n => n.Name)
+                .ToList();
+
+            var userSessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
+                .Include(n => n.Activity)
+                .OrderBy(n => n.StartDate)
+                .ToList();
+
+            var upcomingSessions = userSessions.Where(n => n.StartDate > DateTime.Now);
+            var participatedSessions = userSessions.Where(n => n.StartDate < DateTime.Now || n.StartDate == null);
 
 
             var yearslist = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
                 .Include(n => n.Activity)
                 .OrderBy(n => n.StartDate.Value.Year)
-                .Where(n => n.StartDate != null)
-                .Select(n => n.StartDate.Value.Year).Distinct();
-
-            var yearslisting = from element in yearslist
-                         orderby element descending
-                         select element;
+                .Where(n => n.StartDate != null && n.StartDate < DateTime.Now)
+                .Select(n => n.StartDate.Value.Year).Distinct()
+                .OrderByDescending(n => n)
+                .ToList();
 
             var viewModel = new ParticipantSummaryViewModel()
             {
@@ -92,11 +103,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 FullName = participant.FullName,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
-                Years = yearslisting.ToList(),
-                Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
-                            .Include(n => n.Activity)
-                            .OrderBy(n => n.StartDate)
-                            .ToList(),
+                Years = yearslist,
+                Sessions = participatedSessions,
+                UpcomingSessions = upcomingSessions,
                 AllSessions = new SelectList(
                                             allSessions,
                                             "Id",
@@ -183,7 +192,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult ParticipantStatisticSummary(int personid)
         {
-            var allParticipantSessions = _sessionManager.GetAllSessionsForParticipantById(personid).ToList();
+            var allParticipantSessions = _sessionManager.GetAllSessionsForParticipantById(personid)
+                .Where(n => n.StartDate < DateTime.Now || n.StartDate == null)
+                .ToList();
+
             var result = new ParticipantStatisticSummaryViewModel()
             {
                 TotalCount = allParticipantSessions.Count,
