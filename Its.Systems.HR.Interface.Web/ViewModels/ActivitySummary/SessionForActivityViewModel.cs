@@ -23,6 +23,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public Location Location { get; set; }
         public List<Tag> Tags { get; set; }
         public List<Review> Reviews { get; set; }
+        public bool UserHasExpressedInterest { get; set; }
     }
 
     public class Review

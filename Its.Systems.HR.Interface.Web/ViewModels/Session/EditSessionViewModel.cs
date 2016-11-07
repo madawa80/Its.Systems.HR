@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using Its.Systems.HR.Domain.Model;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
@@ -21,7 +22,8 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         [Display(Name = "Slutdatum")]
         public DateTime? EndDate { get; set; }
-        [Display(Name = "Beskrivning")]
+        [AllowHtml]
+        [Display(Name = "Beskrivning (html tillåtet)")]
         public string Description { get; set; }
         [Display(Name = "Är tillfället öppet för intresseanmälningar?")]
         public bool IsOpenForExpressionOfInterest { get; set; }

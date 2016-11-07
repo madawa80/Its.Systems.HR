@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
+using Its.Systems.HR.Interface.Web.Helpers.Extensions;
 using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
@@ -40,6 +41,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 _utilityManager.GetAllTagsForSessionById(id).ToList();
             var sessionRating =
                 _utilityManager.GetRatingForSessionById(id);
+            var loggedInUser = 
+                _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+            bool userHasExpressedInterest = _personManager.GetASessionParticipant(theSession.Id, loggedInUser.Id) != null;
 
             var rawReviews = theSession.SessionParticipants.Where(n => n.Rating != 0);
             var reviews = new List<Review>();
@@ -71,7 +75,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ActivityId = theSession.ActivityId,
                 Tags = allTagsForSession,
                 Rating = sessionRating.ToString(CultureInfo.CreateSpecificCulture("en-US")),
-                Reviews = reviews
+                Reviews = reviews,
+                UserHasExpressedInterest = userHasExpressedInterest
             };
 
             return View(result);
@@ -132,7 +137,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ViewResult FilterUpcomingSessions()
         {
             var upcomingSessions = _sessionManager.GetAllSessionsWithIncludes()
-                                    .Where(n => n.StartDate > DateTime.Now)
+                                    .Where(n => n.StartDate > DateTime.Now && n.IsOpenForExpressionOfInterest)
                                     .ToList();
 
             var result = new FilterSessionsViewModel

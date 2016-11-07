@@ -120,6 +120,39 @@ namespace Its.Systems.HR.Domain.Managers
             return true;
         }
 
+        public bool AddExpressionOfInterest(int sessionId, int participantId)
+        {
+            var theSession = _db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
+
+            if (theSession == null || !theSession.IsOpenForExpressionOfInterest || theSession.StartDate < DateTime.Now)
+                return false;
+
+            var result = new SessionParticipant()
+            {
+                ParticipantId = participantId,
+                SessionId = sessionId,
+            };
+
+            _db.Add<SessionParticipant>(result);
+            _db.SaveChanges();
+
+            return true;
+        }
+
+        public bool RemoveExpressionOfInterest(int sessionId, int participantId)
+        {
+            var theSession = _db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
+
+            if (theSession == null || !theSession.IsOpenForExpressionOfInterest || theSession.StartDate < DateTime.Now)
+                return false;
+
+            var sessionParticipation = GetASessionParticipant(sessionId, participantId);
+
+            _db.Delete<SessionParticipant>(sessionParticipation);
+
+            return true;
+        }
+
         public IQueryable<Participant> GetAllParticipantsForSession(int id)
         {
             return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);

@@ -102,7 +102,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                                             "Id",
                                             "NameWithActivity",
                                             allSessions.First().Id),
-                IsAdmin = User.IsInRole("Admin"),
                 ParticipantCasId = participant.CasId
             };
 

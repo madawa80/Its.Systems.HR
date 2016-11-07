@@ -25,7 +25,6 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
 
         //public List<ParticipantSessionRow> ParticipantSessionRows { get; set; }
 
-        public bool IsAdmin { get; set; }
         public string ParticipantCasId { get; set; }
     }
 }

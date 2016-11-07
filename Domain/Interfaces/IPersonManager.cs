@@ -130,5 +130,23 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// </summary>
         /// <returns>IQueryable of SessionParticipant, or null if there are none in the database.</returns>
         IQueryable<SessionParticipant> GetAllSessionParticipants();
+
+        /// <summary>
+        /// Adds a participant to a session that is open for
+        /// expression of interest AND has not yet happened.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="participantId"></param>
+        /// <returns>True if successfull.</returns>
+        bool AddExpressionOfInterest(int sessionId, int participantId);
+
+        /// <summary>
+        /// Removes a participant from a session that is open for
+        /// expression of interest AND has not yet happened.
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="participantId"></param>
+        /// <returns></returns>
+        bool RemoveExpressionOfInterest(int sessionId, int participantId);
     }
 }

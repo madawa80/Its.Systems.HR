@@ -6,6 +6,7 @@ using System.Net;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
+using Its.Systems.HR.Interface.Web.Helpers.Extensions;
 using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
@@ -223,6 +224,28 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return RedirectToAction("Details", "Participant", new { id = personId });
         }
 
+        [HttpPost]
+        public ActionResult AddExpressionOfInterest(int sessionId)
+        {
+            var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+
+            if (_personManager.AddExpressionOfInterest(sessionId, loggedInUser.Id))
+                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = sessionId });
+            
+            return new HttpUnauthorizedResult();
+        }
+
+        [HttpPost]
+        public ActionResult RemoveExpressionOfInterest(int sessionId)
+        {
+            var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+
+            if (_personManager.RemoveExpressionOfInterest(sessionId, loggedInUser.Id))
+                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = sessionId });
+
+            return new HttpUnauthorizedResult();
+        }
+
         // AJAX METHODS BELOW
         [HttpPost]
         public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, string personName)
@@ -349,6 +372,5 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return Json(result);
         }
-
     }
 }
