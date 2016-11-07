@@ -13,6 +13,8 @@ namespace Its.Systems.HR.Domain.Model
         public string Name { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public string Description { get; set; }
+        public bool IsOpenForExpressionOfInterest { get; set; }
         public string Comments { get; set; }
         public string Evaluation { get; set; }
 

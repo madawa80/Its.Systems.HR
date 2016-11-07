@@ -87,6 +87,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         EndDate = sessionVm.EndDate,
                         LocationId = locationId,
                         HrPersonId = sessionVm.HrPerson,
+                        Description = sessionVm.Description,
+                        IsOpenForExpressionOfInterest = sessionVm.IsOpenForExpressionOfInterest,
                         SessionParticipants = null,
                         SessionTags = null
                     };
@@ -147,6 +149,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 NameOfSession = session.Name,
                 StartDate = session.StartDate,
                 EndDate = session.EndDate,
+                Description = session.Description,
+                IsOpenForExpressionOfInterest = session.IsOpenForExpressionOfInterest,
                 HrPerson = session.HrPersonId,
                 NameOfLocation = (session.Location == null) ? string.Empty : session.Location.Name,
                 AddedTags = allTagsForSession
@@ -181,6 +185,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 sessionToUpdate.ActivityId = inputVm.Activity.Id;
                 sessionToUpdate.StartDate = inputVm.StartDate;
                 sessionToUpdate.EndDate = inputVm.EndDate;
+                sessionToUpdate.Description = inputVm.Description;
+                sessionToUpdate.IsOpenForExpressionOfInterest = inputVm.IsOpenForExpressionOfInterest;
                 sessionToUpdate.LocationId = location;
                 sessionToUpdate.HrPersonId = hrPerson;
 

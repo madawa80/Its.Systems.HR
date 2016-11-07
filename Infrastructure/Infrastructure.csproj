@@ -59,6 +59,14 @@
     <Compile Include="Migrations\201611031427062_Participant IsDeleted.Designer.cs">
       <DependentUpon>201611031427062_Participant IsDeleted.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611070807481_added description and OpenForExpressionOfInterest to session model.cs" />
+    <Compile Include="Migrations\201611070807481_added description and OpenForExpressionOfInterest to session model.Designer.cs">
+      <DependentUpon>201611070807481_added description and OpenForExpressionOfInterest to session model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest.cs" />
+    <Compile Include="Migrations\201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest.Designer.cs">
+      <DependentUpon>201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
@@ -80,6 +88,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611031427062_Participant IsDeleted.resx">
       <DependentUpon>201611031427062_Participant IsDeleted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611070807481_added description and OpenForExpressionOfInterest to session model.resx">
+      <DependentUpon>201611070807481_added description and OpenForExpressionOfInterest to session model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest.resx">
+      <DependentUpon>201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -59,6 +59,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Evaluation = theSession.Evaluation,
                 StartDate = theSession.StartDate,
                 EndDate = theSession.EndDate,
+                Description = theSession.Description,
+                IsOpenForExpressionOfInterest = theSession.IsOpenForExpressionOfInterest,
                 HrPerson = theSession.HrPerson,
                 Location = theSession.Location,
                 TotalPaticipants = allParticipant.Count,

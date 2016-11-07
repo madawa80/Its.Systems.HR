@@ -52,7 +52,7 @@
 
     @if (Model.Reviews.Count > 0)
     {
-        <hr/>
+        <hr />
         <h3 class="m-b-30">Recensioner</h3>
         foreach (var review in Model.Reviews)
         {
@@ -110,6 +110,23 @@
                                       value="@Model.Rating" data-readonly data-fractions="2"
                                       data-filled="glyphicon glyphicon-star" data-empty="glyphicon glyphicon-star-empty" />
                         <span>(@Model.Rating)</span>
+                    </p>
+                }
+                @if (Model.Description != null)
+                {
+                    <p>Beskrivning: @Model.Description</p>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <p>
+                        Intresseanmälan: @if (Model.IsOpenForExpressionOfInterest)
+                        {
+                            <text>Öppen</text>
+                        }
+                        else
+                        {
+                            <text>Stängd</text>
+                        }
                     </p>
                 }
             </div>

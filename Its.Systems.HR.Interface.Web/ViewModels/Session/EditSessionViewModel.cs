@@ -21,6 +21,10 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         [Display(Name = "Slutdatum")]
         public DateTime? EndDate { get; set; }
+        [Display(Name = "Beskrivning")]
+        public string Description { get; set; }
+        [Display(Name = "Är tillfället öppet för intresseanmälningar?")]
+        public bool IsOpenForExpressionOfInterest { get; set; }
         public string NameOfLocation { get; set; }
         public int? HrPerson { get; set; }
         public List<Tag> AddedTags { get; set; }

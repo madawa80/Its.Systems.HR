@@ -93,3 +93,20 @@ function hr_addEventListenerForEnter(selector, inputField) {
         }
     });
 }
+
+function hr_initCheckboxForExpressionOfInterest(selector, textSpan) {
+
+    updateSpanFromCheckboxValue(selector, textSpan);
+
+    $(selector).change(function() {
+        updateSpanFromCheckboxValue(selector, textSpan);
+    });
+}
+function updateSpanFromCheckboxValue(selector, textSpan) {
+
+    if ($(selector).is(":checked")) {
+        $(textSpan).html("Öppen");
+    } else {
+        $(textSpan).html("Stängd");
+    }
+}
