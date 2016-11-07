@@ -1,5 +1,4 @@
-﻿//ParticipantDetails.js
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
     // FADEOUT ERROR MESSAGE IF EXISTING
     if ($("#errorMessage").length) {

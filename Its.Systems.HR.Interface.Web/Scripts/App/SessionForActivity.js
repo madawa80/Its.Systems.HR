@@ -1,5 +1,4 @@
-﻿//SessionForActivity.js
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
     // COUNT TOTAL PARTICIPANTS
     paticipantCount();

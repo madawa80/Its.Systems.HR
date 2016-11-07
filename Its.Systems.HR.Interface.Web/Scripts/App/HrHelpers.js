@@ -1,5 +1,4 @@
-﻿//HRHelpers.js
-// Global namespace...
+﻿// Global namespace...
 
 
 // CHECKS URL TO ADD PROPER URL-PREFIX

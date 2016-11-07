@@ -1,5 +1,4 @@
-﻿//FilterUpcomingSessions.js
-$(document).ready(function() {
+﻿$(document).ready(function() {
 
         // INIT TABLESORTER
         hr_createTableSorter("#listSessionsPartialTable");

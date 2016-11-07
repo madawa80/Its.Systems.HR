@@ -1,5 +1,4 @@
-﻿//RatingStatistics.js
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
     // INIT TABLE SORTER
     $("#ratingStatisticsTable").tablesorter({

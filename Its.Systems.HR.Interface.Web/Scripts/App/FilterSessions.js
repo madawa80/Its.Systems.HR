@@ -1,5 +1,4 @@
-﻿$(document)
-    .ready(function() {
+﻿$(document).ready(function() {
 
         // INIT AUTOCOMPLETE
         hr_createAutocomplete();
@@ -13,4 +12,4 @@
         // INIT TABLESORTER
         hr_createTableSorter("#listSessionsPartialTable");
 
-    });
+});
