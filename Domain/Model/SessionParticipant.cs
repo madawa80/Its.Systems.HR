@@ -13,7 +13,7 @@ namespace Its.Systems.HR.Domain.Model
         public int Rating { get; set; }
         public string Comments { get; set; }
 
-        public virtual Session Session { get; set; }
-        public virtual Participant Participant { get; set; }
+        public Session Session { get; set; }
+        public Participant Participant { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace Its.Systems.HR.Domain.Model
         [Key]
         public int Id { get; set; }
         public string CasId { get; set; }
+        public string Email { get; set; }
         public bool IsHrPerson { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
@@ -18,8 +19,8 @@ namespace Its.Systems.HR.Domain.Model
         public string LastName { get; set; }
         public string Comments { get; set; }
         public string Wishes { get; set; }
-        public string Email { get; set; }
-        public virtual List<SessionParticipant> SessionParticipants { get; set; }
+
+        public List<SessionParticipant> SessionParticipants { get; set; }
 
         public string FullName => FirstName + " " + LastName;
         public string FullNameWithCas => FirstName + " " + LastName + " (" + CasId + ")";

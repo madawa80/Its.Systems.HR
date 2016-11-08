@@ -6,8 +6,6 @@
 
 <h2>Recensera ett kurstillfälle <span class="label label-info">DEBUG</span></h2>
 
-<div class="alert alert-info">Fejkinloggad som @Model.ParticipantName</div>
-
 <h4 class="m-b-30">Recensera tillfället: <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = Model.SessionId})">@Model.SessionName</a></h4>
 
 @using (Html.BeginForm("ReviewSession", "Participant", FormMethod.Post))
@@ -54,15 +52,4 @@
     <script src="~/Scripts/bootstrap-rating.min.js"></script>
 
     <script src="~/Scripts/App/HRHelpers.js"></script>
-
-    @*<script>
-            $(document).ready(function () {
-
-                // INIT BOOTSTRAPSLIDER
-                $("#Rating").bootstrapSlider({
-                    tooltip: "always"
-                });
-
-            });
-        </script>*@
 }

@@ -1,5 +1,5 @@
-﻿Id,Name,StartDate,EndDate,HrPersonId,LocationId,ActivityId,Comments,Evaluation
-1,"2015",2015-02-09 09:34:54.787,2015-02-16 09:34:54.787,1,1,2,"",""
-2,"2016",2016-02-16 09:34:54.787,2016-02-18 09:34:54.787,2,2,2,"",""
-3,"Bokcirkel Umeå",2016-12-16 09:34:54.787,2016-12-20 09:34:54.787,1,1,4,"",""
-4,"Lunchföreläsning Piteå",2017-01-16 09:34:54.787,2017-01-20 09:34:54.787,3,5,5,"",""
+﻿Id,Name,StartDate,EndDate,HrPersonId,LocationId,ActivityId,Comments,Evaluation,Description,IsOpenForExpressionOfInterest
+1,"2015",2015-02-09 12:00:00,2015-02-16 12:00:00,1,1,2,"","","",false
+2,"2016",2016-02-16 12:00:00,2016-02-18 12:00:00,2,2,2,"","","",false
+3,"Bokcirkel Umeå",2016-12-16 12:00:00,2016-12-20 12:00:00,1,1,4,"","","",false
+4,"Lunchföreläsning Piteå",2050-01-16 12:00:00,2050-01-16 12:00:00,3,5,5,"","","",true

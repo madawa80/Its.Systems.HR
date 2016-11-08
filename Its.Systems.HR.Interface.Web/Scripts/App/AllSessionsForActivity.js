@@ -1,5 +1,4 @@
-﻿//AllSessionsForActivity.js
-$(document).ready(function() {
+﻿$(document).ready(function() {
 
         // INIT TABLE SORTER
         hr_createTableSorter("#listSessionsPartialTable");

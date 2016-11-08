@@ -1,5 +1,4 @@
-﻿//HRHelpers.js
-// Global namespace...
+﻿// Global namespace...
 
 
 // CHECKS URL TO ADD PROPER URL-PREFIX
@@ -93,4 +92,23 @@ function hr_addEventListenerForEnter(selector, inputField) {
             $(selector).trigger("click");
         }
     });
+}
+
+function hr_initCheckboxForExpressionOfInterest(selector) {
+
+    var $checkbox = $(selector);
+
+    updateSpanFromCheckboxValue($checkbox);
+
+    $($checkbox).change(function () {
+        updateSpanFromCheckboxValue($checkbox);
+    });
+}
+function updateSpanFromCheckboxValue($checkbox) {
+
+    if ($checkbox.is(":checked")) {
+        $checkbox.siblings("label").html("Öppen");
+    } else {
+        $checkbox.siblings("label").html("Stängd");
+    }
 }

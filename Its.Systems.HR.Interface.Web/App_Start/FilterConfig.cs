@@ -7,11 +7,13 @@ namespace Its.Systems.HR.Interface.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            #if Debug
-            
-            #else
-                //TODO: build a global authorize filer
-            #endif
+#if DEBUG
+            // TODO: DOESNT WORK
+            //filters.Add(new System.Web.Mvc.AllowAnonymousAttribute());
+#else
+            filters.Add(new AuthorizeAttribute());
+#endif
+
             filters.Add(new HandleErrorAttribute());
         }
     }

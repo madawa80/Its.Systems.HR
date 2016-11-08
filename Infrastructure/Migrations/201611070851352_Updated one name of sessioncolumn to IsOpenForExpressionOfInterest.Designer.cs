@@ -7,13 +7,13 @@ namespace Its.Systems.HR.Infrastructure.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class reset : IMigrationMetadata
+    public sealed partial class UpdatedonenameofsessioncolumntoIsOpenForExpressionOfInterest : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(reset));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdatedonenameofsessioncolumntoIsOpenForExpressionOfInterest));
         
         string IMigrationMetadata.Id
         {
-            get { return "201611031057562_reset"; }
+            get { return "201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest"; }
         }
         
         string IMigrationMetadata.Source

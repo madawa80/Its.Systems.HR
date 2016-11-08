@@ -1,5 +1,4 @@
-﻿//ActivityIndex.js
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
     // INIT TABLESORTER
     $("#listActivitiesTable").tablesorter(

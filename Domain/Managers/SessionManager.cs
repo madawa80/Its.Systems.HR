@@ -181,7 +181,23 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<SessionTag>().Where(n => n.TagId == tagId).Select(a => a.Session);
         }
 
+        public IQueryable<Session> GetAllSessionsWithReviews()
+        {
+            var allSessionParticipantsWithReviews = 
+                _db.Get<SessionParticipant>().Where(n => n.Rating != 0);
 
+            var listOfSessionIds = new List<int>();
 
+            foreach (var allSessionParticipantsWithReview in allSessionParticipantsWithReviews)
+            {
+                listOfSessionIds.Add(allSessionParticipantsWithReview.SessionId);
+            }
+
+            return 
+                _db.Get<Session>()
+                .Where(n => listOfSessionIds.Distinct().Contains(n.Id))
+                .Include(n => n.Activity)
+                .Include(n => n.SessionParticipants);
+        }
     }
 }

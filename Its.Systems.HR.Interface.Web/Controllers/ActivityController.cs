@@ -2,7 +2,6 @@
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Security.Claims;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
@@ -10,7 +9,6 @@ using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
-    //[Authorize]
     public class ActivityController : Controller
     {
         private readonly IActivityManager _activityManager;
@@ -28,10 +26,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ViewResult Index(string searchString)
         {
-            //TODO: ClaimsIdentity debug
-            var identity = (ClaimsIdentity) HttpContext.User.Identity;
-
-
             var activities = _activityManager.GetAllActivitiesWithSessions();
 
             if (!string.IsNullOrEmpty(searchString))
@@ -47,7 +41,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     SessionCount = activity.Sessions.Count
                 });
 
-
             return View(result);
         }
 
@@ -56,11 +49,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View("StartScreen");
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateActivity()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public ActionResult CreateActivity(ActivityViewModel activity)
@@ -82,6 +77,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult EditActivity(int? id)
         {
@@ -94,6 +90,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         //[ValidateAntiForgeryToken]
         [ActionName("EditActivity")]
@@ -121,6 +118,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult DeleteActivity(int activityId)
         {
@@ -151,10 +149,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(locations.OrderBy(n => n), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AutoCompleteParticipants(string term)
+        public ActionResult AutoCompleteLocationsParticipants(string term)
         {
-            var participants = GetParticipants(term);
-            return Json(participants.OrderBy(n => n), JsonRequestBehavior.AllowGet);
+            var participants = from element in _personManager.GetAllParticipants()
+                               let fullName = element.FirstName + " " + element.LastName
+                               where fullName.Contains(term.ToUpper())
+                               select new { id = element.Id, label = element.FirstName + " " + element.LastName };
+
+            return Json(participants.OrderBy(n => n.label), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AutoCompleteTags(string term)
@@ -172,16 +174,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     .Select(a => a.Name);
 
             return locations;
-        }
-
-        private IEnumerable<string> GetParticipants(string searchString)
-        {
-            var participants = from element in _personManager.GetAllParticipants()
-                let fullNameWithCas = element.FirstName + " " + element.LastName + " " + element.CasId
-                where fullNameWithCas.Contains(searchString.ToUpper())
-                select element.FirstName + " " + element.LastName + " (" + element.CasId + ")";
-            
-            return participants;
         }
 
         private IEnumerable<string> GetTags(string searchString)

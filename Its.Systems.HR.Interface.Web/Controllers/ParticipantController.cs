@@ -7,6 +7,7 @@ using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.ViewModels;
 using System.Collections.Generic;
+using Its.Systems.HR.Interface.Web.Helpers.Extensions;
 using Microsoft.Ajax.Utilities;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
@@ -16,35 +17,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private readonly ISessionManager _sessionManager;
         private readonly IPersonManager _personManager;
 
-
         public ParticipantController(ISessionManager sessionManager, IPersonManager personManager)
         {
             _sessionManager = sessionManager;
             _personManager = personManager;
         }
 
-        // TODO: REMOVE THIS WHEN WE ARE SURE THERE ARE NO BUGS WITH SESSIONPARTICIPATIONS
-        public ActionResult Debug()
-        {
-            var allSessionParticipations = _personManager.GetAllSessionParticipants();
-            var allSessions = _sessionManager.GetAllSessions();
-
-            var count = 0;
-            var sessionParticipantsWithoutAnSession = new List<SessionParticipant>();
-
-            foreach (var sessionParticipant in allSessionParticipations)
-            {
-                if (!allSessions.Any(n => n.Id == sessionParticipant.SessionId))
-                {
-                    count++;
-                    sessionParticipantsWithoutAnSession.Add(sessionParticipant);
-                }
-            }
-
-            var group = sessionParticipantsWithoutAnSession.GroupBy(n => n.ParticipantId);
-
-            return View();
-        }
 
         public ActionResult Index(string searchString)
         {
@@ -73,42 +51,67 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult Details(int? id, string error)
         {
+            bool permissionToShowParticipantDetails = false;
+
             if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            {
+                var loggedInUserAsParticipant = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+                if (loggedInUserAsParticipant == null)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                
+                id = loggedInUserAsParticipant.Id;
+
+                permissionToShowParticipantDetails = true;
+            }
+
+            if (!User.IsInRole("Admin") && !permissionToShowParticipantDetails)
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+
 
             Participant participant = _personManager.GetAllParticipants().SingleOrDefault(n => n.Id == id);
             if (participant == null)
                 return HttpNotFound();
 
-            var allSessions = _sessionManager.GetAllSessions().Include(n => n.Activity).OrderBy(n => n.Activity.Name).ThenBy(n => n.Name).ToList();
+            var allSessions = 
+                _sessionManager.GetAllSessions()
+                .Include(n => n.Activity)
+                .OrderBy(n => n.Activity.Name)
+                .ThenBy(n => n.Name)
+                .ToList();
+
+            var userSessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
+                .Include(n => n.Activity)
+                .OrderBy(n => n.StartDate)
+                .ToList();
+
+            var upcomingSessions = userSessions.Where(n => n.StartDate > DateTime.Now);
+            var participatedSessions = userSessions.Where(n => n.StartDate < DateTime.Now || n.StartDate == null);
 
 
             var yearslist = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
                 .Include(n => n.Activity)
                 .OrderBy(n => n.StartDate.Value.Year)
-                .Where(n => n.StartDate != null)
-                .Select(n => n.StartDate.Value.Year).Distinct();
-
-            var yearslisting = from element in yearslist
-                         orderby element descending
-                         select element;
+                .Where(n => n.StartDate != null && n.StartDate < DateTime.Now)
+                .Select(n => n.StartDate.Value.Year).Distinct()
+                .OrderByDescending(n => n)
+                .ToList();
 
             var viewModel = new ParticipantSummaryViewModel()
             {
                 PersonId = participant.Id,
-                FullName = participant.FullNameWithCas,
+                FullNameWithCas = participant.FullNameWithCas,
+                FullName = participant.FullName,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
-                Years = yearslisting.ToList(),
-                Sessions = _sessionManager.GetAllSessionsForParticipantById(participant.Id)
-                            .Include(n => n.Activity)
-                            .OrderBy(n => n.StartDate)
-                            .ToList(),
+                Years = yearslist,
+                Sessions = participatedSessions,
+                UpcomingSessions = upcomingSessions,
                 AllSessions = new SelectList(
                                             allSessions,
                                             "Id",
                                             "NameWithActivity",
-                                            allSessions.First().Id)
+                                            allSessions.First().Id),
+                ParticipantCasId = participant.CasId
             };
 
             if (!string.IsNullOrEmpty(error))
@@ -119,19 +122,19 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
-        public ActionResult ReviewSession(int? id = 44)
+        public ActionResult ReviewSession(int? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var loggedInUser = _personManager.GetParticipantById(237);
+            var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
             var session = _sessionManager.GetSessionByIdWithIncludes((int)id);
             if (session == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var currentSessionParticipation = session.SessionParticipants.SingleOrDefault(n => n.ParticipantId == loggedInUser.Id && n.SessionId == id);
             if (currentSessionParticipation == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
 
 
             var reviewSessionViewModel = new ReviewSessionViewModel()
@@ -139,7 +142,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ParticipantId = loggedInUser.Id,
                 ParticipantName = loggedInUser.FullNameWithCas,
                 SessionId = session.Id,
-                SessionName = session.Activity.Name + " " + session.Name,
+                SessionName = session.NameWithActivity,
                 Rating = currentSessionParticipation.Rating,
                 Comments = currentSessionParticipation.Comments
             };
@@ -151,7 +154,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult ReviewSession(ReviewSessionViewModel vm)
         {
-            var loggedInUser = _personManager.GetParticipantById(237);
+            var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
 
             if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating, vm.Comments))
                 return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = vm.SessionId});
@@ -189,7 +192,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult ParticipantStatisticSummary(int personid)
         {
-            var allParticipantSessions = _sessionManager.GetAllSessionsForParticipantById(personid).ToList();
+            var allParticipantSessions = _sessionManager.GetAllSessionsForParticipantById(personid)
+                .Where(n => n.StartDate < DateTime.Now || n.StartDate == null)
+                .ToList();
+
             var result = new ParticipantStatisticSummaryViewModel()
             {
                 TotalCount = allParticipantSessions.Count,

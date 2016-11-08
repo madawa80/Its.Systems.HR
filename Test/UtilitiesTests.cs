@@ -24,12 +24,11 @@ namespace Its.Systems.HR.Test
 
         // RATINGS
         [TestMethod]
-        public void GetRatingForSession_ShouldReturnExpected()
+        public void GetRatingForSessionJavaOne2015_ShouldReturnExpected()
         {
-            var expected = 3.667;
+            var expected = 3.7;
 
             var result = _utilityManager.GetRatingForSessionById(1);
-            result = Math.Round(result, 3);
 
             Assert.AreEqual(expected, result);
         }
@@ -40,6 +39,16 @@ namespace Its.Systems.HR.Test
             var expected = 0;
 
             var result = _utilityManager.GetRatingForSessionById(5);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void GetRatingForSessionWith0Rating_ShouldReturn0()
+        {
+            var expected = 0;
+
+            var result = _utilityManager.GetRatingForSessionById(4);
 
             Assert.AreEqual(expected, result);
         }

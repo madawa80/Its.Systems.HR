@@ -179,6 +179,15 @@ ul.dropdown-menu {
 
 /* CUSTOM ADDED */
 
+#casid-link {
+    color: #bcbcbc;
+}
+
+#casid-link:hover {
+    color: #00a0e6;
+    background-color: #444;
+}
+
 .listedParticipantLink {
     text-decoration: underline;
     cursor: pointer;

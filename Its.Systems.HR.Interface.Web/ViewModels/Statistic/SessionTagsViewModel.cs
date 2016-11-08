@@ -3,12 +3,12 @@ using System.Linq;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Model;
 
-namespace Its.Systems.HR.Interface.Web.ViewModels.Statistic
+namespace Its.Systems.HR.Interface.Web.ViewModels
 {
     public class SessionTagsViewModel
     {
         public string tagName { get; set; }
-        public IQueryable<Session> Sessions { get; set; }
+        public List<Session> Sessions { get; set; }
 
         //public Tag tag { get; set; }
 

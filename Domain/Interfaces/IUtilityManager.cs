@@ -37,7 +37,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// Gets the average rating for a session.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>The avg. rating.</returns>
+        /// <returns>The avg. rating rounded to 1 decimal.</returns>
         double GetRatingForSessionById(int id);
 
         /// <summary>
@@ -53,5 +53,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <param name="tagId"></param>
         /// <returns>A Tag or null if not found.</returns>
         Tag GetTag(int tagId);
+
+        //int GetNoOfRatingsForSessionById(int sessionId);
     }
 }

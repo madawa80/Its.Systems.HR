@@ -68,7 +68,6 @@
     <Compile Include="Model\Activity.cs" />
     <Compile Include="Model\SessionTag.cs" />
     <Compile Include="Model\Tag.cs" />
-    <Compile Include="Model\HrPerson.cs" />
     <Compile Include="Model\Location.cs" />
     <Compile Include="Model\Participant.cs" />
     <Compile Include="Model\Session.cs" />

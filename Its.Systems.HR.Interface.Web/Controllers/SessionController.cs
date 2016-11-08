@@ -6,6 +6,7 @@ using System.Net;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
+using Its.Systems.HR.Interface.Web.Helpers.Extensions;
 using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
@@ -25,6 +26,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
             _utilitiesManager = utilityManager;
         }
+
 
         public ActionResult CreateSession(int id = 0) //activityId
         {
@@ -86,6 +88,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                         EndDate = sessionVm.EndDate,
                         LocationId = locationId,
                         HrPersonId = sessionVm.HrPerson,
+                        Description = sessionVm.Description,
+                        IsOpenForExpressionOfInterest = sessionVm.IsOpenForExpressionOfInterest,
                         SessionParticipants = null,
                         SessionTags = null
                     };
@@ -146,6 +150,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 NameOfSession = session.Name,
                 StartDate = session.StartDate,
                 EndDate = session.EndDate,
+                Description = session.Description,
+                IsOpenForExpressionOfInterest = session.IsOpenForExpressionOfInterest,
                 HrPerson = session.HrPersonId,
                 NameOfLocation = (session.Location == null) ? string.Empty : session.Location.Name,
                 AddedTags = allTagsForSession
@@ -180,6 +186,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 sessionToUpdate.ActivityId = inputVm.Activity.Id;
                 sessionToUpdate.StartDate = inputVm.StartDate;
                 sessionToUpdate.EndDate = inputVm.EndDate;
+                sessionToUpdate.Description = inputVm.Description;
+                sessionToUpdate.IsOpenForExpressionOfInterest = inputVm.IsOpenForExpressionOfInterest;
                 sessionToUpdate.LocationId = location;
                 sessionToUpdate.HrPersonId = hrPerson;
 
@@ -216,61 +224,102 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return RedirectToAction("Details", "Participant", new { id = personId });
         }
 
+        [HttpPost]
+        public ActionResult AddExpressionOfInterest(int sessionId)
+        {
+            var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+
+            if (_personManager.AddExpressionOfInterest(sessionId, loggedInUser.Id))
+                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = sessionId });
+            
+            return new HttpUnauthorizedResult();
+        }
+
+        [HttpPost]
+        public ActionResult RemoveExpressionOfInterest(int sessionId)
+        {
+            var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+
+            if (_personManager.RemoveExpressionOfInterest(sessionId, loggedInUser.Id))
+                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = sessionId });
+
+            return new HttpUnauthorizedResult();
+        }
+
         // AJAX METHODS BELOW
         [HttpPost]
-        public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, string personName)
+        public ActionResult RemoveExpressionOfInterestFromParticipantDetails(int sessionId, int personId)
         {
-            string personCasLogin;
+            // Check for authorization
+            if (!User.IsInRole("Admin"))
+            {
+                var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+                if (loggedInUser.Id != personId)
+                    return new HttpUnauthorizedResult();
+            }
+            
+            if (_personManager.RemoveExpressionOfInterest(sessionId, personId))
+            {
+                return Json(new {Success = true});
+            }
 
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        [HttpPost]
+        public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, int? participantId)
+        {
             //TODO: ERROR HANDLING!
 
+            //    if (personName == "")
+            //    {
+            //        var failResult = new
+            //        {
+            //            Success = false,
+            //            ErrorMessage = "Ogiltig inmatning",
+            //            PersonId = 0,
+            //            SessionId = sessionId,
+            //            PersonFullName = "",
+            //        };
 
-            try
+            //        return Json(failResult);
+            //    }
+            //    else
+            //    {
+            //        var failResult = new
+            //        {
+            //            Success = false,
+            //            ErrorMessage = "Välj person ur listan",
+            //            PersonId = 0,
+            //            SessionId = sessionId,
+            //            PersonFullName = "",
+            //        };
+
+            //        return Json(failResult);
+            //    }
+            //}
+
+            if (participantId == null)
             {
-                personCasLogin = personName.Split('(')[1].Split(')')[0];
-                //var firstParanthesis = personName.IndexOf('(') + 1;
-                //var lastParanthesis = personName.IndexOf(')');
-                //personCasLogin = personName.Substring(firstParanthesis, lastParanthesis - firstParanthesis);
-            }
-            catch (Exception)
-            {
-                if (personName == "")
-                {
-                    var failResult = new
-                    {
-                        Success = false,
-                        ErrorMessage = "Ogiltig inmatning",
-                        PersonId = 0,
-                        SessionId = sessionId,
-                        PersonFullName = "",
-                    };
-
-                    return Json(failResult);
-                }
-                else
-                {
-                    var failResult = new
-                    {
-                        Success = false,
-                        ErrorMessage = "Välj person ur listan",
-                        PersonId = 0,
-                        SessionId = sessionId,
-                        PersonFullName = "",
-                    };
-
-                    return Json(failResult);
-                }
-                //ModelState.AddModelError("", "Du måste välja en person från listan");
-            }
-
-            var participant = _personManager.GetParticipantByCas(personCasLogin);
-            if (participant == null)
-            {
-
                 var failResult = new
                 {
                     Success = false,
-                    ErrorMessage = "Ogiltigt CAS Id",
+                    ErrorMessage = "Misslyckades",
+                    PersonId = 0,
+                    SessionId = sessionId,
+                    PersonFullName = "",
+                };
+
+                return Json(failResult);
+            }
+
+            var participant = _personManager.GetParticipantById((int)participantId);
+            if (participant == null)
+            {
+                var failResult = new
+                {
+                    Success = false,
+                    ErrorMessage = "Misslyckades",
                     PersonId = 0,
                     SessionId = sessionId,
                     PersonFullName = "",
@@ -300,7 +349,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ErrorMessage = "",
                 PersonId = participant.Id,
                 SessionId = sessionId,
-                PersonFullName = participant.FullName + " (" + personCasLogin + ")",
+                PersonFullName = participant.FullName,
             };
 
             return Json(succesResult);
@@ -348,6 +397,5 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return Json(result);
         }
-
     }
 }

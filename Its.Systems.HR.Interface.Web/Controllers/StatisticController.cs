@@ -7,7 +7,6 @@ using System.Windows.Documents;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.ViewModels;
-using Its.Systems.HR.Interface.Web.ViewModels.Statistic;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
@@ -16,11 +15,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         private readonly IPersonManager _personManager;
         private readonly ISessionManager _sessionManager;
         private readonly IUtilityManager _utilityManager;
-        private int PaticipantCount;
-        private int selectedTag;
-        private int selectedyear;
-        private List<int> years;
-        private IQueryable<Session> sessionsForTag;
 
         public StatisticController(ISessionManager sessionManager, IPersonManager personManager,
             IUtilityManager utilityManager)
@@ -29,6 +23,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _personManager = personManager;
             _utilityManager = utilityManager;
         }
+
 
         public ActionResult YearlyStatistics()
         {
@@ -51,7 +46,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     Session = session
                 });
 
-                participantsPerYearCount += participantCount; 
+                participantsPerYearCount += participantCount;
             }
 
             var viewModel = new SessionSummaryStatisticsViewModel
@@ -69,9 +64,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         public ActionResult YearlyStatistics(string yearsList)
         {
             int yearInInt;
-            var sessionStatisticsRowsList = new List<SessionStatisticsRow>();
-            var PaticipantsPerYear = 0;
+            var participantsPerYear = 0;
             var sessionscount = 0;
+            var selectedyear = 0;
+            var sessionStatisticsRowsList = new List<SessionStatisticsRow>();
+
 
             if (string.IsNullOrEmpty(yearsList))
                 return RedirectToAction("YearlyStatistics");
@@ -95,11 +92,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     PaticipantCount = _personManager.GetAllParticipantsForSession(session.Id).Where(n => n.IsDeleted == false).ToList().Count;
                     sessionStatisticsRowsList.Add(new SessionStatisticsRow
                     {
-                        NumberOfParticipants = PaticipantCount,
+                        NumberOfParticipants = participantCount,
                         Session = session
                     });
 
-                    PaticipantsPerYear = PaticipantsPerYear + PaticipantCount;
+                    participantsPerYear = participantsPerYear + participantCount;
                 }
             }
 
@@ -108,7 +105,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             {
                 //Years = years,
                 SessionStatisticsRows = sessionStatisticsRowsList,
-                TotalPaticipants = PaticipantsPerYear,
+                TotalPaticipants = participantsPerYear,
                 TotalSessions = sessionscount,
                 SelectedYear = selectedyear,
             };
@@ -116,26 +113,27 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
         public ViewResult FilterSessionsForTag(string taglist, string id)
         {
             int tag;
-            int totalParticipantCount = 0;
-            int totalSessionCount = 0;
-            string tagDisplay = "-- Välj etikett --";
+            var totalParticipantCount = 0;
+            var totalSessionCount = 0;
+            var tagDisplay = "-- Välj etikett --";
+            var sessionsForTag = new List<Session>();
 
             if (id != null && taglist == null)
                 taglist = id;
 
             if (int.TryParse(taglist, out tag))
             {
-                selectedTag = tag;
+                var selectedTag = tag;
 
                 sessionsForTag =
                   _sessionManager.GetAllSessionsForTag(selectedTag)
                       .Include(n => n.Activity)
-                      .Include(n => n.SessionParticipants.Where(a => a.Participant.IsDeleted == false))
-                      .OrderBy(n => n.Id);
+                      .Include(n => n.SessionParticipants).Where(a => a.Participant.IsDeleted == false))
+                      .OrderBy(n => n.Id)
+                      .ToList();
 
                 totalSessionCount = sessionsForTag.Count();
                 tagDisplay = _utilityManager.GetTag(selectedTag).Name;
@@ -158,6 +156,24 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public ViewResult RatingStatistics()
+        {
+            var allSessionsWithReviews = _sessionManager.GetAllSessionsWithReviews().ToList();
+
+            var result = new List<RatingStatisticsViewModel>();
+            foreach (var session in allSessionsWithReviews)
+            {
+                result.Add(new RatingStatisticsViewModel()
+                {
+                    Session = session,
+                    Rating = _utilityManager.GetRatingForSessionById(session.Id),
+                    NoOfRatings = session.SessionParticipants.Count(n => n.SessionId == session.Id && n.Rating != 0)
+                });
+            }
+
+            return View(result);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model Its.Systems.HR.Interface.Web.ViewModels.ParticipantSummaryViewModel
+﻿@using Its.Systems.HR.Interface.Web.Helpers.Extensions
+@model Its.Systems.HR.Interface.Web.ViewModels.ParticipantSummaryViewModel
 
 @{
     ViewBag.Title = "Översikt person";
@@ -6,11 +7,38 @@
 
 <h2>
     Detaljerad information för person<br />
-    <strong>@Model.FullName</strong>
+    <strong>@Model.FullNameWithCas</strong>
 </h2>
 
 <div class="row">
-    <div class="col-md-7">
+    @{
+        var htmlClass = "col-md-12";
+        if (User.IsInRole("Admin"))
+        {
+            htmlClass = "col-md-7";
+        }
+    }
+
+    <div class="@htmlClass">
+        @if (Model.UpcomingSessions.Any())
+        {
+            <table class="table table-hover" id="allUpcomingSessionsForParticipant">
+                <h3 class="m-b-30">Anmält intresse på följande tillfällen</h3>
+                @foreach (var upcomingSession in Model.UpcomingSessions)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("SessionForActivity", "ActivitySummary", new {id = upcomingSession.Id})">@upcomingSession.NameWithActivity</a>
+                            <span> (@upcomingSession.StartDate.Value.ToShortDateString())</span>
+                        </td>
+                        <td>
+                                <button type="button" class="btn btn-warning btn-xs js-remove-expressionOfInterest" data-sessionId="@upcomingSession.Id" data-personId="@Model.PersonId">Ta bort intresseanmälan</button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+
         <h3 class="m-b-30">Deltagit på följande tillfällen</h3>
 
         <table class="table table-hover" id="allSessionsForParticipant">
@@ -37,6 +65,10 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@session.Id" data-personId="@Model.PersonId">Ta bort deltagande</button>
+                                @if (Model.ParticipantCasId == User.Identity.Name.ToCasId())
+                                {
+                                    <a href="@Url.Action("ReviewSession", new {id = session.Id})" class="btn btn-success btn-xs">Recensera</a>
+                                }
                             </td>
                         </tr>
                     }
@@ -63,6 +95,10 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@sessionWithNullStartYear.Id" data-personId="@Model.PersonId">Ta bort deltagande</button>
+                        @if (Model.ParticipantCasId == User.Identity.Name.ToCasId())
+                        {
+                            <a href="@Url.Action("ReviewSession", new {id = sessionWithNullStartYear.Id})" class="btn btn-success btn-xs">Recensera</a>
+                        }
                     </td>
                 </tr>
             }
@@ -73,57 +109,56 @@
             @Html.Action("ParticipantStatisticSummary", new { personId = Model.PersonId })
         </div>
 
-        @using (Html.BeginForm("AddPersonToSession", "Session"))
+        @if (User.IsInRole("Admin"))
         {
-            @Html.HiddenFor(n => n.PersonId)
-            <div class="m-t-30">
-                <label for="Id">Lägg till tillfälle för @Model.FullName</label>
-                @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new {@class = "form-control wide-textbox"})
-                @*@Html.ValidationMessageFor(model => model.Sessions, "", new { @class = "text-danger" })*@
-                <button class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till tillfälle
-                </button>
-                @if (!string.IsNullOrEmpty(ViewBag.Error))
-                {
-                    <span class="alert alert-danger" id="errorMessage">
-                        @ViewBag.Error
-                    </span>
-                }
-            </div>
+            using (Html.BeginForm("AddPersonToSession", "Session"))
+            {
+                @Html.HiddenFor(n => n.PersonId)
+                <div class="m-t-30">
+                    <label for="Id">Lägg till tillfälle för @Model.FullNameWithCas</label>
+                    @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control wide-textbox" })
+                    <button class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till tillfälle
+                    </button>
+                    @if (!string.IsNullOrEmpty(ViewBag.Error))
+                    {
+                        <span class="alert alert-danger" id="errorMessage">
+                            @ViewBag.Error
+                        </span>
+                    }
+                </div>
+            }
         }
     </div>
-    <div class="col-md-5">
-        <h3 class="m-b-30">Allmän information</h3>
-        <div>
-            <div class="form-group">
-                <label for="Comments" class="control-label">Kommentarer</label>
-                @*@using (Html.BeginForm("SaveComments", "Participant", routeValues: new { personId = Model.PersonId }, method: FormMethod.Post))
-                    {*@
-                <div>
-                    @Html.TextAreaFor(n => n.Comments, 10, 40, new { @class = "form-control commentsWishes" })
-                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
-                    <button type="button" class="btn btn-default js-save-participantComment" data-personId="@Model.PersonId">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Spara kommentar
-                    </button>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col-md-5">
+            <h3 class="m-b-30">Allmän information</h3>
+            <div>
+                <div class="form-group">
+                    <label for="Comments" class="control-label">Kommentarer för @Model.FullName</label>
+                    <div>
+                        @Html.TextAreaFor(n => n.Comments, 10, 40, new { @class = "form-control commentsWishes" })
+                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                        <button type="button" class="btn btn-default js-save-participantComment" data-personId="@Model.PersonId">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Spara kommentar
+                        </button>
+                    </div>
                 </div>
-                @*}*@
-            </div>
 
-            <div class="form-group">
-                <label for="Wishes" class="control-label">Önskemål</label>
-                @*@using (Html.BeginForm("SaveWishes", "Participant", routeValues: new { personId = Model.PersonId }, method: FormMethod.Post))
-                    {*@
-                <div>
-                    @Html.TextAreaFor(n => n.Wishes, 10, 40, new { @class = "form-control commentsWishes" })
-                    @Html.ValidationMessageFor(model => model.Wishes, "", new { @class = "text-danger" })
-                    <button type="button" class="btn btn-default js-save-participantWish" data-personId="@Model.PersonId">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Spara önskemål
-                    </button>
+                <div class="form-group">
+                    <label for="Wishes" class="control-label">Önskemål för @Model.FullName</label>
+                    <div>
+                        @Html.TextAreaFor(n => n.Wishes, 10, 40, new { @class = "form-control commentsWishes" })
+                        @Html.ValidationMessageFor(model => model.Wishes, "", new { @class = "text-danger" })
+                        <button type="button" class="btn btn-default js-save-participantWish" data-personId="@Model.PersonId">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Spara önskemål
+                        </button>
+                    </div>
                 </div>
-                @*}*@
             </div>
         </div>
-    </div>
+    }
 </div>
 
 @section scripts {

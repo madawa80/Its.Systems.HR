@@ -1,5 +1,4 @@
-﻿//EditSession.js
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
     // INIT BOOTSTRAP 3 DATEPICKERS
     hr_initBootstrap3DatePickers();
@@ -9,7 +8,8 @@ $(document).ready(function () {
     hr_addEventListenerForEnter(".js-add-tag-edit-session", "#tagsInput");
     // INIT .js-remove-tag-edit-session
     $(".js-remove-tag-edit-session").click(removeTag);
-
+    // INIT CHECKBOX FOR EXPRESSIONOFINTEREST
+    hr_initCheckboxForExpressionOfInterest("#IsOpenForExpressionOfInterest");
 
     // TAGS
     $(".js-add-tag-edit-session").on("click", function() {

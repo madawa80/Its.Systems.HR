@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
+using Its.Systems.HR.Interface.Web.Helpers.Extensions;
 using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
@@ -25,20 +27,35 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _utilityManager = utilityManager;
         }
 
+
         public ActionResult SessionForActivity(int id)
         {
             var theSession = _sessionManager.GetSessionByIdWithIncludes(id);
-                // TODO: Is this executed or just creating a expr.tree?
 
             if (theSession == null)
                 return View("Error");
 
-            var allParticipant = 
+            var allParticipant =
                 _personManager.GetAllParticipantsForSession(id).OrderBy(n => n.FirstName).ToList();
             var allTagsForSession =
                 _utilityManager.GetAllTagsForSessionById(id).ToList();
             var sessionRating =
                 _utilityManager.GetRatingForSessionById(id);
+            var loggedInUser =
+                _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+            bool userHasExpressedInterest = _personManager.GetASessionParticipant(theSession.Id, loggedInUser.Id) != null;
+
+            var rawReviews = theSession.SessionParticipants.Where(n => n.Rating != 0);
+            var reviews = new List<Review>();
+            foreach (var rawReview in rawReviews)
+            {
+                reviews.Add(new Review()
+                {
+                    Rating = rawReview.Rating,
+                    Name = _personManager.GetParticipantById(rawReview.ParticipantId).FullName,
+                    Comments = rawReview.Comments
+                });
+            }
 
             var result = new SessionForActivityViewModel
             {
@@ -46,6 +63,8 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Evaluation = theSession.Evaluation,
                 StartDate = theSession.StartDate,
                 EndDate = theSession.EndDate,
+                Description = theSession.Description,
+                IsOpenForExpressionOfInterest = theSession.IsOpenForExpressionOfInterest,
                 HrPerson = theSession.HrPerson,
                 Location = theSession.Location,
                 TotalPaticipants = allParticipant.Count,
@@ -55,7 +74,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ActivityName = theSession.Activity.Name,
                 ActivityId = theSession.ActivityId,
                 Tags = allTagsForSession,
-                Rating = sessionRating.ToString(CultureInfo.CreateSpecificCulture("en-US"))
+                Rating = sessionRating.ToString(CultureInfo.CreateSpecificCulture("en-US")),
+                Reviews = reviews,
+                UserHasExpressedInterest = userHasExpressedInterest
             };
 
             return View(result);
@@ -73,7 +94,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             // TODO: Take 10?
 
 
-            // TODO: If yearSlider is min & max, then dont sort by startdate!!!
+            // If yearSlider is min & max, then dont sort by startdate!
             var yearStart = 0;
             var yearEnd = 10000;
             if (!string.IsNullOrEmpty(yearSlider))
@@ -113,28 +134,28 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
-        [HttpPost]
-        public ActionResult SaveSessionComments(int sessionId, string comments)
+        public ViewResult FilterUpcomingSessions()
         {
-            var result = new {Success = true};
-            if (_sessionManager.SaveCommentsForSession(sessionId, comments))
-                return Json(result);
+            var upcomingSessions = new List<Session>();
+            if (User.IsInRole("Admin"))
+            {
+                upcomingSessions = _sessionManager.GetAllSessionsWithIncludes()
+                                    .Where(n => n.StartDate > DateTime.Now)
+                                    .ToList();
+            }
+            else
+            {
+                upcomingSessions = _sessionManager.GetAllSessionsWithIncludes()
+                                    .Where(n => n.StartDate > DateTime.Now && n.IsOpenForExpressionOfInterest)
+                                    .ToList();
+            }
 
-            // TODO: ErrorMessage
-            result = new {Success = false};
-            return Json(result);
-        }
+            var result = new FilterSessionsViewModel
+            {
+                Sessions = upcomingSessions
+            };
 
-        [HttpPost]
-        public ActionResult SaveSessionEvaluation(int sessionId, string evaluation)
-        {
-            var result = new {Success = true};
-
-            if (_sessionManager.SaveEvaluationForSession(sessionId, evaluation))
-                return Json(result);
-
-            result = new {Success = false};
-            return Json(result);
+            return View(result);
         }
 
         public ActionResult AllSessionsForActivity(int id)
@@ -153,5 +174,31 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             };
             return View(viewModel);
         }
+
+        // AJAX METHODS BELOW
+        [HttpPost]
+        public ActionResult SaveSessionComments(int sessionId, string comments)
+        {
+            var result = new { Success = true };
+            if (_sessionManager.SaveCommentsForSession(sessionId, comments))
+                return Json(result);
+
+            // TODO: ErrorMessage
+            result = new { Success = false };
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult SaveSessionEvaluation(int sessionId, string evaluation)
+        {
+            var result = new { Success = true };
+
+            if (_sessionManager.SaveEvaluationForSession(sessionId, evaluation))
+                return Json(result);
+
+            result = new { Success = false };
+            return Json(result);
+        }
+
     }
 }

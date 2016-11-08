@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Domain.Model;
@@ -100,7 +101,7 @@ namespace Its.Systems.HR.Domain.Managers
             if (sessionParticipations.Count(n => n.Rating != 0) < 1)
                 return 0;
 
-            return sessionParticipations.Where(n => n.Rating != 0).Average(a => a.Rating);
+            return Math.Round(sessionParticipations.Where(n => n.Rating != 0).Average(a => a.Rating), 1);
         }
 
         public IQueryable<Tag> GetAllTagsForSessionById(int sessionId)
@@ -112,5 +113,10 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return _db.Get<Tag>().SingleOrDefault(n => n.Id == tagId);
         }
+
+        //public int GetNoOfRatingsForSessionById(int sessionId)
+        //{
+        //    return _db.Get<SessionParticipant>().Count(n => n.SessionId == sessionId && n.Rating != 0);
+        //}
     }
 }
