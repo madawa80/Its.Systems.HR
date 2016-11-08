@@ -14,7 +14,9 @@
         <ul class="dropdown-menu">
             <li>@Html.ActionLink("Aktiviteter", "Index", "Activity")</li>
             <li role="separator" class="divider"></li>
-            <li>@Html.ActionLink("Tillfällen", "FilterSessions", "ActivitySummary")</li>
+            <li>@Html.ActionLink("Alla tillfällen", "FilterSessions", "ActivitySummary")</li>
+            <li role="separator" class="divider"></li>
+            <li>@Html.ActionLink("Kommande tillfällen", "FilterUpcomingSessions", "ActivitySummary")</li>
             <li role="separator" class="divider"></li>
             <li>@Html.ActionLink("Personal", "Index", "Participant")</li>
         </ul>

@@ -9,7 +9,7 @@
     // INIT .js-remove-tag-edit-session
     $(".js-remove-tag-edit-session").click(removeTag);
     // INIT CHECKBOX FOR EXPRESSIONOFINTEREST
-    hr_initCheckboxForExpressionOfInterest("#IsOpenForExpressionOfInterest", "#isOpenOrNotText");
+    hr_initCheckboxForExpressionOfInterest("#IsOpenForExpressionOfInterest");
 
     // TAGS
     $(".js-add-tag-edit-session").on("click", function() {

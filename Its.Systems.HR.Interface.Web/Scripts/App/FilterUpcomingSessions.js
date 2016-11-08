@@ -1,6 +1,10 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
 
-        // INIT TABLESORTER
-        hr_createTableSorter("#listSessionsPartialTable");
+    // INIT TABLESORTER
+    $("#listSessionsPartialTable").tablesorter(
+    {
+        sortList: [[1, 0]],
+        emptyTo: "bottom"
+    });
 
 });

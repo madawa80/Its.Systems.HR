@@ -94,19 +94,21 @@ function hr_addEventListenerForEnter(selector, inputField) {
     });
 }
 
-function hr_initCheckboxForExpressionOfInterest(selector, textSpan) {
+function hr_initCheckboxForExpressionOfInterest(selector) {
 
-    updateSpanFromCheckboxValue(selector, textSpan);
+    var $checkbox = $(selector);
 
-    $(selector).change(function() {
-        updateSpanFromCheckboxValue(selector, textSpan);
+    updateSpanFromCheckboxValue($checkbox);
+
+    $($checkbox).change(function () {
+        updateSpanFromCheckboxValue($checkbox);
     });
 }
-function updateSpanFromCheckboxValue(selector, textSpan) {
+function updateSpanFromCheckboxValue($checkbox) {
 
-    if ($(selector).is(":checked")) {
-        $(textSpan).html("Öppen");
+    if ($checkbox.is(":checked")) {
+        $checkbox.siblings("label").html("Öppen");
     } else {
-        $(textSpan).html("Stängd");
+        $checkbox.siblings("label").html("Stängd");
     }
 }

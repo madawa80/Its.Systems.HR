@@ -61,10 +61,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.IsOpenForExpressionOfInterest)
+        <label>Är tillfället öppet för intresseanmälningar?</label>
         <div>
             @Html.EditorFor(n => n.IsOpenForExpressionOfInterest, new { @class = "form-control" })
-            <span id="isOpenOrNotText"></span>
+            <label for="IsOpenForExpressionOfInterest"></label>
             @Html.ValidationMessageFor(model => model.IsOpenForExpressionOfInterest, "", new { @class = "text-danger" })
         </div>
     </div>

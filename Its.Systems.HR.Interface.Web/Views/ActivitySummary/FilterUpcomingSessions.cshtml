@@ -5,7 +5,14 @@
 }
 
 <h2>Visa kommande tillfällen <span class="label label-info">DEBUG</span></h2>
-<h4>Visar tillfällen som är öppna för intresseanmälan samt med ett startdatum efter @DateTime.Now</h4>
+@if (User.IsInRole("Admin"))
+{
+    <h4>Visar tillfällen med ett startdatum efter @DateTime.Now</h4>
+}
+else
+{
+    <h4>Visar tillfällen som är öppna för intresseanmälan samt med ett startdatum efter @DateTime.Now</h4>
+}
 <hr />
 
 @Html.Partial("_ListSessionsPartial", Model.Sessions)

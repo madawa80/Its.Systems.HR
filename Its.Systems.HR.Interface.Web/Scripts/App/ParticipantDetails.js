@@ -25,21 +25,27 @@
                     className: "btn-danger"
                 }
             },
-            callback: function(result) {
+            callback: function (result) {
                 if (result) {
-                    alert("TODO...");
-                    //$.ajax({
-                    //    url: hr_urlPrefix + "/Session/RemoveExpressionOfInterest/",
-                    //    type: "POST",
-                    //    data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
-                    //    success: handleRemoveExpressionOfInterestResult,
-                    //    error: function () {
-                    //        alert("Anropet misslyckades, prova gärna igen.");
-                    //    }
-                    //});
+                    $.ajax({
+                        url: hr_urlPrefix + "/Session/RemoveExpressionOfInterestFromParticipantDetails/",
+                        type: "POST",
+                        data: { sessionId: link.attr("data-sessionId"), personId: link.attr("data-personId") },
+                        success: handleRemoveExpressionOfInterestResult,
+                        error: function () {
+                            alert("Anropet misslyckades, prova gärna igen.");
+                        }
+                    });
                 }
             }
         });
+
+        function handleRemoveExpressionOfInterestResult() {
+            link.parents("tr")
+                .fadeOut(hr_fadeOutSpeed, function () {
+                    $(this).remove();
+                });
+        }
     }
 
     // DELETE SESSION PARTICIPANT

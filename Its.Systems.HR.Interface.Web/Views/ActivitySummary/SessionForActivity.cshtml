@@ -43,7 +43,7 @@
 
         <p><em>Totalt antal deltagare:&nbsp;</em><em id="totDeltagare"></em></p>
     }
-    else
+    else if (Model.IsOpenForExpressionOfInterest && Model.StartDate > DateTime.Now)
     {
         if (Model.UserHasExpressedInterest)
         {
@@ -141,11 +141,11 @@
                     <p>
                         Intresseanmälan: @if (Model.IsOpenForExpressionOfInterest)
                         {
-                            <text>Öppen</text>
+                            <span class="label label-success">Öppen</span>
                         }
                         else
                         {
-                            <text>Stängd</text>
+                            <span class="label label-danger">Stängd</span>
                         }
                     </p>
                 }

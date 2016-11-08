@@ -35,13 +35,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (theSession == null)
                 return View("Error");
 
-            var allParticipant = 
+            var allParticipant =
                 _personManager.GetAllParticipantsForSession(id).OrderBy(n => n.FirstName).ToList();
             var allTagsForSession =
                 _utilityManager.GetAllTagsForSessionById(id).ToList();
             var sessionRating =
                 _utilityManager.GetRatingForSessionById(id);
-            var loggedInUser = 
+            var loggedInUser =
                 _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
             bool userHasExpressedInterest = _personManager.GetASessionParticipant(theSession.Id, loggedInUser.Id) != null;
 
@@ -136,9 +136,19 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ViewResult FilterUpcomingSessions()
         {
-            var upcomingSessions = _sessionManager.GetAllSessionsWithIncludes()
+            var upcomingSessions = new List<Session>();
+            if (User.IsInRole("Admin"))
+            {
+                upcomingSessions = _sessionManager.GetAllSessionsWithIncludes()
+                                    .Where(n => n.StartDate > DateTime.Now)
+                                    .ToList();
+            }
+            else
+            {
+                upcomingSessions = _sessionManager.GetAllSessionsWithIncludes()
                                     .Where(n => n.StartDate > DateTime.Now && n.IsOpenForExpressionOfInterest)
                                     .ToList();
+            }
 
             var result = new FilterSessionsViewModel
             {
@@ -169,24 +179,24 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         [HttpPost]
         public ActionResult SaveSessionComments(int sessionId, string comments)
         {
-            var result = new {Success = true};
+            var result = new { Success = true };
             if (_sessionManager.SaveCommentsForSession(sessionId, comments))
                 return Json(result);
 
             // TODO: ErrorMessage
-            result = new {Success = false};
+            result = new { Success = false };
             return Json(result);
         }
 
         [HttpPost]
         public ActionResult SaveSessionEvaluation(int sessionId, string evaluation)
         {
-            var result = new {Success = true};
+            var result = new { Success = true };
 
             if (_sessionManager.SaveEvaluationForSession(sessionId, evaluation))
                 return Json(result);
 
-            result = new {Success = false};
+            result = new { Success = false };
             return Json(result);
         }
 

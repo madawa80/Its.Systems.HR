@@ -25,7 +25,6 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         [AllowHtml]
         [Display(Name = "Beskrivning (html tillåtet)")]
         public string Description { get; set; }
-        [Display(Name = "Är tillfället öppet för intresseanmälningar?")]
         public bool IsOpenForExpressionOfInterest { get; set; }
         public string NameOfLocation { get; set; }
         public int? HrPerson { get; set; }

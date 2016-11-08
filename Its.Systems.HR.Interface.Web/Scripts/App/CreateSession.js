@@ -7,7 +7,7 @@
     // HANDLE ENTER-BUTTON WHEN ADDING TAGS
     hr_addEventListenerForEnter(".js-add-tag-create-session", "#tagsInput");
     // INIT CHECKBOX FOR EXPRESSIONOFINTEREST
-    hr_initCheckboxForExpressionOfInterest("#IsOpenForExpressionOfInterest", "#isOpenOrNotText");
+    hr_initCheckboxForExpressionOfInterest("#IsOpenForExpressionOfInterest");
 
     // ADDING PARTICIPANTS "ON-THE-FLY"
     // Array holding participants

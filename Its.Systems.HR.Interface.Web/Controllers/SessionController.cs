@@ -248,6 +248,25 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         // AJAX METHODS BELOW
         [HttpPost]
+        public ActionResult RemoveExpressionOfInterestFromParticipantDetails(int sessionId, int personId)
+        {
+            // Check for authorization
+            if (!User.IsInRole("Admin"))
+            {
+                var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+                if (loggedInUser.Id != personId)
+                    return new HttpUnauthorizedResult();
+            }
+            
+            if (_personManager.RemoveExpressionOfInterest(sessionId, personId))
+            {
+                return Json(new {Success = true});
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        [HttpPost]
         public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, string personName)
         {
             string personCasLogin;
