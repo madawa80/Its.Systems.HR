@@ -7,13 +7,13 @@ namespace Its.Systems.HR.Infrastructure.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class reset : IMigrationMetadata
+    public sealed partial class Reset : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(reset));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Reset));
         
         string IMigrationMetadata.Id
         {
-            get { return "201611031057562_reset"; }
+            get { return "201611081257522_Reset"; }
         }
         
         string IMigrationMetadata.Source

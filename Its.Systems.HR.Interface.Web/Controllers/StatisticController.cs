@@ -89,7 +89,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                 foreach (var session in sessionsForYear)
                 {
-                    PaticipantCount = _personManager.GetAllParticipantsForSession(session.Id).Where(n => n.IsDeleted == false).ToList().Count;
+                    var participantCount = _personManager.GetAllParticipantsForSession(session.Id).Where(n => n.IsDeleted == false).ToList().Count;
                     sessionStatisticsRowsList.Add(new SessionStatisticsRow
                     {
                         NumberOfParticipants = participantCount,
@@ -131,7 +131,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 sessionsForTag =
                   _sessionManager.GetAllSessionsForTag(selectedTag)
                       .Include(n => n.Activity)
-                      .Include(n => n.SessionParticipants).Where(a => a.Participant.IsDeleted == false))
+                      .Include(n => n.SessionParticipants.Where(a => a.Participant.IsDeleted == false))
                       .OrderBy(n => n.Id)
                       .ToList();
 

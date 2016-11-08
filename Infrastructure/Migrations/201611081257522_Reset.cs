@@ -3,7 +3,7 @@ namespace Its.Systems.HR.Infrastructure.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class reset : DbMigration
+    public partial class Reset : DbMigration
     {
         public override void Up()
         {
@@ -24,6 +24,8 @@ namespace Its.Systems.HR.Infrastructure.Migrations
             //            Name = c.String(),
             //            StartDate = c.DateTime(),
             //            EndDate = c.DateTime(),
+            //            Description = c.String(),
+            //            IsOpenForExpressionOfInterest = c.Boolean(nullable: false),
             //            Comments = c.String(),
             //            Evaluation = c.String(),
             //            LocationId = c.Int(),
@@ -31,9 +33,9 @@ namespace Its.Systems.HR.Infrastructure.Migrations
             //            ActivityId = c.Int(nullable: false),
             //        })
             //    .PrimaryKey(t => t.Id)
+            //    .ForeignKey("dbo.Activity", t => t.ActivityId, cascadeDelete: true)
             //    .ForeignKey("dbo.Participant", t => t.HrPersonId)
             //    .ForeignKey("dbo.Location", t => t.LocationId)
-            //    .ForeignKey("dbo.Activity", t => t.ActivityId, cascadeDelete: true)
             //    .Index(t => t.LocationId)
             //    .Index(t => t.HrPersonId)
             //    .Index(t => t.ActivityId);
@@ -44,9 +46,10 @@ namespace Its.Systems.HR.Infrastructure.Migrations
             //        {
             //            Id = c.Int(nullable: false, identity: true),
             //            CasId = c.String(),
+            //            Email = c.String(),
             //            IsHrPerson = c.Boolean(nullable: false),
             //            IsActive = c.Boolean(nullable: false),
-            //            IsSuperAdmin = c.Boolean(nullable: false),
+            //            IsDeleted = c.Boolean(nullable: false),
             //            FirstName = c.String(),
             //            LastName = c.String(),
             //            Comments = c.String(),
@@ -105,13 +108,13 @@ namespace Its.Systems.HR.Infrastructure.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.Session", "ActivityId", "dbo.Activity");
             DropForeignKey("dbo.SessionTag", "TagId", "dbo.Tag");
             DropForeignKey("dbo.SessionTag", "SessionId", "dbo.Session");
             DropForeignKey("dbo.Session", "LocationId", "dbo.Location");
             DropForeignKey("dbo.Session", "HrPersonId", "dbo.Participant");
             DropForeignKey("dbo.SessionParticipant", "SessionId", "dbo.Session");
             DropForeignKey("dbo.SessionParticipant", "ParticipantId", "dbo.Participant");
+            DropForeignKey("dbo.Session", "ActivityId", "dbo.Activity");
             DropIndex("dbo.SessionTag", new[] { "TagId" });
             DropIndex("dbo.SessionTag", new[] { "SessionId" });
             DropIndex("dbo.SessionParticipant", new[] { "ParticipantId" });
