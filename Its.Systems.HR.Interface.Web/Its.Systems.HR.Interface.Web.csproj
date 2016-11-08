@@ -300,6 +300,7 @@
     <Content Include="Scripts\App\FilterSessionsForTag.js" />
     <Content Include="Scripts\App\AllSessionsForActivity.js" />
     <Content Include="Scripts\App\ParticipantDetails.js" />
+    <Content Include="Scripts\App\ParticipantIndex.js" />
     <Content Include="Scripts\App\SessionForActivity.js" />
     <Content Include="Scripts\App\FilterSessions.js" />
     <Content Include="Scripts\App\EditSession.js" />

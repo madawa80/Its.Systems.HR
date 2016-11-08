@@ -20,7 +20,7 @@
 
     
         $.ajax({
-            url: "/Admin/UpdatePersonalHrStatus",
+            url: hr_urlPrefix + "/Admin/UpdatePersonalHrStatus",
             type: "POST",
             dataType: "json",
             data: { ParticipantId: link.attr("data-ParticipantId"), isChecked: result },
@@ -35,7 +35,6 @@
     }
 
 
-
     $(".js-update-isDeleted").change(function () {
         var link = $(this);
 
@@ -45,8 +44,6 @@
     });
 
     function deletePerson(link, result) {
-
-     
 
         $.ajax({
             url: "/Admin/ChangePersonalDeletedStatus",
