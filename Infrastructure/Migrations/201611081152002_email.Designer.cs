@@ -7,13 +7,13 @@ namespace Its.Systems.HR.Infrastructure.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class removedindexforTagName : IMigrationMetadata
+    public sealed partial class email : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(removedindexforTagName));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(email));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610120738432_removed index for Tag Name"; }
+            get { return "201611081152002_email"; }
         }
         
         string IMigrationMetadata.Source

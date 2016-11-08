@@ -164,7 +164,7 @@ namespace Its.Systems.HR.Domain.Managers
             var result = new List<Participant>();
             var personsFromUmuApi = umuApi.GetPersonFromUmuApi();
             var paticipants = GetAllParticipants().ToList();
-
+            
             foreach (var person in paticipants)
             {
                 if (!personsFromUmuApi.Any(n => n.CasId == person.CasId))
@@ -172,13 +172,39 @@ namespace Its.Systems.HR.Domain.Managers
                     person.IsActive = false;
                     _db.Context().Entry(person).State = EntityState.Modified;
                     _db.SaveChanges();
-
+                  
                     result.Add(person);
                 }
             }
 
             return result;
         }
+
+
+        public void UpdateEmail()
+        {
+            // Mark the people missing as IsActive = false
+
+            var umuApi = new Actions();
+            var result = new List<Participant>();
+            var personsFromUmuApi = umuApi.GetPersonFromUmuApi().ToList();
+            var paticipants = GetAllParticipants().ToList();
+
+            foreach (var person in paticipants)
+            {
+                if (personsFromUmuApi.Any(n => n.CasId == person.CasId))
+                {
+                    person.Email = personsFromUmuApi.SingleOrDefault(n => n.CasId == person.CasId).Guise[0].EPost;
+                    _db.Context().Entry(person).State = EntityState.Modified;
+                    _db.SaveChanges();
+
+
+                }
+
+            }
+        }
+
+
         public List<Participant> AddItsPersons()
         {
             // Add possible new people to our database
@@ -197,6 +223,7 @@ namespace Its.Systems.HR.Domain.Managers
                         FirstName = person.FirstName,
                         LastName = person.LastName,
                         IsActive = true,
+                        Email = person.Guise[0].EPost
                     };
                     result.Add(personToAdd);
                     _db.Add<Participant>(personToAdd);
@@ -229,5 +256,35 @@ namespace Its.Systems.HR.Domain.Managers
 
             return sessionParticipantFromDb != null;
         }
+
+
+        public bool ChangeParticipantHrStatus(int id, bool status)
+        {
+      
+            var paticipant = GetParticipantById(id);
+            if (paticipant == null)
+                return false;
+          
+                    paticipant.IsHrPerson = status;
+                    _db.Context().Entry(paticipant).State = EntityState.Modified;
+                    _db.SaveChanges();
+                  return true;
+        }
+
+        public bool ChangeParticipantDeletedStatus(int id, bool status)
+        {
+
+            var paticipant = GetParticipantById(id);
+            if (paticipant == null)
+                return false;
+
+            paticipant.IsDeleted = status;
+            _db.Context().Entry(paticipant).State = EntityState.Modified;
+            _db.SaveChanges();
+            return true;
+        }
+
+
+
     }
 }

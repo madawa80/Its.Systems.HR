@@ -133,11 +133,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult SyncUsersWithUmuApi()
         {
-            return View("Error");
+            //return View("Error");
 
 
             _personManager.AddItsPersons();
             _personManager.InactivateItsPersons();
+
+            _personManager.UpdateEmail();
 
             return RedirectToAction("Index");
         }

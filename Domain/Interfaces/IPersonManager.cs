@@ -125,5 +125,11 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// </summary>
         /// <returns>IQueryable of SessionParticipant, or null if there are none in the database.</returns>
         IQueryable<SessionParticipant> GetAllSessionParticipants();
+
+        bool ChangeParticipantHrStatus(int id, bool status);
+
+        bool ChangeParticipantDeletedStatus(int id, bool status);
+
+        void UpdateEmail();
     }
 }

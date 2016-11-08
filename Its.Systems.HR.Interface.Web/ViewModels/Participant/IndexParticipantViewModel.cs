@@ -13,5 +13,11 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public string FullName { get; set; }
         public string CasID { get; set; }
         public int CountOfSessions { get; set; }
+
+        public bool IsHrPerson { get; set; }
+
+        public bool IsActiv { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }
