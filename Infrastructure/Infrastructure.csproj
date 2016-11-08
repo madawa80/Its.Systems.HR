@@ -67,6 +67,10 @@
     <Compile Include="Migrations\201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest.Designer.cs">
       <DependentUpon>201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611081108335_Added email to participant.cs" />
+    <Compile Include="Migrations\201611081108335_Added email to participant.Designer.cs">
+      <DependentUpon>201611081108335_Added email to participant.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest.resx">
       <DependentUpon>201611070851352_Updated one name of sessioncolumn to IsOpenForExpressionOfInterest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611081108335_Added email to participant.resx">
+      <DependentUpon>201611081108335_Added email to participant.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

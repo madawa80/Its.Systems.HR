@@ -147,10 +147,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(locations.OrderBy(n => n), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AutoCompleteParticipants(string term)
+        public ActionResult AutoCompleteLocationsParticipants(string term)
         {
-            var participants = GetParticipants(term);
-            return Json(participants.OrderBy(n => n), JsonRequestBehavior.AllowGet);
+            var participants = from element in _personManager.GetAllParticipants()
+                               let fullName = element.FirstName + " " + element.LastName
+                               where fullName.Contains(term.ToUpper())
+                               select new { id = element.Id, label = element.FirstName + " " + element.LastName };
+
+            return Json(participants.OrderBy(n => n.label), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AutoCompleteTags(string term)
@@ -168,16 +172,6 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                     .Select(a => a.Name);
 
             return locations;
-        }
-
-        private IEnumerable<string> GetParticipants(string searchString)
-        {
-            var participants = from element in _personManager.GetAllParticipants()
-                let fullNameWithCas = element.FirstName + " " + element.LastName + " " + element.CasId
-                where fullNameWithCas.Contains(searchString.ToUpper())
-                select element.FirstName + " " + element.LastName + " (" + element.CasId + ")";
-            
-            return participants;
         }
 
         private IEnumerable<string> GetTags(string searchString)

@@ -267,53 +267,59 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, string personName)
+        public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, int? participantId)
         {
-            string personCasLogin;
-
             //TODO: ERROR HANDLING!
-            try
+
+            //    if (personName == "")
+            //    {
+            //        var failResult = new
+            //        {
+            //            Success = false,
+            //            ErrorMessage = "Ogiltig inmatning",
+            //            PersonId = 0,
+            //            SessionId = sessionId,
+            //            PersonFullName = "",
+            //        };
+
+            //        return Json(failResult);
+            //    }
+            //    else
+            //    {
+            //        var failResult = new
+            //        {
+            //            Success = false,
+            //            ErrorMessage = "Välj person ur listan",
+            //            PersonId = 0,
+            //            SessionId = sessionId,
+            //            PersonFullName = "",
+            //        };
+
+            //        return Json(failResult);
+            //    }
+            //}
+
+            if (participantId == null)
             {
-                personCasLogin = personName.Split('(')[1].Split(')')[0];
-            }
-            catch (Exception)
-            {
-                if (personName == "")
-                {
-                    var failResult = new
-                    {
-                        Success = false,
-                        ErrorMessage = "Ogiltig inmatning",
-                        PersonId = 0,
-                        SessionId = sessionId,
-                        PersonFullName = "",
-                    };
-
-                    return Json(failResult);
-                }
-                else
-                {
-                    var failResult = new
-                    {
-                        Success = false,
-                        ErrorMessage = "Välj person ur listan",
-                        PersonId = 0,
-                        SessionId = sessionId,
-                        PersonFullName = "",
-                    };
-
-                    return Json(failResult);
-                }
-            }
-
-            var participant = _personManager.GetParticipantByCas(personCasLogin);
-            if (participant == null)
-            {
-
                 var failResult = new
                 {
                     Success = false,
-                    ErrorMessage = "Ogiltigt CAS Id",
+                    ErrorMessage = "Misslyckades",
+                    PersonId = 0,
+                    SessionId = sessionId,
+                    PersonFullName = "",
+                };
+
+                return Json(failResult);
+            }
+
+            var participant = _personManager.GetParticipantById((int)participantId);
+            if (participant == null)
+            {
+                var failResult = new
+                {
+                    Success = false,
+                    ErrorMessage = "Misslyckades",
                     PersonId = 0,
                     SessionId = sessionId,
                     PersonFullName = "",
@@ -343,7 +349,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 ErrorMessage = "",
                 PersonId = participant.Id,
                 SessionId = sessionId,
-                PersonFullName = participant.FullName + " (" + personCasLogin + ")",
+                PersonFullName = participant.FullName,
             };
 
             return Json(succesResult);

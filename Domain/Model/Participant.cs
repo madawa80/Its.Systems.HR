@@ -10,6 +10,7 @@ namespace Its.Systems.HR.Domain.Model
         [Key]
         public int Id { get; set; }
         public string CasId { get; set; }
+        public string Email { get; set; }
         public bool IsHrPerson { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
