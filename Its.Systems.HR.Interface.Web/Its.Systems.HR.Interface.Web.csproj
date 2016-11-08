@@ -222,7 +222,6 @@
     <Compile Include="ViewModels\ActivitySummary\AllSessionsForActivityViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityViewModel.cs" />
     <Compile Include="ViewModels\Activity\IndexActivityViewModel.cs" />
-    <Compile Include="ViewModels\Admin\AdminViewModel.cs" />
     <Compile Include="ViewModels\Participant\IndexParticipantViewModel.cs" />
     <Compile Include="ViewModels\Participant\ReviewSessionViewModel.cs" />
     <Compile Include="ViewModels\Session\CreateSessionViewModel.cs" />
@@ -353,6 +352,7 @@
     </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
