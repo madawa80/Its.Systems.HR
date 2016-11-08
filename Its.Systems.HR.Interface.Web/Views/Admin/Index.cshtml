@@ -1,14 +1,13 @@
-﻿@using Its.Systems.HR.Domain.Model
-@model Its.Systems.HR.Interface.Web.ViewModels.IndexParticipantViewModel
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.IndexParticipantViewModel
 
 @{
-    ViewBag.Title = "Visa personal";
+    ViewBag.Title = "Administrera personal";
 }
 
-<h2>Lista personal</h2>
-@*<h4>Klicka på ett namn för att se en sammanfattning för personen.</h4>
-<hr />*@
-@using (Html.BeginForm("Index", "Participant", FormMethod.Get))
+<h2>Administrera personal</h2>
+<h4>Här kan du som administratör välja vilka andra i personalen som ska klassas som administratörer (HR-personer). Vidare kan man välja att sätta en person som "borttagen", vilket innebär att denna person inte visas i statistiken eller någon annanstans i applikationen. Personens status som aktiv eller inte uppdateras automatiskt mot UmU WebApi:et.</h4>
+<hr />
+@using (Html.BeginForm("Index", "Admin", FormMethod.Get))
 {
     <div class="well">
         <label for="searchString">Filtrera personal:</label>
@@ -36,19 +35,16 @@
                 Tillfällen
             </th>
             <th>
-                ÄrActiv
+                Aktiv?
             </th>
 
             <th>
-                ÄrHRPerson
-            </th>
-            
-           <th>
-                ÄrRaderade
+                HrPerson?
             </th>
 
-           
-            
+            <th>
+                Raderad?
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -56,33 +52,23 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.FullName, "Details", "Participant", new { id = item.ParticipantId },null)
-                    
-               </td>
+                    @Html.ActionLink(item.FullName, "Details", "Participant", new { id = item.ParticipantId }, null)
+                </td>
                 <td>
                     @item.CasID
                 </td>
                 <td>
                     @item.CountOfSessions
                 </td>
-                
                 <td>
-                    
-                  @Html.CheckBoxFor(n => item.IsActiv, new { disabled = "true" })
-                   
+                    @Html.CheckBoxFor(n => item.IsActiv, new { disabled = "true" })
                 </td>
                 <td>
-                    
-                
-                    
                     @Html.CheckBoxFor(n => item.IsHrPerson, new { data_participantId = item.ParticipantId, @class = "checkbox js-update-isHrPerson" })
                 </td>
                 <td>
-                    
                     @Html.CheckBoxFor(n => item.IsDeleted, new { data_participantId = item.ParticipantId, @class = "checkbox js-update-isDeleted" })
                 </td>
-             
-              
             </tr>
         }
     </tbody>
@@ -93,5 +79,4 @@
     <script src="~/Scripts/jquery.tablesorter.min.js"></script>
     <script src="~/Scripts/App/HRHelpers.js"></script>
     <script src="~/Scripts/App/AdminIndex.js"></script>
-    
 }
