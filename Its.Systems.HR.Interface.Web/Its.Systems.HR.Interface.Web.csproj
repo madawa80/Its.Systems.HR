@@ -383,6 +383,7 @@
     <Content Include="Views\Statistic\FilterSessionsForTag.cshtml" />
     <None Include="Web.Samuel.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\Statistic\RatingStatistics.cshtml" />
