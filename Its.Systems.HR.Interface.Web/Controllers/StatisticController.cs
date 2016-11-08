@@ -29,7 +29,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var participantsPerYearCount = 0;
 
-            var sessionsForYear = _sessionManager.GetAllSessions().Where(n=>n.StartDate < DateTime.Today)
+            var sessionsForYear = _sessionManager.GetAllSessions()
                                     .Include(n => n.Activity)
                                     .OrderBy(n => n.Id)
                                     .ToList();
@@ -39,7 +39,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             foreach (var session in sessionsForYear)
             {
-                var participantCount = _personManager.GetAllParticipantsForSession(session.Id).Where(n => n.IsDeleted ==false).ToList().Count;
+                var participantCount = _personManager.GetAllParticipantsForSession(session.Id).ToList().Count;
                 sessionStatisticsRowsList.Add(new SessionStatisticsRow
                 {
                     NumberOfParticipants = participantCount,
@@ -79,7 +79,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 selectedyear = yearInInt;
                 //years = Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList();
                 var sessionsForYear =
-                    _sessionManager.GetAllSessionsForYear(selectedyear).Where(n => n.StartDate < DateTime.Today)
+                    _sessionManager.GetAllSessionsForYear(selectedyear)
                     .Include(n => n.Activity)
                         .ToList()
                         .OrderBy(n => n.Id);
@@ -89,7 +89,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                 foreach (var session in sessionsForYear)
                 {
-                    var participantCount = _personManager.GetAllParticipantsForSession(session.Id).Where(n => n.IsDeleted == false).ToList().Count;
+                    var participantCount = _personManager.GetAllParticipantsForSession(session.Id).ToList().Count;
                     sessionStatisticsRowsList.Add(new SessionStatisticsRow
                     {
                         NumberOfParticipants = participantCount,
@@ -131,7 +131,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 sessionsForTag =
                   _sessionManager.GetAllSessionsForTag(selectedTag)
                       .Include(n => n.Activity)
-                      .Include(n => n.SessionParticipants.Where(a => a.Participant.IsDeleted == false))
+                      .Include(n => n.SessionParticipants)
                       .OrderBy(n => n.Id)
                       .ToList();
 
@@ -177,5 +177,3 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
     }
 }
-
-
