@@ -8,9 +8,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 {
     public class AccountController : Controller
     {
+        [AllowAnonymous]
         public void SignIn()
         {
-            // TODO: Hook on claims for users, HrPerson = true -> admin etc...
             if (!Request.IsAuthenticated)
                 HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties {RedirectUri = "/HrKompetensutveckling/Activity"},
                     WsFederationAuthenticationDefaults.AuthenticationType);

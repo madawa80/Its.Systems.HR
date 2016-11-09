@@ -24,6 +24,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(string searchString)
         {
             var allParticipants = _personManager.GetAllParticipants()
@@ -41,7 +42,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 {
                     ParticipantId = participant.Id,
                     FullName = participant.FullName,
-                    CasID = participant.CasId,
+                    Email = participant.Email,
                     CountOfSessions = participant.SessionParticipants.Count
                 });
             }
@@ -99,7 +100,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var viewModel = new ParticipantSummaryViewModel()
             {
                 PersonId = participant.Id,
-                FullNameWithCas = participant.FullNameWithCas,
+                Email = participant.Email,
                 FullName = participant.FullName,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,
@@ -156,15 +157,19 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
 
-            if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating, vm.Comments))
-                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = vm.SessionId});
+            if (ModelState.IsValid)
+            {
+                if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating,
+                    vm.Comments))
+                    return RedirectToAction("SessionForActivity", "ActivitySummary", new {id = vm.SessionId});
+            }
 
-            //ModelState.AddModelError("", "Något blev fel, prova gärna igen!");
             return View(vm);
         }
 
 
         // AJAX AND PARTIALS BELOW
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult SaveComments(int personId, string comments)
         {
@@ -179,6 +184,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult SaveWishes(int personId, string wishes)
         {
             var result = new { Success = true };

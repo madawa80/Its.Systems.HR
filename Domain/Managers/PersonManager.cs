@@ -143,7 +143,7 @@ namespace Its.Systems.HR.Domain.Managers
         {
             var theSession = _db.Get<Session>().SingleOrDefault(n => n.Id == sessionId);
 
-            if (theSession == null || !theSession.IsOpenForExpressionOfInterest || theSession.StartDate < DateTime.Now)
+            if (theSession == null || theSession.StartDate < DateTime.Now) // !theSession.IsOpenForExpressionOfInterest ||
                 return false;
 
             var sessionParticipation = GetASessionParticipant(sessionId, participantId);

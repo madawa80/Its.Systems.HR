@@ -300,6 +300,7 @@
     <Content Include="Scripts\App\FilterSessionsForTag.js" />
     <Content Include="Scripts\App\AllSessionsForActivity.js" />
     <Content Include="Scripts\App\ParticipantDetails.js" />
+    <Content Include="Scripts\App\ParticipantIndex.js" />
     <Content Include="Scripts\App\SessionForActivity.js" />
     <Content Include="Scripts\App\FilterSessions.js" />
     <Content Include="Scripts\App\EditSession.js" />
@@ -365,7 +366,7 @@
     <Content Include="Views\Account\SignOutCallback.cshtml" />
     <Content Include="Views\Activity\CreateActivity.cshtml" />
     <Content Include="Views\Activity\EditActivity.cshtml" />
-    <Content Include="Views\Activity\Index.cshtml" />
+    <Content Include="Views\Activity\ActivityIndex.cshtml" />
     <Content Include="Views\Session\CreateSession.cshtml" />
     <Content Include="Views\Participant\Details.cshtml" />
     <Content Include="Views\Participant\Index.cshtml" />
@@ -381,6 +382,9 @@
     <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
     <Content Include="Views\Statistic\YearlyStatistics.cshtml" />
     <Content Include="Views\Statistic\FilterSessionsForTag.cshtml" />
+    <None Include="Web.Madawa.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Samuel.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -419,6 +423,15 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Samuel|AnyCPU'">
     <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Madawa|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

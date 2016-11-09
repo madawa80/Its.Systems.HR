@@ -82,6 +82,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
+        [Authorize(Roles = "Admin")]
         public ViewResult FilterSessions(string searchString, string yearSlider, string hrPerson, string nameOfLocation)
         {
             IQueryable<Session> allSessions;
@@ -176,6 +177,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         // AJAX METHODS BELOW
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult SaveSessionComments(int sessionId, string comments)
         {
@@ -188,6 +190,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult SaveSessionEvaluation(int sessionId, string evaluation)
         {

@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
 using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
-
     {
-
-        
         private readonly IPersonManager _personManager;
 
-
-        public AdminController( IPersonManager personManager)
+        public AdminController(IPersonManager personManager)
         {
             _personManager = personManager;
         }
+
+
         public ActionResult Index(string searchString)
         {
             var allParticipants = _personManager.GetAllParticipants()
@@ -38,7 +35,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 {
                     ParticipantId = participant.Id,
                     FullName = participant.FullName,
-                    CasID = participant.CasId,
+                    Email = participant.Email,
                     CountOfSessions = participant.SessionParticipants.Count,
                     IsHrPerson = participant.IsHrPerson,
                     IsActiv = participant.IsActive,
@@ -48,33 +45,29 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return View(result);
         }
+        
 
-
+        // AJAX METHODS BELOW
         public ActionResult UpdatePersonalHrStatus(int ParticipantId, bool isChecked)
         {
             var result = new { Success = false };
 
-            if (_personManager.ChangeParticipantHrStatus(ParticipantId, isChecked));
-
-            result = new { Success = true };
+            if (_personManager.ChangeParticipantHrStatus(ParticipantId, isChecked))
+                result = new { Success = true };
 
             return Json(result);
         }
-
         
-
-             public ActionResult ChangePersonalDeletedStatus(int Participantid, bool isChecked)
+        public ActionResult ChangePersonalDeletedStatus(int Participantid, bool isChecked)
         {
             var result = new { Success = false };
 
-            if (_personManager.ChangeParticipantDeletedStatus(Participantid, isChecked));
-
-            result = new { Success = true };
+            if (_personManager.ChangeParticipantDeletedStatus(Participantid, isChecked))
+                result = new { Success = true };
 
             return Json(result);
         }
 
     }
-
-
+    
 }

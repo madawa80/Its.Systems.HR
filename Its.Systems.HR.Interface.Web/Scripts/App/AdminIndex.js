@@ -8,24 +8,23 @@
 
 
     $(".js-update-isHrPerson").change(function () {
-            var link = $(this);
 
-            
-            var result = this.checked;
-            updateHr(link, result);
+        var link = $(this);
+
+        var result = this.checked;
+        updateHr(link, result);
 
     });
 
     function updateHr(link, result) {
 
-    
         $.ajax({
-            url: "/Admin/UpdatePersonalHrStatus",
+            url: hr_urlPrefix + "/Admin/UpdatePersonalHrStatus",
             type: "POST",
             dataType: "json",
             data: { ParticipantId: link.attr("data-ParticipantId"), isChecked: result },
             success: function () {
-                alert("framgångsrikt ändrade status");
+                alert("Personens HR-status sattes framgångsrikt.");
             },
             error: function () {
                 alert("Anropet misslyckades, prova gärna igen.");
@@ -33,7 +32,6 @@
 
         });
     }
-
 
 
     $(".js-update-isDeleted").change(function () {
@@ -46,15 +44,13 @@
 
     function deletePerson(link, result) {
 
-     
-
         $.ajax({
-            url: "/Admin/ChangePersonalDeletedStatus",
+            url: hr_urlPrefix + "/Admin/ChangePersonalDeletedStatus",
             type: "POST",
             dataType: "json",
             data: { ParticipantId: link.attr("data-ParticipantId"), isChecked: result },
             success: function () {
-                alert("framgångsrikt ändrade status");
+                alert("Personens raderad-status sattes framgångsrikt.");
             },
             error: function () {
                 alert("Anropet misslyckades, prova gärna igen.");

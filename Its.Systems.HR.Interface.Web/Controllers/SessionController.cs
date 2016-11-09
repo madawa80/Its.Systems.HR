@@ -28,6 +28,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateSession(int id = 0) //activityId
         {
             var allActivities = _activityManager.GetAllActivities().OrderBy(n => n.Name).ToList();
@@ -47,6 +48,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public ActionResult CreateSession(CreateSessionViewModel sessionVm)
@@ -126,6 +128,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(sessionVm);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult EditSession(int? id)
         {
@@ -167,6 +170,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         //[ValidateAntiForgeryToken]
         [ActionName("EditSession")]
@@ -213,6 +217,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View("EditSession", inputVm);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult AddPersonToSession(int personId, int id) //id = sessionId
         {
@@ -266,6 +271,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult AddPersonToSessionFromActivitySummary(int sessionId, int? participantId)
         {
@@ -357,6 +363,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult RemovePersonFromSession(int sessionId, int personId)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+                if (personId != loggedInUser.Id)
+                    return new HttpUnauthorizedResult();
+            }
+
             var result = new { Success = true };
 
             if (!_personManager.RemoveParticipantFromSession(personId, sessionId))
@@ -365,6 +378,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult RemoveSession(int id)
         {
             var result = new { Success = true };
@@ -375,6 +389,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult AddTagToSession(int sessionId, string tagName)
         {
             var result = new { Success = false, TagId = -1 };
@@ -388,6 +403,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult RemoveTagFromSession(int sessionId, int tagId)
         {
             var result = new { Success = false };

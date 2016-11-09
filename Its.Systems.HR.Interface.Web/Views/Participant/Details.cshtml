@@ -5,10 +5,10 @@
     ViewBag.Title = "Översikt person";
 }
 
-<h2>
-    Detaljerad information för person<br />
-    <strong>@Model.FullNameWithCas</strong>
-</h2>
+<h3>Detaljerad information för person</h3>
+<h2><strong>@Model.FullName</strong></h2>
+<h4><a class="participant-mail-link" href="mailto:@Model.Email">@Model.Email</a></h4>
+<hr />
 
 <div class="row">
     @{
@@ -115,7 +115,7 @@
             {
                 @Html.HiddenFor(n => n.PersonId)
                 <div class="m-t-30">
-                    <label for="Id">Lägg till tillfälle för @Model.FullNameWithCas</label>
+                    <label for="Id">Lägg till tillfälle för @Model.FullName</label>
                     @Html.DropDownListFor(n => n.Sessions.First().Id, Model.AllSessions, new { @class = "form-control wide-textbox" })
                     <button class="btn btn-default js-add-sessionParticipant" data-personId="@Model.PersonId">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Lägg till tillfälle

@@ -7,13 +7,19 @@
 <h2>
     Aktivitet: <strong>@Model.ActivityName</strong>
 </h2>
-<h4>Listar alla tillfällen för aktiviteten nedan. Klicka på tillfället för att se mer information om tillfället samt vilka som deltog, eller skapa ett nytt tillfälle till den här aktiviteten.</h4>
+@if (User.IsInRole("Admin"))
+{
+    <h4>Listar alla tillfällen för aktiviteten nedan. Klicka på tillfället för att se mer information om tillfället samt vilka som deltog, eller skapa ett nytt tillfälle till den här aktiviteten.</h4>
+}
 <hr />
-<div class="well">
-    <a href="@Url.Action("CreateSession", "Session", new {id = Model.ActivityId})" class="btn btn-default">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Skapa nytt tillfälle
-    </a>
-</div>
+@if (User.IsInRole("Admin"))
+{
+    <div class="well">
+        <a href="@Url.Action("CreateSession", "Session", new {id = Model.ActivityId})" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Skapa nytt tillfälle
+        </a>
+    </div>
+}
 @Html.Partial("_ListSessionsPartial", Model.Sessions)
 
 @section scripts {

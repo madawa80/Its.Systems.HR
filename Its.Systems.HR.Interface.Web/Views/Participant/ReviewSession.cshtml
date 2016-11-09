@@ -19,8 +19,6 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Rating)
         <div>
-            @*@Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", placeholder = "1-5" } })*@
-            @*<input name="Rating" id="Rating" type="text" class="" value="" data-slider-min="1" data-slider-max="5" data-slider-step="1" data-slider-value="@Model.Rating" />*@
             <input type="hidden" name="Rating" id="Rating" class="rating" value="@Model.Rating"
                    data-filled="glyphicon glyphicon-star increase-glyphicon-size" data-empty="glyphicon glyphicon-star-empty increase-glyphicon-size"/>
             @Html.ValidationMessageFor(model => model.Rating, "", new {@class = "text-danger"})
@@ -48,7 +46,6 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    <script src="~/Scripts/bootstrap-slider.min.js"></script>
     <script src="~/Scripts/bootstrap-rating.min.js"></script>
 
     <script src="~/Scripts/App/HRHelpers.js"></script>

@@ -23,8 +23,14 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             _utilitiesManager = utilityManager;
         }
        
+        [AllowAnonymous]
+        public ViewResult Index()
+        {
+            return View("StartScreen");
+        }
 
-        public ViewResult Index(string searchString)
+        [Authorize(Roles = "Admin")]
+        public ViewResult ActivityIndex(string searchString)
         {
             var activities = _activityManager.GetAllActivitiesWithSessions();
 
@@ -43,12 +49,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return View(result);
         }
-
-        public ViewResult StartScreen()
-        {
-            return View("StartScreen");
-        }
-
+        
         [Authorize(Roles = "Admin")]
         public ActionResult CreateActivity()
         {
@@ -102,7 +103,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             try
             {
                 if (_activityManager.EditActivity(activityFromInput.Id, activityFromInput.Name))
-                    return RedirectToAction("Index");
+                    return RedirectToAction("ActivityIndex");
 
                 ModelState.AddModelError("Name", "Aktiviteten existerar redan.");
             }
@@ -139,8 +140,9 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             _personManager.UpdateEmail();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ActivityIndex");
         }
+
 
         //AJAX AUTOCOMPLETE
         public ActionResult AutoCompleteLocations(string term)
