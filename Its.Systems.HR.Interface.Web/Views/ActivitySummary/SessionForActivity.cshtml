@@ -1,5 +1,7 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.SessionForActivityViewModel
-
+@{
+    var participantString = Model.StartDate > DateTime.Now ? "intresseanmälda" : "deltagare";
+}
 <div>
     <h3>Detaljerad information för tillfälle</h3>
     <h2>
@@ -46,8 +48,9 @@
                 </tr>
             }
         </table>
-
-        <p><em>Totalt antal deltagare:&nbsp;</em><em id="totDeltagare"></em></p>
+        <p>
+            <em>Totalt antal @participantString:&nbsp;</em><em id="sessionStatisticCount">@Html.Action("SessionStatisticCount", new {id = Model.SessionId})</em>
+        </p>
     }
     else if (Model.IsOpenForExpressionOfInterest && Model.StartDate > DateTime.Now)
     {

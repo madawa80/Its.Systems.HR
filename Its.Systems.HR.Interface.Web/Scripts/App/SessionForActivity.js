@@ -1,8 +1,8 @@
 ﻿$(document)
     .ready(function () {
 
-        // COUNT TOTAL PARTICIPANTS
-        paticipantCount();
+        // COUNT TOTAL PARTICIPANTS, is done with a partial now...
+        //paticipantCount();
         // HANDLE ENTER-BUTTON WHEN ADDING PARTICIPANTS
         hr_addEventListenerForEnter(".js-add-sessionParticipant", "#nameOfParticipant");
         // ADD CLICK EVENT HANDLER FOR delete-sessionParticipant
@@ -47,7 +47,10 @@
                         $($html).hide().appendTo("#ParticipantsForSession").fadeIn(hr_fadeInSpeed);
                         $newButton.click(deleteSessionParticipant);
 
-                        paticipantCount();
+                        //paticipantCount();
+                        $("#sessionStatisticCount")
+                            .load(hr_urlPrefix + "/ActivitySummary/SessionStatisticCount/" + link.attr("data-sessionId"));
+
                         $("#nameOfParticipant").val("");
                         $("#selectedParticipantId").val("");
                     }
@@ -86,7 +89,9 @@
                                     .fadeOut(hr_fadeOutSpeed, function () {
                                         $(this).remove();
 
-                                        paticipantCount();
+                                        //paticipantCount();
+                                        $("#sessionStatisticCount")
+                                            .load(hr_urlPrefix + "/ActivitySummary/SessionStatisticCount/" + link.attr("data-sessionId"));
                                     });
                             },
                             error: function () {
@@ -170,9 +175,9 @@
 
         });
 
-        function paticipantCount() {
-            var rowCount = $("#ParticipantsForSession").find("tr").length;
-            $("#totDeltagare").html(rowCount);
-        }
+        //function paticipantCount() {
+        //    var rowCount = $("#ParticipantsForSession").find("tr").length;
+        //    $("#totDeltagare").html(rowCount);
+        //}
 
     });

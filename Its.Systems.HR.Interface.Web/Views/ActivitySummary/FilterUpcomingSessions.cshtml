@@ -15,7 +15,7 @@ else
 }
 <hr />
 
-@Html.Partial("_ListSessionsPartial", Model.Sessions)
+@Html.Partial("_ListSessionsPartial", Model.Sessions, new ViewDataDictionary { {"view", "upcoming"} })
 
 
 @section scripts {
