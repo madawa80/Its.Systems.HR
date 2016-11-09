@@ -366,7 +366,7 @@
     <Content Include="Views\Account\SignOutCallback.cshtml" />
     <Content Include="Views\Activity\CreateActivity.cshtml" />
     <Content Include="Views\Activity\EditActivity.cshtml" />
-    <Content Include="Views\Activity\Index.cshtml" />
+    <Content Include="Views\Activity\ActivityIndex.cshtml" />
     <Content Include="Views\Session\CreateSession.cshtml" />
     <Content Include="Views\Participant\Details.cshtml" />
     <Content Include="Views\Participant\Index.cshtml" />

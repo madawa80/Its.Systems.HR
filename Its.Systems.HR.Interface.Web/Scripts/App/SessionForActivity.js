@@ -158,7 +158,7 @@
                             type: "POST",
                             success: function () {
                                 alert("Tillfället är borttaget.");
-                                window.location.href = hr_urlPrefix + "/Activity/Index/";
+                                window.location.href = hr_urlPrefix + "/Activity/ActivityIndex/";
                             },
                             error: function () {
                                 alert("Anropet misslyckades, prova gärna igen.");

@@ -1,13 +1,17 @@
 ﻿@model Its.Systems.HR.Interface.Web.ViewModels.SessionForActivityViewModel
 
-<div class="col-md-12">
+<div>
+    <h3>Detaljerad information för tillfälle</h3>
     <h2>
-        Detaljerad information för tillfälle<br />
         <strong>@Model.SessionNameWithActivity</strong>
-        <a href="@Url.Action("EditSession", "Session", new {id = Model.SessionId})" class="btn btn-warning">Ändra tillfälle</a>
-        <button class="btn btn-danger js-delete-session" data-sessionId="@Model.SessionId">Ta bort tillfälle</button>
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="@Url.Action("EditSession", "Session", new {id = Model.SessionId})" class="btn btn-warning">Ändra tillfälle</a>
+            <button class="btn btn-danger js-delete-session" data-sessionId="@Model.SessionId">Ta bort tillfälle</button>
+        }
     </h2>
 </div>
+<hr />
 
 
 <div class="col-md-6">
@@ -19,11 +23,8 @@
         <div class="form-group">
             <label for="nameOfParticipant">Lägg till fler deltagare</label>
             <div>
-                
-                <input type="text" id="nameOfParticipant" class="form-control wide-textbox" placeholder="Sök på förnamn och eller efternamn">
 
-                @*<input type="text" id="nameOfParticipant" name="nameOfParticipant" class="form-control wide-textbox" placeholder="Sök på förnamn, efternamn eller CAS"
-                       data-autocomplete="@Url.Action("AutoCompleteParticipants", "Activity")"/>*@
+                <input type="text" id="nameOfParticipant" class="form-control wide-textbox" placeholder="Sök på förnamn och eller efternamn">
                 <input type="hidden" id="selectedParticipantId" />
 
                 <button type="button" class="btn btn-default js-add-sessionParticipant" data-sessionId="@Model.SessionId">
@@ -72,6 +73,11 @@
         }
 
         <p><em>Visa antalet intresseanmälningar här?</em></p>
+
+    }
+    else
+    {
+        <p><em>Totalt antal medverkande var: @Model.TotalPaticipants</em></p>
     }
 
 
