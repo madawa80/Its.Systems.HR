@@ -157,10 +157,13 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         {
             var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
 
-            if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating, vm.Comments))
-                return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = vm.SessionId});
+            if (ModelState.IsValid)
+            {
+                if (_personManager.UpdateReviewForSessionParticipant(vm.SessionId, loggedInUser.Id, vm.Rating,
+                    vm.Comments))
+                    return RedirectToAction("SessionForActivity", "ActivitySummary", new {id = vm.SessionId});
+            }
 
-            //ModelState.AddModelError("", "Något blev fel, prova gärna igen!");
             return View(vm);
         }
 
