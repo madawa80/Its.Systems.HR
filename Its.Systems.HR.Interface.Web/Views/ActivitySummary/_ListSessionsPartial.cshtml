@@ -9,7 +9,14 @@
         <th>Slutdatum</th>
         <th>Hr-Person</th>
         <th>Plats</th>
-        <th>Deltagare</th>
+        @if ((string) ViewData["view"] == "upcoming")
+        {
+            <th>Intresseanmälda</th>
+        }
+        else
+        {
+            <th>Deltagare</th>
+        }
     </tr>
     </thead>
     <tbody>

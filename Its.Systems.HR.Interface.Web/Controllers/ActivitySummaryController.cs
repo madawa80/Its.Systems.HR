@@ -203,5 +203,11 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(result);
         }
 
+        public int SessionStatisticCount(int id)
+        {
+            var participantCount = _personManager.GetAllParticipantsForSession(id).Count();
+
+            return participantCount;
+        }
     }
 }
