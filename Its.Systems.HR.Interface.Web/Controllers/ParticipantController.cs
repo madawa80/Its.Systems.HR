@@ -41,7 +41,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 {
                     ParticipantId = participant.Id,
                     FullName = participant.FullName,
-                    CasID = participant.CasId,
+                    Email = participant.Email,
                     CountOfSessions = participant.SessionParticipants.Count
                 });
             }
@@ -99,7 +99,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var viewModel = new ParticipantSummaryViewModel()
             {
                 PersonId = participant.Id,
-                FullNameWithCas = participant.FullNameWithCas,
+                Email = participant.Email,
                 FullName = participant.FullName,
                 Comments = participant.Comments,
                 Wishes = participant.Wishes,

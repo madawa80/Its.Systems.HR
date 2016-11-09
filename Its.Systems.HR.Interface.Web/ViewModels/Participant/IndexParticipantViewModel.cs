@@ -11,7 +11,7 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
     {
         public int ParticipantId { get; set; }
         public string FullName { get; set; }
-        public string CasID { get; set; }
+        public string Email { get; set; }
         public int CountOfSessions { get; set; }
 
         public bool IsHrPerson { get; set; }

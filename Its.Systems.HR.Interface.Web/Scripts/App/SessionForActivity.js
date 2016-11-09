@@ -32,6 +32,7 @@
 
                         var $newA = $("<a>")
                                         .attr("href", hr_urlPrefix + "/Participant/Details/" + result.PersonId)
+                                        .attr("target", "_blank")
                                         .text(result.PersonFullName);
 
                         var $newButton = $("<button>")

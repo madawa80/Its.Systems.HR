@@ -34,7 +34,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 {
                     ParticipantId = participant.Id,
                     FullName = participant.FullName,
-                    CasID = participant.CasId,
+                    Email = participant.Email,
                     CountOfSessions = participant.SessionParticipants.Count,
                     IsHrPerson = participant.IsHrPerson,
                     IsActiv = participant.IsActive,
