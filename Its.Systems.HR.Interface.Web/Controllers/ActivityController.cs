@@ -24,6 +24,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
        
 
+        [Authorize(Roles = "Admin")]
         public ViewResult Index(string searchString)
         {
             var activities = _activityManager.GetAllActivitiesWithSessions();

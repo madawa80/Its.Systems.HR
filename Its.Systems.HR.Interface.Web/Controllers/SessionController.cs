@@ -361,9 +361,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(succesResult);
         }
 
-        [Authorize(Roles = "Admin")]
         public ActionResult RemovePersonFromSession(int sessionId, int personId)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                var loggedInUser = _personManager.GetParticipantByCas(User.Identity.Name.ToCasId());
+                if (personId != loggedInUser.Id)
+                    return new HttpUnauthorizedResult();
+            }
+
             var result = new { Success = true };
 
             if (!_personManager.RemoveParticipantFromSession(personId, sessionId))
