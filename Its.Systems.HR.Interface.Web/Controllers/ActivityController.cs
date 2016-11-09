@@ -151,7 +151,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return Json(locations.OrderBy(n => n), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult AutoCompleteLocationsParticipants(string term)
+        public ActionResult AutoCompleteParticipants(string term)
         {
             var participants = from element in _personManager.GetAllParticipants()
                                let fullName = element.FirstName + " " + element.LastName

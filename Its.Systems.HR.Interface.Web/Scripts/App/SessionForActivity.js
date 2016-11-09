@@ -10,7 +10,7 @@
 
         //TODO: Test the new AddParticipantToSession-system rigorously
         $("#nameOfParticipant").autocomplete({
-            source: hr_urlPrefix + "/Activity/AutoCompleteLocationsParticipants/",
+            source: hr_urlPrefix + "/Activity/AutoCompleteParticipants/",
             minLength: 2,
             select: function (event, ui) {
                 $("#selectedParticipantId").val(ui.item.id);
