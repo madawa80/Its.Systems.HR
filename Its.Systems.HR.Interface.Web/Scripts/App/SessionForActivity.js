@@ -1,6 +1,6 @@
 ﻿$(document)
     .ready(function () {
-
+        var mailstring ;
         // COUNT TOTAL PARTICIPANTS
         paticipantCount();
         // HANDLE ENTER-BUTTON WHEN ADDING PARTICIPANTS
@@ -171,8 +171,41 @@
         });
 
         function paticipantCount() {
+
+            //TODO:conditionText for count checked rows 
             var rowCount = $("#ParticipantsForSession").find("tr").length;
             $("#totDeltagare").html(rowCount);
         }
 
+
+        function mailGroup(){
+         $(".js-send-interestmail").change(function () {
+
+            var link = $(this);
+            
+            var result = this.checked;
+
+            if (result == true) {
+
+                mailstring = mailstring + (this.value + ",");
+            }
+
+           });
+
+        return mailstring;
+        }
+
+        function sendMail(){
+            $("#groupmail").click(function () {
+                var mailList = mailGroup();
+
+                if (mailList != null) {
+                    document.getElementById("mailurl").setAttribute("href", ("mailto:" + mailList));
+            } else {
+                alert("Välj personer");
+            }
+            
+            });
+        }
+    
     });
