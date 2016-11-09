@@ -2,7 +2,7 @@
     .ready(function () {
         var mailstring ;
         // COUNT TOTAL PARTICIPANTS
-        paticipantCount();
+        //paticipantCount();
         // HANDLE ENTER-BUTTON WHEN ADDING PARTICIPANTS
         hr_addEventListenerForEnter(".js-add-sessionParticipant", "#nameOfParticipant");
         // ADD CLICK EVENT HANDLER FOR delete-sessionParticipant
@@ -10,7 +10,7 @@
 
         //TODO: Test the new AddParticipantToSession-system rigorously
         $("#nameOfParticipant").autocomplete({
-            source: hr_urlPrefix + "/Activity/AutoCompleteLocationsParticipants/",
+            source: hr_urlPrefix + "/Activity/AutoCompleteParticipants/",
             minLength: 2,
             select: function (event, ui) {
                 $("#selectedParticipantId").val(ui.item.id);
@@ -47,7 +47,10 @@
                         $($html).hide().appendTo("#ParticipantsForSession").fadeIn(hr_fadeInSpeed);
                         $newButton.click(deleteSessionParticipant);
 
-                        paticipantCount();
+                        //paticipantCount();
+                        $("#sessionStatisticCount")
+                            .load(hr_urlPrefix + "/ActivitySummary/SessionStatisticCount/" + link.attr("data-sessionId"));
+
                         $("#nameOfParticipant").val("");
                         $("#selectedParticipantId").val("");
                     }
@@ -86,7 +89,9 @@
                                     .fadeOut(hr_fadeOutSpeed, function () {
                                         $(this).remove();
 
-                                        paticipantCount();
+                                        //paticipantCount();
+                                        $("#sessionStatisticCount")
+                                            .load(hr_urlPrefix + "/ActivitySummary/SessionStatisticCount/" + link.attr("data-sessionId"));
                                     });
                             },
                             error: function () {
