@@ -80,7 +80,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 //years = Enumerable.Range(2011, DateTime.Now.AddYears(1).Year - 2010).ToList();
                 var sessionsForYear =
                       _sessionManager.GetAllSessionsForYear(selectedyear).Where(n => n.StartDate < DateTime.Today)
-                    .Include(n => n.Activity)
+                        .Include(n => n.Activity)
                         .ToList()
                         .OrderBy(n => n.Id);
 
@@ -131,17 +131,18 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 sessionsForTag =
                   _sessionManager.GetAllSessionsForTag(selectedTag)
                       .Include(n => n.Activity)
-                      .Include(n => n.SessionParticipants.Where(a => a.Participant.IsDeleted == false))
                       .Include(n => n.SessionParticipants)
-                      .OrderBy(n => n.Id)
                       .ToList();
 
+            
                 totalSessionCount = sessionsForTag.Count();
                 tagDisplay = _utilityManager.GetTag(selectedTag).Name;
 
                 foreach (var session in sessionsForTag)
                 {
-                    totalParticipantCount += session.SessionParticipants.Count;
+
+                    totalParticipantCount += _personManager.GetAllParticipantsForSession(session.Id).Where(n => n.IsDeleted == false).ToList().Count;
+
                 }
             }
 

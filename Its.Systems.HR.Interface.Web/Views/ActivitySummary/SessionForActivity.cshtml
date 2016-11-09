@@ -37,7 +37,10 @@
             {
                 <tr>
                     <td>
-                        @Html.ActionLink(participant.FullNameWithCas, "Details", "Participant", new { id = participant.Id }, null)
+                       @* @Html.CheckBoxFor(n => participant.Id, new { data_participantId = participant.Id, @class = "checkbox js-update-interestmail" })*@
+                    </td>
+                    <td>
+                        @Html.ActionLink(participant.FullNameWithCas, "Details", "Participant", new {id = participant.Id}, null)
                     </td>
                     <td>
                         <button type="button" class="btn btn-warning btn-xs js-delete-sessionParticipant" data-sessionId="@Model.SessionId" data-personId="@participant.Id">Ta bort</button>
