@@ -24,6 +24,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(string searchString)
         {
             var allParticipants = _personManager.GetAllParticipants()
@@ -165,6 +166,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
 
         // AJAX AND PARTIALS BELOW
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult SaveComments(int personId, string comments)
         {
@@ -179,6 +181,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult SaveWishes(int personId, string wishes)
         {
             var result = new { Success = true };

@@ -7,6 +7,7 @@ using Its.Systems.HR.Interface.Web.ViewModels;
 
 namespace Its.Systems.HR.Interface.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IPersonManager _personManager;
@@ -46,7 +47,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
         
 
-        // JSON METHODS BELOW
+        // AJAX METHODS BELOW
         public ActionResult UpdatePersonalHrStatus(int ParticipantId, bool isChecked)
         {
             var result = new { Success = false };

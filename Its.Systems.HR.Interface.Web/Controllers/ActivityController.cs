@@ -44,6 +44,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             return View(result);
         }
 
+        [AllowAnonymous]
         public ViewResult StartScreen()
         {
             return View("StartScreen");
@@ -141,6 +142,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
 
         //AJAX AUTOCOMPLETE
         public ActionResult AutoCompleteLocations(string term)
