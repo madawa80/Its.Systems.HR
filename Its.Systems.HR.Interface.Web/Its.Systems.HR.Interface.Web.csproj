@@ -234,6 +234,7 @@
     <Compile Include="ViewModels\Statistic\SessionSummaryStatisticsViewModel.cs" />
     <Compile Include="ViewModels\Statistic\RatingStatisticsViewModel.cs" />
     <Compile Include="ViewModels\Statistic\SessionTagsViewModel.cs" />
+    <Compile Include="ViewModels\Admin\AdminTagsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker.css" />
@@ -295,6 +296,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\App\ActivityIndex.js" />
+    <Content Include="Scripts\App\AdminTags.js" />
     <Content Include="Scripts\App\FilterUpcomingSessions.js" />
     <Content Include="Scripts\App\AdminIndex.js" />
     <Content Include="Scripts\App\FilterSessionsForTag.js" />
@@ -379,6 +381,7 @@
     <Content Include="Views\Shared\StartScreen.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\ActivitySummary\FilterUpcomingSessions.cshtml" />
+    <Content Include="Views\Admin\Tags.cshtml" />
     <None Include="Views\Participant\_ParticipantStatisticSummaryPartial.cshtml" />
     <Content Include="Views\Statistic\YearlyStatistics.cshtml" />
     <Content Include="Views\Statistic\FilterSessionsForTag.cshtml" />
@@ -394,7 +397,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ViewModels\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

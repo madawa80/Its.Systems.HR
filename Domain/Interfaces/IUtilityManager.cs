@@ -54,6 +54,13 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// <returns>A Tag or null if not found.</returns>
         Tag GetTag(int tagId);
 
+        /// <summary>
+        /// Deletes a Tag.
+        /// </summary>
+        /// <param name="tagId"></param>
+        /// <returns>True, if successfull.</returns>
+        bool DeleteTag(int tagId);
+
         //int GetNoOfRatingsForSessionById(int sessionId);
     }
 }

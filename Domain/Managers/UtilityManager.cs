@@ -114,6 +114,14 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<Tag>().SingleOrDefault(n => n.Id == tagId);
         }
 
+        public bool DeleteTag(int tagId)
+        {
+            var tagToDelete = GetTag(tagId);
+            _db.Delete(tagToDelete);
+
+            return true; //TODO: Always returns true or exception...
+        }
+
         //public int GetNoOfRatingsForSessionById(int sessionId)
         //{
         //    return _db.Get<SessionParticipant>().Count(n => n.SessionId == sessionId && n.Rating != 0);

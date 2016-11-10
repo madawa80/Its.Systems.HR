@@ -11,10 +11,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
     public class AdminController : Controller
     {
         private readonly IPersonManager _personManager;
+        private readonly IUtilityManager _utilityManager;
 
-        public AdminController(IPersonManager personManager)
+        public AdminController(IPersonManager personManager, IUtilityManager utilityManager)
         {
             _personManager = personManager;
+            _utilityManager = utilityManager;
         }
 
 
@@ -52,7 +54,19 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             return View(result);
         }
-        
+
+        public ActionResult Tags()
+        {
+            var allTags = _utilityManager.GetAllTags().Include(n => n.SessionTags).ToList();
+
+            var viewmodel = new AdminTagsViewModel()
+            {
+                Tags = allTags
+            };
+
+            return View(viewmodel);
+        }
+
 
         // AJAX METHODS BELOW
         public ActionResult UpdatePersonalHrStatus(int ParticipantId, bool isChecked)
@@ -70,6 +84,16 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             var result = new { Success = false };
 
             if (_personManager.ChangeParticipantDeletedStatus(Participantid, isChecked))
+                result = new { Success = true };
+
+            return Json(result);
+        }
+
+        public ActionResult DeleteTag(int tagId)
+        {
+            var result = new { Success = false };
+
+            if (_utilityManager.DeleteTag(tagId))
                 result = new { Success = true };
 
             return Json(result);
