@@ -12,10 +12,11 @@
     });
 
     // ADD CLICK EVENT HANDLERS
-    $(".js-delete-tag").click(deleteTag);
+    $(".js-delete-tag").click(deleteTagCallback);
 
     // DELETE A TAG
-    function deleteTag() {
+    function deleteTagCallback(e) {
+        e.preventDefault();
         var link = $(this);
 
         bootbox.confirm({
