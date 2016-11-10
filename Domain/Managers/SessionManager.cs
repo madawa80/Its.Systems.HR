@@ -26,9 +26,21 @@ namespace Its.Systems.HR.Domain.Managers
             return _db.Get<SessionParticipant>().Where(n => n.ParticipantId == id).Select(n => n.Session);
         }
 
-        public void AddSession(Session session)
+        public bool AddSession(Session session)
         {
+            //TODO: Crazy performance hit just to make sure no duplicate sessionnames is added...
+            var allSessions = GetAllSessionsWithIncludes().ToList();
+
+            var activityToAddSessionTo = _db.Get<Activity>().SingleOrDefault(n => n.Id == session.ActivityId);
+
+            if (activityToAddSessionTo == null)
+                return false;
+
+            if (allSessions.Any(n => n.Name.ToLower() == session.Name.ToLower() && n.Activity.Name == activityToAddSessionTo.Name))
+                return false;
+
             _db.Add<Session>(session);
+            return true;
         }
 
         public Session GetSessionById(int id)

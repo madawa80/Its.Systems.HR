@@ -54,41 +54,21 @@ namespace Its.Systems.HR.Test
             Assert.AreEqual(0, count);
         }
 
-        // UMU API SYNC WITH OUR PARTICIPANT-TABLE IN DB
-        [TestMethod]
-        public void SyncWithITS_ShouldReturnExpected()
-        {
-            // Assumes the following CasIds exists in UmuApi ITS Persons:
-            // sape0014, maku0029, elnjan96, jaru0002
-
-            var umuApi = new Actions();
-            var actualCountFromUmuWebApi = umuApi.GetPersonFromUmuApi().Count;
-             
-            var addedPersons = _personManager.AddItsPersons();
-            var inactivatedPersons = _personManager.InactivateItsPersons();
-
-            Assert.AreEqual(4, inactivatedPersons.Count);
-            Assert.AreEqual(actualCountFromUmuWebApi - 4, addedPersons.Count);
-            Assert.AreEqual(actualCountFromUmuWebApi, _personManager.GetAllParticipants().Count(n => n.IsActive));
-        }
-
-
-
         [TestMethod]
         public void UseCase1_ShouldReturnExpected()
         {
             // 1. Lista Personal
-           
+
 
             _personManager.GetAllParticipants();    //shoud returns 8
 
             // 2. Visa Alla tillfälle för en person
-          
+
             var x = _sessionManager.GetAllSessionsForParticipantById(1).Count();   //should return 3!!
 
             // 3. LÄGG TILL tillfälle
 
-        
+
             _personManager.AddParticipantToSession(1, 3);
             _personManager.AddParticipantToSession(1, 4);
 
@@ -108,7 +88,24 @@ namespace Its.Systems.HR.Test
             Assert.AreEqual("New Comment", _personManager.GetParticipantById(1).Comments);
             Assert.AreEqual("New Wish", _personManager.GetParticipantById(1).Wishes);
 
-           }
+        }
 
+        // UMU API SYNC WITH OUR PARTICIPANT-TABLE IN DB
+        [TestMethod]
+        public void SyncWithITS_ShouldReturnExpected()
+        {
+            // Assumes the following CasIds exists in UmuApi ITS Persons:
+            // sape0014, maku0029, elnjan96, jaru0002
+
+            var umuApi = new Actions();
+            var actualCountFromUmuWebApi = umuApi.GetPersonFromUmuApi().Count;
+
+            var addedPersons = _personManager.AddItsPersons();
+            var inactivatedPersons = _personManager.InactivateItsPersons();
+
+            Assert.AreEqual(4, inactivatedPersons.Count);
+            Assert.AreEqual(actualCountFromUmuWebApi - 4, addedPersons.Count);
+            Assert.AreEqual(actualCountFromUmuWebApi, _personManager.GetAllParticipants().Count(n => n.IsActive));
+        }
     }
 }

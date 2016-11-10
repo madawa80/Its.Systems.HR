@@ -83,6 +83,24 @@ namespace Its.Systems.HR.Test
         }
 
         [TestMethod]
+        public void CreateASessionWithDuplicateName_ShouldNotCreateSessionInDb()
+        {
+            var sessionToAdd = new Session()
+            {
+                ActivityId = 2,
+                StartDate = null,
+                EndDate = null,
+                HrPersonId = null,
+                LocationId = null,
+                Name = "2015"
+            };
+
+            var result = _sessionManager.AddSession(sessionToAdd);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [TestMethod]
         public void EditASession_ShouldReturnExpected()
         {
             var sessionToEdit = _sessionManager.GetSessionById(1);
@@ -102,11 +120,12 @@ namespace Its.Systems.HR.Test
                 Name = "NewActivity",
             };
 
-            _activityManager.AddActivity(activityToAdd);    //returns bool
+            _activityManager.AddActivity(activityToAdd);
 
             // 2. SKAPA SESSION
             var sessionToAdd = new Session()
             {
+                Name = "NewSession",
                 ActivityId = activityToAdd.Id,
                 StartDate = null,
                 EndDate = null,
@@ -114,7 +133,7 @@ namespace Its.Systems.HR.Test
                 LocationId = null,
             };
 
-            _sessionManager.AddSession(sessionToAdd);   //returns void!!
+            _sessionManager.AddSession(sessionToAdd);
 
             // 3. LÄGG TILL DELTAGARE
             _personManager.AddParticipantToSession(1, sessionToAdd.Id);
