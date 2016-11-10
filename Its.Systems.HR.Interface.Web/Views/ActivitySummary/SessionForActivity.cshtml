@@ -40,22 +40,7 @@
             {
                 <tr>
                     <td>
-                        @*@Html.CheckBoxFor("epost", new { data_participantId = participant.Id, @class = "checkbox js-update-interestmail" , value = participant.Email })
-                        
-                        @Html.CheckBox("epost", false, data-participantId = participant.Id,value = participant.Email)*@
-                        
                         <input type="checkbox" id ="epost" class = "checkbox js-send-interestmail" value = participant.Email > Välj mig<br>
-
-
-                    </td>
-                    <td>
-                        @*@Html.CheckBoxFor("epost", new { data_participantId = participant.Id, @class = "checkbox js-update-interestmail" , value = participant.Email })
-
-                        @Html.CheckBox("epost", false, data-participantId = participant.Id,value = participant.Email)*@
-
-                        <input type="checkbox" id="epost" class="checkbox js-send-interestmail" value=participant.Email> Välj mig<br>
-
-
                     </td>
                     <td>
                         @Html.ActionLink(participant.FullName, "Details", "Participant", new { id = participant.Id }, null)

@@ -1,0 +1,77 @@
+﻿using System;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Its.Systems.HR.Domain.Interfaces;
+using Its.Systems.HR.Interface.Web.Controllers;
+using Its.Systems.HR.Interface.Web.ViewModels;
+using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Its.Systems.HR.Test.Controllers
+{
+    /// <summary>
+    /// Summary description for Activity
+    /// </summary>
+    [TestClass]
+    public class Activity : BaseTest
+    {
+        private readonly IActivityManager _activityManager;
+        private readonly ISessionManager _sessionManager;
+        private readonly IPersonManager _personManager;
+        private readonly IUtilityManager _utilityManager;
+
+        public Activity() : base()
+        {
+            _activityManager = Container().Resolve<IActivityManager>();
+            _sessionManager = Container().Resolve<ISessionManager>();
+            _personManager = Container().Resolve<IPersonManager>();
+            _utilityManager = Container().Resolve<IUtilityManager>();
+        }
+        
+
+        [TestMethod]
+        public void Index_ShouldReturnViewResult()
+        {
+            // Arrange
+            ActivityController controller = new ActivityController(_activityManager, _personManager, _utilityManager);
+
+            // Act
+            ViewResult result = controller.Index() as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void ActivityIndexWithSearchstringJava_ShouldReturnActivityJavaOne()
+        {
+            // Arrange
+            ActivityController controller = new ActivityController(_activityManager, _personManager, _utilityManager);
+
+            // Act
+            var controllerResult = controller.ActivityIndex("Java");
+
+            var model = (IndexActivityViewModel) controllerResult.Model;
+
+            var result = new List<ActivityWithCountOfSessions>();
+            foreach (var activity in model.Activities)
+            {
+                result.Add(activity);
+            }
+            // Assert
+            Assert.AreEqual("JavaOne", result[0].Name);
+        }
+
+        [TestMethod]
+        public void Verify_ActivityIndex_Method_Is_Decorated_With_Authorize_Attribute()
+        {
+            ActivityController controller = new ActivityController(_activityManager, _personManager, _utilityManager);
+            var type = controller.GetType();
+            var methodInfo = type.GetMethod("ActivityIndex", new Type[] { typeof(string) });
+            var attributes = methodInfo.GetCustomAttributes(typeof(AuthorizeAttribute), true);
+            Assert.IsTrue(attributes.Any(), "No AuthorizeAttribute found on ActivityIndex(string searchString) method");
+        }
+    }
+}

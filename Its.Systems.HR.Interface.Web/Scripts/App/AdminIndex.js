@@ -50,7 +50,7 @@
             dataType: "json",
             data: { ParticipantId: link.attr("data-ParticipantId"), isChecked: result },
             success: function () {
-                alert("Personens raderad-status sattes framgångsrikt.");
+                alert("Personens status som gömd eller inte sattes framgångsrikt.");
             },
             error: function () {
                 alert("Anropet misslyckades, prova gärna igen.");

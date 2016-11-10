@@ -18,7 +18,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         }
 
 
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string searchString, bool includeDeleted = false)
         {
             var allParticipants = _personManager.GetAllParticipants()
                 .Include(n => n.SessionParticipants);
@@ -26,8 +26,15 @@ namespace Its.Systems.HR.Interface.Web.Controllers
             if (!string.IsNullOrEmpty(searchString))
                 allParticipants = allParticipants.Where(s => s.FirstName.ToLower().Contains(searchString.ToLower()) ||
                                                                 s.LastName.ToLower().Contains(searchString.ToLower()));
+            // "Deleted" participants is by default hidden.
+            if (!includeDeleted)
+                allParticipants = allParticipants.Except(allParticipants.Where(n => n.IsDeleted));
 
-            var result = new IndexParticipantViewModel() { Participants = new List<ParticipantWithCountOfSessions>() };
+            var result = new IndexParticipantViewModel()
+            {
+                Participants = new List<ParticipantWithCountOfSessions>(),
+                IncludeDeleted = includeDeleted
+            };
 
             foreach (var participant in allParticipants)
             {
