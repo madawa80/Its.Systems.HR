@@ -3,6 +3,7 @@
         var mailstring ;
         // COUNT TOTAL PARTICIPANTS
         paticipantCount();
+        var listOfEmails = [];
         // HANDLE ENTER-BUTTON WHEN ADDING PARTICIPANTS
         hr_addEventListenerForEnter(".js-add-sessionParticipant", "#nameOfParticipant");
         // ADD CLICK EVENT HANDLER FOR delete-sessionParticipant
@@ -178,34 +179,42 @@
         }
 
 
-        function mailGroup(){
+        //function mailGroup(){
          $(".js-send-interestmail").change(function () {
 
             var link = $(this);
             
             var result = this.checked;
 
-            if (result == true) {
-
-                mailstring = mailstring + (this.value + ",");
+            if ($.inArray(this.value, listOfEmails) > -1) {
+                hr_messageFadingOut(link, "Redan tillagd!", "danger");
+                return;
             }
+
+            listOfEmails.push(this.value + ",");
+            //$("#AddedParticipants").val(listOfParticiantsThatParticipated);
+
+            //if (result == true) {
+
+            //    mailstring = mailstring + (this.value + ",");
+            //}
 
            });
 
-        return mailstring;
-        }
+        //return mailstring;
+        //}
 
-        function sendMail(){
+        //function sendMail(){
             $("#groupmail").click(function () {
-                var mailList = mailGroup();
+                //var mailList = mailGroup();
 
-                if (mailList != null) {
-                    document.getElementById("mailurl").setAttribute("href", ("mailto:" + mailList));
+                if (listOfEmails != null) {
+                    document.getElementById("mailurl").setAttribute("href", ("mailto:" + listOfEmails));
             } else {
                 alert("Välj personer");
             }
             
             });
-        }
+        //}
     
     });
