@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
+using Its.Systems.HR.Domain.Model;
 using Its.Systems.HR.Interface.Web.Controllers;
 using Its.Systems.HR.Interface.Web.ViewModels;
 using Microsoft.Practices.Unity;
@@ -63,55 +64,38 @@ namespace Its.Systems.HR.Test.Controllers
         //    Assert.AreEqual("JavaOne", result[0].Name);
         //}
 
-        //[TestMethod]
-        //public void CreateActivity_ShouldAddThatActivity()
-        //{
-        //    // Arrange
-        //    ActivityController controller = new ActivityController(_activityManager, _personManager, _utilityManager);
+        [TestMethod]
+        public void CreateSession_ShouldAddThatSession()
+        {
+            // Arrange
+            var controller = new SessionController(_activityManager, _sessionManager, _personManager, _utilityManager);
 
-        //    var activityToAdd = new ActivityViewModel()
-        //    {
-        //        Name = "New Activity"
-        //    };
+            var sessionToAdd = new CreateSessionViewModel()
+            {
+                Activity = _activityManager.GetActivityById(1),
+                Name = "New Session",
+                AddedParticipants = "1,2",
+                AddedTags = "5,6",
+                NameOfLocation = "New Location"
+            };
 
-        //    // Act
-        //    var controllerResult = controller.CreateActivity(activityToAdd);
+            // Act
+            var controllerResult = controller.CreateSession(sessionToAdd);
 
-        //    var expected = _activityManager.GetAllActivities().SingleOrDefault(n => n.Name == "New Activity");
-            
-        //    // Assert
-        //    Assert.AreEqual(expected.Name, activityToAdd.Name);
-        //}
+            var sessionID = _sessionManager.GetAllSessions().SingleOrDefault(n => n.Name == "New Session").Id;
+            var result = _sessionManager.GetSessionByIdWithIncludes(sessionID);
 
-        //[TestMethod]
-        //public void CreateActivityWithNoName_ShouldReturnModelStateNotValid()
-        //{
-        //    var controller = new ActivityController(_activityManager, _personManager, _utilityManager);
-            
-        //    var model = new ActivityViewModel()
-        //    {
-        //        Name = ""
-        //    };
+            var tags = new string[2];
+            tags[0] = "databaser";
+            tags[1] = "sql";
 
-        //    //Init ModelState
-        //    var modelBinder = new ModelBindingContext()
-        //    {
-        //        ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(
-        //                          () => model, model.GetType()),
-        //        ValueProvider = new NameValueCollectionValueProvider(
-        //                            new NameValueCollection(), CultureInfo.InvariantCulture)
-        //    };
-        //    var binder = new DefaultModelBinder().BindModel(
-        //                     new ControllerContext(), modelBinder);
-        //    controller.ModelState.Clear();
-        //    controller.ModelState.Merge(modelBinder.ModelState);
+            //TODO: check that it's the correct sessionparticipants & tags!?
 
-        //    var controllerResult = controller.CreateActivity(model);
+            // Assert
+            Assert.AreEqual(2, result.SessionParticipants.Count);
+            Assert.AreEqual(2, result.SessionTags.Count);
+        }
 
-        //    ViewResult result = (ViewResult)controllerResult;
-        //    Assert.IsTrue(result.ViewData.ModelState["Name"].Errors.Count > 0);
-        //    Assert.IsTrue(!result.ViewData.ModelState.IsValid);
-        //}
 
         [TestMethod]
         public void CreateSessionWithInvalidModel_ShouldReturnModelStateNotValid()

@@ -96,8 +96,12 @@ namespace Its.Systems.HR.Test
             };
 
             var result = _sessionManager.AddSession(sessionToAdd);
+            var sessionCount =
+                _sessionManager
+                    .GetAllSessionsWithIncludes().Count(n => n.Name == "2015" && n.Activity.Name == "JavaOne");
 
             Assert.AreEqual(false, result);
+            Assert.AreEqual(1, sessionCount);
         }
 
         [TestMethod]
