@@ -5,7 +5,7 @@
 }
 
 <h2>Administrera personal</h2>
-<h4>Här kan du som administratör välja vilka andra i personalen som ska klassas som administratörer (HR-personer). Vidare kan man välja att sätta en person som "raderad", vilket innebär att denna person inte visas i statistiken eller någon annanstans i applikationen. Det går dock närsomhelst att ångra detta genom att avmarkera kryssrutan. Personens status som aktiv eller inte uppdateras automatiskt mot UmU WebApi:et.</h4>
+<h4>Här kan du som administratör välja vilka andra i personalen som ska klassas som administratörer (HR-personer). Vidare kan man välja att sätta en person som "gömd", vilket innebär att denna person inte visas i statistiken eller någon annanstans i applikationen. Det går dock närsomhelst att ångra detta genom att avmarkera kryssrutan. Personens status som aktiv eller inte uppdateras automatiskt mot UmU WebApi:et.</h4>
 <hr />
 @using (Html.BeginForm("Index", "Admin", FormMethod.Get))
 {
@@ -14,6 +14,8 @@
         <div class="form-inline">
             <div class="form-group">
                 @Html.TextBox("searchString", null, new { @class = "form-control" })
+                @Html.CheckBoxFor(n => n.IncludeDeleted, new { @class = "checkbox"})
+                @Html.LabelFor(n => n.IncludeDeleted)
             </div>
             <button class="btn btn-default">
                 <i class="glyphicon glyphicon-search"></i> Filtrera
@@ -43,7 +45,7 @@
             </th>
 
             <th>
-                Raderad?
+                Gömd?
             </th>
         </tr>
     </thead>

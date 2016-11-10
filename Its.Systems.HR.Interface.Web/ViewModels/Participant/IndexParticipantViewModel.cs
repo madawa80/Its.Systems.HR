@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Its.Systems.HR.Interface.Web.ViewModels
 {
     public class IndexParticipantViewModel
     {
         public List<ParticipantWithCountOfSessions> Participants { get; set; }
+        [Display(Name = "Inkludera gömda?")]
+        public bool IncludeDeleted { get; set; }
     }
 
     public class ParticipantWithCountOfSessions
@@ -19,5 +22,6 @@ namespace Its.Systems.HR.Interface.Web.ViewModels
         public bool IsActiv { get; set; }
 
         public bool IsDeleted { get; set; }
+
     }
 }
