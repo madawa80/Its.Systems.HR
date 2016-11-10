@@ -20,7 +20,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
         public ActionResult Index(string searchString, bool includeDeleted = false)
         {
-            var allParticipants = _personManager.GetAllParticipants()
+            var allParticipants = _personManager.GetAllParticipantsIncludingDeleted()
                 .Include(n => n.SessionParticipants);
 
             if (!string.IsNullOrEmpty(searchString))

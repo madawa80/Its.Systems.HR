@@ -21,12 +21,17 @@ namespace Its.Systems.HR.Domain.Managers
 
         public IQueryable<Participant> GetAllParticipants()
         {
+            return _db.Get<Participant>().Where(n => n.IsDeleted == false);
+        }
+
+        public IQueryable<Participant> GetAllParticipantsIncludingDeleted()
+        {
             return _db.Get<Participant>();
         }
 
         public IQueryable<Participant> GetAllHrPersons()
         {
-            return _db.Get<Participant>().Where(n => n.IsHrPerson);
+            return _db.Get<Participant>().Where(n => n.IsHrPerson && n.IsDeleted == false);
         }
 
         public bool MakeParticipantHrPerson(Participant hrPerson)
@@ -46,6 +51,7 @@ namespace Its.Systems.HR.Domain.Managers
         {
             return _db.Get<Participant>().SingleOrDefault(n => n.Id == id);
         }
+
         public Participant GetParticipantByCas(string cas)
         {
             return _db.Get<Participant>().SingleOrDefault(n => n.CasId == cas);
@@ -155,7 +161,7 @@ namespace Its.Systems.HR.Domain.Managers
 
         public IQueryable<Participant> GetAllParticipantsForSession(int id)
         {
-            return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant);
+            return _db.Get<SessionParticipant>().Where(n => n.SessionId == id).Select(n => n.Participant).Where(n => n.IsDeleted == false);
         }
 
         public bool UpdateReviewForSessionParticipant(int sessionId, int participantId, int rating, string comments)
@@ -186,7 +192,7 @@ namespace Its.Systems.HR.Domain.Managers
 
         public IQueryable<SessionParticipant> GetAllSessionParticipants()
         {
-            return _db.Get<SessionParticipant>();
+            return _db.Get<SessionParticipant>().Where(n => n.Participant.IsDeleted == false);
         }
 
         public List<Participant> InactivateItsPersons()
@@ -213,7 +219,6 @@ namespace Its.Systems.HR.Domain.Managers
             return result;
         }
 
-
         public void UpdateEmail()
         {
             // Mark the people missing as IsActive = false
@@ -230,13 +235,10 @@ namespace Its.Systems.HR.Domain.Managers
                     person.Email = personsFromUmuApi.SingleOrDefault(n => n.CasId == person.CasId).Guise[0].EPost;
                     _db.Context().Entry(person).State = EntityState.Modified;
                     _db.SaveChanges();
-
-
                 }
 
             }
         }
-
 
         public List<Participant> AddItsPersons()
         {
@@ -265,6 +267,7 @@ namespace Its.Systems.HR.Domain.Managers
 
             return result;
         }
+
 
         // PRIVATE METHODS BELOW
         private bool CheckIfSessionExists(int sessionId)
@@ -316,8 +319,6 @@ namespace Its.Systems.HR.Domain.Managers
             _db.SaveChanges();
             return true;
         }
-
-
 
     }
 }

@@ -7,13 +7,19 @@ namespace Its.Systems.HR.Domain.Interfaces
     public interface IPersonManager
     {
         /// <summary>
-        /// Gets all the participants.
+        /// Gets all the participants that are not hidden (IsDeleted).
         /// </summary>
         /// <returns>IQueryable of Participant.</returns>
         IQueryable<Participant> GetAllParticipants();
 
         /// <summary>
-        /// Gets all the HrPersons.
+        /// Gets all participants INCLUDING those that are hidden (IsDeleted).
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<Participant> GetAllParticipantsIncludingDeleted();
+
+        /// <summary>
+        /// Gets all the HrPersons that are not hidden (IsDeleted).
         /// </summary>
         /// <returns>IQueryable of HrPerson.</returns>
         IQueryable<Participant> GetAllHrPersons();
@@ -80,7 +86,7 @@ namespace Its.Systems.HR.Domain.Interfaces
         bool RemoveParticipantFromSession(int participantId, int sessionId);
 
         /// <summary>
-        /// Gets all participants for a session by sessionId.
+        /// Gets all participants that are not hidden (IsDeleted) for a session by sessionId.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -119,14 +125,14 @@ namespace Its.Systems.HR.Domain.Interfaces
         SessionParticipant GetASessionParticipant(int sessionId, int participantId);
 
         /// <summary>
-        /// Gets all the Session Participations by a sessionId.
+        /// Gets all the Session Participations that are not hidden (IsDeleted) by a sessionId.
         /// </summary>
         /// <param name="sessionId"></param>
         /// <returns>IQueryable of Session Participant or null if none is found.</returns>
         IQueryable<SessionParticipant> GetAllSessionParticipationsForSessionById(int sessionId);
 
         /// <summary>
-        /// Gets all the Session Participatants.
+        /// Gets all the Session Participatants that are not hidden (IsDeleted).
         /// </summary>
         /// <returns>IQueryable of SessionParticipant, or null if there are none in the database.</returns>
         IQueryable<SessionParticipant> GetAllSessionParticipants();
