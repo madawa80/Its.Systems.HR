@@ -325,7 +325,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 var failResult = new
                 {
                     Success = false,
-                    ErrorMessage = "Misslyckades",
+                    ErrorMessage = "Välj ur listan",
                     PersonId = 0,
                     SessionId = sessionId,
                     PersonFullName = "",
