@@ -31,6 +31,11 @@
                 success: function (result) {
                     if (result.Success) {
 
+                        var $newCheckBox = $("<input>")
+                            .attr("type", "checkbox")
+                            .addClass("checkbox js-group-interestmail");
+                           
+                                        
                         var $newA = $("<a>")
                                         .attr("href", hr_urlPrefix + "/Participant/Details/" + result.PersonId)
                                         .attr("target", "_blank")
@@ -43,7 +48,9 @@
                                             .attr("data-personid", result.PersonId)
                                             .text("Ta bort");
 
-                        var $html = $("<tr>").append($("<td>").append($newA)).append($("<td>").append($newButton));
+                        var $html = $("<tr>").append($("<td>").append($newCheckBox)).append($("<td>").append($newA)).append($("<td>").append($newButton));
+
+                        //var $html = $("<tr>").append($("<td>").append($newA)).append($("<td>").append($newButton));
 
                         $($html).hide().appendTo("#ParticipantsForSession").fadeIn(hr_fadeInSpeed);
                         $newButton.click(deleteSessionParticipant);
@@ -184,42 +191,42 @@
         }
 
 
-        //function mailGroup(){
-         $(".js-send-interestmail").change(function () {
+       
+        $(".js-group-interestmail").change(function () {
 
-            var link = $(this);
-            
-            var result = this.checked;
+            var chkbox = $(this);
 
-            if ($.inArray(this.value, listOfEmails) > -1) {
-                hr_messageFadingOut(link, "Redan tillagd!", "danger");
-                return;
+            if (this.checked) {
+                listOfEmails.push(this.value);
+
+            } else {
+                
+
+                var index = listOfEmails.indexOf(this.value);
+                if (index > -1) {
+                    listOfEmails.splice(index, 1);
             }
 
-            listOfEmails.push(this.value + ",");
-            //$("#AddedParticipants").val(listOfParticiantsThatParticipated);
+           
+            }
 
-            //if (result == true) {
+         });
 
-            //    mailstring = mailstring + (this.value + ",");
-            //}
-
-           });
-
-        //return mailstring;
-        //}
-
-        //function sendMail(){
-            $("#groupmail").click(function () {
-                //var mailList = mailGroup();
-
+        $(".js-send-interestmail").click(function () {
+            var link = $(this);
+            var subject = link.attr("data-sessionName");
+            var lnk = document.getElementById("mailurl");
+           
+            //lnk.href += "?subject=" + document.getElementById("data-sessionName").value;
+            //lnk.href += "&body=" + document.getElementById("data-sessionName").value;
                 if (listOfEmails != null) {
-                    document.getElementById("mailurl").setAttribute("href", ("mailto:" + listOfEmails));
+                    lnk.setAttribute("href", ("mailto:" + listOfEmails.join(";") + "?Subject=" + subject));
+
             } else {
                 alert("Välj personer");
             }
             
             });
-        //}
+       
     
     });
