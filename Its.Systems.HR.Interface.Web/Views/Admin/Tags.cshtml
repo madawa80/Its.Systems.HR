@@ -1,0 +1,46 @@
+﻿@model Its.Systems.HR.Interface.Web.ViewModels.AdminTagsViewModel
+
+@{
+    ViewBag.Title = "Administrera etiketter";
+}
+
+<h2>Administrera etiketter</h2>
+<h4>Här listas alla taggar som ligger i databasen och låter dig ta bort dem. Nya etiketter skapas automatiskt när de läggs in till ett tillfälle.</h4>
+<hr />
+
+<table id="listTagsTable" class="tablesorter table table-hover">
+    <thead>
+        <tr>
+            <th>
+                Etikett
+            </th>
+            <th>
+                Tillfällen
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Tags)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Name, "FilterSessionsForTag", "Statistic", new { id = item.Id }, null)
+                </td>
+                <td>
+                    @item.SessionTags.Count
+                </td>
+                <td>
+                    <a href="#" class="js-delete-tag" data-tagId="@item.Id">Ta bort</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts {
+
+    <script src="~/Scripts/jquery.tablesorter.min.js"></script>
+    <script src="~/Scripts/App/HRHelpers.js"></script>
+    <script src="~/Scripts/App/AdminTags.js"></script>
+}

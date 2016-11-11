@@ -24,7 +24,8 @@ namespace Its.Systems.HR.Domain.Interfaces
         /// Adds the session passed.
         /// </summary>
         /// <param name="session"></param>
-        void AddSession(Session session);
+        /// <returns>True if successfull.</returns>
+        bool AddSession(Session session);
 
         /// <summary>
         /// Gets a session by sessionId.

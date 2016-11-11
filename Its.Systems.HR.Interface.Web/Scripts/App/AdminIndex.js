@@ -3,7 +3,18 @@
     //INIT TABLE SORTER
     $("#listParticipantsTable").tablesorter(
     {
-        sortList: [[0, 0]]
+        sortList: [[0, 0]],
+        headers: {
+            3: {
+                sorter: false
+            },
+            4: {
+                sorter: false
+            },
+            5: {
+                sorter: false
+            }
+        }
     });
 
 

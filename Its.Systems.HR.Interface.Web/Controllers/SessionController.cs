@@ -53,78 +53,93 @@ namespace Its.Systems.HR.Interface.Web.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult CreateSession(CreateSessionViewModel sessionVm)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                List<Participant> participantsToAddFromDb = new List<Participant>();
+                if (sessionVm.AddedParticipants != null)
                 {
-                    List<Participant> participantsToAddFromDb = new List<Participant>();
-                    if (sessionVm.AddedParticipants != null)
+                    string[] participants = sessionVm.AddedParticipants.Split(',');
+                    List<int> participantsId = new List<int>();
+                    foreach (var participant in participants)
                     {
-                        string[] participants = sessionVm.AddedParticipants.Split(',');
-                        List<int> participantsId = new List<int>();
-                        foreach (var participant in participants)
-                        {
-                            participantsId.Add(int.Parse(participant));
-                        }
-
-                        //TODO: Make a proper join, this is inefficient
-                        participantsToAddFromDb =
-                            _personManager.GetAllParticipants().Where(n => participantsId.Contains(n.Id)).ToList();
+                        participantsId.Add(int.Parse(participant));
                     }
 
-
-                    // -> TAGS
-                    var tagsToAdd = sessionVm.GenerateSessionTags;
-
-                    _utilitiesManager.AddNewTagsToDb(tagsToAdd);
-                    // <- END TAGS
+                    //TODO: Make a proper join, this is inefficient
+                    participantsToAddFromDb =
+                        _personManager.GetAllParticipants().Where(n => participantsId.Contains(n.Id)).ToList();
+                }
 
 
-                    int? locationId = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
+                // -> TAGS
+                var tagsToAdd = sessionVm.GenerateSessionTags;
 
-                    var result = new Session()
+                _utilitiesManager.AddNewTagsToDb(tagsToAdd);
+                // <- END TAGS
+
+
+                int? locationId = _utilitiesManager.GetIdForLocationOrCreateIfNotExists(sessionVm.NameOfLocation);
+
+                var result = new Session()
+                {
+                    Name = sessionVm.Name,
+                    ActivityId = sessionVm.Activity.Id,
+                    StartDate = sessionVm.StartDate,
+                    EndDate = sessionVm.EndDate,
+                    LocationId = locationId,
+                    HrPersonId = sessionVm.HrPerson,
+                    Description = sessionVm.Description,
+                    IsOpenForExpressionOfInterest = sessionVm.IsOpenForExpressionOfInterest,
+                    SessionParticipants = null,
+                    SessionTags = null
+                };
+
+                if (sessionVm.AddedParticipants != null)
+                {
+                    List<SessionParticipant> final = new List<SessionParticipant>();
+                    foreach (var participant in participantsToAddFromDb)
                     {
-                        Name = sessionVm.Name,
-                        ActivityId = sessionVm.Activity.Id,
-                        StartDate = sessionVm.StartDate,
-                        EndDate = sessionVm.EndDate,
-                        LocationId = locationId,
-                        HrPersonId = sessionVm.HrPerson,
-                        Description = sessionVm.Description,
-                        IsOpenForExpressionOfInterest = sessionVm.IsOpenForExpressionOfInterest,
-                        SessionParticipants = null,
-                        SessionTags = null
-                    };
-
-                    if (sessionVm.AddedParticipants != null)
-                    {
-                        List<SessionParticipant> final = new List<SessionParticipant>();
-                        foreach (var participant in participantsToAddFromDb)
+                        final.Add(new SessionParticipant()
                         {
-                            final.Add(new SessionParticipant()
-                            {
-                                ParticipantId = participant.Id,
-                                Session = result,
-                                Rating = 0,
-                            });
-                            result.SessionParticipants = final;
-                        }
-
+                            ParticipantId = participant.Id,
+                            Session = result,
+                            Rating = 0,
+                        });
+                        result.SessionParticipants = final;
                     }
 
-                    // Save session in db
-                    _sessionManager.AddSession(result);
+                }
 
+                // Save session in db
+                if (_sessionManager.AddSession(result))
+                {
                     // Now add tags to the created session!...
                     _sessionManager.AddSessionTags(tagsToAdd, result.Id);
-
                     return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = result.Id });
                 }
+                else
+                {
+                    ModelState.AddModelError("",
+                        "Ett tillfälle med samma namn existerar redan till denna aktivitet!");
+                }
             }
-            catch (RetryLimitExceededException)
-            {
-                ModelState.AddModelError("", "Aktiviteten existerar redan.");
-            }
+
+            ModelState.AddModelError("", "Lyckades inte skapa tillfället!");
+
+            var allActivities = _activityManager.GetAllActivities().OrderBy(n => n.Name).ToList();
+            var allSessionParticipants = _personManager.GetAllParticipants().OrderBy(n => n.FirstName).ToList();
+            var allHrPersons = _personManager.GetAllHrPersons().OrderBy(n => n.FirstName).ToList();
+
+            var selectedActivityId = allActivities.First().Id;
+
+            ViewBag.AllActivities = new SelectList(allActivities, "Id", "Name", selectedActivityId);
+            ViewBag.AllSessionParticipants = new SelectList(
+                allSessionParticipants,
+                "Id",
+                "FullName",
+                allSessionParticipants.Skip(1).First().Id); // TODO: TAKE AWAY SKIP
+            ViewBag.AllHrPersons = new SelectList(allHrPersons, "Id", "FullName");
+
             return View(sessionVm);
         }
 
@@ -236,7 +251,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             if (_personManager.AddExpressionOfInterest(sessionId, loggedInUser.Id))
                 return RedirectToAction("SessionForActivity", "ActivitySummary", new { id = sessionId });
-            
+
             return new HttpUnauthorizedResult();
         }
 
@@ -262,10 +277,10 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 if (loggedInUser.Id != personId)
                     return new HttpUnauthorizedResult();
             }
-            
+
             if (_personManager.RemoveExpressionOfInterest(sessionId, personId))
             {
-                return Json(new {Success = true});
+                return Json(new { Success = true });
             }
 
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -310,7 +325,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 var failResult = new
                 {
                     Success = false,
-                    ErrorMessage = "Misslyckades",
+                    ErrorMessage = "Välj ur listan",
                     PersonId = 0,
                     SessionId = sessionId,
                     PersonFullName = "",

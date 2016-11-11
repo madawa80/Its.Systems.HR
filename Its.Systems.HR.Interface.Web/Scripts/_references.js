@@ -1,6 +1,7 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="app/activityindex.js" />
 /// <reference path="app/adminindex.js" />
+/// <reference path="app/admintags.js" />
 /// <reference path="app/allsessionsforactivity.js" />
 /// <reference path="app/createsession.js" />
 /// <reference path="app/editsession.js" />

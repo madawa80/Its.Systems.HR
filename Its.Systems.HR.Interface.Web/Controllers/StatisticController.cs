@@ -38,7 +38,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
             foreach (var session in sessionsForYear)
             {
-                var participantCount = _personManager.GetAllParticipantsForSession(session.Id).Where(n => n.IsDeleted == false).ToList().Count;
+                var participantCount = _personManager.GetAllParticipantsForSession(session.Id).Count();
                 
                 sessionStatisticsRowsList.Add(new SessionStatisticsRow
                 {
@@ -89,7 +89,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                 foreach (var session in sessionsForYear)
                 {
-                    var participantCount = _personManager.GetAllParticipantsForSession(session.Id).Where(n => n.IsDeleted == false).ToList().Count;
+                    var participantCount = _personManager.GetAllParticipantsForSession(session.Id).Count();
                     sessionStatisticsRowsList.Add(new SessionStatisticsRow
                     {
                         NumberOfParticipants = participantCount,
@@ -140,9 +140,7 @@ namespace Its.Systems.HR.Interface.Web.Controllers
 
                 foreach (var session in sessionsForTag)
                 {
-
-                    totalParticipantCount += _personManager.GetAllParticipantsForSession(session.Id).Where(n => n.IsDeleted == false).ToList().Count;
-
+                    totalParticipantCount += _personManager.GetAllParticipantsForSession(session.Id).Count();
                 }
             }
 

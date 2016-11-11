@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Its.Systems.HR.Domain.Interfaces;
@@ -12,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Its.Systems.HR.Test.Controllers
 {
     /// <summary>
-    /// Summary description for Activity
+    /// Tests for the ActivityController
     /// </summary>
     [TestClass]
     public class Activity : BaseTest
@@ -62,6 +64,56 @@ namespace Its.Systems.HR.Test.Controllers
             }
             // Assert
             Assert.AreEqual("JavaOne", result[0].Name);
+        }
+
+        [TestMethod]
+        public void CreateActivity_ShouldAddThatActivity()
+        {
+            // Arrange
+            ActivityController controller = new ActivityController(_activityManager, _personManager, _utilityManager);
+
+            var activityToAdd = new ActivityViewModel()
+            {
+                Name = "New Activity"
+            };
+
+            // Act
+            var controllerResult = controller.CreateActivity(activityToAdd);
+
+            var expected = _activityManager.GetAllActivities().SingleOrDefault(n => n.Name == "New Activity");
+            
+            // Assert
+            Assert.AreEqual(expected.Name, activityToAdd.Name);
+        }
+
+        [TestMethod]
+        public void CreateActivityWithNoName_ShouldReturnModelStateNotValid()
+        {
+            var controller = new ActivityController(_activityManager, _personManager, _utilityManager);
+            
+            var model = new ActivityViewModel()
+            {
+                Name = ""
+            };
+
+            //Init ModelState
+            var modelBinder = new ModelBindingContext()
+            {
+                ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(
+                                  () => model, model.GetType()),
+                ValueProvider = new NameValueCollectionValueProvider(
+                                    new NameValueCollection(), CultureInfo.InvariantCulture)
+            };
+            var binder = new DefaultModelBinder().BindModel(
+                             new ControllerContext(), modelBinder);
+            controller.ModelState.Clear();
+            controller.ModelState.Merge(modelBinder.ModelState);
+
+            var controllerResult = controller.CreateActivity(model);
+
+            ViewResult result = (ViewResult)controllerResult;
+            Assert.IsTrue(result.ViewData.ModelState["Name"].Errors.Count > 0);
+            Assert.IsTrue(!result.ViewData.ModelState.IsValid);
         }
 
         [TestMethod]

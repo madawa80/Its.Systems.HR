@@ -66,6 +66,12 @@ namespace Its.Systems.HR.Interface.Web.Controllers
                 Name = activity.Name,
             };
 
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Namnet får inte vara tomt.");
+                return View(activity);
+            }
+
             var activityWasInserted = _activityManager.AddActivity(result);
             if (activityWasInserted)
             {

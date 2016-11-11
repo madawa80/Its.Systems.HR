@@ -81,7 +81,7 @@
             {
                 @Html.HiddenFor(n => n.SessionId)
                 <button class="btn btn-danger">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Avanmäl ditt intresse för tillfället
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Avanmäl ditt intresse för det här tillfället
                 </button>
             }
         }
@@ -91,12 +91,12 @@
             {
                 @Html.HiddenFor(n => n.SessionId)
                 <button class="btn btn-success">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Anmäl intresse för tillfället
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Anmäl intresse för det här tillfället
                 </button>
             }
         }
 
-        <p><em>Visa antalet intresseanmälningar här?</em></p>
+        <p><em>Totalt antal intresseanmälda: @Model.TotalPaticipants</em></p>
 
     }
     else
