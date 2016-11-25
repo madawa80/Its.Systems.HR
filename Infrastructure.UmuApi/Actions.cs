@@ -10,7 +10,7 @@ namespace Infrastructure.UmuApi
     {
         public List<ItsPerson> GetPersonFromUmuApi()
         {
-            var url = "https://websrv01.testad.umu.se/Catalogue/3.0/api/org/e841c73b5524c220b45690b8e1d841c87c454436/person";
+            var url = "https://websrv06741.testads.umu.se/Catalogue/5.0/api/org/e841c73b5524c220b45690b8e1d841c87c454436/person";
 
             var result = new RootObject();
 
@@ -18,7 +18,7 @@ namespace Infrastructure.UmuApi
             {
                 HttpWebRequest myReq = (HttpWebRequest)WebRequest.Create(url);
                 myReq.Method = "GET";
-                myReq.Credentials = new NetworkCredential("sape0014", "Pwd2Chang3");
+                myReq.Credentials = new NetworkCredential("sa34e0014", "Pwj67hang3");
                 HttpWebResponse myResponse = (HttpWebResponse)myReq.GetResponse();
 
                 if (myResponse.StatusCode == HttpStatusCode.OK)
